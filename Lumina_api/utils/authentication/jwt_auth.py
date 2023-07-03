@@ -1,8 +1,8 @@
 import datetime, jwt
 from rest_framework.authentication import BaseAuthentication
 from rest_framework import exceptions
-from all_tools.authentication import jwt_config
-from all_tools.methods.public_methods import return_response
+from utils.authentication import jwt_config
+from utils.methods import return_response
 
 
 class JwtAuthentication(BaseAuthentication):

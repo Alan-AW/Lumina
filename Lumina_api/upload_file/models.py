@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class UploadImg(models.Model):
+class UploadFile(models.Model):
     file_name = models.CharField(max_length=128, verbose_name='文件名', null=False, blank=False)
     file = models.ImageField(upload_to='upload/%Y/%m/%d', null=False, blank=False, verbose_name='图片文件')
 

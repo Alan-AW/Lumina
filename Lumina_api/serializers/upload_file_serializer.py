@@ -1,7 +1,7 @@
 from django.conf import settings as sys
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from upload_file.models import UploadImg
+from upload_file.models import UploadFile
 from utils.validator.public_validate import file_size_validate, file_suffix_name_validate
 
 
@@ -10,7 +10,7 @@ class UploadFileSer(serializers.ModelSerializer):
         write_only=True,
         validators=[
             UniqueValidator(
-                queryset=UploadImg.objects.all(),
+                queryset=UploadFile.objects.all(),
                 message='文件名重复！'
             )
         ], required=True, error_messages={'required': '无法读取文件名！请稍后再试！'}
@@ -32,5 +32,5 @@ class UploadFileSer(serializers.ModelSerializer):
         return url
 
     class Meta:
-        model = UploadImg
+        model = UploadFile
         fields = '__all__'

@@ -27,6 +27,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users.apps.UsersConfig',
+    'upload_file.apps.UploadFileConfig',
+    'operations.apps.OperationsConfig'
 ]
 
 MIDDLEWARE = [
@@ -187,3 +190,8 @@ SIMPLEUI_DEFAULT_THEME = 'element.css'
 # SIMPLEUI_DEFAULT_THEME = 'layui.css'
 # Admin Lte风格
 # SIMPLEUI_DEFAULT_THEME = 'admin.lte.css'
+
+# admin后台title相关配置
+ADMIN_SITE_HEADER = '网站后台'  # 设置后台登陆页Title和登陆成功之后左侧导航栏title
+ADMIN_SITE_TITLE = '数字化管理系统后台'  # 设置后台网页title
+ADMIN_SITE_INDEX_TITLE = '后台首页'
