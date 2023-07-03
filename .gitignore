@@ -1,0 +1,11 @@
+.idea/
+ *.pyc
+__pycache__/
+envs/
+ems/
+#db.sqlite3
+db.sqlite3-journal
+identifier.sqlite
+media/
+staticfiles/
+static/
