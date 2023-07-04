@@ -43,6 +43,8 @@ class UserInfo(models.Model):
     last_name = models.CharField(verbose_name='姓', max_length=32)
     role = models.ForeignKey(verbose_name='所有角色', to=Roles, blank=True, on_delete=models.CASCADE)
     status = models.IntegerField(verbose_name='账户状态', choices=((0, '禁用'), (1, '正常')), default=1)
+    qrcode = models.CharField(max_length=256, verbose_name='用户二维码内容', null=True, blank=True)
+    chinese = models.BooleanField(default=True, verbose_name='cn/en')
     create_time = models.DateTimeField(auto_now_add=True, null=True, verbose_name='注册时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 
@@ -59,7 +61,7 @@ class UserAvatar(models.Model):
     user = models.OneToOneField(to=UserInfo, to_field='id', related_name='avatar',
                                 on_delete=models.CASCADE, verbose_name='用户对象')
     avatar = models.ImageField(upload_to='users/avatar/%Y/%m/%d', blank=True, null=True, verbose_name='用户头像')
-    qr_code = models.ImageField(upload_to='users/qr_code/%Y/%m/%d', blank=True, null=True, verbose_name='用户二维码')
+    qrcode = models.ImageField(upload_to='users/qrcode', blank=True, null=True, verbose_name='用户二维码')
 
     def __str__(self):
         return self.user.account

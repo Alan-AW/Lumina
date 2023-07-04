@@ -33,6 +33,7 @@ class Zone(models.Model):
     status = models.IntegerField(choices=((0, '禁用'), (1, '正常')), verbose_name='区域状态', default=1)
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
+    time_zone = models.CharField(max_length=32, verbose_name='时区码')
 
     class Meta:
         db_table = 'zone'

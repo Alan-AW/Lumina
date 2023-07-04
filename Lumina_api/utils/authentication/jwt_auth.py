@@ -44,11 +44,11 @@ def get_auth(request):
     return auth
 
 
-def create_jwt_token(payload, timeout=7):
+def create_jwt_token(payload, start: str = jwt_config.TOKEN_START, timeout=7):
     # 创建jwt token
     SALT = jwt_config.SECRET_KEY  # 加盐
     payload['exp'] = datetime.datetime.utcnow() + datetime.timedelta(days=timeout)
-    token = jwt_config.TOKEN_START + jwt.encode(payload, SALT, algorithm="HS256")
+    token = start + jwt.encode(payload, SALT, algorithm="HS256")
     return token
 
 
