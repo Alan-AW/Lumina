@@ -1,0 +1,14 @@
+/* sider */
+.sider {
+  min-height: 100vh;
+}
+
+/* 菜单浮动定位 */
+.stickPosition {
+  position: sticky;
+  top: 0;
+  min-height: calc(100vh - 64px);
+  overflow-y: auto;
+  -ms-scroll-snap-type: none;
+  scroll-snap-type: none;
+}

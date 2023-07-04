@@ -24,9 +24,9 @@ class RolesAdmin(admin.ModelAdmin):
 @admin.register(UserInfo)
 class UserInfoAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'account', 'password', 'first_name', 'last_name', 'role', 'status', 'qrcode', 'create_time', 'update_time'
+        'id', 'account', 'password', 'first_name', 'last_name', 'role', 'status', 'qrcode', 'company', 'create_time', 'update_time'
     ]
-    list_editable = ['account', 'password', 'first_name', 'last_name', 'role', 'status']
+    list_editable = ['account', 'password', 'first_name', 'last_name', 'role', 'company', 'status']
     search_fields = ['account', 'first_name', 'last_name']
 
 

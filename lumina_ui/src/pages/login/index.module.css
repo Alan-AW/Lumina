@@ -1,0 +1,32 @@
+.loginBody {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  /* background: url(../../background/login/amyh.jpg) no-repeat center center; */
+  background: url("https://api.cyrilstudio.top/bing/image.php?size=1920x1080") no-repeat center center;
+  background-size: cover;
+}
+
+/* 登陆框 */
+.loginBox {
+  width: 400px;
+  height: 324px;
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, .4);
+  padding: 40px 60px;
+  border-radius: 12px;
+}
+
+.h2 {
+  text-align: center;
+  color: #fff;
+  margin-bottom: 30px;
+}
+
+.btnBox {
+  text-align: center;
+  margin-top: 12%;
+}

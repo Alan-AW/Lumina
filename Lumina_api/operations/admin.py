@@ -4,8 +4,8 @@ from operations.models import Company, Zone, Room, Unit, Sensor, Plant
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'address', 'legal_rep', 'tel', 'email', 'account', 'create_time', 'update_time']
-    list_editable = ['name', 'address', 'legal_rep', 'tel', 'email', 'account']
+    list_display = ['id', 'name', 'address', 'legal_rep', 'tel', 'email', 'create_time', 'update_time']
+    list_editable = ['name', 'address', 'legal_rep', 'tel', 'email']
     search_fields = ['name', 'address', 'tel', 'email', 'legal_rep']
 
 

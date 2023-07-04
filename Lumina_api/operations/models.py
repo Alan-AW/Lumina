@@ -1,5 +1,4 @@
 from django.db import models
-from users.models import UserInfo
 from upload_file.models import UploadFile
 
 
@@ -10,9 +9,6 @@ class Company(models.Model):
     legal_rep = models.CharField(max_length=8, verbose_name='企业法人')
     tel = models.CharField(max_length=14, verbose_name='联系电话')
     email = models.CharField(max_length=64, verbose_name='企业邮箱')
-    account = models.OneToOneField(
-        to=UserInfo, to_field='id', on_delete=models.CASCADE, related_name='company', verbose_name='企业所属账号'
-    )
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 
