@@ -6,6 +6,8 @@ export const CHANGE_SIDER_MENU = 'changeSiderMenu'
 export const CHECK_THEME_COLOR_DRAWER = 'checkThemeColorDrawer'
 // 主题颜色
 export const CHANGE_THEME_COLOR = 'changeThemeColor'
+// 主题国际化
+export const CHANGE_LNTL = 'changeLntl'
 // 夜间模式
 export const CHANGE_THEME_MODE = 'darkMode'
 // 用户信息

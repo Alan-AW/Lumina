@@ -4,7 +4,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Layout, theme, Dropdown, Button, message, Modal } from 'antd'
+import { Layout, theme, Dropdown, Button, message, Modal, Select } from 'antd'
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -13,7 +13,7 @@ import {
 import { UserOutlined } from '@ant-design/icons'
 import { Avatar } from 'antd'
 import { USER_TOKEN, FADEINDOWN } from 'contants'
-import { CHANGE_SIDER_MENU, CHECK_THEME_COLOR_DRAWER, SET_USER_MESSAGE } from 'contants/reduxContants'
+import { CHANGE_LNTL, CHANGE_SIDER_MENU, CHECK_THEME_COLOR_DRAWER, SET_USER_MESSAGE } from 'contants/reduxContants'
 import Weather from './weather'
 import Timer from './timer'
 
@@ -21,11 +21,14 @@ const { Header } = Layout
 const { confirm } = Modal
 
 const TopHeader = props => {
-  const { isOpen, isOpenMenu, isOpenDrawer, userMessage, setUserMessage } = props
+  const {
+    isOpen, isOpenMenu, isOpenDrawer, userMessage,
+    setUserMessage, changeLntl, lntl
+  } = props
   // 执行跳转
   const navigate = useNavigate()
   // 读取用户数据
-  const { username, avatar, last_login } = userMessage
+  const { username, avatar } = userMessage
   // 用户信息下拉菜单
   const items = [
     {
@@ -37,7 +40,8 @@ const TopHeader = props => {
       label: (<Button type="link" onClick={() => clickLogout()}>退出登陆</Button>)
     }
   ]
-
+  // 国际化切换选项
+  const lntlOptions = [{ label: 'zh_CN', value: 'zh_CN' }, { label: 'en_GB', value: 'en_GB' }]
   // 点击退出登陆
   const clickLogout = () => {
     confirm({
@@ -89,17 +93,26 @@ const TopHeader = props => {
           float: 'right',
           marginRight: '16px',
           display: 'flex',
+          alignItems: 'center'
         }}
         className="user-msg"
       >
+        {/* 天气 */}
         <Weather />
+        {/* 实时时间 */}
         <Timer />
-        <span>上次登陆：</span>
-        <del style={{ color: '#999', marginRight: '10px' }}>{last_login}</del>
+        {/* 国际化 */}
+        <Select
+          style={{ minWidth: '80px', marginRight: '10px' }}
+          defaultValue={lntl}
+          options={lntlOptions}
+          placeholder='lntl'
+          onChange={value => changeLntl(value)}
+        />
+        {/* 下拉选项 */}
         <Dropdown
           menu={{ items }}
           placement="bottom"
-        // style={{ width: '100px' }}
         >
           <span style={{ color: '#87ceeb' }}>
             <span style={{ marginRight: '10px' }}>
@@ -118,8 +131,8 @@ const TopHeader = props => {
 }
 
 const mapStateToProps = state => {
-  const { siderMenuReducer: { isOpen }, userMessage } = state
-  return { isOpen, userMessage }
+  const { siderMenuReducer: { isOpen }, userMessage, themeConfig: { lntl } } = state
+  return { isOpen, userMessage, lntl }
 }
 
 const mapDispatchToProps = {
@@ -131,6 +144,9 @@ const mapDispatchToProps = {
   },
   setUserMessage(value) {
     return { type: SET_USER_MESSAGE, value }
+  },
+  changeLntl(value) {
+    return { type: CHANGE_LNTL, value }
   }
 }
 
