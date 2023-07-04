@@ -50,12 +50,15 @@ const NavBar = props => {
   return (
     <Sider
       trigger={null}
-      collapsible collapsed={!isOpen}
+      collapsible
+      collapsed={!isOpen}
       className={st.sider + FADEINLEFT}
     >
-      <Logo title="developers 不晚" />
+      <Logo title="植物自动化设备后台" />
       <Menu
         mode="inline"
+        theme='dark'
+        // style={{ backgroundColor: '#000000' }}
         className={st.stickPosition}
         openKeys={openKeys}
         onOpenChange={onOpenChange}

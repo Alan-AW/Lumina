@@ -8,7 +8,7 @@ const Unit = lazy(() => import('pages/unit'))
 
 export const LocalRouterMap = {
   '/': { title: '首页', icon: <HomeOutlined /> },
-  '/room': { title: '房间管理', icon: <ClusterOutlined />, element: <Room /> },
+  '/room': { title: '房间管理', icon: <LockOutlined />, element: <Room /> },
   '/zone': { title: '区域管理', icon: <ApartmentOutlined />, element: <Zone /> },
-  '/unit': { title: '机器管理', icon: <LockOutlined />, element: <Unit /> },
+  '/unit': { title: '机器管理', icon: <ClusterOutlined />, element: <Unit /> },
 }
