@@ -12,7 +12,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@5sg0tm)3z00a5syf88n74udw5n$r%zwgbd8h^osmhlo7mbs2&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -121,8 +122,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = 'static/'
-# STATIC_ROOT = 'static'
+STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
 
 # 设置修改文件的保存路径
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace('\\', '/')
