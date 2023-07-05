@@ -1,21 +1,22 @@
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from operations.models import Room, Zone, Unit
-from serializers.operations_serializers import RoomSer, ZoneSer, UnitSer, ChoicesZoneSer
+from serializers.operations_serializers import RoomSer, ZoneSer, UnitSer, ChoicesZoneSer, ZoneDeepSer
 from utils.methods import return_response, get_data
 
 
 # 区域管理
 class ZoneView(APIView):
     def get(self, request):
-        data = get_data(Zone, False, request, self, ZoneSer)
+        queryset = request.user.company.zones.all()
+        data = get_data(queryset, True, request, self, ZoneSer)
         response = return_response(data=data)
         return JsonResponse(response)
 
     def post(self, request, row_id=None):
         ser = ZoneSer(data=request.data)
         if ser.is_valid():
-            ser.save()
+            ser.save(**{'company': request.user.company})
             response = return_response(data=ser.data)
         else:
             response = return_response(status=False, error=ser.errors)
@@ -43,14 +44,15 @@ class ZoneView(APIView):
 # 房间管理
 class RoomView(APIView):
     def get(self, request):
-        data = get_data(Room, False, request, self, RoomSer)
+        queryset = Room.objects.filter(zone__company__account=request.user).all()
+        data = get_data(queryset, True, request, self, RoomSer)
         response = return_response(data=data)
         return JsonResponse(response)
 
     def post(self, request, row_id=None):
         ser = RoomSer(data=request.data)
         if ser.is_valid():
-            ser.save()
+            ser.save(**{'zone': ''})
             response = return_response(data=ser.data)
         else:
             response = return_response(status=False, error=ser.errors)
@@ -85,7 +87,7 @@ class UnitView(APIView):
     def post(self, request, row_id=None):
         ser = UnitSer(data=request.data)
         if ser.is_valid():
-            ser.save()
+            ser.save(**{'room': ''})
             response = return_response(data=ser.data)
         else:
             response = return_response(status=False, error=ser.errors)
@@ -104,7 +106,7 @@ class UnitView(APIView):
     def delete(self, request, row_id):
         try:
             data = Unit.objects.filter(id=row_id).delete()
-            response = return_response(data=row_id, info=f'成功删除{data}条数据！')
+            response = return_response(data=row_id, info=f'已删除{data}条数据！')
         except Unit.DoesNotExist as e:
             response = return_response(status=False, error=f'{e}')
         return JsonResponse(response)
@@ -112,9 +114,25 @@ class UnitView(APIView):
 
 # 选择区域
 class ChoicesZoneView(APIView):
-
     def get(self, request):
+        # react web端
+        return self.public_result(request)
+
+    def post(self, request):
+        # 安卓端
+        return self.public_result(request)
+
+    def public_result(self, request):
         queryset = request.user.company.zones.all()
         ser = ChoicesZoneSer(queryset, many=True)
+        response = return_response(data=ser.data)
+        return JsonResponse(response)
+
+
+class ZoneDeepDataView(APIView):
+    def post(self, request):
+        zone_id = request.data.get('zoneId')
+        queryset = request.user.company.zones.filter(id=zone_id).first()
+        ser = ZoneDeepSer(queryset, many=False)
         response = return_response(data=ser.data)
         return JsonResponse(response)

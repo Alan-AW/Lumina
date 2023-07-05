@@ -47,7 +47,8 @@ class UserInfo(models.Model):
     qrcode = models.CharField(max_length=256, verbose_name='用户二维码内容', null=True, blank=True)
     chinese = models.BooleanField(default=True, verbose_name='cn/en')
     company = models.ForeignKey(
-        to=Company, to_field='id', on_delete=models.CASCADE, null=True, blank=True, verbose_name='所属企业'
+        to=Company, to_field='id', on_delete=models.CASCADE, related_name='account',
+        null=True, blank=True, verbose_name='所属企业'
     )
     create_time = models.DateTimeField(auto_now_add=True, null=True, verbose_name='注册时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
