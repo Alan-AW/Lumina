@@ -52,7 +52,7 @@ class RoomView(APIView):
     def post(self, request, row_id=None):
         ser = RoomSer(data=request.data)
         if ser.is_valid():
-            ser.save(**{'zone': ''})
+            ser.save()
             response = return_response(data=ser.data)
         else:
             response = return_response(status=False, error=ser.errors)
