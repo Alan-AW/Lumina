@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from operations.models import Room, Zone, Unit
-from serializers.operations_serializers import RoomSer, ZoneSer, UnitSer, ChoicesZoneSer, ZoneDeepSer
+from serializers.operations_serializers import RoomSer, ZoneSer, UnitSer, ChoicesZoneSer, ChoicesRoomSer, ZoneDeepSer
 from utils.methods import return_response, get_data
 
 
@@ -17,7 +17,7 @@ class ZoneView(APIView):
         ser = ZoneSer(data=request.data)
         if ser.is_valid():
             ser.save(**{'company': request.user.company})
-            response = return_response(data=ser.data)
+            response = return_response(data=ser.data, info='区域添加成功！')
         else:
             response = return_response(status=False, error=ser.errors)
         return JsonResponse(response)
@@ -27,7 +27,7 @@ class ZoneView(APIView):
         ser = ZoneSer(instance=queryset, data=request.data)
         if ser.is_valid():
             ser.save()
-            response = return_response(data=ser.data)
+            response = return_response(data=ser.data, info='区域信息修改成功！')
         else:
             response = return_response(status=False, error=ser.errors)
         return JsonResponse(response)
@@ -35,7 +35,7 @@ class ZoneView(APIView):
     def delete(self, request, row_id=None):
         try:
             data = Zone.objects.filter(id=row_id).delete()
-            response = return_response(data=row_id, info=f'成功删除{data}条数据！')
+            response = return_response(data=int(row_id), info=f'成功删除{data}条数据！')
         except Zone.DoesNotExist as e:
             response = return_response(status=False, error=f'{e}')
         return JsonResponse(response)
@@ -53,7 +53,7 @@ class RoomView(APIView):
         ser = RoomSer(data=request.data)
         if ser.is_valid():
             ser.save()
-            response = return_response(data=ser.data)
+            response = return_response(data=ser.data, info='房间信息添加成功！')
         else:
             response = return_response(status=False, error=ser.errors)
         return JsonResponse(response)
@@ -63,7 +63,7 @@ class RoomView(APIView):
         ser = RoomSer(instance=queryset, data=request.data)
         if ser.is_valid():
             ser.save()
-            response = return_response(data=ser.data)
+            response = return_response(data=ser.data, info='房间信息更新成功！')
         else:
             response = return_response(status=False, error=ser.errors)
         return JsonResponse(response)
@@ -71,7 +71,7 @@ class RoomView(APIView):
     def delete(self, request, row_id=None):
         try:
             data = Room.objects.filter(id=row_id).delete()
-            response = return_response(data=row_id, info=f'成功删除{data}条数据！')
+            response = return_response(data=int(row_id), info=f'成功删除{data}条数据！')
         except Room.DoesNotExist as e:
             response = return_response(status=False, error=f'{e}')
         return JsonResponse(response)
@@ -88,7 +88,7 @@ class UnitView(APIView):
         ser = UnitSer(data=request.data)
         if ser.is_valid():
             ser.save(**{'room': ''})
-            response = return_response(data=ser.data)
+            response = return_response(data=ser.data, info='机器添加成功!')
         else:
             response = return_response(status=False, error=ser.errors)
         return JsonResponse(response)
@@ -98,7 +98,7 @@ class UnitView(APIView):
         ser = UnitSer(instance=queryset, data=request.data)
         if ser.is_valid():
             ser.save()
-            response = return_response(data=ser.data)
+            response = return_response(data=ser.data, info='机器信息修改成功!')
         else:
             response = return_response(status=False, error=ser.errors)
         return JsonResponse(response)
@@ -125,6 +125,20 @@ class ChoicesZoneView(APIView):
     def public_result(self, request):
         queryset = request.user.company.zones.all()
         ser = ChoicesZoneSer(queryset, many=True)
+        response = return_response(data=ser.data)
+        return JsonResponse(response)
+
+
+class ChoicesRoomView(APIView):
+    def get(self, request):
+        return self.public_results(request)
+
+    def post(self, request):
+        return self.public_results(request)
+    
+    def public_results(self, request):
+        queryset = Room.objects.filter(zone__company__account=request.user).all()
+        ser = ChoicesRoomSer(queryset, many=True)
         response = return_response(data=ser.data)
         return JsonResponse(response)
 

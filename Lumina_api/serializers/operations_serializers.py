@@ -6,7 +6,7 @@ class ZoneSer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=64)
     # company = serializers.SlugRelatedField(slug_field='id', queryset=Company, write_only=True)
     # company_name = serializers.CharField(read_only=True, source='company.name')
-    status = serializers.IntegerField(write_only=True)
+    status = serializers.IntegerField()
     status_label = serializers.CharField(source='get_status_display', read_only=True)
     time_zone = serializers.CharField(max_length=32)
     create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
@@ -20,7 +20,7 @@ class ZoneSer(serializers.ModelSerializer):
 
 class RoomSer(serializers.ModelSerializer):
     serial_number = serializers.CharField(max_length=512)
-    zone = serializers.SlugRelatedField(slug_field='id', queryset=Zone.objects, write_only=True)
+    zone = serializers.SlugRelatedField(slug_field='id', queryset=Zone.objects)
     zone_name = serializers.CharField(source='zone.name', read_only=True)
     create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
     update_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
@@ -32,9 +32,9 @@ class RoomSer(serializers.ModelSerializer):
 
 class UnitSer(serializers.ModelSerializer):
     serial_number = serializers.CharField(max_length=512)
-    room = serializers.SlugRelatedField(slug_field='id', queryset=Room.objects, write_only=True)
+    room = serializers.SlugRelatedField(slug_field='id', queryset=Room.objects)
     room_number = serializers.CharField(source='room.serial_number', read_only=True)
-    status = serializers.IntegerField(write_only=True)
+    status = serializers.IntegerField()
     status_label = serializers.CharField(source='get_status_display', read_only=True)
     create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
     update_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
@@ -46,10 +46,12 @@ class UnitSer(serializers.ModelSerializer):
 
 # 双端选择区域
 class ChoicesZoneSer(serializers.ModelSerializer):
+    label = serializers.CharField(source='name', read_only=True)
+    value = serializers.IntegerField(source='id', read_only=True)
 
     class Meta:
         model = Zone
-        fields = ['id', 'name', 'time_zone']
+        fields = ['id', 'name', 'time_zone', 'label', 'value']
 
 
 # web端选择房间
