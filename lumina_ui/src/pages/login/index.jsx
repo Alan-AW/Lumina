@@ -30,7 +30,8 @@ const Login = props => {
         // 设置token供request读取
         storageThatExpries.set(USER_TOKEN, res.data.token, '7-d')
         // 更新全局登陆用户信息
-        setUserMessage(res.data)
+        const { account, avatar, role } = res.data
+        setUserMessage({ account, avatar, role })
         // 清除登陆loading提示
         message.destroy("loginLoading")
         // 提示登陆成功

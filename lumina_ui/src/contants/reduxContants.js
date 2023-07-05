@@ -15,9 +15,5 @@ export const SET_USER_MESSAGE = 'setUserMessage'
 // 菜单权限
 export const SET_MENU_PERMISSION = 'setMenuPermission'
 // 下拉框组件请求数据action
-export const SET_WAREHOUSE_CHOICES = 'set_warehouseChoices'
-export const SET_DRIVERS_CHOICES = 'set_driversChoices'
-export const SET_TRUCKS_CHOICES = 'set_trucksChoices'
-export const SET_BUSINESS_CHOICES = 'set_businessChocies'
-export const SET_GOODS_TYPE_CHOICES = 'set_goodsTypeChoices'
-export const SET_GOODS_NAME_CHOICES = 'set_goodsNameChoices'
+export const SET_ROOMS_CHOICES = 'set_roomsChoices'
+export const SET_ZONE_CHOICES = 'set_zoneChocies'

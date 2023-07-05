@@ -1,17 +1,17 @@
 // 所有select下拉组件数据
 
 import {
-  SET_BUSINESS_CHOICES
+  SET_ZONE_CHOICES, SET_ROOMS_CHOICES
 } from 'contants/reduxContants'
 
-// 商户
-const businessInitState = []
+// 区域
+const zoneInitState = []
 
-const businessReducer = (prevState = businessInitState, action) => {
+const zoneList = (prevState = zoneInitState, action) => {
   let newState = [...prevState]
   const { type, value } = action
   switch (type) {
-    case SET_BUSINESS_CHOICES:
+    case SET_ZONE_CHOICES:
       newState = value
       return newState
     default:
@@ -19,5 +19,19 @@ const businessReducer = (prevState = businessInitState, action) => {
   }
 }
 
+// 房间
+const roomInitState = []
 
-export { businessReducer }
+const roomList = (prevState = roomInitState, action) => {
+  let newState = [...prevState]
+  const { type, value } = action
+  switch (type) {
+    case SET_ROOMS_CHOICES:
+      newState = value
+      return newState
+    default:
+      return prevState
+  }
+}
+
+export { zoneList, roomList }

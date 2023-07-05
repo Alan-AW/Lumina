@@ -28,7 +28,7 @@ const TopHeader = props => {
   // 执行跳转
   const navigate = useNavigate()
   // 读取用户数据
-  const { username, avatar } = userMessage
+  const { account, avatar } = userMessage
   // 用户信息下拉菜单
   const items = [
     {
@@ -116,10 +116,10 @@ const TopHeader = props => {
         >
           <span style={{ color: '#87ceeb' }}>
             <span style={{ marginRight: '10px' }}>
-              {username}
+              {account}
             </span>
             <Avatar
-              src={avatar}
+              src={avatar ? avatar : 'https://api.cyrilstudio.top/bing/image.php?size=1920x1080'}
               style={{ backgroundColor: '#87d068' }}
               icon={<UserOutlined />}
             />

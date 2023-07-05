@@ -2,13 +2,9 @@
 import { SET_USER_MESSAGE } from 'contants/reduxContants'
 
 const inintState = {
-  username: '未登录',
-  default: false,
-  is_active: false,
-  avatar: null,
-  last_login: '1970-1-1',
-  register: '1970-1-1',
-  roles: []
+  account: '未登录',
+  avatar: '',
+  role: ''
 }
 
 const userMessage = (prevState = inintState, action) => {
