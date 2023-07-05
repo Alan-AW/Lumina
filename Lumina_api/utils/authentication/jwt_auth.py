@@ -10,16 +10,16 @@ class JwtAuthentication(BaseAuthentication):
         # 非登录页面需要校验token
         auth = get_auth(request)
         if not auth:
-            response = return_response(status=False, error='未获取到token!')
+            response = return_response(status=False, code=403, error='未获取到token!')
             raise exceptions.AuthenticationFailed(response)
         if auth[0].lower() != jwt_config.TOKEN_START.lower().strip():
-            response = return_response(status=False, error='token认证方式错误!')
+            response = return_response(status=False, code=403, error='token认证方式错误!')
             raise exceptions.AuthenticationFailed(response)
         if len(auth) == 1:
-            response = return_response(status=False, error='非法的token!')
+            response = return_response(status=False, code=403, error='非法的token!')
             raise exceptions.AuthenticationFailed(response)
         elif len(auth) > 2:
-            response = return_response(status=False, error='非法的token!')
+            response = return_response(status=False, code=403, error='非法的token!')
             raise exceptions.AuthenticationFailed(response)
 
         token = auth[1]
@@ -28,7 +28,7 @@ class JwtAuthentication(BaseAuthentication):
             raise exceptions.AuthenticationFailed(result)
         user_obj = jwt_config.UserInfo.objects.filter(id=result['data']['id']).first()
         if not user_obj:
-            result = return_response(status=False, error='无权的token!')
+            result = return_response(status=False, code=403, error='无权的token!')
             raise exceptions.AuthenticationFailed(result)
         return user_obj, token
 

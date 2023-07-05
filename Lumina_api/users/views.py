@@ -9,11 +9,14 @@ from serializers.user_serializers import UserLoginSerializer, permission_and_men
 class LoginView(APIView):
     authentication_classes = []
     permission_classes = []
+    throttle_classes = []
 
     def post(self, request, *args, **kwargs):
         user = request.data
-        user['status'] = 1
-        user_obj = UserInfo.objects.filter(**user).first()
+        user_obj = None
+        if user:
+            user['status'] = 1
+            user_obj = UserInfo.objects.filter(**user).first()
         if not user_obj:
             response = return_response(status=False, error='用户名或密码错误！')
         else:

@@ -1,7 +1,7 @@
 from django.urls import path, re_path
 from users.views import LoginView
 
-app_name = 'auth_user'
+app_name = 'users'
 urlpatterns = [
     # 登陆
     path('login', LoginView.as_view()),

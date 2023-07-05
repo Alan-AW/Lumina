@@ -12,4 +12,5 @@ urlpatterns = [
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': d_sys.MEDIA_ROOT}),  # media配置 ----  也可以使用追加路由
     path('upload', UploadFileView.as_view()),  # 全局上传接口
     path('auth/', include(('users.urls', 'users'), namespace='users')),
+    path('manager/', include(('operations.urls', 'operations'), namespace='operations'))
 ]
