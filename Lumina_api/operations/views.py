@@ -159,6 +159,7 @@ class ChoicesRoleView(APIView):
         return JsonResponse(response)
 
 
+# 安卓端请求区域内的所有数据
 class ZoneDeepDataView(APIView):
     def post(self, request):
         zone_id = request.data.get('zoneId')
