@@ -1,7 +1,7 @@
 import { lazy } from 'react'
 import { Suspense } from 'react'
 import Loading from 'components/loading'
-import { LocalRouterMap } from './routerMap'
+import { LocalRouterMap } from 'common/routerMap'
 
 // 自定义懒加载，预防全屏闪屏
 const lazyLoad = component => <Suspense fallback={<Loading />}>{component}</Suspense >
@@ -23,12 +23,16 @@ const appRouter = [
         element: lazyLoad(<Index />)
       },
       {
-        path: '/room',
-        element: getComponentPage('/room')
+        path: '/user',
+        element: getComponentPage('/user')
       },
       {
         path: '/zone',
         element: getComponentPage('/zone')
+      },
+      {
+        path: '/room',
+        element: getComponentPage('/room')
       },
       {
         path: '/unit',

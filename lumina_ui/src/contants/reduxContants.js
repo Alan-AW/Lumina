@@ -17,3 +17,4 @@ export const SET_MENU_PERMISSION = 'setMenuPermission'
 // 下拉框组件请求数据action
 export const SET_ROOMS_CHOICES = 'set_roomsChoices'
 export const SET_ZONE_CHOICES = 'set_zoneChocies'
+export const SET_ROLES_CHOICSE = 'set_roleChocies'

@@ -1,5 +1,6 @@
 from django.urls import path, re_path
-from operations.views import RoomView, ZoneView, UnitView, ChoicesZoneView, ChoicesRoomView, ZoneDeepDataView
+from operations.views import RoomView, ZoneView, UnitView, ChoicesZoneView, ChoicesRoomView, ChoicesRoleView,\
+    ZoneDeepDataView
 
 app_name = 'operations'
 urlpatterns = [
@@ -8,5 +9,6 @@ urlpatterns = [
     re_path(r'unit/(?P<row_id>\d+)?$', UnitView.as_view()),
     path('zone/choices', ChoicesZoneView.as_view()),
     path('room/choices', ChoicesRoomView.as_view()),
+    path('role/choices', ChoicesRoleView.as_view()),
     path('zone/deep', ZoneDeepDataView.as_view())
 ]

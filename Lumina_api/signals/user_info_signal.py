@@ -19,10 +19,9 @@ def create_user_qrcode(sender, instance, **kwargs):
 def create_user_avatar_obj(sender, instance, **kwargs):
     if not kwargs['created']:
         return None
-    new_user_desc_obj = UserAvatar.objects.create(user=instance)
-    path = create_qr_code(new_user_desc_obj.user.qrcode, new_user_desc_obj.user.account)
-    new_user_desc_obj.qrcode = path
-    new_user_desc_obj.save()
+    print('开始创建二维码')
+    qrcode_path = create_qr_code(instance.qrcode, instance.account)
+    UserAvatar.objects.create(user=instance, qrcode=qrcode_path)
 
 
 # 删除用户时自动删除对应的图片文件(二维码文件无法这样删除，需要手动删除)

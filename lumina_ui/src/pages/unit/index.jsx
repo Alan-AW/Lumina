@@ -156,7 +156,7 @@ function Unit() {
   // 关窗
   const closeModal = () => {
     sessionStorage.setItem('editUnitData', JSON.stringify({
-      serial_number: '', status: '', room: ''
+      serial_number: '', status: null, room: null
     }))
     setopenModal(false)
   }

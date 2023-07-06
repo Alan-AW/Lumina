@@ -18,7 +18,13 @@ export const updateUserInfo = data => axios.post('/auth/update', data)
 // 下拉框数据获取
 export const choicesZones = () => axios.get('/manager/zone/choices')
 export const choicesRooms = () => axios.get('/manager/room/choices')
+export const choicesRoles = () => axios.get('/manager/role/choices')
 
+// 用户管理页面
+export const getUser = params => axios.get('/auth/user/', { params })
+export const postUser = data => axios.post('/auth/user/', data)
+export const patchUser = (id, data) => axios.patch(`/auth/user/${id}`, data)
+export const deleteUser = id => axios.delete(`/auth/user/${id}`)
 // 区域管理页面
 export const getZone = params => axios.get('/manager/zone/', { params })
 export const postZone = data => axios.post('/manager/zone/', data)

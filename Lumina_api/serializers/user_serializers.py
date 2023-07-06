@@ -3,13 +3,15 @@ from django.db.transaction import atomic
 from rest_framework import exceptions
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
+
+from operations.models import Company
 from utils.validator.public_validate import password_validate, tel_validate
 from users.models import UserInfo, Roles, UserAvatar, Permission
 from django.conf import settings as sys
 
 
+# 用户登陆
 class UserLoginSerializer(serializers.ModelSerializer):
-    # 用户登陆
     avatar = serializers.SerializerMethodField()
     qrcode = serializers.SerializerMethodField()
     role = serializers.CharField(source='role.title')
@@ -78,3 +80,31 @@ def permission_and_menu_ser(queryset):
     permission_dict = {i.id: i for i in queryset}
     data = build_tree(permission_dict)
     return data
+
+
+# 用户管理
+class UserInfoSer(serializers.ModelSerializer):
+    account = serializers.CharField(max_length=32, validators=[UniqueValidator(queryset=UserInfo.objects.all())])
+    password = serializers.CharField(max_length=64)
+    first_name = serializers.CharField(max_length=32)
+    last_name = serializers.CharField(max_length=32)
+    role = serializers.SlugRelatedField(slug_field='id', queryset=Roles.objects)
+    role_label = serializers.CharField(source='role.title', read_only=True)
+    status = serializers.IntegerField()
+    status_label = serializers.CharField(source='get_status_display', read_only=True)
+    avatar_url = serializers.SerializerMethodField()
+    qrcode_url = serializers.SerializerMethodField()
+    chinese = serializers.IntegerField()
+    company = serializers.SlugRelatedField(slug_field='id', queryset=Company.objects, required=False)
+    create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+    update_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+
+    def get_avatar_url(self, row):
+        return sys.API_BASE_URL + row.avatar.avatar.url if row.avatar.avatar else ''
+
+    def get_qrcode_url(self, row):
+        return sys.API_BASE_URL + row.avatar.qrcode.url
+
+    class Meta:
+        model = UserInfo
+        fields = '__all__'

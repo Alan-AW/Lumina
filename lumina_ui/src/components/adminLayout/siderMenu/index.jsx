@@ -8,7 +8,7 @@ import { Layout, Menu } from 'antd'
 import Logo from '../logo'
 import { FADEINLEFT } from 'contants'
 import st from './index.module.css'
-import menu from './menu'
+import menu from 'common/menuMap'
 
 const { Sider } = Layout;
 

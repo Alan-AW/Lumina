@@ -4,7 +4,7 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Breadcrumb } from 'antd'
-import { LocalRouterMap } from 'router/routerMap'
+import { LocalRouterMap } from 'common/routerMap'
 
 const Crumb = () => {
   const location = useLocation()

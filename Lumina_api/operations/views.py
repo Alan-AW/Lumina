@@ -1,7 +1,9 @@
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from operations.models import Room, Zone, Unit
-from serializers.operations_serializers import RoomSer, ZoneSer, UnitSer, ChoicesZoneSer, ChoicesRoomSer, ZoneDeepSer
+from serializers.operations_serializers import RoomSer, ZoneSer, UnitSer, ChoicesZoneSer, ChoicesRoomSer, ZoneDeepSer, \
+    ChoicesRoleSer
+from users.models import Roles
 from utils.methods import return_response, get_data
 
 
@@ -87,7 +89,7 @@ class UnitView(APIView):
     def post(self, request, row_id=None):
         ser = UnitSer(data=request.data)
         if ser.is_valid():
-            ser.save(**{'room': ''})
+            ser.save()
             response = return_response(data=ser.data, info='机器添加成功!')
         else:
             response = return_response(status=False, error=ser.errors)
@@ -135,10 +137,24 @@ class ChoicesRoomView(APIView):
 
     def post(self, request):
         return self.public_results(request)
-    
+
     def public_results(self, request):
         queryset = Room.objects.filter(zone__company__account=request.user).all()
         ser = ChoicesRoomSer(queryset, many=True)
+        response = return_response(data=ser.data)
+        return JsonResponse(response)
+
+
+class ChoicesRoleView(APIView):
+    def get(self, request):
+        return self.public_results(request)
+
+    def post(self, request):
+        return self.public_results(request)
+
+    def public_results(self, request):
+        queryset = Roles.objects.all()
+        ser = ChoicesRoleSer(queryset, many=True)
         response = return_response(data=ser.data)
         return JsonResponse(response)
 

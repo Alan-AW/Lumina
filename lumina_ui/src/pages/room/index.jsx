@@ -149,7 +149,7 @@ function Room() {
 
   // 关窗
   const closeModal = () => {
-    sessionStorage.setItem('editRowData', JSON.stringify({ serial_number: '', zone: '' }))
+    sessionStorage.setItem('editRowData', JSON.stringify({ serial_number: '', zone: null }))
     setopenModal(false)
   }
 

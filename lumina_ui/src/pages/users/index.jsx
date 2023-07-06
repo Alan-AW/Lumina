@@ -1,13 +1,12 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Table, notification, Button, message, Popconfirm } from 'antd'
+import { Table, notification, Button, message, Popconfirm, Image } from 'antd'
 import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined } from '@ant-design/icons'
-import { getZone, postZone, patchZone, deleteZone } from 'network/api'
-import EditModalForm from 'components/zone/editModal'
+import { getUser, postUser, patchUser, deleteUser } from 'network/api'
+import EditModalForm from 'components/users/editModal'
 import { FADEIN, pageSize } from 'contants'
 import { openNotification } from 'utils'
 
-
-function Zone() {
+function UserInfo() {
   const [api, contextHolder] = notification.useNotification()
   const [params, setparams] = useState({ page: 1 })
   const [tableData, settableData] = useState([])
@@ -26,19 +25,52 @@ function Zone() {
       dataIndex: 'id'
     },
     {
-      title: '区域名称',
+      title: '用户账号',
       align: 'center',
-      dataIndex: 'name'
+      dataIndex: 'account'
     },
     {
-      title: '区域状态',
+      title: '用户密码',
+      align: 'center',
+      dataIndex: 'password'
+    },
+    {
+      title: '姓',
+      align: 'center',
+      dataIndex: 'first_name'
+    },
+    {
+      title: '名',
+      align: 'center',
+      dataIndex: 'last_name'
+    },
+    {
+      title: '用户角色',
+      align: 'center',
+      dataIndex: 'role_label'
+    },
+    {
+      title: '用户状态',
       align: 'center',
       dataIndex: 'status_label'
     },
     {
-      title: '所处时区',
+      title: '用户语言',
       align: 'center',
-      dataIndex: 'time_zone'
+      dataIndex: 'chinese',
+      render: chinese => <span>{chinese ? 'chinese' : 'english'}</span>
+    },
+    {
+      title: '二维码',
+      align: 'center',
+      dataIndex: 'qrcode_url',
+      render: qrcode_url => <Image src={qrcode_url} height={50} />
+    },
+    {
+      title: '头像',
+      align: 'center',
+      dataIndex: 'avatar_url',
+      render: avatar_url => <Image src={avatar_url} height={50} />
     },
     {
       title: '创建时间',
@@ -62,8 +94,8 @@ function Zone() {
             onClick={() => editClick(row)}
           />
           <Popconfirm
-            title="删除区域"
-            description="确定要删除这个区域吗?"
+            title="删除用户"
+            description="确定要删除这个用户吗?"
             okText="Yes"
             okType='danger'
             cancelText="No"
@@ -86,7 +118,7 @@ function Zone() {
   }, [params])
 
   const getData = () => {
-    getZone(params).then(res => {
+    getUser(params).then(res => {
       if (res.status) {
         settableData(res.data.results)
         settableDataCount(res.data.count)
@@ -96,7 +128,7 @@ function Zone() {
 
   // 删除回调
   const deleteRow = row => {
-    deleteZone(row.id).then(res => {
+    deleteUser(row.id).then(res => {
       if (res.status) {
         settableData(tableData.filter(item => item.id !== res.data))
         message.success(res.info)
@@ -114,18 +146,22 @@ function Zone() {
 
   // 点击编辑
   const editClick = row => {
-    const { id, status, time_zone, name } = row
+    const {
+      id, account, password, first_name, last_name, role, status, chinese
+    } = row
     seteditSate(true)
-    sessionStorage.setItem('editZoneId', id)
-    sessionStorage.setItem('editZoneData', JSON.stringify({ status, time_zone, name }))
+    sessionStorage.setItem('editUserId', id)
+    sessionStorage.setItem('editUserData', JSON.stringify({
+      account, password, first_name, last_name, role, status, chinese
+    }))
     setopenModal(true)
   }
 
   // 提交
   const onOk = value => {
     if (editSate) {
-      const id = sessionStorage.getItem('editZoneId')
-      patchZone(id, value).then(res => {
+      const id = sessionStorage.getItem('editUserId')
+      patchUser(id, value).then(res => {
         if (res.status) {
           settableData(tableData.map(item => {
             if (item.id === res.data.id) {
@@ -140,7 +176,7 @@ function Zone() {
         }
       })
     } else {
-      postZone(value).then(res => {
+      postUser(value).then(res => {
         if (res.status) {
           settableData([res.data, ...tableData])
           settableDataCount(tableDataCount + 1)
@@ -149,14 +185,16 @@ function Zone() {
         } else {
           openNotification(api, 'error', res.errs)
         }
+      }).catch(err => {
+        console.log(err)
       })
     }
   }
 
   // 关窗
   const closeModal = () => {
-    sessionStorage.setItem('editZoneData', JSON.stringify({
-      status: null, time_zone: '', name: ''
+    sessionStorage.setItem('editUserData', JSON.stringify({
+      account: '', password: '', first_name: '', last_name: '', role: null, status: null, chinese: null
     }))
     setopenModal(false)
   }
@@ -171,7 +209,7 @@ function Zone() {
   // 表格
   const table = useMemo(() => (
     <Table
-      title={() => "区域管理"}
+      title={() => "用户管理"}
       className={FADEIN}
       dataSource={tableData}
       columns={tableTitle}
@@ -186,7 +224,7 @@ function Zone() {
     <>
       {contextHolder}
       <Button
-        children="添加区域"
+        children="添加用户"
         style={{ marginBottom: "var(--content-margin)" }}
         type="primary"
         onClick={addClick}
@@ -203,4 +241,4 @@ function Zone() {
   )
 }
 
-export default Zone
+export default UserInfo

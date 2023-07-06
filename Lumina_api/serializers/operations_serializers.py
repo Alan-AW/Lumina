@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from operations.models import Company, Room, Zone, Unit
+from users.models import Roles
 
 
 class ZoneSer(serializers.ModelSerializer):
@@ -71,6 +72,16 @@ class ChoicesUnitSer(serializers.ModelSerializer):
 
     class Meta:
         model = Unit
+        fields = ['label', 'value']
+
+
+# web端选择角色
+class ChoicesRoleSer(serializers.ModelSerializer):
+    label = serializers.CharField(source='title', read_only=True)
+    value = serializers.IntegerField(source='id', read_only=True)
+
+    class Meta:
+        model = Roles
         fields = ['label', 'value']
 
 
