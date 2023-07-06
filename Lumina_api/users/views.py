@@ -19,7 +19,7 @@ class LoginView(APIView):
             user_obj = UserInfo.objects.filter(**user).first()
         if not user_obj:
             response = return_response(status=False, error='用户名或密码错误！')
-        elif user_obj.role__title != 'Manager':
+        elif user_obj.role.title != 'Manager':
             response = return_response(status=False, error='对不起您无权使用本系统!')
         else:
             data = get_data(model=user_obj, ser_class=UserLoginSerializer, many=False)
