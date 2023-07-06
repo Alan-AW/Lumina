@@ -139,7 +139,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # 跨域
 CORS_ORIGIN_ALLOW_ALL = True
 
-API_BASE_URL = 'http://127.0.0.1:8000'
+# API_BASE_URL = 'http://127.0.0.1:8000'
+API_BASE_URL = 'http://lumina.toriches.cn'
 
 REST_FRAMEWORK = {
     # 认证

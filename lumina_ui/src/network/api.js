@@ -12,7 +12,7 @@ export const uploadFile = data => axios.post('/upload/img', data, uploadHeaders)
 
 // 上传头像图片接口
 export const uploadImg = data => axios.post('/auth/update', data, uploadHeaders)
-
+// 修改个人信息
 export const updateUserInfo = data => axios.post('/auth/update', data)
 
 // 下拉框数据获取

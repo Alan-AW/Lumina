@@ -57,8 +57,7 @@ function UserInfo() {
     {
       title: '用户语言',
       align: 'center',
-      dataIndex: 'chinese',
-      render: chinese => <span>{chinese ? 'chinese' : 'english'}</span>
+      dataIndex: 'chinese_label',
     },
     {
       title: '二维码',
@@ -70,7 +69,7 @@ function UserInfo() {
       title: '头像',
       align: 'center',
       dataIndex: 'avatar_url',
-      render: avatar_url => <Image src={avatar_url} height={50} />
+      render: avatar_url => avatar_url === '' ? '暂无头像' : <Image src={avatar_url} height={50} />
     },
     {
       title: '创建时间',
@@ -159,6 +158,7 @@ function UserInfo() {
 
   // 提交
   const onOk = value => {
+    console.log(value)
     if (editSate) {
       const id = sessionStorage.getItem('editUserId')
       patchUser(id, value).then(res => {

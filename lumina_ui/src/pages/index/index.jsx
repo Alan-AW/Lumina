@@ -21,10 +21,6 @@ const Index = props => {
   const navigate = useNavigate()
   // bing每日一图
   const imgCover = "https://api.cyrilstudio.top/bing/image.php?size=1920x1080"
-  // 系统消息列表
-  const [messageList, setmessageList] = useState([])
-  // 消息列表翻页
-  const [msgParams, setmsgParams] = useState({ page: 1 })
   // 修改用户信息对话框状态
   const [isModalOpen, setisModalOpen] = useState(false)
   // 修改用户信息表单ref

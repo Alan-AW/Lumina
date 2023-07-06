@@ -45,7 +45,7 @@ class UserInfo(models.Model):
     role = models.ForeignKey(verbose_name='所有角色', to=Roles, blank=True, on_delete=models.CASCADE)
     status = models.IntegerField(verbose_name='账户状态', choices=((0, '禁用'), (1, '正常')), default=1)
     qrcode = models.CharField(max_length=256, verbose_name='用户二维码内容', null=True, blank=True)
-    chinese = models.BooleanField(default=True, verbose_name='cn/en')
+    chinese = models.IntegerField(default=1, choices=((1, 'Chinese'), (0, 'English')), verbose_name='cn/en')
     company = models.ForeignKey(
         to=Company, to_field='id', on_delete=models.CASCADE, related_name='account',
         null=True, blank=True, verbose_name='所属企业'

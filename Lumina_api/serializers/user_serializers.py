@@ -18,7 +18,11 @@ class UserLoginSerializer(serializers.ModelSerializer):
     permission = serializers.SerializerMethodField()
 
     def get_avatar(self, row):
-        return sys.API_BASE_URL + row.avatar.avatar.url if row.avatar.avatar else ''
+        try:
+            url = sys.API_BASE_URL + row.avatar.avatar.url
+        except Exception:
+            url = ''
+        return url
 
     def get_qrcode(self, row):
         return sys.API_BASE_URL + row.avatar.qrcode.url if row.avatar.qrcode else ''
@@ -95,12 +99,17 @@ class UserInfoSer(serializers.ModelSerializer):
     avatar_url = serializers.SerializerMethodField()
     qrcode_url = serializers.SerializerMethodField()
     chinese = serializers.IntegerField()
-    company = serializers.SlugRelatedField(slug_field='id', queryset=Company.objects, required=False)
+    chinese_label = serializers.CharField(source='get_chinese_display', read_only=True)
+    company = serializers.SlugRelatedField(slug_field='id', queryset=Company.objects)
     create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
     update_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
 
     def get_avatar_url(self, row):
-        return sys.API_BASE_URL + row.avatar.avatar.url if row.avatar.avatar else ''
+        try:
+            url = sys.API_BASE_URL + row.avatar.avatar.url
+        except Exception:
+            url = ''
+        return url
 
     def get_qrcode_url(self, row):
         return sys.API_BASE_URL + row.avatar.qrcode.url
@@ -108,3 +117,28 @@ class UserInfoSer(serializers.ModelSerializer):
     class Meta:
         model = UserInfo
         fields = '__all__'
+
+
+# 更新用户头像
+class UserAvatarSerializer(serializers.ModelSerializer):
+    avatar_url = serializers.SerializerMethodField(read_only=True)
+    avatar = serializers.ImageField(write_only=True)
+
+    def get_avatar_url(self, row):
+        url = None
+        if row.avatar:
+            url = sys.API_BASE_URL + row.avatar.url
+        return url
+
+    def validate(self, data):
+        avatar = data.get('avatar')
+        if avatar is None:
+            raise serializers.ValidationError('头像文件必须上传！')
+        if avatar.size / 1024 / 1000 > 1:
+            size = round(avatar.size / 1024 / 1000, 2)
+            raise serializers.ValidationError(f'图片大小不得超过1MB！当前大小为{size}MB')
+        return data
+
+    class Meta:
+        model = UserAvatar
+        fields = ['avatar_url', 'avatar']

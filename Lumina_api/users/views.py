@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from users.models import UserInfo, Permission
 from utils.authentication.jwt_auth import create_jwt_token
 from utils.methods import return_response, get_data
-from serializers.user_serializers import UserLoginSerializer, UserInfoSer, permission_and_menu_ser
+from serializers.user_serializers import UserLoginSerializer, UserInfoSer, permission_and_menu_ser, UserAvatarSerializer
 
 
 class LoginView(APIView):
@@ -19,6 +19,8 @@ class LoginView(APIView):
             user_obj = UserInfo.objects.filter(**user).first()
         if not user_obj:
             response = return_response(status=False, error='用户名或密码错误！')
+        elif user_obj.role__title != 'Manager':
+            response = return_response(status=False, error='对不起您无权使用本系统!')
         else:
             data = get_data(model=user_obj, ser_class=UserLoginSerializer, many=False)
             data['token'] = create_jwt_token({'id': user_obj.id})
@@ -38,10 +40,12 @@ class UserInfoView(APIView):
         return JsonResponse(response)
 
     def post(self, request, row_id=None):
-        ser = UserInfoSer(data=request.data)
+        data = request.data
+        data['company'] = request.user.company_id
+        ser = UserInfoSer(data=data)
         if ser.is_valid():
-            ser.save(**{'company': request.user.company})
-            response = return_response(data=ser.data, info='用户新建成功！')
+            ser.save()
+            response = return_response(data=ser.data, info='用户创建成功！')
         else:
             response = return_response(status=False, error=ser.errors)
         return JsonResponse(response)
@@ -58,8 +62,8 @@ class UserInfoView(APIView):
 
     def delete(self, request, row_id=None):
         try:
-            result = UserInfo.objects.filter(company=request.user.company, pk=row_id).delete()
-            response = return_response(info=f'成功删除{result}条数据！')
+            result = UserInfo.objects.get(company=request.user.company, pk=row_id).delete()
+            response = return_response(info=f'成功删除{result}条数据！', data=int(row_id))
         except UserInfo.DoesNotExist as e:
             response = return_response(status=False, error=f'{e}')
         return JsonResponse(response)
@@ -69,7 +73,17 @@ class UserInfoView(APIView):
 class UpdateUserInfo(APIView):
     # 换头像
     def post(self, request):
-        pass
+        avatar = request.data.get('avatar')
+        if avatar is not None:
+            ser = UserAvatarSerializer(instance=request.user.avatar, data=request.data)
+        else:  # 否则就是修改用户名和密码
+            ser = UserInfoSer(instance=request.user, data=request.data)
+        if ser.is_valid():
+            ser.save()
+            response = return_response(data=ser.data, info='操作成功!')
+        else:
+            response = return_response(status=False, error=ser.errors)
+        return JsonResponse(response)
 
     # 修改个人信息
     def patch(self, request):
