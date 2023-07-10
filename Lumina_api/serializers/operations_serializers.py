@@ -94,7 +94,7 @@ class ChoicesRoleSer(serializers.ModelSerializer):
         fields = ['label', 'value']
 
 
-# 第一期为安卓APP统一返回区域内的所有数据
+# 第一期为安卓APP统一返回区域内的所有数据-已弃用
 class RoomDeepSer(serializers.ModelSerializer):
     units = UnitSer(many=True)
 
@@ -103,51 +103,24 @@ class RoomDeepSer(serializers.ModelSerializer):
         fields = ['id', 'serial_number', 'units']
 
 
-# 第二期为安卓端返回区域内所有数据
-data = [
-    {
-        # 这个对象是房间的信息
-        "recyclerData": {
-            "recyclerRoomId": "#001",
-            "oneVal": "38",
-            "oneKey": "Max Current",
-            "twoKey": "Min Current",
-            "twoVal": "20"
-        },
+# 第二期单独为安卓端返回房间详情信息
+class RoomDescSer(serializers.ModelSerializer):
+    serial_number = serializers.CharField(max_length=512, read_only=True)
+    max_current = serializers.SerializerMethodField()
+    min_current = serializers.SerializerMethodField()
 
-        # 机器编号的集合    组件["P/C","D/N","Flowering"]加到机器表里面
-        "unitsNames": [
-            "#001",
-            "#002"
-        ],
-        "unitsIDds": [
-            1, 2, 3
-        ],
+    def get_max_current(self, row):
+        return {"title": "maxCurrentTemperature", "value": "43℃"}
 
-        # 每个机器下面的作物集合
-        # 二维数组
-        # 作物信息表 机器id,作物id,周期,
-        "cropItemList": [
-            [
-                {
-                    "cropItemDay": "15",  # 当前这个作物多少天
-                    "cropItemCycle": 60,  # 总共有多少天
-                    "cropItemName": "MyTest/count",  # 作物的名字
-                    "url": "http:# lumina.toriches.cn/media/users/qrcode/plant_1688612362.8587844.png"  # 作物的图片
-                },
-                {
-                    "cropItemDay": "15",
-                    "cropItemCycle": 15,
-                    "cropItemName": "MyCity/count",
-                    "url": "http:# lumina.toriches.cn/media/users/qrcode/plant_1688612362.8587844.png"
-                }
-            ]
-        ]
-    }
-]
+    def get_min_current(self, row):
+        return {"title": "minCurrentTemperature", "value": "23℃"}
+
+    class Meta:
+        model = Room
+        fields = ['id', 'serial_number', 'max_current', 'min_current']
 
 
-# 第二期安卓端登陆成功后，获取区域内的所有信息
+# 第二期安卓端登陆成功后，获取区域内所有房间的所有信息
 def android_zones_deep_data(rooms):
     results = []
     for room in rooms:
@@ -169,7 +142,7 @@ def android_zones_deep_data(rooms):
             for unit in units
         ]
         item = {
-            "recyclerData": RoomSer(room, many=False).data,
+            "recyclerData": RoomDescSer(room, many=False).data,
             "unitsNames": units_names,
             "unitsIDds": units_ids,
             "cropItemList": crop_item_list

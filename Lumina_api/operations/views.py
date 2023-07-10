@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from django.http import JsonResponse
-from operations.models import Room, Zone, Unit, Temperature, Fertilizer
+from operations.models import Room, Zone, Unit, Temperature, Fertilizer, RoomDesc
 from serializers.operations_serializers import RoomSer, ZoneSer, UnitSer, ChoicesZoneSer, ChoicesRoomSer, \
     android_zones_deep_data, ChoicesRoleSer
 from users.models import Roles
@@ -187,19 +187,22 @@ class SaveSensorDataView(APIView):
     throttle_classes = []  # 取消节流
 
     def post(self, request, types):
-        if types == 'temperature':
-            # 温度
-            model = Temperature
-            val = request.data.get('thermal_reading')
-        elif types == 'fertilizer':
-            # 水肥
-            model = Temperature
-            val = request.data.get('thermal_reading')
-        else:
+        map_http_request_operate = {
+            'temperature': [Temperature, request.data.get('thermal_reading')],  # # 温度
+            'fertilizer': [Fertilizer, request.data.get('fertilizer')],  # # 水肥
+            'rooms': [RoomDesc, request.data.get('rooms')],  # 房间
+        }
+        operate_list = map_http_request_operate.get(types)
+        if not operate_list:
             response = return_response(status=False, error='The request interface is incorrect！')
             return JsonResponse(response)
-        device_id = request.data.get('deviceId')
-        device_secret = request.data.get('deviceSecret')
-        model.objects.create(deviceId=device_id, deviceSecret=device_secret, json_val=val)
+        model, val = operate_list
+        model.objects.create(**val)
         response = return_response(info='The data is saved')
         return JsonResponse(response)
+
+
+# 安卓端请求机器详情数据
+class UnitDescView(APIView):
+    def post(self, request):
+        unit_id = request.data.get('unitId')
