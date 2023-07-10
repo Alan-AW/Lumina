@@ -1,5 +1,5 @@
 from django.contrib import admin
-from operations.models import Company, Zone, Room, Unit, Temperature, Plant
+from operations.models import Company, Zone, Room, RoomDesc, Unit, Temperature, Plant, PlantDesc
 
 
 # 企业
@@ -26,11 +26,19 @@ class RoomAdmin(admin.ModelAdmin):
     search_fields = ['serial_number']
 
 
+# 房间详情
+@admin.register(RoomDesc)
+class RoomDescAdmin(admin.ModelAdmin):
+    list_display = ['id', 'room', 'json_val']
+    list_editable = ['room', 'json_val']
+
+
 # 机器
 @admin.register(Unit)
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ['id', 'serial_number', 'deviceId', 'deviceSecret', 'room', 'status', 'create_time', 'update_time']
-    list_editable = ['serial_number', 'deviceId', 'deviceSecret', 'room', 'status']
+    list_display = ['id', 'serial_number', 'deviceId', 'deviceSecret', 'room', 'status', 'components', 'create_time',
+                    'update_time']
+    list_editable = ['serial_number', 'deviceId', 'deviceSecret', 'room', 'status', 'components']
     search_fields = ['serial_number']
 
 
@@ -52,6 +60,15 @@ class FertilizerAdmin(admin.ModelAdmin):
 # 作物
 @admin.register(Plant)
 class PlantAdmin(admin.ModelAdmin):
-    list_display = ['id', 'type', 'name_en', 'name_cn', 'desc_en', 'desc_cn', 'status', 'icon_path', 'create_time', 'update_time']
+    list_display = [
+        'id', 'type', 'name_en', 'name_cn', 'desc_en', 'desc_cn', 'status', 'icon_path', 'create_time', 'update_time'
+    ]
     list_editable = ['type', 'name_en', 'name_cn', 'desc_en', 'desc_cn', 'status', 'icon_path']
     search_fields = ['type', 'name_en', 'name_cn']
+
+
+# 作物详情
+@admin.register(PlantDesc)
+class PlantDescAdmin(admin.ModelAdmin):
+    list_display = ['id', 'unit', 'plant', 'cycle', 'create_time']
+    list_editable = ['unit', 'plant', 'cycle']

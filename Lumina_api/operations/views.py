@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from operations.models import Room, Zone, Unit, Temperature, Fertilizer
-from serializers.operations_serializers import RoomSer, ZoneSer, UnitSer, ChoicesZoneSer, ChoicesRoomSer, ZoneDeepSer, \
-    ChoicesRoleSer
+from serializers.operations_serializers import RoomSer, ZoneSer, UnitSer, ChoicesZoneSer, ChoicesRoomSer, \
+    android_zones_deep_data, ChoicesRoleSer
 from users.models import Roles
 from utils.methods import return_response, get_data
 
@@ -131,6 +131,7 @@ class ChoicesZoneView(APIView):
         return JsonResponse(response)
 
 
+# 选择房间
 class ChoicesRoomView(APIView):
     def get(self, request):
         return self.public_results(request)
@@ -145,6 +146,7 @@ class ChoicesRoomView(APIView):
         return JsonResponse(response)
 
 
+# 选择角色
 class ChoicesRoleView(APIView):
     def get(self, request):
         return self.public_results(request)
@@ -163,17 +165,26 @@ class ChoicesRoleView(APIView):
 class ZoneDeepDataView(APIView):
     def post(self, request):
         zone_id = request.data.get('zoneId')
-        queryset = request.user.company.zones.filter(id=zone_id).first()
-        ser = ZoneDeepSer(queryset, many=False)
-        response = return_response(data=ser.data)
+        zone = request.user.company.zones.filter(id=zone_id).first()
+        if not zone:
+            response = return_response(status=False, error=f'未找到ID为{zone_id}的区域！')
+            return JsonResponse(response)
+        queryset = zone.rooms.all()
+        data = android_zones_deep_data(queryset)
+        response = return_response(data=data)
         return JsonResponse(response)
 
 
 # 传感器请求保存数据
 class SaveSensorDataView(APIView):
-    authentication_classes = []
-    permission_classes = []
-    throttle_classes = []
+    """
+    这里有一个可优化项，客户加钱就做，不加钱就不管：
+    该接口取消了所有安全性校验，容易被恶意攻击，
+    导致疯狂传输json数据扰乱正常数据和破坏数据库
+    """
+    authentication_classes = []  # 取消认证
+    permission_classes = []  # 取消权限
+    throttle_classes = []  # 取消节流
 
     def post(self, request, types):
         if types == 'temperature':

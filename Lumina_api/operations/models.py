@@ -56,6 +56,19 @@ class Room(models.Model):
         return f'{self.serial_number}'
 
 
+# 房间详情
+class RoomDesc(models.Model):
+    room = models.OneToOneField(to=Room, to_field='id', on_delete=models.CASCADE, verbose_name='所属房间')
+    json_val = models.JSONField(verbose_name='房间时刻详情')
+
+    class Meta:
+        db_table = 'room_desc'
+        verbose_name = '房间详情'
+
+    def __str__(self):
+        return self.room.serial_number
+
+
 # 机器表
 class Unit(models.Model):
     serial_number = models.CharField(max_length=512, verbose_name='机器编号')
@@ -65,6 +78,7 @@ class Unit(models.Model):
         to=Room, to_field='id', on_delete=models.CASCADE, related_name='units', verbose_name='所属房间'
     )
     status = models.IntegerField(choices=((0, '禁用'), (1, '正常')), verbose_name='机器状态', default=1)
+    components = models.JSONField(verbose_name='安卓端显示组件列表')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 
@@ -121,7 +135,7 @@ class Plant(models.Model):
     name_cn = models.CharField(max_length=32, verbose_name='中文名')
     desc_en = models.TextField(verbose_name='英文描述')
     desc_cn = models.TextField(verbose_name='中文描述')
-    status = models.IntegerField(choices=((0, '禁用'), (1, '正常')), verbose_name='区域状态', default=1)
+    status = models.IntegerField(choices=((0, '禁用'), (1, '正常')), verbose_name='作物状态', default=1)
     icon_path = models.OneToOneField(to=UploadFile, to_field='id', on_delete=models.CASCADE, verbose_name='作物图片')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
@@ -132,3 +146,18 @@ class Plant(models.Model):
 
     def __str__(self):
         return f'{self.id}'
+
+
+# 作物详情
+class PlantDesc(models.Model):
+    unit = models.ForeignKey(to=Unit, to_field='id', related_name='plant_desc', on_delete=models.CASCADE, verbose_name='所属机器')
+    plant = models.ForeignKey(to=Plant, to_field='id', related_name='desc', on_delete=models.CASCADE, verbose_name='作物信息')
+    cycle = models.IntegerField(default=1, verbose_name='作物周期')
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='播种时间')
+
+    class Meta:
+        db_table = 'plant_desc'
+        verbose_name = '作物详情'
+
+    def __str__(self):
+        return self.plant.name_cn

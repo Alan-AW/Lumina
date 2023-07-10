@@ -8,8 +8,11 @@ from upload_file.models import UploadFile
 def create_file_name(sender, instance, **kwargs):
     if not kwargs['created']:
         return None
-    instance.file_name = instance.file.name
-    instance.save()
+    if not instance.file_name:
+        instance.file_name = instance.file.name
+        instance.save()
+    else:
+        return None
 
 
 @receiver(pre_delete, sender=UploadFile)

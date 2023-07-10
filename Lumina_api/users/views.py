@@ -4,6 +4,7 @@ from users.models import UserInfo, Permission
 from utils.authentication.jwt_auth import create_jwt_token
 from utils.methods import return_response, get_data
 from serializers.user_serializers import UserLoginSerializer, UserInfoSer, permission_and_menu_ser, UserAvatarSerializer
+from serializers.operations_serializers import LoginZoneDataSer
 
 
 class LoginView(APIView):
@@ -27,6 +28,9 @@ class LoginView(APIView):
             roles = user_obj.role
             queryset = Permission.objects.filter(roles__in=[roles.id]).distinct().order_by('id')
             data['permissions'] = permission_and_menu_ser(queryset)
+            zones_queryset = user_obj.company.zones.all()
+            zones_ser = LoginZoneDataSer(zones_queryset, many=True)
+            data['zone'] = zones_ser.data
             response = return_response(status=True, data=data, info='登陆成功！')
         return JsonResponse(response)
 

@@ -1,4 +1,5 @@
 from utils.pager.pager import NumberPageFunc
+import datetime
 
 
 def return_response(status: bool = True, code: int = 200, data=None, info: str = '', error: str = ''):
@@ -27,3 +28,12 @@ def get_data(model=None, is_query: bool = False, request=None, view=None, ser_cl
         ser = ser_class(instance=page_obj, many=many)
         data = ser.data
     return data
+
+
+# 计算作物播种时间
+def computed_sowing_time(create_time):
+    _today = datetime.datetime.today()
+    d1 = datetime.datetime(_today.year, _today.month, _today.day)
+    d2 = datetime.datetime(create_time.year, create_time.month, create_time.day)
+    result = (d1 - d2).days or 1
+    return result
