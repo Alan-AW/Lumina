@@ -1,7 +1,8 @@
 from django.contrib import admin
-from operations.models import Company, Zone, Room, Unit, Sensor, Plant
+from operations.models import Company, Zone, Room, Unit, Temperature, Plant
 
 
+# 企业
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'address', 'legal_rep', 'tel', 'email', 'create_time', 'update_time']
@@ -9,6 +10,7 @@ class CompanyAdmin(admin.ModelAdmin):
     search_fields = ['name', 'address', 'tel', 'email', 'legal_rep']
 
 
+# 区域
 @admin.register(Zone)
 class ZoneAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'company', 'status', 'create_time', 'update_time', 'time_zone']
@@ -16,6 +18,7 @@ class ZoneAdmin(admin.ModelAdmin):
     search_fields = ['name', 'company']
 
 
+# 房间
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
     list_display = ['id', 'serial_number', 'zone', 'create_time', 'update_time']
@@ -23,19 +26,30 @@ class RoomAdmin(admin.ModelAdmin):
     search_fields = ['serial_number']
 
 
+# 机器
 @admin.register(Unit)
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ['id', 'serial_number', 'room', 'status', 'create_time', 'update_time']
-    list_editable = ['serial_number', 'room', 'status']
+    list_display = ['id', 'serial_number', 'deviceId', 'deviceSecret', 'room', 'status', 'create_time', 'update_time']
+    list_editable = ['serial_number', 'deviceId', 'deviceSecret', 'room', 'status']
     search_fields = ['serial_number']
 
 
-@admin.register(Sensor)
-class SensorAdmin(admin.ModelAdmin):
-    list_display = ['id', 'moment', 'json_val', 'room']
-    list_editable = ['room']
+# 温度传感器
+@admin.register(Temperature)
+class TemperatureAdmin(admin.ModelAdmin):
+    list_display = ['id', 'moment', 'deviceId', 'deviceSecret', 'json_val']
+    list_editable = ['deviceId', 'deviceSecret', 'json_val']
+    search_fields = ['deviceId', 'deviceSecret']
 
 
+# 水肥传感器
+class FertilizerAdmin(admin.ModelAdmin):
+    list_display = ['id', 'moment', 'deviceId', 'deviceSecret', 'json_val']
+    list_editable = ['deviceId', 'deviceSecret', 'json_val']
+    search_fields = ['deviceId', 'deviceSecret']
+
+
+# 作物
 @admin.register(Plant)
 class PlantAdmin(admin.ModelAdmin):
     list_display = ['id', 'type', 'name_en', 'name_cn', 'desc_en', 'desc_cn', 'status', 'icon_path', 'create_time', 'update_time']

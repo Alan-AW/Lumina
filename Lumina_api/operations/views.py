@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from django.http import JsonResponse
-from operations.models import Room, Zone, Unit
+from operations.models import Room, Zone, Unit, Temperature, Fertilizer
 from serializers.operations_serializers import RoomSer, ZoneSer, UnitSer, ChoicesZoneSer, ChoicesRoomSer, ZoneDeepSer, \
     ChoicesRoleSer
 from users.models import Roles
@@ -166,4 +166,29 @@ class ZoneDeepDataView(APIView):
         queryset = request.user.company.zones.filter(id=zone_id).first()
         ser = ZoneDeepSer(queryset, many=False)
         response = return_response(data=ser.data)
+        return JsonResponse(response)
+
+
+# 传感器请求保存数据
+class SaveSensorDataView(APIView):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+
+    def post(self, request, types):
+        if types == 'temperature':
+            # 温度
+            model = Temperature
+            val = request.data.get('thermal_reading')
+        elif types == 'fertilizer':
+            # 水肥
+            model = Temperature
+            val = request.data.get('thermal_reading')
+        else:
+            response = return_response(status=False, error='The request interface is incorrect！')
+            return JsonResponse(response)
+        device_id = request.data.get('deviceId')
+        device_secret = request.data.get('deviceSecret')
+        model.objects.create(deviceId=device_id, deviceSecret=device_secret, json_val=val)
+        response = return_response(info='The data is saved')
         return JsonResponse(response)

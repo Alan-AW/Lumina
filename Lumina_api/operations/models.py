@@ -59,6 +59,8 @@ class Room(models.Model):
 # 机器表
 class Unit(models.Model):
     serial_number = models.CharField(max_length=512, verbose_name='机器编号')
+    deviceId = models.CharField(max_length=512, verbose_name='机器实体编号')
+    deviceSecret = models.CharField(max_length=512, verbose_name='机器实体编号2')
     room = models.ForeignKey(
         to=Room, to_field='id', on_delete=models.CASCADE, related_name='units', verbose_name='所属房间'
     )
@@ -71,23 +73,45 @@ class Unit(models.Model):
         verbose_name = '机器管理'
 
     def __str__(self):
-        return f'{self.serial_number}'
+        return f'{self.serial_number}-{self.deviceId}'
 
 
-# 传感器
-class Sensor(models.Model):
+# 温度传感器
+class Temperature(models.Model):
+    """
+    温度的 就是  字段就是 deviceId，deviceSecret ，val就可以了
+    "thermal_reading": [19.5, 20.3, 20.7, 23.1, ...]
+    """
     moment = models.DateTimeField(auto_now_add=True, verbose_name='检测时刻')
-    json_val = models.JSONField(verbose_name='值描述&值')
-    room = models.ForeignKey(
-        to=Room, to_field='id', on_delete=models.CASCADE, related_name='sensors', verbose_name='所属房间'
-    )
+    deviceId = models.CharField(max_length=512, verbose_name='机器实体编号')
+    deviceSecret = models.CharField(max_length=512, verbose_name='机器实体编号2')
+    json_val = models.JSONField(verbose_name='传感器温度值(json列表串)')
 
     class Meta:
-        db_table = 'sensor'
-        verbose_name = '传感器管理'
+        db_table = 'temperature'
+        verbose_name = '温度传感器'
 
     def __str__(self):
-        return
+        return self.deviceId
+
+
+# 水肥传感器
+class Fertilizer(models.Model):
+    """
+    水肥系统的字段 deviceId，deviceSecret， val
+    val 的格式就是  {"Lighting":{"xxx":"xxx","xxx","xxx"},"Irrigation":{"xx":"xx","xx","xx"}}
+    """
+    moment = models.DateTimeField(auto_now_add=True, verbose_name='检测时刻')
+    deviceId = models.CharField(max_length=512, verbose_name='机器实体编号')
+    deviceSecret = models.CharField(max_length=512, verbose_name='机器实体编号2')
+    json_val = models.JSONField(verbose_name='传感器值(json字典串)')
+
+    class Meta:
+        db_table = 'fertilizer'
+        verbose_name = '水肥传感器'
+
+    def __str__(self):
+        return self.deviceId
 
 
 # 作物&算法
