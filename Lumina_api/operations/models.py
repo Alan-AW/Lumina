@@ -77,7 +77,7 @@ class Unit(models.Model):
         return f'{self.serial_number}-{self.deviceId}'
 
 
-# 房间详情传感器
+# 房间详情传感器-业务系统第二期已弃用该表，暂保留该实体表
 class RoomDesc(models.Model):
     room = models.OneToOneField(to=Room, to_field='id', on_delete=models.CASCADE, verbose_name='所属房间')
     json_val = models.JSONField(verbose_name='房间时刻详情')

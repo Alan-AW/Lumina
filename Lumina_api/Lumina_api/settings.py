@@ -81,7 +81,7 @@ DATABASES = {
         'NAME': 'lumina',
         'USER': 'Lumina',
         'PASSWORD': 'admin123456',
-        'HOST': '43.138.127.42',
+        'HOST': '47.110.240.100',
         'POST': 3306,
         'OPTIONS': {'charset': 'utf8mb4'}
     }
@@ -140,7 +140,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = True
 
 # API_BASE_URL = 'http://127.0.0.1:8000'
-API_BASE_URL = 'http://lumina.toriches.cn'
+API_BASE_URL = 'http://lumina.toriches.cn/'
 
 REST_FRAMEWORK = {
     # 认证

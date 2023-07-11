@@ -1,10 +1,12 @@
+import statistics
+import random
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from operations.models import Room, Zone, Unit, Temperature, Fertilizer, RoomDesc
 from serializers.operations_serializers import RoomSer, ZoneSer, UnitSer, ChoicesZoneSer, ChoicesRoomSer, \
     android_zones_deep_data, ChoicesRoleSer
 from users.models import Roles
-from utils.methods import return_response, get_data
+from utils.methods import return_response, get_data, computed_sowing_time
 
 
 # 区域管理
@@ -205,4 +207,34 @@ class SaveSensorDataView(APIView):
 # 安卓端请求机器详情数据
 class UnitDescView(APIView):
     def post(self, request):
+        # 获取机器信息
         unit_id = request.data.get('unitId')
+        unit_obj = Unit.objects.filter(id=unit_id).first()
+        if not unit_obj:
+            response = return_response(status=False, error=f'未找到ID为{unit_id}的机器！')
+            return JsonResponse(response)
+        # 读取该机器种植的第一个作物的周期和种植时间
+        plant = unit_obj.plant_desc.first()
+        if not plant:
+            return return_response(return_response(status=False, error='该机器下无作物信息！'))
+        cycle = plant.cycle
+        sowing_time = plant.create_time
+        if computed_sowing_time(sowing_time) / cycle < 1:
+            print('第一个周期')
+        # 读取周期内温度表中的数据
+        all_temperature_json_val_obj = Temperature.objects.filter(
+            deviceId=unit_obj.deviceId, deviceSecret=unit_obj.deviceSecret
+            # 时间参数
+        ).all()
+        # 设备标识 w865s4d6fa84654
+        # 设备标识 454f68s4d6f54as6d
+        # 二维数组
+        json_val_list = [item.json_val for item in all_temperature_json_val_obj]
+        # 求每个项的温度平均值，并算出温差比例
+        json_val_list = map(lambda item: statistics.mean(item), json_val_list)
+        data = {
+            'temperature': [round(random.uniform(19, 43), 1) for _ in range(64)],
+            'average': [40.3, 32.6, 20.7]
+        }
+        response = return_response(data=data)
+        return JsonResponse(response)
