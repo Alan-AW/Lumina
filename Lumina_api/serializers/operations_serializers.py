@@ -1,6 +1,8 @@
+import json
+
 from django.conf import settings as sys
 from rest_framework import serializers
-from operations.models import Company, Room, Zone, Unit
+from operations.models import Company, Room, Zone, Unit, Temperature, Lighting
 from users.models import Roles
 from utils.methods import computed_sowing_time
 
@@ -149,3 +151,27 @@ def android_zones_deep_data(rooms):
         }
         results.append(item)
     return results
+
+
+# 温度传感器序列化
+class TemperatureSer(serializers.ModelSerializer):
+    moment = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+    json_val = serializers.SerializerMethodField()
+
+    def get_json_val(self, row):
+        val = [row.json_val[i:i + 8] for i in range(0, len(row.json_val), 8)]
+        return val
+
+    class Meta:
+        model = Temperature
+        fields = '__all__'
+
+
+# 光照传感器序列化
+class LightingSer(serializers.ModelSerializer):
+    moment = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+    json_val = serializers.JSONField(read_only=True)
+
+    class Meta:
+        model = Lighting
+        fields = '__all__'

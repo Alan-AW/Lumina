@@ -128,6 +128,24 @@ class Fertilizer(models.Model):
         return self.deviceId
 
 
+# 光照传感器
+class Lighting(models.Model):
+    """
+    {"Lighting":{"key":"value","key":"value"},"Irrigation":{"key":"value"}}
+    """
+    moment = models.DateTimeField(auto_now_add=True, verbose_name='检测时刻')
+    deviceId = models.CharField(max_length=512, verbose_name='机器实体编号')
+    deviceSecret = models.CharField(max_length=512, verbose_name='机器实体编号2')
+    json_val = models.JSONField(verbose_name='传感器值(json字典串)')
+
+    class Meta:
+        db_table = 'lighting'
+        verbose_name = '光照传感器'
+
+    def __str__(self):
+        return self.deviceId
+
+
 # 作物&算法
 class Plant(models.Model):
     type = models.CharField(max_length=8, verbose_name='算法类型')

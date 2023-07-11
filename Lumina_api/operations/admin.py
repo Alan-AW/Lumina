@@ -1,5 +1,5 @@
 from django.contrib import admin
-from operations.models import Company, Zone, Room, RoomDesc, Unit, Temperature, Plant, PlantDesc
+from operations.models import Company, Zone, Room, RoomDesc, Unit, Temperature, Plant, PlantDesc, Lighting
 
 
 # 企业
@@ -52,6 +52,13 @@ class TemperatureAdmin(admin.ModelAdmin):
 
 # 水肥传感器
 class FertilizerAdmin(admin.ModelAdmin):
+    list_display = ['id', 'moment', 'deviceId', 'deviceSecret', 'json_val']
+    list_editable = ['deviceId', 'deviceSecret', 'json_val']
+    search_fields = ['deviceId', 'deviceSecret']
+
+
+# 光照传感器
+class LightingAdmin(admin.ModelAdmin):
     list_display = ['id', 'moment', 'deviceId', 'deviceSecret', 'json_val']
     list_editable = ['deviceId', 'deviceSecret', 'json_val']
     search_fields = ['deviceId', 'deviceSecret']
