@@ -59,8 +59,8 @@ class Room(models.Model):
 # 机器表
 class Unit(models.Model):
     serial_number = models.CharField(max_length=512, verbose_name='机器编号')
-    deviceId = models.CharField(max_length=512, verbose_name='机器实体编号')
-    deviceSecret = models.CharField(max_length=512, verbose_name='机器实体编号2')
+    deviceId = models.CharField(max_length=512, verbose_name='设备编号')
+    deviceSecret = models.CharField(max_length=512, verbose_name='设备密钥')
     room = models.ForeignKey(
         to=Room, to_field='id', on_delete=models.CASCADE, related_name='units', verbose_name='所属房间'
     )

@@ -31,6 +31,16 @@ function Unit() {
       dataIndex: 'serial_number'
     },
     {
+      title: '设备编号',
+      align: 'center',
+      dataIndex: 'deviceId'
+    },
+    {
+      title: '设备密钥',
+      align: 'center',
+      dataIndex: 'deviceSecret'
+    },
+    {
       title: '房间编号',
       align: 'center',
       dataIndex: 'room_number'
@@ -39,6 +49,12 @@ function Unit() {
       title: '机器状态',
       align: 'center',
       dataIndex: 'status_label'
+    },
+    {
+      title: '组件列表',
+      align: 'center',
+      dataIndex: 'components',
+      render: components => <>{components.join(',')}</>
     },
     {
       title: '创建时间',
@@ -99,6 +115,7 @@ function Unit() {
     deleteUnit(row.id).then(res => {
       if (res.status) {
         settableData(tableData.filter(item => item.id !== res.data))
+        settableDataCount(tableDataCount - 1)
         message.success(res.info)
       } else {
         message.error(res.errs)
@@ -114,15 +131,25 @@ function Unit() {
 
   // 点击编辑
   const editClick = row => {
-    const { id, serial_number, status, room } = row
+    const { id, serial_number, deviceId, deviceSecret, components, status, room } = row
     seteditSate(true)
     sessionStorage.setItem('editUnitId', id)
-    sessionStorage.setItem('editUnitData', JSON.stringify({ serial_number, status, room }))
+    sessionStorage.setItem('editUnitData', JSON.stringify({ serial_number, status, room, deviceId, deviceSecret, components }))
     setopenModal(true)
   }
 
   // 提交
   const onOk = value => {
+    // 取出组件列表数据
+    const { components } = value
+    // 将组件列表字符串为一个数组
+    let components_list = components.split(',')
+    // 删除空字符串
+    components_list = components_list.filter(item => item !== '')
+    if (components_list.length === 0) {
+      return message.error('组件列表不能只输入 ,')
+    }
+    value.components = components_list
     if (editSate) {
       const id = sessionStorage.getItem('editUnitId')
       patchUnit(id, value).then(res => {
@@ -156,7 +183,8 @@ function Unit() {
   // 关窗
   const closeModal = () => {
     sessionStorage.setItem('editUnitData', JSON.stringify({
-      serial_number: '', status: null, room: null
+      serial_number: '', status: null, room: null,
+      deviceId: '', deviceSecret: '', components: ''
     }))
     setopenModal(false)
   }

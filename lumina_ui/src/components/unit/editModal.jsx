@@ -77,6 +77,33 @@ function EditModal(props) {
           />
         </Form.Item>
 
+        <Form.Item name='deviceId' label='设备编号：' rules={[
+          { required: true, message: '设备编号不可为空！' }
+        ]}>
+          <Input
+            placeholder='请输入设备编号'
+            style={{ width: '100%' }}
+          />
+        </Form.Item>
+
+        <Form.Item name='deviceSecret' label='设备密钥：' rules={[
+          { required: true, message: '设备密钥不可为空！' }
+        ]}>
+          <Input
+            placeholder='请输入设备密钥'
+            style={{ width: '100%' }}
+          />
+        </Form.Item>
+
+        <Form.Item name='components' label='组件列表：' rules={[
+          { required: true, message: '组件列表不可为空！' }
+        ]}>
+          <Input
+            placeholder='请输入组件列表，多个组件用 , 隔开'
+            style={{ width: '100%' }}
+          />
+        </Form.Item>
+
         <Form.Item name='room' label='所属房间：' rules={[
           { required: true, message: '机器所属房间不可为空！' }
         ]}>
