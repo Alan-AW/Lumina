@@ -5,7 +5,7 @@ from operations.models import Room, Zone, Unit, Temperature, Fertilizer, RoomDes
 from serializers.operations_serializers import RoomSer, ZoneSer, UnitSer, ChoicesZoneSer, ChoicesRoomSer, \
     android_zones_deep_data, ChoicesRoleSer, TemperatureSer, LightingSer
 from users.models import Roles
-from utils.methods import return_response, get_data, create_month_and_day_list, get_temperature_dict, \
+from utils.methods import return_response, get_data, get_temperature_dict, \
     get_temperature_days_list, get_max_center_min_temperature
 
 
@@ -230,17 +230,19 @@ class UnitDescView(APIView):
         plant = unit_obj.plant_desc.first()
         if not plant:
             return return_response(return_response(status=False, error='该机器暂未种植作物！'))
+        cycle = plant.cycle
+        # 种植日期
         sowing_time = plant.create_time
-        sowing_year = sowing_time.year
-        sowing_month = sowing_time.month
-        sowing_day = sowing_time.day
-        today = datetime.datetime.today()
+        # 周期最后一天日期
+        cycle_target = sowing_time + datetime.timedelta(days=cycle)
+        # 将开始日期和结束日期分别扩大一天
+        start_time = sowing_time - datetime.timedelta(days=1)
+        end_time = cycle_target + datetime.timedelta(days=1)
         # 按天为单位分组统计每一天的温度数据
         temperature_json_vals = Temperature.objects.filter(
             deviceId=unit_obj.deviceId, deviceSecret=unit_obj.deviceSecret,
-            moment__year__gte=sowing_year, moment__month__gte=sowing_month, moment__day__gte=sowing_day,
-            moment__year__lte=today.year, moment__month__lte=today.month, moment__day__lte=today.day
-        ).all()
+            moment__range=(start_time, end_time)
+        ).all().order_by('-id')
         # 得到每一天的分组温度字典数据
         temperature_dict = get_temperature_dict(temperature_json_vals)
         # 得到每一天的温度列表
