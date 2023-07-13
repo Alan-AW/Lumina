@@ -112,10 +112,10 @@ class RoomDescSer(serializers.ModelSerializer):
     min_current = serializers.SerializerMethodField()
 
     def get_max_current(self, row):
-        return {"title": "maxCurrentTemperature", "value": "43℃"}
+        return {"title": "maxCurrent", "value": "25℃"}
 
     def get_min_current(self, row):
-        return {"title": "minCurrentTemperature", "value": "23℃"}
+        return {"title": "minCurrent", "value": "20℃"}
 
     class Meta:
         model = Room

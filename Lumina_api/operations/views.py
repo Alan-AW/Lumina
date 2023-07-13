@@ -190,15 +190,16 @@ class SaveSensorDataView(APIView):
 
     def post(self, request, types):
         map_http_request_operate = {
-            'temperature': [Temperature, request.data.get('thermal_reading')],  # # 温度
-            'fertilizer': [Fertilizer, request.data.get('fertilizer')],  # # 水肥
-            'rooms': [RoomDesc, request.data.get('rooms')],  # 房间
+            'temperature': [Temperature, request.data, 'temperature'],  # 温度
+            'lighting': [Lighting, request.data, 'lighting'],  # 光照
+            'rooms': [RoomDesc, request.data],  # 房间
         }
         operate_list = map_http_request_operate.get(types)
         if not operate_list:
             response = return_response(status=False, error='The request interface is incorrect！')
             return JsonResponse(response)
-        model, val = operate_list
+        model, val, key = operate_list
+        val['json_val'] = val.pop(key)
         model.objects.create(**val)
         response = return_response(info='The data is saved')
         return JsonResponse(response)
@@ -279,4 +280,3 @@ class AndroidSettingsView(APIView):
         else:
             response = return_response(status=False, error=ser.errors)
         return JsonResponse(response)
-

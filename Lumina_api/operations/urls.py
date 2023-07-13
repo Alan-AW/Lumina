@@ -11,7 +11,7 @@ urlpatterns = [
     path('room/choices', ChoicesRoomView.as_view()),
     path('role/choices', ChoicesRoleView.as_view()),
     path('zone/deep', ZoneDeepDataView.as_view()),
-    re_path(r'save/sensor/(?P<types>temperature|fertilizer)$', SaveSensorDataView.as_view()),
+    re_path(r'save/sensor/(?P<types>temperature|lighting)$', SaveSensorDataView.as_view()),
     path('unit/desc', UnitDescView.as_view()),
     path('android/settings', AndroidSettingsView.as_view())
 ]

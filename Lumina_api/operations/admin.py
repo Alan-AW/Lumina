@@ -1,5 +1,6 @@
 from django.contrib import admin
-from operations.models import Company, Zone, Room, RoomDesc, Unit, Temperature, Plant, PlantDesc, Lighting
+from operations.models import Company, Zone, Room, RoomDesc, Unit, Temperature, Fertilizer, \
+    Plant, PlantDesc, Lighting, AndroidSettings
 
 
 # 企业
@@ -51,6 +52,7 @@ class TemperatureAdmin(admin.ModelAdmin):
 
 
 # 水肥传感器
+@admin.register(Fertilizer)
 class FertilizerAdmin(admin.ModelAdmin):
     list_display = ['id', 'moment', 'deviceId', 'deviceSecret', 'json_val']
     list_editable = ['deviceId', 'deviceSecret', 'json_val']
@@ -58,6 +60,7 @@ class FertilizerAdmin(admin.ModelAdmin):
 
 
 # 光照传感器
+@admin.register(Lighting)
 class LightingAdmin(admin.ModelAdmin):
     list_display = ['id', 'moment', 'deviceId', 'deviceSecret', 'json_val']
     list_editable = ['deviceId', 'deviceSecret', 'json_val']
@@ -79,3 +82,10 @@ class PlantAdmin(admin.ModelAdmin):
 class PlantDescAdmin(admin.ModelAdmin):
     list_display = ['id', 'unit', 'plant', 'cycle', 'create_time']
     list_editable = ['unit', 'plant', 'cycle']
+
+
+# 安卓端APP设置文件
+# @admin.register(AndroidSettings)
+# class AndroidSettingsAdmin(admin.ModelAdmin):
+#     list_display = ['id', 'phase_control', 'automatic', 'uvb', 'uvc', 'deep_blue', 'main', 'hyper_red', 'far_red']
+#     list_editable = ['phase_control', 'automatic', 'uvb', 'uvc', 'deep_blue', 'main', 'hyper_red', 'far_red']
