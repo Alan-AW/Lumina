@@ -139,7 +139,8 @@ def android_zones_deep_data(rooms):
                     "cropItemCycle": plant_desc.cycle,
                     "cropItemName": plant_desc.plant.name_cn,
                     "url": f'{sys.API_BASE_URL}{plant_desc.plant.icon_path.file.url}'
-                } for plant_desc in unit.plant_desc.all()
+                } for plant_desc in unit.plant_desc.all() if
+                plant_desc.cycle > computed_sowing_time(plant_desc.create_time)
             ]
             for unit in units
         ]
