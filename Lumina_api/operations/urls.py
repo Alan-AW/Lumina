@@ -1,6 +1,6 @@
 from django.urls import path, re_path
 from operations.views import RoomView, ZoneView, UnitView, ChoicesZoneView, ChoicesRoomView, ChoicesRoleView,\
-    ZoneDeepDataView, SaveSensorDataView, UnitDescView
+    ZoneDeepDataView, SaveSensorDataView, UnitDescView, AndroidSettingsView
 
 app_name = 'operations'
 urlpatterns = [
@@ -13,4 +13,5 @@ urlpatterns = [
     path('zone/deep', ZoneDeepDataView.as_view()),
     re_path(r'save/sensor/(?P<types>temperature|fertilizer)$', SaveSensorDataView.as_view()),
     path('unit/desc', UnitDescView.as_view()),
+    path('android/settings', AndroidSettingsView.as_view())
 ]

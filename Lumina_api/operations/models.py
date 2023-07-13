@@ -181,3 +181,18 @@ class PlantDesc(models.Model):
 
     def __str__(self):
         return self.plant.name_cn
+
+
+class AndroidSettings(models.Model):
+    phase_control = models.JSONField(verbose_name='Phase Control')
+    automatic = models.IntegerField(default=50)
+    uvb = models.IntegerField(default=50)
+    uvc = models.BooleanField(default=True)
+    deep_blue = models.IntegerField(default=50)
+    main = models.IntegerField(default=50)
+    hyper_red = models.IntegerField(default=50)
+    far_red = models.IntegerField(default=50)
+
+    class Meta:
+        db_table = 'android_settings'
+        verbose_name = '参数设置'

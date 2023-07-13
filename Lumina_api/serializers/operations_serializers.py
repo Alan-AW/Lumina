@@ -2,7 +2,7 @@ import json
 
 from django.conf import settings as sys
 from rest_framework import serializers
-from operations.models import Company, Room, Zone, Unit, Temperature, Lighting
+from operations.models import Company, Room, Zone, Unit, Temperature, Lighting, AndroidSettings
 from users.models import Roles
 from utils.methods import computed_sowing_time
 
@@ -175,4 +175,11 @@ class LightingSer(serializers.ModelSerializer):
 
     class Meta:
         model = Lighting
+        fields = '__all__'
+
+
+# 设置序列化
+class AndroidSettingsSer(serializers.ModelSerializer):
+    class Meta:
+        model = AndroidSettings
         fields = '__all__'

@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from django.http import JsonResponse
 from operations.models import Room, Zone, Unit, Temperature, Fertilizer, RoomDesc, Lighting
 from serializers.operations_serializers import RoomSer, ZoneSer, UnitSer, ChoicesZoneSer, ChoicesRoomSer, \
-    android_zones_deep_data, ChoicesRoleSer, TemperatureSer, LightingSer
+    android_zones_deep_data, ChoicesRoleSer, TemperatureSer, LightingSer, AndroidSettingsSer
 from users.models import Roles
 from utils.methods import return_response, get_data, get_temperature_dict, \
     get_temperature_days_list, get_max_center_min_temperature
@@ -267,3 +267,16 @@ class UnitDescView(APIView):
         }
         response = return_response(data=data)
         return JsonResponse(response)
+
+
+# 安卓端参数设置
+class AndroidSettingsView(APIView):
+    def post(self, request):
+        ser = AndroidSettingsSer(data=request.data)
+        if ser.is_valid():
+            ser.save()
+            response = return_response(info='数据保存成功!')
+        else:
+            response = return_response(status=False, error=ser.errors)
+        return JsonResponse(response)
+
