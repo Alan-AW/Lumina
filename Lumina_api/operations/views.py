@@ -220,12 +220,12 @@ class UnitDescView(APIView):
         # 读取光照信息
         lighting_obj = Lighting.objects.filter(
             deviceId=unit_obj.deviceId, deviceSecret=unit_obj.deviceSecret
-        ).order_by('-id').first()
+        ).last()
         lighting_ser = LightingSer(lighting_obj, many=False)
         # 读取该机器的最新一条温度信息
         temperature = Temperature.objects.filter(
             deviceId=unit_obj.deviceId, deviceSecret=unit_obj.deviceSecret
-        ).first()
+        ).last()
         temperature_ser = TemperatureSer(temperature, many=False)
         # 读取该机器种植的第一个作物的周期和种植时间
         plant = unit_obj.plant_desc.first()
