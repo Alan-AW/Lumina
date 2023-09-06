@@ -196,3 +196,180 @@ class AndroidSettings(models.Model):
     class Meta:
         db_table = 'android_settings'
         verbose_name = '参数设置'
+
+
+class Species(models.Model):
+    name_en = models.CharField(max_length=64, verbose_name='英文名')
+    name_cn = models.CharField(max_length=64, verbose_name='中文名')
+    description_en = models.CharField(max_length=64, verbose_name='英文描述')
+    description_cn = models.CharField(max_length=64, verbose_name='中文描述')
+
+    class Meta:
+        db_table = 'species'
+        verbose_name = '顶层species'
+
+    def __str__(self):
+        return self.name_cn
+
+
+class Cultivars(models.Model):
+    species = models.ForeignKey(
+        to=Species, related_name='cultivars', to_field='id', on_delete=models.CASCADE, verbose_name='所属上层'
+    )
+    name_en = models.CharField(max_length=64, verbose_name='英文名')
+    name_cn = models.CharField(max_length=64, verbose_name='中文名')
+    description_en = models.CharField(max_length=64, verbose_name='英文描述')
+    description_cn = models.CharField(max_length=64, verbose_name='中文描述')
+
+    class Meta:
+        db_table = 'cultivars'
+        verbose_name = '第一层cultivars'
+
+    def __str__(self):
+        return self.name_cn
+
+
+class Models(models.Model):
+    cultivars = models.ForeignKey(
+        to=Cultivars, related_name='models', on_delete=models.CASCADE, verbose_name='所属上层'
+    )
+    name_en = models.CharField(max_length=64, verbose_name='英文名')
+    name_cn = models.CharField(max_length=64, verbose_name='中文名')
+    description_en = models.CharField(max_length=64, verbose_name='英文描述')
+    description_cn = models.CharField(max_length=64, verbose_name='中文描述')
+    available_grow_objectives = models.JSONField(null=True)
+    available_grow_techniques = models.JSONField(null=True)
+
+    class Meta:
+        db_table = 'models'
+        verbose_name = '第二层models'
+
+    def __str__(self):
+        return self.name_cn
+
+
+class Phases(models.Model):
+    phase_index = models.IntegerField(default=0)
+    models_ = models.ForeignKey(
+        to=Models, related_name='phases', on_delete=models.CASCADE, verbose_name='所属上层'
+    )
+    name_en = models.CharField(max_length=64, verbose_name='英文名')
+    name_cn = models.CharField(max_length=64, verbose_name='中文名')
+    description_en = models.CharField(max_length=64, verbose_name='英文描述')
+    description_cn = models.CharField(max_length=64, verbose_name='中文描述')
+    scheduled_events = models.JSONField(null=True, blank=True)
+    ending_condition = models.IntegerField(choices=((1, 'any'), (2, 'all')), default=1, verbose_name='任何或所有')
+    ending_triggers = models.JSONField(null=True, blank=True)
+
+    class Meta:
+        db_table = 'phases'
+        verbose_name = '第三层phases'
+
+    def __str__(self):
+        return self.name_cn
+
+
+class Instruction(models.Model):
+    phases = models.ForeignKey(to=Phases, related_name='base', on_delete=models.CASCADE, verbose_name='所属上层')
+    status = models.IntegerField(choices=((1, 'activate'), (2, 'inactivate')), default=1)
+    type = models.IntegerField(choices=((1, 'timed'), (2, 'interval')), default=1)
+    # if type is timed
+    n_weeks = models.IntegerField(null=True, blank=True, verbose_name='每隔n周')
+    dow = models.JSONField(null=True, blank=True, verbose_name='事件发生在一周中的哪一天[]')
+    tod = models.TimeField(null=True, blank=True, default='08:00:00')
+    # if type is interval
+    interval = models.TimeField(null=True, blank=True, default='00:30:00')
+    duration = models.TimeField(null=True, blank=True, default='16:00:00')
+
+    class Meta:
+        db_table = 'instruction'
+        verbose_name = '第四层instruction'
+
+    def __str__(self):
+        return self.type
+
+
+class Action(models.Model):
+    snippet_type = models.CharField(max_length=64, default='action')
+    status = models.IntegerField(choices=((1, 'activate'), (2, 'inactivate')), default=1)
+    type = models.IntegerField(choices=((1, 'no_feedback'), (2, 'feedback')), default=1)
+    hardware = models.CharField(max_length=64, default='growLED')
+    environmental_factor = models.IntegerField(
+        choices=(
+            (1, "temperature"),
+            (2, "humidity"),
+            (3, "CO2"),
+        ), default=1
+    )
+    instruction = models.IntegerField(choices=((1, 'turn_on'), (2, 'turn_off'), (3, 'set_value')), default=1)
+    value = models.JSONField(null=True, blank=True)
+    curve = models.CharField(max_length=64, default='linear')
+    curve_duration = models.TimeField(null=True, blank=True, default='00:30:00')
+
+    class Meta:
+        db_table = 'action'
+        verbose_name = '第五层action'
+
+    def __str__(self):
+        return self.snippet_type
+
+
+class Triggers(models.Model):
+    phases = models.ForeignKey(
+        to=Phases, related_name='triggers', to_field='id', on_delete=models.CASCADE, verbose_name='所属上级'
+    )
+    name_en = models.CharField(max_length=64, verbose_name='英文名')
+    name_cn = models.CharField(max_length=64, verbose_name='中文名')
+    status = models.IntegerField(choices=((1, 'activate'), (2, 'inactivate')), default=1)
+    triggered = models.BooleanField(default=False, verbose_name='布尔值')
+    type = models.IntegerField(choices=((1, 'exception'), (2, 'trend'), (3, 'rate')), default=1)
+    metric = models.ForeignKey(
+        to='EnvironmentalOptions', to_field='value', null=True, blank=True, on_delete=models.SET_NULL
+    )
+    operator = models.IntegerField(
+        choices=(
+            (1, 'greater_than'),
+            (2, 'greater_than_or_equal_to'),
+            (3, 'less_than'),
+            (4, 'less_than_or_equal_to'),
+            (5, 'not_equal_to')
+        ), default=1
+    )
+    threshold = models.IntegerField(default=20)
+    # when type == "exception" all this is null
+    # when type == "trend" all this is full
+    # when type == "rate" just have direction and timeframe
+    direction = models.IntegerField(choices=((1, 'increasing'), (2, 'decreasing'), (3, 'maintaining')), default=1)
+    timeframe = models.TimeField(null=True, blank=True, default='00:30:00')
+    toi = models.TimeField(null=True, blank=True, default='00:30:00')
+
+    class Meta:
+        db_table = 'triggers'
+        verbose_name = '第六层triggers'
+
+    def __str__(self):
+        return self.name_cn
+
+
+class EnvironmentalOptions(models.Model):
+    label = models.CharField(max_length=64, verbose_name='key')
+    value = models.CharField(max_length=64, verbose_name='value')
+
+    class Meta:
+        db_table = 'environmental_options'
+        verbose_name = 'options'
+
+    def __str__(self):
+        return self.label
+
+
+class HardwareOptions(models.Model):
+    label = models.CharField(max_length=64, verbose_name='key')
+    value = models.CharField(max_length=64, verbose_name='value')
+
+    class Meta:
+        db_table = 'hardware_options'
+        verbose_name = 'options'
+
+    def __str__(self):
+        return self.label

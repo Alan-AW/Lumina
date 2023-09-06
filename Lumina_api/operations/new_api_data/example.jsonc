@@ -1,0 +1,61 @@
+{
+    "name_en": "",
+    "name_cn": "",
+    "description_en": "",
+    "description_cn": "",
+    "cultivars": [{
+        "name_en": "",
+        "name_cn": "",
+        "description_en": "",
+        "description_cn": "",
+        "models": [{
+            "name_en": "",
+            "name_cn": "",
+            "description_en": "",
+            "description_cn": "",
+            "available_grow_objectives": [], //TODO: add grow objectives
+            "available_grow_techniques": [], //TODO: add grow techniques
+            "phases": [{
+                "phase_index":0,
+                "name_en":"",
+                "name_cn":"",
+                "description_en":"",
+                "description_cn":"",
+            
+                "base":[{
+                    "action": {
+                        // action object
+                    },
+                    "status": "active", // "active" or "inactive"
+                
+                    "type": "timed", // "timed" or "interval"
+                    
+                    // if "type" is "timed"
+                    "n-weeks": 1, // every n weeks
+                    "dow": [1, 1, 1, 1, 1, 1, 1], // Event takes place for everyday of the week
+                    "tod": "08:00:00", // time of day
+                    
+                    "duration": "16:00:00"
+                }], // Array of instructions, should normally be in two sets, one for day and one for night.
+                "scheduled_events":[{
+                    "action": {
+                        // action object
+                    },
+                    "status": "active", // "active" or "inactive"
+                
+                    "type": "interval", // "timed" or "interval"
+                    
+                    
+                    "interval": "00:30:00", 
+                
+                    
+                    "duration": "16:00:00"
+                }], // Array of scheduled_events, same object design as instructions
+                "triggers":[], // Array of triggers, same object design as ending_triggers
+            
+                "ending_condition": "any", // "any" or "all"
+                "ending_triggers": [] // array of trigger objects
+            }]
+        }] // Array of models, each model is a set of instructions for a specific grow environment
+    }]
+}

@@ -1,0 +1,23 @@
+{
+    "name_en": "",
+    "name_cn": "",
+    
+    "status": "active", // "active", "single_event", "completed", "cancelled"
+    "triggered": false,
+    
+    "type": "exception", // "exception", "trend", "rate"
+    
+    "metric": "", // "CO2_ppm", "DHT_temp", etc
+
+    "operator": "", // "greater_than", "greater_than_or_equal_to", "less_than", "less_than_or_equal_to", "not_equal_to". No special characters like >=, <=, != (any)
+    "threshold": 20, // metric-specific
+
+    // when type == rate
+    "direction": "", // "increasing", "decreasing", "maintaining". No special characters like +, -, = 
+    "timeframe": "00:30:00", // only when "type" is "trend" and "rate". sampling range, how far back. hh:mm:ss
+    
+    // when type == trend
+    "direction": "", // "increasing", "decreasing", "maintaining". No special characters like +, -, = 
+    "timeframe": "00:30:00", // only when "type" is "trend" and "rate". sampling range, how far back. hh:mm:ss
+    "toi": "00:30:00" // only when "type" is "trend". time of impact, hh:mm:ss
+}

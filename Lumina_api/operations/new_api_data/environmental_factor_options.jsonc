@@ -1,0 +1,16 @@
+{
+    "Canopy temperature": "temp_canopy",
+    "Ambient temperature": "temp_ambient",
+    "Water temperature": "temp_water",
+    "LED temperature": "temp_led",
+    "Humidity": "humidity",
+    "Canopy VPD": "VPD_canopy",
+    "Ambient VPD": "VPD_ambient",
+    "pH": "pH",
+    "EC": "EC",
+    "Plant Height": "plant_height",
+    "PPFD": "PPFD",
+    "DLI": "DLI",
+    "Airflow": "airflow",
+    "CO2": "CO2"
+}

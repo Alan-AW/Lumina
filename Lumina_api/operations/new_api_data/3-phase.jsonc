@@ -1,0 +1,14 @@
+{
+    "phase_index":0,
+    "name_en":"",
+    "name_cn":"",
+    "description_en":"",
+    "description_cn":"",
+
+    "base":[], // Array of instructions, should normally be in two sets, one for day and one for night.
+    "scheduled_events":[], // Array of scheduled_events, same object design as instructions
+    "triggers":[], // Array of triggers, same object design as ending_triggers
+
+    "ending_condition": "any", // "any" or "all"
+    "ending_triggers": [] // array of trigger objects
+}

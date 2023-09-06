@@ -1,0 +1,20 @@
+{
+    "action": {
+        // action object
+    },
+    "status": "active", // "active" or "inactive"
+
+    "type": "timed", // "timed" or "interval"
+    
+    // if "type" is "timed"
+    "n-weeks": 1, // every n weeks
+    "dow": [1, 1, 1, 1, 1, 1, 1], // Event takes place for everyday of the week
+    "tod": "08:00:00", // time of day
+    
+    // if "type" is "interval"
+    "interval": "00:30:00", 
+
+
+    
+    "duration": "16:00:00"
+}

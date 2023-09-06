@@ -1,0 +1,58 @@
+{
+    //Climate Control
+    "HVAC": "hvac",
+    "All vents": "vent_all",
+    "Vent 1": "vent_1",
+    "Vent 2": "vent_2",
+    "All fans": "fan_all",
+    "Fan 1": "fan_1",
+    "Fan 2": "fan_2",
+    //Motor
+    "Motor": "motor",
+    //Water
+    "RO": "ro",
+    "Water Sprayer": "water_spray",
+    "Water Pump": "water_pump",
+    "Water Recirculation Pump": "water_recirc_pump",
+    "Water Mixer": "water_mixer",
+    "Water Outlet": "water_outlet",
+    "Water UV": "water_uv",
+    //Fertigation
+    "Fertigation": "fertigation",
+    "Fertigation 1": "fertigation_1",
+    "Fertigation 2": "fertigation_2",
+    "Fertigation 3": "fertigation_3",
+    "Fertigation 4": "fertigation_4",
+    "Fertigation 5": "fertigation_5",
+    //Grow Lights
+    "All LEDs": "led_all",
+    "All visible LED channels": "led_all_visible",
+    "LED 3-Channel 4000K 660nm 450nm": "led_3ch_4000_660_450",
+    "LED 4000K": "led_4000k",
+    "LED 450nm": "led_450",
+    "LED 660nm": "led_660",
+    "LED 730nm": "led_730",
+    "LED UVA": "led_uva",
+    "LED UVB": "led_uvb",
+    "UVC": "uvc",
+    "Laser": "laser",
+    "Laser 450nm": "laser_450",
+    "Laser 660nm": "laser_660",
+    "Laser 730nm": "laser_730",
+    //Monitoring
+    "All cameras": "camera_all",
+    "All RGB cameras": "camera_all_visible",
+    "Camera Visible 1": "camera_visible_1",
+    "Camera Visible 2": "camera_visible_2",
+    "Camera Visible 3": "camera_visible_3",
+    "All IR cameras": "camera_all_ir",
+    "IR camera 1": "camera_ir_1",
+    "IR camera 2": "camera_ir_2",
+    "IR camera 3": "camera_ir_3",
+    //Amenities
+    "Air Curtain": "air_curtain",
+    "All misc lights": "misc_lighting_all",
+    "Misc light 1": "misc_lighting_1",
+    "Misc light 2": "misc_lighting_2",
+    "Misc light 3": "misc_lighting_3"
+}

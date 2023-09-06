@@ -1,0 +1,11 @@
+{
+    "snippet_type": "action", 
+    "status": "active", // "active" or "inactive"
+    "type": "no_feedback", // "no_feedback" or "feedback"
+    "hardware": "growLED", 
+    "environmental_factor": "", // "temperature", "humidity", "CO2", etc.
+    "instruction": "turn_on", // "turn_on", "turn_off", "set_value"
+    "value": [100, 100, 100], // value to set, could be a single value or an array of values
+    "curve": "linear", 
+    "curve_duration": "00:30:00" 
+}
