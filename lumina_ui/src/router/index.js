@@ -37,6 +37,10 @@ const appRouter = [
       {
         path: '/unit',
         element: getComponentPage('/unit')
+      },
+      {
+        path: '/three_table',
+        element: getComponentPage('/three_table')
       }
     ]
   },

@@ -2,7 +2,8 @@ import json
 
 from django.conf import settings as sys
 from rest_framework import serializers
-from operations.models import Company, Room, Zone, Unit, Temperature, Lighting, AndroidSettings
+from operations.models import Company, Room, Zone, Unit, Temperature, Lighting, AndroidSettings, Species, \
+    Cultivars, Models, Phases, Instruction, Action, Triggers
 from users.models import Roles
 from utils.methods import computed_sowing_time
 
@@ -182,4 +183,85 @@ class LightingSer(serializers.ModelSerializer):
 class AndroidSettingsSer(serializers.ModelSerializer):
     class Meta:
         model = AndroidSettings
+        fields = '__all__'
+
+
+class TriggersSer(serializers.ModelSerializer):
+    class Meta:
+        model = Triggers
+        fields = '__all__'
+
+
+class ActionSer(serializers.ModelSerializer):
+    class Meta:
+        model = Action
+        fields = '__all__'
+
+
+class InstructionSer(serializers.ModelSerializer):
+    action = serializers.SerializerMethodField()
+
+    def get_action(self, row):
+        queryset = row.action.all()
+        ser = ActionSer(queryset, many=True)
+        return ser.data
+
+    class Meta:
+        model = Instruction
+        fields = '__all__'
+
+
+class PhasesSer(serializers.ModelSerializer):
+    children = serializers.SerializerMethodField()
+
+    def get_children(self, row):
+        queryset = row.base.all()
+        ser = InstructionSer(queryset, many=True)
+        instruction_list = ser.data
+        queryset = row.triggers.all()
+        ser = TriggersSer(queryset, many=True)
+        triggers_list = ser.data
+        return instruction_list + triggers_list
+
+    class Meta:
+        model = Phases
+        fields = '__all__'
+
+
+class ModelsSer(serializers.ModelSerializer):
+    children = serializers.SerializerMethodField()
+
+    def get_children(self, row):
+        queryset = row.phases.all()
+        ser = PhasesSer(queryset, many=True)
+        return ser.data
+
+    class Meta:
+        model = Models
+        fields = '__all__'
+
+
+class CultivarsSer(serializers.ModelSerializer):
+    children = serializers.SerializerMethodField()
+
+    def get_children(self, row):
+        queryset = row.models.all()
+        ser = ModelsSer(queryset, many=True)
+        return ser.data
+
+    class Meta:
+        model = Cultivars
+        fields = '__all__'
+
+
+class SpeciesSer(serializers.ModelSerializer):
+    children = serializers.SerializerMethodField()
+
+    def get_children(self, row):
+        queryset = row.cultivars.all()
+        ser = CultivarsSer(queryset, many=True)
+        return ser.data
+
+    class Meta:
+        model = Species
         fields = '__all__'

@@ -40,3 +40,5 @@ export const getUnit = params => axios.get('/manager/unit/', { params })
 export const postUnit = data => axios.post('/manager/unit/', data)
 export const patchUnit = (id, data) => axios.patch(`/manager/unit/${id}`, data)
 export const deleteUnit = id => axios.delete(`/manager/unit/${id}`)
+// 树结构
+export const getThreeData = params => axios.get('/manager/three', { params })

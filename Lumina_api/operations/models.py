@@ -237,8 +237,8 @@ class Models(models.Model):
     name_cn = models.CharField(max_length=64, verbose_name='中文名')
     description_en = models.CharField(max_length=64, verbose_name='英文描述')
     description_cn = models.CharField(max_length=64, verbose_name='中文描述')
-    available_grow_objectives = models.JSONField(null=True)
-    available_grow_techniques = models.JSONField(null=True)
+    available_grow_objectives = models.JSONField(null=True, default=list)
+    available_grow_techniques = models.JSONField(null=True, default=list)
 
     class Meta:
         db_table = 'models'
@@ -250,16 +250,16 @@ class Models(models.Model):
 
 class Phases(models.Model):
     phase_index = models.IntegerField(default=0)
-    models_ = models.ForeignKey(
+    f_model = models.ForeignKey(
         to=Models, related_name='phases', on_delete=models.CASCADE, verbose_name='所属上层'
     )
     name_en = models.CharField(max_length=64, verbose_name='英文名')
     name_cn = models.CharField(max_length=64, verbose_name='中文名')
     description_en = models.CharField(max_length=64, verbose_name='英文描述')
     description_cn = models.CharField(max_length=64, verbose_name='中文描述')
-    scheduled_events = models.JSONField(null=True, blank=True)
+    scheduled_events = models.JSONField(null=True, blank=True, default=list)
     ending_condition = models.IntegerField(choices=((1, 'any'), (2, 'all')), default=1, verbose_name='任何或所有')
-    ending_triggers = models.JSONField(null=True, blank=True)
+    ending_triggers = models.JSONField(null=True, blank=True, default=list)
 
     class Meta:
         db_table = 'phases'
@@ -275,7 +275,7 @@ class Instruction(models.Model):
     type = models.IntegerField(choices=((1, 'timed'), (2, 'interval')), default=1)
     # if type is timed
     n_weeks = models.IntegerField(null=True, blank=True, verbose_name='每隔n周')
-    dow = models.JSONField(null=True, blank=True, verbose_name='事件发生在一周中的哪一天[]')
+    dow = models.JSONField(null=True, blank=True, default=list, verbose_name='事件发生在一周中的哪一天[]')
     tod = models.TimeField(null=True, blank=True, default='08:00:00')
     # if type is interval
     interval = models.TimeField(null=True, blank=True, default='00:30:00')
@@ -302,7 +302,7 @@ class Action(models.Model):
         ), default=1
     )
     instruction = models.IntegerField(choices=((1, 'turn_on'), (2, 'turn_off'), (3, 'set_value')), default=1)
-    value = models.JSONField(null=True, blank=True)
+    value = models.JSONField(null=True, blank=True, default=list)
     curve = models.CharField(max_length=64, default='linear')
     curve_duration = models.TimeField(null=True, blank=True, default='00:30:00')
 
@@ -324,7 +324,7 @@ class Triggers(models.Model):
     triggered = models.BooleanField(default=False, verbose_name='布尔值')
     type = models.IntegerField(choices=((1, 'exception'), (2, 'trend'), (3, 'rate')), default=1)
     metric = models.ForeignKey(
-        to='EnvironmentalOptions', to_field='value', null=True, blank=True, on_delete=models.SET_NULL
+        to='EnvironmentalOptions', to_field='id', null=True, blank=True, on_delete=models.SET_NULL
     )
     operator = models.IntegerField(
         choices=(
@@ -339,7 +339,9 @@ class Triggers(models.Model):
     # when type == "exception" all this is null
     # when type == "trend" all this is full
     # when type == "rate" just have direction and timeframe
-    direction = models.IntegerField(choices=((1, 'increasing'), (2, 'decreasing'), (3, 'maintaining')), default=1)
+    direction = models.IntegerField(
+        null=True, blank=True, choices=((1, 'increasing'), (2, 'decreasing'), (3, 'maintaining')), default=1
+    )
     timeframe = models.TimeField(null=True, blank=True, default='00:30:00')
     toi = models.TimeField(null=True, blank=True, default='00:30:00')
 

@@ -1,9 +1,9 @@
 import datetime
 from rest_framework.views import APIView
 from django.http import JsonResponse
-from operations.models import Room, Zone, Unit, Temperature, Fertilizer, RoomDesc, Lighting
+from operations.models import Room, Zone, Unit, Temperature, Species, RoomDesc, Lighting
 from serializers.operations_serializers import RoomSer, ZoneSer, UnitSer, ChoicesZoneSer, ChoicesRoomSer, \
-    android_zones_deep_data, ChoicesRoleSer, TemperatureSer, LightingSer, AndroidSettingsSer
+    android_zones_deep_data, ChoicesRoleSer, TemperatureSer, LightingSer, AndroidSettingsSer, SpeciesSer
 from users.models import Roles
 from utils.methods import return_response, get_data, get_temperature_dict, \
     get_temperature_days_list, get_max_center_min_temperature
@@ -280,3 +280,20 @@ class AndroidSettingsView(APIView):
         else:
             response = return_response(status=False, error=ser.errors)
         return JsonResponse(response)
+
+
+# 树型结构6张表
+class ThreeData(APIView):
+    def get(self, request):
+        data = get_data(Species, False, request, self, SpeciesSer)
+        response = return_response(data=data)
+        return JsonResponse(response)
+
+    def post(self, request):
+        pass
+
+    def patch(self, request):
+        pass
+
+    def delete(self, request):
+        pass

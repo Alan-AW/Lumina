@@ -35,8 +35,7 @@ instance.interceptors.response.use(
   err => {
     nProgress.done()
     // 获取请求失败之后的状态码
-    const status = err.response.status
-    if (status === 403) {
+    if (err.response && err.response.status === 403) {
       message.error('身份令牌过期，请重新登录！')
       // 删除旧的token
       storageThatExpries.remove(USER_TOKEN)

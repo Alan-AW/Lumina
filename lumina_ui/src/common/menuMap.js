@@ -30,6 +30,11 @@ const menus = [
     key: '/unit',
     icon: getLabelOrIcon('/unit', true)
   },
+  {
+    label: getLabelOrIcon('/three_table'),
+    key: '/three_table',
+    icon: getLabelOrIcon('/three_table', true)
+  },
 ]
 
 export default menus
