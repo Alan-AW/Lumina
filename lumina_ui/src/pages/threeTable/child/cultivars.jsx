@@ -1,11 +1,10 @@
 import { useEffect, useState, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Table, Button, Popconfirm } from 'antd'
-import { DeleteOutlined, QuestionCircleOutlined, EditOutlined, ApartmentOutlined } from '@ant-design/icons'
-import { FADEIN, pageSize } from 'contants'
-import { getThreeData } from 'network/api'
+import { useNavigate } from 'react-router-dom'
+import { DeleteOutlined, QuestionCircleOutlined, EditOutlined, RollbackOutlined } from '@ant-design/icons'
+import { FADEINRIGHT, pageSize } from 'contants'
 
-function ThreeTable() {
+function Cultivars() {
   const navigate = useNavigate()
   const [params, setparams] = useState({ page: 1 })
   const [tableData, settableData] = useState([
@@ -71,8 +70,8 @@ function ThreeTable() {
           </Popconfirm>
           <Button
             type='link'
-            children='cultivars→'
-            onClick={() => navigate('/cultivars', { state: row.id })}
+            children='models→'
+            onClick={() => navigate('/models', { state: row.id })}
           />
         </div>
       )
@@ -80,7 +79,7 @@ function ThreeTable() {
   ]
 
   // useEffect(() => {
-  //   getThreeData(params).then(res => {
+  //   getCultivarsData(params).then(res => {
   //     if (res.status) {
   //       settableData(res.data.results)
   //       settableDataCount(res.data.count)
@@ -106,7 +105,7 @@ function ThreeTable() {
   // 表格
   const table = useMemo(() => (
     <Table
-      className={FADEIN}
+      className={FADEINRIGHT}
       dataSource={tableData}
       columns={tableTitle}
       pagination={paginationProps}
@@ -118,9 +117,15 @@ function ThreeTable() {
 
   return (
     <>
+      <Button
+        onClick={() => navigate('/three_table')}
+        icon={<RollbackOutlined />}
+        type='primary'
+        style={{ marginBottom: 'var(--content-margin)' }}
+      >返回上级</Button>
       {table}
     </>
   )
 }
 
-export default ThreeTable
+export default Cultivars
