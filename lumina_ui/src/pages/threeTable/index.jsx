@@ -5,7 +5,7 @@ import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined } fr
 import SpeciesModal from 'components/threeData/speciesModal'
 import { FADEIN, pageSize } from 'contants'
 import { getSpecies, postSpecies, patchSpecies, deleteSpecies } from 'network/api'
-import { openNotification } from 'utils/'
+import { openNotification } from 'utils'
 
 function ThreeTable() {
   const [api, contextHolder] = notification.useNotification()

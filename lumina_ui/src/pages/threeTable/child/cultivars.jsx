@@ -2,9 +2,10 @@ import { useEffect, useState, useMemo } from 'react'
 import { Table, Button, Popconfirm, message, notification } from 'antd'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined, RollbackOutlined } from '@ant-design/icons'
+import CultivarsModal from 'components/threeData/cultivarsModal'
 import { getCultivars, postCultivars, patchCultivars, deleteCultivars } from 'network/api'
 import { FADEINRIGHT, pageSize } from 'contants'
-import { openNotification } from 'utils/'
+import { openNotification } from 'utils'
 
 function Cultivars() {
   const [api, contextHolder] = notification.useNotification()
@@ -73,7 +74,7 @@ function Cultivars() {
           <Button
             type='link'
             children='models→'
-            onClick={() => navigate('/models', { state: row.id })}
+            onClick={() => navigate('/models', { state: { cultivarsId: row.id } })}
           />
         </div>
       )
@@ -98,6 +99,7 @@ function Cultivars() {
       if (res.status) {
         settableData(tableData.filter(item => item.id !== res.data))
         settableDataCount(tableDataCount - 1)
+        message.success(res.info)
       } else {
         message.error(res.errs)
       }
@@ -109,8 +111,49 @@ function Cultivars() {
     setopenModal(true)
   }
 
+  // 点击编辑
   const editClick = row => {
-    console.log(row)
+    setisEdit(true)
+    seteditInitValue(row)
+    setopenModal(true)
+  }
+
+  const onOk = value => {
+    value.species = speciesId
+    if (isEdit) {
+      patchCultivars(value.id, value).then(res => {
+        if (res.status) {
+          settableData(tableData.map(item => {
+            if (item.id === res.data.id) {
+              item = res.data
+            }
+            return item
+          }))
+          message.success(res.info)
+          closeModal()
+        } else {
+          openNotification(api, 'error', res.errs)
+        }
+      }).catch(err => console.log(err))
+    } else {
+      delete value.id
+      postCultivars(value).then(res => {
+        if (res.status) {
+          settableData([res.data, ...tableData])
+          settableDataCount(tableDataCount + 1)
+          message.success(res.info)
+          closeModal()
+        } else {
+          openNotification(api, 'error', res.errs)
+        }
+      })
+    }
+  }
+
+  // 关窗
+  const closeModal = () => {
+    seteditInitValue(null)
+    setopenModal(false)
   }
 
   // 分页
@@ -150,6 +193,12 @@ function Cultivars() {
         style={{ marginBottom: 'var(--content-margin)', marginLeft: 'var(--content-margin)' }}
       />
       {table}
+      <CultivarsModal
+        initValue={editInitValue}
+        openModal={openModal}
+        closeModal={closeModal}
+        onOk={onOk}
+      />
     </>
   )
 }

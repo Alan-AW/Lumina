@@ -3,13 +3,12 @@ import { Table, Button, Popconfirm } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { DeleteOutlined, QuestionCircleOutlined, EditOutlined, RollbackOutlined } from '@ant-design/icons'
 import { FADEINRIGHT, pageSize } from 'contants'
+import { getModels, postModels, patchModels, deleteModels } from 'network/api'
 
 function Models() {
   const navigate = useNavigate()
   const [params, setparams] = useState({ page: 1 })
-  const [tableData, settableData] = useState([
-    { id: 1, name_en: 'name_en', name_cn: 'name_cn', description_en: 'description_en', description_cn: 'description_cn' }
-  ])
+  const [tableData, settableData] = useState([])
   const [tableDataCount, settableDataCount] = useState(1)
   const tableTitle = [
     {
@@ -45,12 +44,12 @@ function Models() {
     {
       title: 'available_grow_objectives',
       align: 'center',
-      dataIndex: '[]'
+      dataIndex: 'available_grow_objectives'
     },
     {
       title: 'available_grow_techniques',
       align: 'center',
-      dataIndex: '[]'
+      dataIndex: 'available_grow_techniques'
     },
     {
       title: '操作',
@@ -81,21 +80,21 @@ function Models() {
           <Button
             type='link'
             children='phases→'
-            onClick={() => navigate('/phases', { state: row.id })}
+            onClick={() => navigate('/phases', { state: { modelsId: row.id } })}
           />
         </div>
       )
     }
   ]
 
-  // useEffect(() => {
-  //   getModelsData(params).then(res => {
-  //     if (res.status) {
-  //       settableData(res.data.results)
-  //       settableDataCount(res.data.count)
-  //     }
-  //   }).catch(err => console.log(err))
-  // }, [params])
+  useEffect(() => {
+    getModels(params).then(res => {
+      if (res.status) {
+        settableData(res.data.results)
+        settableDataCount(res.data.count)
+      }
+    }).catch(err => console.log(err))
+  }, [params])
 
   const deleteRow = row => {
     console.log(row)
@@ -128,7 +127,7 @@ function Models() {
   return (
     <>
       <Button
-        onClick={() => navigate('/three_table')}
+        onClick={() => navigate('/cultivars')}
         icon={<RollbackOutlined />}
         type='primary'
         style={{ marginBottom: 'var(--content-margin)' }}
