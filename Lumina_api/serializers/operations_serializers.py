@@ -186,6 +186,7 @@ class AndroidSettingsSer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+# 数据结构导出序列化程序
 class TriggersSer(serializers.ModelSerializer):
     class Meta:
         model = Triggers
@@ -212,16 +213,18 @@ class InstructionSer(serializers.ModelSerializer):
 
 
 class PhasesSer(serializers.ModelSerializer):
-    children = serializers.SerializerMethodField()
+    base = serializers.SerializerMethodField()
+    triggers = serializers.SerializerMethodField()
 
-    def get_children(self, row):
+    def get_base(self, row):
         queryset = row.base.all()
         ser = InstructionSer(queryset, many=True)
-        instruction_list = ser.data
+        return ser.data
+
+    def get_triggers(self, row):
         queryset = row.triggers.all()
         ser = TriggersSer(queryset, many=True)
-        triggers_list = ser.data
-        return instruction_list + triggers_list
+        return ser.data
 
     class Meta:
         model = Phases
@@ -229,9 +232,9 @@ class PhasesSer(serializers.ModelSerializer):
 
 
 class ModelsSer(serializers.ModelSerializer):
-    children = serializers.SerializerMethodField()
+    phases = serializers.SerializerMethodField()
 
-    def get_children(self, row):
+    def get_phases(self, row):
         queryset = row.phases.all()
         ser = PhasesSer(queryset, many=True)
         return ser.data
@@ -242,9 +245,9 @@ class ModelsSer(serializers.ModelSerializer):
 
 
 class CultivarsSer(serializers.ModelSerializer):
-    children = serializers.SerializerMethodField()
+    models = serializers.SerializerMethodField()
 
-    def get_children(self, row):
+    def get_models(self, row):
         queryset = row.models.all()
         ser = ModelsSer(queryset, many=True)
         return ser.data
@@ -254,10 +257,10 @@ class CultivarsSer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class SpeciesSer(serializers.ModelSerializer):
-    children = serializers.SerializerMethodField()
+class ExportDataSer(serializers.ModelSerializer):
+    cultivars = serializers.SerializerMethodField()
 
-    def get_children(self, row):
+    def get_cultivars(self, row):
         queryset = row.cultivars.all()
         ser = CultivarsSer(queryset, many=True)
         return ser.data

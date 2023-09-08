@@ -1,15 +1,17 @@
 import { useEffect, useState, useMemo } from 'react'
-import { Table, Button, Popconfirm } from 'antd'
-import { useNavigate } from 'react-router-dom'
-import { DeleteOutlined, QuestionCircleOutlined, EditOutlined, RollbackOutlined } from '@ant-design/icons'
+import { Table, Button, Popconfirm, message, notification } from 'antd'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined, RollbackOutlined } from '@ant-design/icons'
+import { getCultivars, postCultivars, patchCultivars, deleteCultivars } from 'network/api'
 import { FADEINRIGHT, pageSize } from 'contants'
+import { openNotification } from 'utils/'
 
 function Cultivars() {
+  const [api, contextHolder] = notification.useNotification()
   const navigate = useNavigate()
+  const { state: { speciesId } } = useLocation()
   const [params, setparams] = useState({ page: 1 })
-  const [tableData, settableData] = useState([
-    { id: 1, name_en: 'name_en', name_cn: 'name_cn', description_en: 'description_en', description_cn: 'description_cn' }
-  ])
+  const [tableData, settableData] = useState([])
   const [tableDataCount, settableDataCount] = useState(1)
   const tableTitle = [
     {
@@ -77,18 +79,34 @@ function Cultivars() {
       )
     }
   ]
+  const [openModal, setopenModal] = useState(false)
+  const [editInitValue, seteditInitValue] = useState(null)
+  const [isEdit, setisEdit] = useState(false)
 
-  // useEffect(() => {
-  //   getCultivarsData(params).then(res => {
-  //     if (res.status) {
-  //       settableData(res.data.results)
-  //       settableDataCount(res.data.count)
-  //     }
-  //   }).catch(err => console.log(err))
-  // }, [params])
+  useEffect(() => {
+    getCultivars(params).then(res => {
+      if (res.status) {
+        settableData(res.data.results)
+        settableDataCount(res.data.count)
+      }
+    }).catch(err => console.log(err))
+  }, [params])
 
+  // 删除行
   const deleteRow = row => {
-    console.log(row)
+    deleteCultivars(row.id).then(res => {
+      if (res.status) {
+        settableData(tableData.filter(item => item.id !== res.data))
+        settableDataCount(tableDataCount - 1)
+      } else {
+        message.error(res.errs)
+      }
+    }).catch(err => console.log(err))
+  }
+
+  const addClick = () => {
+    setisEdit(false)
+    setopenModal(true)
   }
 
   const editClick = row => {
@@ -117,12 +135,20 @@ function Cultivars() {
 
   return (
     <>
+      {contextHolder}
       <Button
         onClick={() => navigate('/three_table')}
         icon={<RollbackOutlined />}
         type='primary'
         style={{ marginBottom: 'var(--content-margin)' }}
       >返回上级</Button>
+      <Button
+        type='primary'
+        icon={<PlusOutlined />}
+        children='添加'
+        onClick={addClick}
+        style={{ marginBottom: 'var(--content-margin)', marginLeft: 'var(--content-margin)' }}
+      />
       {table}
     </>
   )

@@ -1,12 +1,16 @@
 import datetime
 from rest_framework.views import APIView
 from django.http import JsonResponse
-from operations.models import Room, Zone, Unit, Temperature, Species, RoomDesc, Lighting
+from operations.models import Room, Zone, Unit, Temperature, Species, RoomDesc, Lighting, Cultivars, Models, Triggers, \
+    Action, Instruction, Phases
 from serializers.operations_serializers import RoomSer, ZoneSer, UnitSer, ChoicesZoneSer, ChoicesRoomSer, \
-    android_zones_deep_data, ChoicesRoleSer, TemperatureSer, LightingSer, AndroidSettingsSer, SpeciesSer
+    android_zones_deep_data, ChoicesRoleSer, TemperatureSer, LightingSer, AndroidSettingsSer, ExportDataSer
+from serializers.three_data_serializers import SpeciesDataSer, CultivarsDataSer, ModelsDataSer, PhasesDataSer, \
+    InstructionDataSer, ActionDataSer, TriggersDataSer
 from users.models import Roles
 from utils.methods import return_response, get_data, get_temperature_dict, \
     get_temperature_days_list, get_max_center_min_temperature
+from operations.base_view import BaseView
 
 
 # 区域管理
@@ -282,18 +286,45 @@ class AndroidSettingsView(APIView):
         return JsonResponse(response)
 
 
-# 树型结构6张表
-class ThreeData(APIView):
+# 树型结构6张表导出
+class ExportThree(APIView):
     def get(self, request):
-        data = get_data(Species, False, request, self, SpeciesSer)
+        data = get_data(Species, False, request, self, ExportDataSer)
         response = return_response(data=data)
         return JsonResponse(response)
 
-    def post(self, request):
-        pass
 
-    def patch(self, request):
-        pass
+# 树型结构分表数据管理
+class SpeciesView(BaseView):
+    models = Species
+    serializer = SpeciesDataSer
 
-    def delete(self, request):
-        pass
+
+class CultivarsView(BaseView):
+    models = Cultivars
+    serializer = CultivarsDataSer
+
+
+class ModelsView(BaseView):
+    models = Models
+    serializer = ModelsDataSer
+
+
+class PhasesView(BaseView):
+    models = Phases
+    serializer = PhasesDataSer
+
+
+class InstructionView(BaseView):
+    models = Instruction
+    serializer = InstructionDataSer
+
+
+class ActionView(BaseView):
+    models = Action
+    serializer = ActionDataSer
+
+
+class TriggersView(BaseView):
+    models = Triggers
+    serializer = TriggersDataSer
