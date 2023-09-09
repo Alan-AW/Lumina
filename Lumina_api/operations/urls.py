@@ -1,7 +1,7 @@
 from django.urls import path, re_path
 from operations.views import RoomView, ZoneView, UnitView, ChoicesZoneView, ChoicesRoomView, ChoicesRoleView, \
     ZoneDeepDataView, SaveSensorDataView, UnitDescView, AndroidSettingsView, ExportThree, SpeciesView, CultivarsView, \
-    ModelsView, PhasesView, InstructionView, ActionView, TriggersView
+    ModelsView, PhasesView, InstructionView, ActionView, TriggersView, ChoicesEnvironmentalOptions
 
 app_name = 'operations'
 urlpatterns = [
@@ -25,4 +25,5 @@ urlpatterns = [
     re_path(r'instruction/(?P<row_id>\d+)?$', InstructionView.as_view()),
     re_path(r'action/(?P<row_id>\d+)?$', ActionView.as_view()),
     re_path(r'triggers/(?P<row_id>\d+)?$', TriggersView.as_view()),
+    path('choices/environmentalOptions', ChoicesEnvironmentalOptions.as_view())
 ]

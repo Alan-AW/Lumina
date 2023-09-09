@@ -1,15 +1,15 @@
 import { useEffect, useState, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Table, Button, Popconfirm, message, notification } from 'antd'
 import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined } from '@ant-design/icons'
 import SpeciesModal from 'components/threeData/speciesModal'
+import Cultivars from './child/cultivars'
+import Models from './child/models'
 import { FADEIN, pageSize } from 'contants'
 import { getSpecies, postSpecies, patchSpecies, deleteSpecies } from 'network/api'
 import { openNotification } from 'utils'
 
 function ThreeTable() {
   const [api, contextHolder] = notification.useNotification()
-  const navigate = useNavigate()
   const [params, setparams] = useState({ page: 1 })
   const [tableData, settableData] = useState([])
   const [tableDataCount, settableDataCount] = useState(1)
@@ -72,16 +72,25 @@ function ThreeTable() {
           </Popconfirm>
           <Button
             type='link'
-            children='cultivars→'
-            onClick={() => navigate('/cultivars', { state: { speciesId: row.id } })}
+            children='cultivars↓'
+            onClick={() => {
+              setSpeciesId(row.id)
+              setshowcultivars(true)
+            }}
           />
         </div>
       )
     }
   ]
+  const [speciesId, setSpeciesId] = useState(null)
   const [openModal, setopenModal] = useState(false)
   const [editInitValue, seteditInitValue] = useState(null)
   const [isEdit, setisEdit] = useState(false)
+  // cultivars
+  const [showcultivars, setshowcultivars] = useState(false)
+  // models
+  const [showModels, setShowModels] = useState(false)
+  const [cultivarsId, setcultivarsId] = useState(null)
 
   // 请求数据
   useEffect(() => {
@@ -192,6 +201,18 @@ function ThreeTable() {
         closeModal={closeModal}
         onOk={onOk}
       />
+      {
+        showcultivars && <Cultivars
+          speciesId={speciesId}
+          nextNode={(rowId) => {
+            setcultivarsId(rowId)
+            setShowModels(true)
+          }}
+        />
+      }
+      {
+        showModels && <Models cultivarsId={cultivarsId} />
+      }
     </>
   )
 }

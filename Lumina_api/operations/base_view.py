@@ -6,9 +6,14 @@ from utils.methods import return_response, get_data
 class BaseView(APIView):
     models = None
     serializer = None
+    get_filter = None
 
-    def get(self, request):
-        data = get_data(self.models, False, request, self, self.serializer)
+    def get(self, request, row_id=None):
+        if self.get_filter:
+            queryset = self.models.objects.filter(**{f'{self.get_filter}': row_id}).all()
+            data = get_data(queryset, True, request, self, self.serializer)
+        else:
+            data = get_data(self.models, False, request, self, self.serializer)
         response = return_response(data=data)
         return JsonResponse(response)
 

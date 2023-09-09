@@ -1,16 +1,21 @@
 import { useEffect, useState, useMemo } from 'react'
-import { Table, Button, Popconfirm } from 'antd'
-import { useNavigate } from 'react-router-dom'
-import { DeleteOutlined, QuestionCircleOutlined, EditOutlined, RollbackOutlined } from '@ant-design/icons'
-import { FADEINRIGHT, pageSize } from 'contants'
+import { Table, Button, Popconfirm, notification, message } from 'antd'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { DeleteOutlined, QuestionCircleOutlined, EditOutlined, PlusOutlined, RollbackOutlined } from '@ant-design/icons'
+import PhasesModal from 'components/threeData/phasesModal'
+import Triggers from '../child/triggers'
+import Base from '../child/base'
+import { FADEIN, pageSize } from 'contants'
+import { getPhases, postPhases, patchPhases, deletePhases } from 'network/api'
+import { openNotification } from 'utils'
 
 function Phases() {
+  const { state: { modelsId } } = useLocation()
+  const [api, contextHolder] = notification.useNotification()
   const navigate = useNavigate()
   const [params, setparams] = useState({ page: 1 })
-  const [tableData, settableData] = useState([
-    { id: 1, name_en: 'name_en', name_cn: 'name_cn', description_en: 'description_en', description_cn: 'description_cn' }
-  ])
-  const [tableDataCount, settableDataCount] = useState(1)
+  const [tableData, settableData] = useState([])
+  const [tableDataCount, settableDataCount] = useState(0)
   const tableTitle = [
     {
       title: '序号',
@@ -21,6 +26,11 @@ function Phases() {
       title: 'ID',
       align: 'center',
       dataIndex: 'id'
+    },
+    {
+      title: 'phase_index',
+      align: 'center',
+      dataIndex: 'phase_index'
     },
     {
       title: 'name_en',
@@ -41,6 +51,21 @@ function Phases() {
       title: 'description_cn',
       align: 'center',
       dataIndex: 'description_cn'
+    },
+    {
+      title: 'scheduled_events',
+      align: 'center',
+      dataIndex: 'scheduled_events'
+    },
+    {
+      title: 'ending_condition',
+      align: 'center',
+      dataIndex: 'ending_condition'
+    },
+    {
+      title: 'ending_triggers',
+      align: 'center',
+      dataIndex: 'ending_triggers'
     },
     {
       title: '操作',
@@ -70,34 +95,92 @@ function Phases() {
           </Popconfirm>
           <Button
             type='link'
-            children='base→'
-            onClick={() => navigate('/base', { state: row.id })}
-          />
-          <Button
-            type='link'
-            children='triggers→'
-            onClick={() => navigate('/triggers', { state: row.id })}
+            children='children↓'
+            onClick={() => setphasesId(row.id)}
           />
         </div>
       )
     }
   ]
+  const [openModal, setopenModal] = useState(false)
+  const [editInitValue, seteditInitValue] = useState(null)
+  const [isEdit, setisEdit] = useState(false)
+  const [phasesId, setphasesId] = useState(null)
 
-  // useEffect(() => {
-  //   getPhasesData(params).then(res => {
-  //     if (res.status) {
-  //       settableData(res.data.results)
-  //       settableDataCount(res.data.count)
-  //     }
-  //   }).catch(err => console.log(err))
-  // }, [params])
+  useEffect(() => {
+    if (!!modelsId) {
+      getPhases(modelsId, params).then(res => {
+        if (res.status) {
+          settableData(res.data.results)
+          settableDataCount(res.data.count)
+        }
+      }).catch(err => console.log(err))
+    }
+  }, [modelsId, params])
+
+  const childClick = rowId => {
+    console.log(rowId)
+  }
 
   const deleteRow = row => {
-    console.log(row)
+    deletePhases(row.id).then(res => {
+      if (res.status) {
+        settableData(tableData.filter(item => item.id !== res.data))
+        settableDataCount(tableDataCount - 1)
+        message.success(res.info)
+      } else {
+        message.error(res.errs)
+      }
+    }).catch(err => console.log(err))
+  }
+
+  const addClick = () => {
+    setisEdit(false)
+    setopenModal(true)
   }
 
   const editClick = row => {
-    console.log(row)
+    setisEdit(true)
+    seteditInitValue(row)
+    setopenModal(true)
+  }
+
+  const onOk = value => {
+    value.f_model = modelsId
+    if (isEdit) {
+      patchPhases(value.id, value).then(res => {
+        if (res.status) {
+          settableData(tableData.map(item => {
+            if (item.id === res.data.id) {
+              item = res.data
+            }
+            return item
+          }))
+          message.success(res.info)
+          closeModal()
+        } else {
+          openNotification(api, 'error', res.errs)
+        }
+      }).catch(err => console.log(err))
+    } else {
+      delete value.id
+      postPhases(value).then(res => {
+        if (res.status) {
+          settableData([res.data, ...tableData])
+          settableDataCount(tableDataCount + 1)
+          message.success(res.info)
+          closeModal()
+        } else {
+          openNotification(api, 'error', res.errs)
+        }
+      })
+    }
+  }
+
+  // 关窗
+  const closeModal = () => {
+    seteditInitValue(null)
+    setopenModal(false)
   }
 
   // 分页
@@ -110,7 +193,8 @@ function Phases() {
   // 表格
   const table = useMemo(() => (
     <Table
-      className={FADEINRIGHT}
+      title={() => 'Phases'}
+      className={FADEIN}
       dataSource={tableData}
       columns={tableTitle}
       pagination={paginationProps}
@@ -121,14 +205,30 @@ function Phases() {
   ), [tableData])
 
   return (
-    <>
+    <>{contextHolder}
       <Button
-        onClick={() => navigate('/models')}
-        icon={<RollbackOutlined />}
         type='primary'
+        icon={<RollbackOutlined />}
+        children='返回'
+        onClick={() => navigate('/three_table')}
+        style={{ marginBottom: 'var(--content-margin)', marginRight: 'var(--content-margin)' }}
+      />
+      <Button
+        type='primary'
+        icon={<PlusOutlined />}
+        children='添加'
+        onClick={addClick}
         style={{ marginBottom: 'var(--content-margin)' }}
-      >返回上级</Button>
+      />
       {table}
+      <PhasesModal
+        initValue={editInitValue}
+        openModal={openModal}
+        closeModal={closeModal}
+        onOk={onOk}
+      />
+      <Triggers phasesId={phasesId} />
+      <Base phasesId={phasesId} />
     </>
   )
 }

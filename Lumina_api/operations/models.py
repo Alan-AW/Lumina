@@ -258,7 +258,7 @@ class Phases(models.Model):
     description_en = models.CharField(max_length=64, verbose_name='英文描述')
     description_cn = models.CharField(max_length=64, verbose_name='中文描述')
     scheduled_events = models.JSONField(null=True, blank=True, default=list)
-    ending_condition = models.IntegerField(choices=((1, 'any'), (2, 'all')), default=1, verbose_name='任何或所有')
+    ending_condition = models.CharField(max_length=16, default='any', verbose_name='任何或所有')
     ending_triggers = models.JSONField(null=True, blank=True, default=list)
 
     class Meta:
@@ -271,15 +271,15 @@ class Phases(models.Model):
 
 class Instruction(models.Model):
     phases = models.ForeignKey(to=Phases, related_name='base', on_delete=models.CASCADE, verbose_name='所属上层')
-    status = models.IntegerField(choices=((1, 'activate'), (2, 'inactivate')), default=1)
-    type = models.IntegerField(choices=((1, 'timed'), (2, 'interval')), default=1)
+    status = models.CharField(max_length=64, default='active')
+    type = models.CharField(max_length=64, default='timed')
     # if type is timed
     n_weeks = models.IntegerField(null=True, blank=True, verbose_name='每隔n周')
     dow = models.JSONField(null=True, blank=True, default=list, verbose_name='事件发生在一周中的哪一天[]')
-    tod = models.TimeField(null=True, blank=True, default='08:00:00')
+    tod = models.TimeField(null=True, blank=True)
     # if type is interval
-    interval = models.TimeField(null=True, blank=True, default='00:30:00')
-    duration = models.TimeField(null=True, blank=True, default='16:00:00')
+    interval = models.TimeField(null=True, blank=True)
+    duration = models.TimeField(null=True, blank=True)
 
     class Meta:
         db_table = 'instruction'
@@ -290,18 +290,15 @@ class Instruction(models.Model):
 
 
 class Action(models.Model):
-    snippet_type = models.CharField(max_length=64, default='action')
-    status = models.IntegerField(choices=((1, 'activate'), (2, 'inactivate')), default=1)
-    type = models.IntegerField(choices=((1, 'no_feedback'), (2, 'feedback')), default=1)
-    hardware = models.CharField(max_length=64, default='growLED')
-    environmental_factor = models.IntegerField(
-        choices=(
-            (1, "temperature"),
-            (2, "humidity"),
-            (3, "CO2"),
-        ), default=1
+    base = models.ForeignKey(
+        to=Instruction, related_name='action', on_delete=models.CASCADE, verbose_name='所属上层'
     )
-    instruction = models.IntegerField(choices=((1, 'turn_on'), (2, 'turn_off'), (3, 'set_value')), default=1)
+    snippet_type = models.CharField(max_length=64, default='action')
+    status = models.CharField(max_length=64, default='active')
+    type = models.CharField(max_length=64, default='no_feedback')
+    hardware = models.CharField(max_length=64, default='growLED')
+    environmental_factor = models.CharField(max_length=64, default='temperature')
+    instruction = models.CharField(max_length=64, default='turn_on')
     value = models.JSONField(null=True, blank=True, default=list)
     curve = models.CharField(max_length=64, default='linear')
     curve_duration = models.TimeField(null=True, blank=True, default='00:30:00')
@@ -320,30 +317,20 @@ class Triggers(models.Model):
     )
     name_en = models.CharField(max_length=64, verbose_name='英文名')
     name_cn = models.CharField(max_length=64, verbose_name='中文名')
-    status = models.IntegerField(choices=((1, 'activate'), (2, 'inactivate')), default=1)
+    status = models.CharField(max_length=64, default='active')
     triggered = models.BooleanField(default=False, verbose_name='布尔值')
-    type = models.IntegerField(choices=((1, 'exception'), (2, 'trend'), (3, 'rate')), default=1)
+    type = models.CharField(max_length=64, default='exception')
     metric = models.ForeignKey(
-        to='EnvironmentalOptions', to_field='id', null=True, blank=True, on_delete=models.SET_NULL
+        to='EnvironmentalOptions', to_field='value', null=True, blank=True, on_delete=models.SET_NULL
     )
-    operator = models.IntegerField(
-        choices=(
-            (1, 'greater_than'),
-            (2, 'greater_than_or_equal_to'),
-            (3, 'less_than'),
-            (4, 'less_than_or_equal_to'),
-            (5, 'not_equal_to')
-        ), default=1
-    )
+    operator = models.CharField(max_length=64, default='greater_than')
     threshold = models.IntegerField(default=20)
     # when type == "exception" all this is null
     # when type == "trend" all this is full
     # when type == "rate" just have direction and timeframe
-    direction = models.IntegerField(
-        null=True, blank=True, choices=((1, 'increasing'), (2, 'decreasing'), (3, 'maintaining')), default=1
-    )
-    timeframe = models.TimeField(null=True, blank=True, default='00:30:00')
-    toi = models.TimeField(null=True, blank=True, default='00:30:00')
+    direction = models.CharField(null=True, blank=True, max_length=64)
+    timeframe = models.TimeField(null=True, blank=True, default=None)
+    toi = models.TimeField(null=True, blank=True, default=None)
 
     class Meta:
         db_table = 'triggers'
@@ -355,7 +342,7 @@ class Triggers(models.Model):
 
 class EnvironmentalOptions(models.Model):
     label = models.CharField(max_length=64, verbose_name='key')
-    value = models.CharField(max_length=64, verbose_name='value')
+    value = models.CharField(max_length=64, verbose_name='value', unique=True)
 
     class Meta:
         db_table = 'environmental_options'

@@ -1,15 +1,19 @@
 import { useEffect, useState, useMemo } from 'react'
-import { Table, Button, Popconfirm } from 'antd'
+import { Table, Button, Popconfirm, notification, message } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { DeleteOutlined, QuestionCircleOutlined, EditOutlined, RollbackOutlined } from '@ant-design/icons'
+import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined } from '@ant-design/icons'
+import ModelsModal from 'components/threeData/modelsModal'
 import { FADEINRIGHT, pageSize } from 'contants'
 import { getModels, postModels, patchModels, deleteModels } from 'network/api'
+import { openNotification } from 'utils'
 
-function Models() {
+function Models(props) {
+  const { cultivarsId } = props
   const navigate = useNavigate()
+  const [api, contextHolder] = notification.useNotification()
   const [params, setparams] = useState({ page: 1 })
   const [tableData, settableData] = useState([])
-  const [tableDataCount, settableDataCount] = useState(1)
+  const [tableDataCount, settableDataCount] = useState(0)
   const tableTitle = [
     {
       title: '序号',
@@ -86,22 +90,80 @@ function Models() {
       )
     }
   ]
+  const [openModal, setopenModal] = useState(false)
+  const [editInitValue, seteditInitValue] = useState(null)
+  const [isEdit, setisEdit] = useState(false)
 
   useEffect(() => {
-    getModels(params).then(res => {
+    getModels(cultivarsId, params).then(res => {
       if (res.status) {
         settableData(res.data.results)
         settableDataCount(res.data.count)
       }
     }).catch(err => console.log(err))
-  }, [params])
+  }, [cultivarsId, params])
 
+  // 删除行
   const deleteRow = row => {
-    console.log(row)
+    deleteModels(row.id).then(res => {
+      if (res.status) {
+        settableData(tableData.filter(item => item.id !== res.data))
+        settableDataCount(tableDataCount - 1)
+        message.success(res.info)
+      } else {
+        message.error(res.errs)
+      }
+    }).catch(err => console.log(err))
   }
 
+  const addClick = () => {
+    setisEdit(false)
+    setopenModal(true)
+  }
+
+  // 点击编辑
   const editClick = row => {
-    console.log(row)
+    setisEdit(true)
+    seteditInitValue(row)
+    setopenModal(true)
+  }
+
+  const onOk = value => {
+    value.cultivars = cultivarsId
+    if (isEdit) {
+      patchModels(value.id, value).then(res => {
+        if (res.status) {
+          settableData(tableData.map(item => {
+            if (item.id === res.data.id) {
+              item = res.data
+            }
+            return item
+          }))
+          message.success(res.info)
+          closeModal()
+        } else {
+          openNotification(api, 'error', res.errs)
+        }
+      }).catch(err => console.log(err))
+    } else {
+      delete value.id
+      postModels(value).then(res => {
+        if (res.status) {
+          settableData([res.data, ...tableData])
+          settableDataCount(tableDataCount + 1)
+          message.success(res.info)
+          closeModal()
+        } else {
+          openNotification(api, 'error', res.errs)
+        }
+      })
+    }
+  }
+
+  // 关窗
+  const closeModal = () => {
+    seteditInitValue(null)
+    setopenModal(false)
   }
 
   // 分页
@@ -114,6 +176,7 @@ function Models() {
   // 表格
   const table = useMemo(() => (
     <Table
+      title={() => 'models'}
       className={FADEINRIGHT}
       dataSource={tableData}
       columns={tableTitle}
@@ -126,13 +189,21 @@ function Models() {
 
   return (
     <>
+      {contextHolder}
       <Button
-        onClick={() => navigate('/cultivars')}
-        icon={<RollbackOutlined />}
         type='primary'
+        icon={<PlusOutlined />}
+        children='添加'
+        onClick={addClick}
         style={{ marginBottom: 'var(--content-margin)' }}
-      >返回上级</Button>
+      />
       {table}
+      <ModelsModal
+        initValue={editInitValue}
+        openModal={openModal}
+        closeModal={closeModal}
+        onOk={onOk}
+      />
     </>
   )
 }

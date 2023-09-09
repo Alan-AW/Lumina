@@ -2,11 +2,11 @@ import datetime
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from operations.models import Room, Zone, Unit, Temperature, Species, RoomDesc, Lighting, Cultivars, Models, Triggers, \
-    Action, Instruction, Phases
+    Action, Instruction, Phases, EnvironmentalOptions
 from serializers.operations_serializers import RoomSer, ZoneSer, UnitSer, ChoicesZoneSer, ChoicesRoomSer, \
     android_zones_deep_data, ChoicesRoleSer, TemperatureSer, LightingSer, AndroidSettingsSer, ExportDataSer
 from serializers.three_data_serializers import SpeciesDataSer, CultivarsDataSer, ModelsDataSer, PhasesDataSer, \
-    InstructionDataSer, ActionDataSer, TriggersDataSer
+    InstructionDataSer, ActionDataSer, TriggersDataSer, EnvironmentalOptionsChoicesSer
 from users.models import Roles
 from utils.methods import return_response, get_data, get_temperature_dict, \
     get_temperature_days_list, get_max_center_min_temperature
@@ -303,28 +303,42 @@ class SpeciesView(BaseView):
 class CultivarsView(BaseView):
     models = Cultivars
     serializer = CultivarsDataSer
+    get_filter = 'species_id'
 
 
 class ModelsView(BaseView):
     models = Models
     serializer = ModelsDataSer
+    get_filter = 'cultivars_id'
 
 
 class PhasesView(BaseView):
     models = Phases
     serializer = PhasesDataSer
+    get_filter = 'f_model_id'
 
 
 class InstructionView(BaseView):
     models = Instruction
     serializer = InstructionDataSer
+    get_filter = 'phases_id'
 
 
 class ActionView(BaseView):
     models = Action
     serializer = ActionDataSer
+    get_filter = 'base_id'
 
 
 class TriggersView(BaseView):
     models = Triggers
     serializer = TriggersDataSer
+    get_filter = 'phases_id'
+
+
+class ChoicesEnvironmentalOptions(APIView):
+    def get(self, request):
+        queryset = EnvironmentalOptions.objects.all()
+        ser = EnvironmentalOptionsChoicesSer(queryset, many=True)
+        response = return_response(data=ser.data)
+        return JsonResponse(response)

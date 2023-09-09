@@ -39,11 +39,7 @@ export const models = {
                     "hardware": "growLED",
                     "environmental_factor": "", // "temperature", "humidity", "CO2", etc.-温度湿度二氧化碳等等
                     "instruction": "turn_on", // "turn_on", "turn_off", "set_value"-“打开”、“关闭”、“设置值”
-                    "value": [
-                      100,
-                      100,
-                      100
-                    ], // value to set, could be a single value or an array of values
+                    "value": [ 100, 100, 100 ], // value to set, could be a single value or an array of values
                     // - 要设置的值，可以是单个值，也可以是值数组
                     "curve": "linear",
                     "curve_duration": "00:30:00"
@@ -52,15 +48,7 @@ export const models = {
                   "type": "timed", // "timed" or "interval"-“定时”或“间隔”
                   // if "type" is "timed"-如果“类型”是“定时”的
                   "n-weeks": 1, // every n weeks-每隔n周
-                  "dow": [
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1
-                  ], // Event takes place for everyday of the week-事件发生在一周中的每一天。
+                  "dow": [ 1, 1, 1, 1, 1, 1, 1 ], // Event takes place for everyday of the week-事件发生在一周中的每一天。
                   "tod": "08:00:00", // time of day-一天中的时间
                   // if "type" is "interval"-如果“type”是“间隔”
                   "interval": "00:30:00",

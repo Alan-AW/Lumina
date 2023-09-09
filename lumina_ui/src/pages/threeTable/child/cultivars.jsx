@@ -1,16 +1,14 @@
 import { useEffect, useState, useMemo } from 'react'
 import { Table, Button, Popconfirm, message, notification } from 'antd'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined, RollbackOutlined } from '@ant-design/icons'
+import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined } from '@ant-design/icons'
 import CultivarsModal from 'components/threeData/cultivarsModal'
 import { getCultivars, postCultivars, patchCultivars, deleteCultivars } from 'network/api'
 import { FADEINRIGHT, pageSize } from 'contants'
 import { openNotification } from 'utils'
 
-function Cultivars() {
+function Cultivars(props) {
+  const { speciesId, nextNode } = props
   const [api, contextHolder] = notification.useNotification()
-  const navigate = useNavigate()
-  const { state: { speciesId } } = useLocation()
   const [params, setparams] = useState({ page: 1 })
   const [tableData, settableData] = useState([])
   const [tableDataCount, settableDataCount] = useState(1)
@@ -73,8 +71,8 @@ function Cultivars() {
           </Popconfirm>
           <Button
             type='link'
-            children='models→'
-            onClick={() => navigate('/models', { state: { cultivarsId: row.id } })}
+            children='models↓'
+            onClick={() => nextNode(row.id)}
           />
         </div>
       )
@@ -85,13 +83,13 @@ function Cultivars() {
   const [isEdit, setisEdit] = useState(false)
 
   useEffect(() => {
-    getCultivars(params).then(res => {
+    getCultivars(speciesId, params).then(res => {
       if (res.status) {
         settableData(res.data.results)
         settableDataCount(res.data.count)
       }
     }).catch(err => console.log(err))
-  }, [params])
+  }, [speciesId, params])
 
   // 删除行
   const deleteRow = row => {
@@ -166,6 +164,7 @@ function Cultivars() {
   // 表格
   const table = useMemo(() => (
     <Table
+      title={() => 'cultivars'}
       className={FADEINRIGHT}
       dataSource={tableData}
       columns={tableTitle}
@@ -180,17 +179,11 @@ function Cultivars() {
     <>
       {contextHolder}
       <Button
-        onClick={() => navigate('/three_table')}
-        icon={<RollbackOutlined />}
-        type='primary'
-        style={{ marginBottom: 'var(--content-margin)' }}
-      >返回上级</Button>
-      <Button
         type='primary'
         icon={<PlusOutlined />}
         children='添加'
         onClick={addClick}
-        style={{ marginBottom: 'var(--content-margin)', marginLeft: 'var(--content-margin)' }}
+        style={{ marginBottom: 'var(--content-margin)' }}
       />
       {table}
       <CultivarsModal
