@@ -44,7 +44,8 @@ function Base(props) {
     {
       title: 'dow',
       align: 'center',
-      dataIndex: 'dow'
+      dataIndex: 'dow',
+      render: dow => <>{Array.isArray(dow) ? dow.join(',') : dow}</>
     },
     {
       title: 'tod',

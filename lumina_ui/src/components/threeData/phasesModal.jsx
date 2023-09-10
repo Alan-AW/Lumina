@@ -26,7 +26,7 @@ function PhasesModal(props) {
   return (
     <Modal
       open={openModal}
-      title='添加或修改信息'
+      title='添加或修改Phases'
       okText="确定"
       cancelText="取消"
       onCancel={onCancelModal}

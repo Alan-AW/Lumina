@@ -26,7 +26,7 @@ function ModelsModal(props) {
   return (
     <Modal
       open={openModal}
-      title='添加或修改信息'
+      title='添加或修改Models'
       okText="确定"
       cancelText="取消"
       onCancel={onCancelModal}

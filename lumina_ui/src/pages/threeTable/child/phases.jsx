@@ -216,7 +216,7 @@ function Phases() {
       <Button
         type='primary'
         icon={<PlusOutlined />}
-        children='添加'
+        children='Phases'
         onClick={addClick}
         style={{ marginBottom: 'var(--content-margin)' }}
       />

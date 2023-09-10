@@ -13,6 +13,15 @@ function BaseModal(props) {
     { label: 'timed', value: 'timed' },
     { label: 'interval', value: 'interval' }
   ]
+  const dowOptions = [
+    { label: '周末', value: '1' },
+    { label: '周一', value: '2' },
+    { label: '周二', value: '3' },
+    { label: '周三', value: '4' },
+    { label: '周四', value: '5' },
+    { label: '周五', value: '6' },
+    { label: '周六', value: '7' },
+  ]
   // 禁用输入框状态
   const [typeValue, settypeValue] = useState('')
 
@@ -47,7 +56,7 @@ function BaseModal(props) {
   return (
     <Modal
       open={openModal}
-      title='添加或修改信息'
+      title='添加或修改Base'
       okText="确定"
       cancelText="取消"
       onCancel={onCancelModal}
@@ -95,7 +104,11 @@ function BaseModal(props) {
             <Form.Item name='dow' label='dow：' rules={[
               { required: false }
             ]}>
-              <Input placeholder='请输入dow值' />
+              <Select
+                mode="multiple"
+                options={dowOptions}
+                style={{ width: '100%' }}
+              />
             </Form.Item>
 
             <Form.Item name='tod' label='tod：' rules={[

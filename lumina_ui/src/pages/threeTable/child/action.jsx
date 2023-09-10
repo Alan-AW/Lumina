@@ -208,7 +208,7 @@ function Action(props) {
       <Button
         type='primary'
         icon={<PlusOutlined />}
-        children='添加'
+        children='Action'
         onClick={addClick}
         disabled={!baseId}
         style={{ marginBottom: 'var(--content-margin)' }}

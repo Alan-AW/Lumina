@@ -214,7 +214,7 @@ function Triggers(props) {
       <Button
         type='primary'
         icon={<PlusOutlined />}
-        children='添加'
+        children='Triggers'
         onClick={addClick}
         disabled={!phasesId}
         style={{ marginBottom: 'var(--content-margin)' }}

@@ -43,12 +43,14 @@ function Models(props) {
     {
       title: 'description_cn',
       align: 'center',
-      dataIndex: 'description_cn'
+      dataIndex: 'description_cn',
+      render: value => <>{Array.isArray(value) ? value.join(',') : value}</>
     },
     {
       title: 'available_grow_objectives',
       align: 'center',
-      dataIndex: 'available_grow_objectives'
+      dataIndex: 'available_grow_objectives',
+      render: value => <>{Array.isArray(value) ? value.join(',') : value}</>
     },
     {
       title: 'available_grow_techniques',
@@ -176,7 +178,7 @@ function Models(props) {
   // 表格
   const table = useMemo(() => (
     <Table
-      title={() => 'models'}
+      title={() => 'Models'}
       className={FADEINRIGHT}
       dataSource={tableData}
       columns={tableTitle}
@@ -193,7 +195,7 @@ function Models(props) {
       <Button
         type='primary'
         icon={<PlusOutlined />}
-        children='添加'
+        children='Models'
         onClick={addClick}
         style={{ marginBottom: 'var(--content-margin)' }}
       />

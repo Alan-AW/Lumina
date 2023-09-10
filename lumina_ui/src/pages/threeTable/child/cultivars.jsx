@@ -164,7 +164,7 @@ function Cultivars(props) {
   // 表格
   const table = useMemo(() => (
     <Table
-      title={() => 'cultivars'}
+      title={() => 'Cultivars'}
       className={FADEINRIGHT}
       dataSource={tableData}
       columns={tableTitle}
@@ -181,7 +181,7 @@ function Cultivars(props) {
       <Button
         type='primary'
         icon={<PlusOutlined />}
-        children='添加'
+        children='Cultivars'
         onClick={addClick}
         style={{ marginBottom: 'var(--content-margin)' }}
       />
