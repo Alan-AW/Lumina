@@ -20,7 +20,7 @@ export const LocalRouterMap = {
   '/zone': { title: '区域管理', icon: <ApartmentOutlined />, element: <Zone /> },
   '/room': { title: '房间管理', icon: <LockOutlined />, element: <Room /> },
   '/unit': { title: '机器管理', icon: <ClusterOutlined />, element: <Unit /> },
-  '/three_table': { title: 'ThreeData', icon: <ClusterOutlined />, element: <ThreeTable /> },
+  '/three_table': { title: '种植模型管理', icon: <ClusterOutlined />, element: <ThreeTable /> },
   '/cultivars': { element: <Cultivars /> },
   '/models': { element: <Models /> },
   '/phases': { element: <Phases /> },
