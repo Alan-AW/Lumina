@@ -4,10 +4,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-@5sg0tm)3z00a5syf88n74udw5n$r%zwgbd8h^osmhlo7mbs2&'
 
@@ -17,9 +13,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
-
 INSTALLED_APPS = [
     'simpleui',
     'django.contrib.admin',
@@ -30,7 +24,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'upload_file.apps.UploadFileConfig',
-    'operations.apps.OperationsConfig'
+    'operations.apps.OperationsConfig',
+    'android.apps.AndroidConfig',
 ]
 
 MIDDLEWARE = [
@@ -66,8 +61,6 @@ WSGI_APPLICATION = 'Lumina_api.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -79,17 +72,15 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'lumina',
-        'USER': 'Lumina',
-        'PASSWORD': 'admin123456',
-        'HOST': '47.110.240.100',
+        'USER': 'moquanshengwu',
+        'PASSWORD': 'mo_quan_123456',
+        'HOST': '43.138.127.42',
         'POST': 3306,
         'OPTIONS': {'charset': 'utf8mb4'}
     }
 }
 
 # Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -107,8 +98,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = 'zh-Hans'
 
 TIME_ZONE = 'Asia/Shanghai'
@@ -116,10 +105,6 @@ TIME_ZONE = 'Asia/Shanghai'
 USE_I18N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
@@ -132,8 +117,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace('\\', '/')
 MEDIA_URL = '/media/'
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 跨域
@@ -160,13 +143,6 @@ REST_FRAMEWORK = {
         'AnonymousUser': '5/s',  # 匿名用户
         'super_user': '20/s',
     },
-    # 版本
-    # 内置的自动获取URLVersion
-    # 'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
-    # # 版本控制基本配置
-    # 'DEFAULT_VERSION': 'v1',  # 默认版本
-    # 'ALLOWED_VERSIONS': ['v1', 'v2'],  # 允许的版本范围
-    # 'VERSION_PARAM': 'version',  # 后台获取版本的参数名词
     # 解析器
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
@@ -194,6 +170,6 @@ SIMPLEUI_DEFAULT_THEME = 'element.css'
 # SIMPLEUI_DEFAULT_THEME = 'admin.lte.css'
 
 # admin后台title相关配置
-ADMIN_SITE_HEADER = '网站后台'  # 设置后台登陆页Title和登陆成功之后左侧导航栏title
-ADMIN_SITE_TITLE = '数字化管理系统后台'  # 设置后台网页title
-ADMIN_SITE_INDEX_TITLE = '后台首页'
+ADMIN_SITE_HEADER = '后台'  # 设置后台登陆页Title和登陆成功之后左侧导航栏title
+ADMIN_SITE_TITLE = '墨泉生物系统后台'  # 设置后台网页title
+ADMIN_SITE_INDEX_TITLE = '首页'
