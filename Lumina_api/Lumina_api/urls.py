@@ -20,4 +20,6 @@ urlpatterns = [
     path('manager/', include(('operations.urls', 'operations'), namespace='operations')),
     # 安卓端API模块
     path('android/', include(('android.urls', 'android'), namespace='android')),
+    # 设备上传json文件
+    path('device/', include(('device.urls', 'device'), namespace='device')),
 ]

@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'upload_file.apps.UploadFileConfig',
     'operations.apps.OperationsConfig',
     'android.apps.AndroidConfig',
+    'device.apps.DeviceConfig',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +59,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Lumina_api.wsgi.application'
-
 
 # Database
 # DATABASES = {
@@ -95,7 +95,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 LANGUAGE_CODE = 'zh-Hans'
