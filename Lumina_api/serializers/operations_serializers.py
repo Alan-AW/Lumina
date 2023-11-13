@@ -163,6 +163,7 @@ def unitsDescSer(units):
             if plant_desc.cycle > computed_sowing_time(plant_desc.create_time):
                 data_list.append({
                     "id": unit.id,
+                    "serial_number": unit.serial_number,
                     "cropItemDay": computed_sowing_time(plant_desc.create_time),
                     "cropItemCycle": plant_desc.cycle,
                     "cropItemName": plant_desc.plant.name_cn,

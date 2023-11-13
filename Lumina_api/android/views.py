@@ -28,9 +28,6 @@ class UnitDescView(APIView):
         if not unit_obj:
             response = return_response(status=False, error=f'未找到ID为{unit_id}的机器！')
             return JsonResponse(response)
-        # 读取区域信息
-        zone_name = unit_obj.room.zone.name
-        zone_time_zone = unit_obj.room.zone.time_zone
         # 读取光照信息
         lighting_obj = Lighting.objects.filter(
             deviceId=unit_obj.deviceId, deviceSecret=unit_obj.deviceSecret
