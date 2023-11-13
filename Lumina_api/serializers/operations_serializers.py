@@ -113,17 +113,18 @@ class RoomDescSer(serializers.ModelSerializer):
     min_current = serializers.SerializerMethodField()
 
     def get_max_current(self, row):
-        return {"title": "maxCurrent", "value": "25℃"}
+        return "25℃"
 
     def get_min_current(self, row):
-        return {"title": "minCurrent", "value": "20℃"}
+        return "20℃"
 
     class Meta:
         model = Room
         fields = ['id', 'serial_number', 'max_current', 'min_current']
 
 
-# 第二期安卓端登陆成功后，获取区域内所有房间的所有信息
+# 第二期安卓端登陆成功后，获取区域内所有房间的所有信息-已废弃
+
 def android_zones_deep_data(rooms):
     results = []
     for room in rooms:
@@ -133,18 +134,17 @@ def android_zones_deep_data(rooms):
         units_names = list(units_data.values())
         units_ids = list(units_data.keys())
         # 收集机器下的作物信息
-        crop_item_list = [
-            [
-                {
-                    "cropItemDay": computed_sowing_time(plant_desc.create_time),
-                    "cropItemCycle": plant_desc.cycle,
-                    "cropItemName": plant_desc.plant.name_cn,
-                    "url": f'{sys.API_BASE_URL}{plant_desc.plant.icon_path.file.url}'
-                } for plant_desc in unit.plant_desc.all() if
-                plant_desc.cycle > computed_sowing_time(plant_desc.create_time)
-            ]
-            for unit in units
-        ]
+        crop_item_list = []
+        for unit in units:
+            for plant_desc in unit.plant_desc.all():
+                if plant_desc.cycle > computed_sowing_time(plant_desc.create_time):
+                    i = {
+                        "cropItemDay": computed_sowing_time(plant_desc.create_time),
+                        "cropItemCycle": plant_desc.cycle,
+                        "cropItemName": plant_desc.plant.name_cn,
+                        "url": f'{sys.API_BASE_URL}{plant_desc.plant.icon_path.file.url}'
+                    }
+                    crop_item_list.append(i)
         item = {
             "recyclerData": RoomDescSer(room, many=False).data,
             "unitsNames": units_names,
@@ -155,18 +155,47 @@ def android_zones_deep_data(rooms):
     return results
 
 
+# 第三期正式版，安卓首页接口，与上面一样
+def unitsDescSer(units):
+    data_list = []
+    for unit in units:
+        for plant_desc in unit.plant_desc.all():
+            if plant_desc.cycle > computed_sowing_time(plant_desc.create_time):
+                data_list.append({
+                    "id": unit.id,
+                    "cropItemDay": computed_sowing_time(plant_desc.create_time),
+                    "cropItemCycle": plant_desc.cycle,
+                    "cropItemName": plant_desc.plant.name_cn,
+                    "url": f'{sys.API_BASE_URL}{plant_desc.plant.icon_path.file.url}'
+                })
+    return data_list
+
+
+# 第三期正式版，安卓首页接口主序列化程序
+def android_home_data(rooms):
+    # 遍历每一个房间
+    data_list = []
+    for room in rooms:
+        # 为每一个房间生成一个详情数据
+        data_list.append({
+            "room_desc": RoomDescSer(room, many=False).data,
+            "units_desc_list": unitsDescSer(room.units.all())
+        })
+    return data_list
+
+
 # 温度传感器序列化
 class TemperatureSer(serializers.ModelSerializer):
     moment = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
-    json_val = serializers.SerializerMethodField()
+    data_list = serializers.SerializerMethodField()
 
-    def get_json_val(self, row):
+    def get_data_list(self, row):
         val = [row.json_val[i:i + 8] for i in range(0, len(row.json_val), 8)]
         return val
 
     class Meta:
         model = Temperature
-        fields = '__all__'
+        exclude = ['json_val']
 
 
 # 光照传感器序列化

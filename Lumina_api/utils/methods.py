@@ -76,4 +76,4 @@ def get_max_center_min_temperature(list_item):
 
     # 计算22.5~25区间内的数字的比例
     range_22_5_25 = round(len([num for num in list_item if 22.5 < num <= 25]) / len(list_item) * 100, 2)
-    return [range_22_5_25, range_21_22_5, range_0_21]
+    return {'high': range_22_5_25, 'midd': range_21_22_5, 'low': range_0_21}

@@ -2,21 +2,20 @@ import datetime
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from operations.models import Unit, Temperature, Lighting
-from serializers.operations_serializers import android_zones_deep_data, TemperatureSer, LightingSer, AndroidSettingsSer
+from serializers.operations_serializers import android_home_data, TemperatureSer, LightingSer, AndroidSettingsSer
 from utils.methods import return_response, get_temperature_dict, get_temperature_days_list, \
     get_max_center_min_temperature
 
 
 # 安卓端请求区域内的所有数据
 class ZoneDeepDataView(APIView):
-    def post(self, request):
-        zone_id = request.data.get('zoneId')
+    def get(self, request, zone_id):
         zone = request.user.company.zones.filter(id=zone_id).first()
         if not zone:
             response = return_response(status=False, error=f'未找到ID为{zone_id}的区域！')
             return JsonResponse(response)
         queryset = zone.rooms.all()
-        data = android_zones_deep_data(queryset)
+        data = android_home_data(queryset)
         response = return_response(data=data)
         return JsonResponse(response)
 
@@ -25,7 +24,6 @@ class ZoneDeepDataView(APIView):
 class UnitDescView(APIView):
     def get(self, request, unit_id):
         # 获取机器信息
-        # unit_id = request.data.get('unitId')
         unit_obj = Unit.objects.filter(id=unit_id).first()
         if not unit_obj:
             response = return_response(status=False, error=f'未找到ID为{unit_id}的机器！')
@@ -68,22 +66,23 @@ class UnitDescView(APIView):
         x_label = [i[5:] for i in list(temperature_dict.keys())]
         # 求每个项的 高 中 低 温度比例 <=21 <= 22.5 <=25
         every_days_temperature = [get_max_center_min_temperature(i) for i in temperature_days_list]
-        every_days_temperature = {
-            "high": [item[0] for item in every_days_temperature],
-            "middle": [item[1] for item in every_days_temperature],
-            "low": [item[2] for item in every_days_temperature]
-        }
         data = {
-            'zone_name': zone_name,
-            'serial_number': unit_obj.serial_number,
-            'time_zone': zone_time_zone,
-            'temperature': temperature_ser.data,
-            'average': every_days_temperature,
-            'unit_status': lighting_ser.data,
-            'x_label': x_label
+            'temperature': temperature_ser.data['data_list'],
+            'unit_status': lighting_ser.data['json_val'],
+            'echarts': {
+                'value': every_days_temperature,
+                'x_label': x_label
+            }
+
         }
         response = return_response(data=data)
         return JsonResponse(response)
+
+
+# 安卓端请求机器图表数据-此接口第二期做（正式版）
+class UnitChartView(APIView):
+    def get(self, request, unit_id):
+        pass
 
 
 # 安卓端参数设置
