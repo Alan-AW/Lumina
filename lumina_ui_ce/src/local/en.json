@@ -1,0 +1,195 @@
+{
+  "home": "home",
+  "login": {
+    "title": "Login",
+    "loginSuccess": "Login Success",
+    "loginbtn": "Login",
+    "Form": {
+      "account": "Account",
+      "password": "Password",
+      "rules": {
+        "account": "Account cannot be empty!",
+        "password": "Password cannot be empty!"
+      },
+      "placeholder": {
+        "account": "Enter Your Account",
+        "password": "Enter Your Password"
+      }
+    }
+  },
+  "user": {
+    "addUser": "Add User",
+    "title": "User management",
+    "deltitle": "Delete User",
+    "description": "Are you sure you want to delete this user?",
+    "tableTitle": {
+      "index": "Index",
+      "id": "ID",
+      "account": "Account",
+      "password": "Password",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "role_label": "Role",
+      "status_label": "Status",
+      "chinese_label": "User language",
+      "qrcode_url": "QR Code",
+      "avatar_url": "Avatar",
+      "create_time": "Create Time",
+      "update_time": "Update Time",
+      "action": "Action"
+    },
+    "EditModalTitle1": "Edit User",
+    "EditModalTitle2": "Add User",
+    "EditModalbtnCancel": "Cancel",
+    "EditModalbtnConfirm": "Confirm",
+    "rules": {
+      "account": "User account cannot be empty!",
+      "password": "User password cannot be empty!",
+      "first_name": "User first name cannot be empty!",
+      "last_name": "User last name cannot be empty!",
+      "role_label": "User role must be selected!",
+      "status_label": "User status must be selected!",
+      "chinese_label": "User language must be selected!"
+    },
+    "placeholder": {
+      "account": "Please enter user account",
+      "password": "Please enter user password",
+      "first_name": "Please enter user first name",
+      "last_name": "Please enter user last name",
+      "role_label": "Please select user role",
+      "status_label": "Please select user status",
+      "chinese_label": "Please select user language"
+    }
+  },
+  "Zone": {
+    "addZone": "Add Zone",
+    "title": "Zone management",
+    "deltitle": "Delete Zone",
+    "description": "Are you sure you want to delete this zone?",
+    "tableTitle": {
+      "index": "Index",
+      "id": "ID",
+      "name": "Zone Name",
+      "status_label": "Status",
+      "time_zone": "Time Zone",
+      "create_time": "Create Time",
+      "update_time": "Update Time",
+      "action": "Action"
+    },
+    "EditModalTitle1": "Edit Zone",
+    "EditModalTitle2": "Add Zone",
+    "EditModalbtnCancel": "Cancel",
+    "EditModalbtnConfirm": "Confirm",
+    "rules": {
+      "status_label": "The region status must be selected!",
+      "name": "The zone name cannot be empty!",
+      "time_zone": "Regional time zones cannot be empty!"
+    },
+    "placeholder": {
+      "status_label": "Please select the status of the region",
+      "name": "Please enter the zone name",
+      "time_zone": "Please select the time zone of the region"
+    }
+  },
+  "room": {
+    "addRoom": "Add Room",
+    "title": "Room management",
+    "deltitle": "Delete Room",
+    "description": "Are you sure you want to delete this room",
+    "tableTitle": {
+      "index": "Index",
+      "id": "ID",
+      "serial_number": "Room Number",
+      "zone_name": "Zone Name",
+      "time_zone": "Time Zone",
+      "create_time": "Create Time",
+      "update_time": "Update Time",
+      "action": "Action",
+      "zone": "Zone"
+    },
+    "EditModalTitle1": "Edit Room",
+    "EditModalTitle2": "Add Room",
+    "EditModalbtnCancel": "Cancel",
+    "EditModalbtnConfirm": "Confirm",
+    "rules": {
+      "zone": "The zone must be selected!",
+      "serial_number": "The room number cannot be empty!"
+    },
+    "placeholder": {
+      "zone": "Please select the zone",
+      "serial_number": "Please enter the room number"
+    }
+  },
+  "unit": {
+    "addUnit": "Add Unit",
+    "title": "Unit management",
+    "deltitle": "Delete Unit",
+    "description": "Are you sure you want to delete this unit?",
+    "tableTitle": {
+      "index": "Index",
+      "id": "ID",
+      "serial_number": "Unit Number",
+      "deviceId": "Device ID",
+      "deviceSecret": "Device Secret",
+      "room_number": "Room Number",
+      "status_label": "Status",
+      "components": "Components",
+      "create_time": "Create Time",
+      "update_time": "Update Time",
+      "action": "Action",
+      "room": "Room"
+    },
+    "EditModalTitle1": "Edit Unit",
+    "EditModalTitle2": "Add Unit",
+    "EditModalbtnCancel": "Cancel",
+    "EditModalbtnConfirm": "Confirm",
+    "rules": {
+      "status_label": "The unit status must be selected!",
+      "serial_number": " The unit number cannot be empty!",
+      "deviceId": "The device ID cannot be empty!",
+      "deviceSecret": " The device secret cannot be empty!",
+      "components": "The component list cannot be empty!",
+      "room": "  The room must be selected!"
+    },
+    "placeholder": {
+      "status_label": "Please select the status of the unit",
+      "serial_number": "Please enter the unit number",
+      "deviceId": "Please enter the device ID",
+      "deviceSecret": " Please enter the device secret",
+      "components": "Please enter a list of components, separated by , ",
+      "room": "Please select the room"
+    }
+  },
+  "threeTable": {
+    "addTable": "Add Table",
+    "deltitle": "Delete Table",
+    "description": "Are you sure you want to delete this table?",
+    "tableTitle": {
+      "index": "Index",
+      "id": "ID",
+      "name_en": "English Name",
+      "name_cn": "Chinese Name",
+      "description_en": "English Description",
+      "description_cn": "Chinese Description",
+      "action": "Action"
+    },
+    "EditModalTitle1": "Edit Table Or Add Table ",
+    "EditModalTitle2": "Edit Table Or Add Table",
+    "EditModalbtnCancel": "Cancel",
+    "EditModalbtnConfirm": "Confirm",
+    "rules": {
+      "message": "It cannot be empty！"
+    },
+    "placeholder": {
+      "message": "Please enter{{val}} !"
+    }
+  },
+  "LocalRouterMap": {
+    "index": "index",
+    "user": "user",
+    "zone": "zone",
+    "room": "room ",
+    "unit": "unit ",
+    "three_table": "three table"
+  }
+}

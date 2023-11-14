@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "assets/*": [
+        "assets/*"
+      ],
+      "common/*": [
+        "common/*"
+      ],
+      "components/*": [
+        "components/*"
+      ],
+      "contants/*": [
+        "contants/*"
+      ],
+      "pages/*": [
+        "pages/*"
+      ],
+      "router/*": [
+        "router/*"
+      ],
+      "utils/*": [
+        "utils/*"
+      ],
+      "state/*": [
+        "state/*"
+      ],
+      "network/*": [
+        "network/*"
+      ]
+    }
+  },
+  "include": [
+    "src"
+  ]
+}

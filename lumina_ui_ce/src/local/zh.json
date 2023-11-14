@@ -1,0 +1,195 @@
+{
+  "home": "站点首页",
+  "login": {
+    "title": "登录",
+    "loginSuccess": "登录成功",
+    "loginbtn": "欢迎使用",
+    "Form": {
+      "account": "账号",
+      "password": "密码",
+      "rules": {
+        "account": "账号不可为空！",
+        "password": "密码不可为空！"
+      },
+      "placeholder": {
+        "account": "请输入账号",
+        "password": "请输入密码"
+      }
+    }
+  },
+  "user": {
+    "addUser": "添加用户",
+    "title": "用户管理",
+    "deltitle": "删除用户",
+    "description": "确定要删除这个用户吗?",
+    "tableTitle": {
+      "index": "序号",
+      "id": "ID",
+      "account": "用户账号",
+      "password": "用户密码",
+      "first_name": "姓",
+      "last_name": "名",
+      "role_label": "用户角色",
+      "status_label": "用户状态",
+      "chinese_label": "用户语言",
+      "qrcode_url": "二维码",
+      "avatar_url": "头像",
+      "create_time": "创建时间",
+      "update_time": "更新时间",
+      "action": "操作"
+    },
+    "EditModalTitle1": "编辑用户",
+    "EditModalTitle2": "添加用户",
+    "EditModalbtnCancel": "取消",
+    "EditModalbtnConfirm": "确定",
+    "rules": {
+      "account": "用户账号不可为空！",
+      "password": "用户密码不可为空！",
+      "first_name": "用户姓名不可为空！",
+      "last_name": "用户姓名不可为空！",
+      "role_label": "用户角色必须选择！",
+      "status_label": "用户状态必须选择！",
+      "chinese_label": "用户语言必须选择！"
+    },
+    "placeholder": {
+      "account": "请输入用户账号",
+      "password": "请输入用户密码",
+      "first_name": "请输入用户姓",
+      "last_name": "请输入用户名",
+      "role_label": "请选择用户角色",
+      "status_label": "请选择用户状态",
+      "chinese_label": "请选择用户语言"
+    }
+  },
+  "Zone": {
+    "addZone": "添加区域",
+    "title": "区域管理",
+    "deltitle": "删除区域",
+    "description": "确定要删除这个区域吗?",
+    "tableTitle": {
+      "index": "序号",
+      "id": "ID",
+      "name": "区域名称",
+      "status_label": "区域状态",
+      "time_zone": "所处时区",
+      "create_time": "创建时间",
+      "update_time": "更新时间",
+      "action": "操作"
+    },
+    "EditModalTitle1": "编辑区域",
+    "EditModalTitle2": "添加区域",
+    "EditModalbtnCancel": "取消",
+    "EditModalbtnConfirm": "确定",
+    "rules": {
+      "status_label": "区域状态必须选择！",
+      "name": "区域名称不可为空！",
+      "time_zone": "区域时区不可为空！"
+    },
+    "placeholder": {
+      "status_label": "请选择区域状态",
+      "name": "请输入区域名称",
+      "time_zone": "请输入区域时区"
+    }
+  },
+  "room": {
+    "addRoom": "添加房间",
+    "title": "房间管理",
+    "deltitle": "删除房间",
+    "description": "确定要删除这个房间吗?",
+    "tableTitle": {
+      "index": "序号",
+      "id": "ID",
+      "serial_number": "房间编号",
+      "zone_name": "区域状态",
+      "time_zone": "所属地区",
+      "create_time": "创建时间",
+      "update_time": "更新时间",
+      "action": "操作",
+      "zone": "选择区域"
+    },
+    "EditModalTitle1": "编辑房间",
+    "EditModalTitle2": "添加房间",
+    "EditModalbtnCancel": "取消",
+    "EditModalbtnConfirm": "确定",
+    "rules": {
+      "zone": "区域必须选择！",
+      "serial_number": "区域时区不可为空！"
+    },
+    "placeholder": {
+      "zone": "请选择区域",
+      "serial_number": "请输入区域时区"
+    }
+  },
+  "unit": {
+    "addUnit": "添加机器",
+    "title": "机器管理",
+    "deltitle": "删除机器",
+    "description": "确定要删除这个机器吗?",
+    "tableTitle": {
+      "index": "序号",
+      "id": "ID",
+      "serial_number": "机器编号",
+      "deviceId": "设备编号",
+      "deviceSecret": "设备密钥",
+      "room_number": "房间编号",
+      "status_label": "机器状态",
+      "components": "组件列表",
+      "create_time": "创建时间",
+      "update_time": "更新时间",
+      "action": "操作",
+      "room": "所属房间"
+    },
+    "EditModalTitle1": "编辑机器",
+    "EditModalTitle2": "添加机器",
+    "EditModalbtnCancel": "取消",
+    "EditModalbtnConfirm": "确定",
+    "rules": {
+      "status_label": "机器状态必须选择！",
+      "serial_number": "机器编号不可为空！",
+      "deviceId": "设备编号不可为空！",
+      "deviceSecret": "设备密钥不可为空！",
+      "components": "组件列表不可为空！",
+      "room": "机器所属房间不可为空！"
+    },
+    "placeholder": {
+      "status_label": "请选择机器状态",
+      "serial_number": "请输入机器编号",
+      "deviceId": "请输入设备编号",
+      "deviceSecret": "请输入设备密钥",
+      "components": "请输入组件列表，多个组件用 , 隔开",
+      "room": "请选择机器所属房间"
+    }
+  },
+  "threeTable": {
+    "addTable": "添加",
+    "deltitle": "删除操作",
+    "description": "确定要删除这行吗?",
+    "tableTitle": {
+      "index": "序号",
+      "id": "ID",
+      "name_en": "名字英文名称",
+      "name_cn": "名字中文名称",
+      "description_en": "英文描述",
+      "description_cn": "中文描述",
+      "action": "操作"
+    },
+    "EditModalTitle1": "添加或修改Species",
+    "EditModalTitle2": "添加或修改Species",
+    "EditModalbtnCancel": "取消",
+    "EditModalbtnConfirm": "确定",
+    "rules": {
+      "message": "不可为空！"
+    },
+    "placeholder": {
+      "message": "请输入{{val}} !"
+    }
+  },
+  "LocalRouterMap": {
+    "index": "首页",
+    "user": "用户管理",
+    "zone": "区域管理",
+    "room": "房间管理",
+    "unit": "机器管理",
+    "three_table": "机器管理"
+  }
+}
