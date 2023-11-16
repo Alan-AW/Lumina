@@ -1,0 +1,75 @@
+{
+    "January": "January",
+    "February": "February",
+    "March": "March",
+    "April": "April",
+    "May": "May",
+    "June": "June",
+    "July": "July",
+    "August": "August",
+    "September": "September",
+    "October": "October",
+    "November": "November",
+    "December": "December",
+    "Room":"Room",
+    "Dashboard":"Dashboard",
+    "Login":"Login",
+    "account":"account",
+    "password":"password",
+    "Bright Renaissance":"Bright Renaissance",
+    "Zone":"Zone",
+    "Settings":"Settings",
+    "Review Tickets":"Review Tickets",
+    "Aisle":"Aisle",
+    "Day":"Day",
+    "Day Cycle":"Day Cycle",
+    "MaxCurrentTemperature":"Max Current Temperature",
+    "LowCurrentTemperature":"Low Current Temperature",
+    "LiveCamera":" Live Camera",
+    "Analytics":"Analytics",
+    "AveragePlantTemperature":"Average Plant Temperature",
+    "last":"last",
+    "Days":"Days",
+    "AdminTools":"Admin Tools",
+    "Cultivars":"Cultivars",
+    "ButterheadLettuce":" Butterhead Lettuce",
+    "Leaf":"Leaf",
+    "BataviaLettuce":"Batavia Lettuce",
+    "RestoreToDefaults":"Restore to Defaults",
+    "NightChamberTemperature":"Night Chamber Temperature",
+    "PhaseControl":"Phase Control",
+    "CurrentPhase":" Current Phase",
+    "Germination":"Germination",
+    "days":"days",
+    "Duration":"Duration",
+    "AddTrayRow":"Add Tray Row",
+    "PhaseControlTips":"*When changing the Phase Duration,it must match the plant’s phase to avoid complications.",
+    "AutoClimate":"Auto Climate",
+    "off":"off",
+    "Heating":"Heating",
+    "temperatureTips":" *Turning off”Auto Climate“ puts your plant at risk. Please regularly check temperature to prevent it overheating.",
+    "Flowering":"Flowering",
+    "AutoFloweringTrigger":"Auto Flowering trigger",
+    "ManualTrigger":"Manual Trigger",
+    "floweringTips":"*Allows device to trigger the plant's flowering stage automatically.",
+    "LightingSystem":"Lighting System",
+    "UV-B":"UV-B",
+    "DeepBlue":"Deep Blue",
+    "Main":"Main",
+    "Hyper":"Hyper Red",
+    "FarRed":"Far Red",
+    "systemTips":"This device is in Growing Mode . You can manually adjust thepump when the automatic setting is turned off.",
+    "SelectLanguage":"Select language",
+    "LoginSuccess":"Login Success"
+    
+    
+    
+
+    
+    
+   
+    
+    
+    
+    
+ }
