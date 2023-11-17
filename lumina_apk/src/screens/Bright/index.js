@@ -373,6 +373,7 @@ const styles = createStyles({
     color: '#000',
     fontFamily: fontName.regular,
     fontSize: 26,
+    lineHeight:30,
     alignItems: 'center'
   },
 });

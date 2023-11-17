@@ -74,7 +74,7 @@ const FormContent=({navigation})=>{
             shadowColor: 'black',
           }}>
         <View style={styles.content}>
-        <Text style={useInlineStyle({textAlign:'center',fontSize:40,fontFamily:fontName.bold})} >{t('Login')}</Text>
+        <Text style={useInlineStyle({textAlign:'center',fontSize:40,fontFamily:fontName.bold,lineHeight:40,})} >{t('Login')}</Text>
            <TextInput style={styles.item} value={account} onChangeText={text=>setAccount(text)}  placeholder={t('account')} />
            <TextInput style={styles.item} value={password} onChangeText={text=>setPassWord(text)}   secureTextEntry={true}  placeholder={t('password')} />
            <View style={styles.qrcode}>

@@ -62,7 +62,6 @@ const styles = createStyles({
     },
     headerText1: {
         color: '#2a2a2a',
-        fontFamily: 'pingfanghk-semibold',
         fontWeight: '500',
         fontSize: 32,
     },
@@ -71,6 +70,7 @@ const styles = createStyles({
         fontFamily: 'pingfanghk-light',
         fontWeight: '500',
         fontSize: 26,
+        lineHeight:30,
         paddingTop: 0,
         paddingRight:12,
         alignItems: 'center',
@@ -79,6 +79,7 @@ const styles = createStyles({
         color: '#000',
         fontFamily: fontName.regular,
         fontSize: 26,
+        lineHeight:30,
     },
     backBtn: {
         backgroundColor: '#fff',

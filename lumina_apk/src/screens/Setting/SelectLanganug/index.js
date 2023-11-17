@@ -120,6 +120,9 @@ const styles = createStyles({
   },
   selectedTextStyle: {
     fontSize: 28,
+    lineHeight:30,
+    paddingTop:5,
+    paddingLeft:10,
     fontFamily: fontName.medium,
   },
   iconStyle: {

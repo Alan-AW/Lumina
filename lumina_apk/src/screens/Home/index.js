@@ -89,6 +89,7 @@ const Card = props => {
             fontFamily: fontName.medium,
             fontSize: 24,
             color: '#000',
+            lineHeight:30,
             paddingLeft: 20,
           })}>
           {t("Aisle")} #{serial_number}
@@ -100,6 +101,7 @@ const Card = props => {
           fontFamily: fontName.medium,
           fontSize: 24,
           color: '#000',
+          lineHeight:30,
           paddingTop: 5,
         })}>
         {t("Day")}{title2}
@@ -108,6 +110,7 @@ const Card = props => {
             fontFamily: fontName.regular,
             fontSize: 22,
             color: '#000',
+            lineHeight:30,
           })}>
           - {cropItemCycle} {t("Day Cycle")}
         </Text>
