@@ -1,9 +1,25 @@
 import { StyleSheet } from "react-native";
 import { SIZE_RATIO, ADAPTATION_CONVERT_STYLE_KEYS, type TStyle } from "../constants/style";
 import { jsonIsEmpty } from "./utils";
+import { Dimensions } from "react-native";
+import orientation from 'react-native-orientation-locker'
+const { width: VIEWPORT_WIDTH, height: VIEWPORT_HEIGHT } = Dimensions.get("screen");
+//是否横屏
+export const isLandscapeScreen=()=>{
+  return VIEWPORT_WIDTH>VIEWPORT_HEIGHT
+}
 
 /** 根据设计稿尺寸以及屏幕大小进行适配转换. */
 export function adaptationConvert(size: number): number {
+
+  // 设备尺寸
+
+  // 参考设计尺寸
+  const REFERENCE_DESIGN_SIZE = isLandscapeScreen()?575:335;
+  // 比例
+  const SIZE_RATIO = REFERENCE_DESIGN_SIZE / VIEWPORT_WIDTH;
+ console.log('当前宽高',VIEWPORT_WIDTH,VIEWPORT_HEIGHT);
+ 
   return Number((size * SIZE_RATIO).toFixed(1));
 }
 

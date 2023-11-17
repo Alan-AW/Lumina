@@ -1,10 +1,11 @@
 import { Dimensions } from "react-native";
 import type { ViewStyle, TextStyle, ImageStyle } from "react-native";
+import orientation from 'react-native-orientation-locker'
 
 // 设备尺寸
 export const { width: VIEWPORT_WIDTH, height: VIEWPORT_HEIGHT } = Dimensions.get("window");
 // 参考设计尺寸
-export const REFERENCE_DESIGN_SIZE = 375;
+export const REFERENCE_DESIGN_SIZE = 675;
 // 比例
 export const SIZE_RATIO = REFERENCE_DESIGN_SIZE / VIEWPORT_WIDTH;
 

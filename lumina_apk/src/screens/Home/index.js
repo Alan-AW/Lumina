@@ -25,6 +25,7 @@ import {
 import { IconBaogao, IconJinrujiantouxiao, IconShezhi } from 'src/iconfont';
 import { useTranslation } from 'react-i18next';
 import { getMonth } from 'src/helpers/utils';
+import ScreenHeader from 'src/components/ScreenHeader';
 
 
 function GetPercent(num, total) {
@@ -41,7 +42,7 @@ const MyCustomProgressBar = props => {
     <View
       style={{
         width: '100%',
-        height: 8,
+        height: 4,
         backgroundColor: '#f4f4f4',
         borderRadius: 50,
         position: 'relative',
@@ -76,18 +77,17 @@ const Card = props => {
         marginRight: 15,
         position: 'relative',
         zIndex: 6,
-        width: 160,
       })}>
       <AutoView isRow style={{ position: 'relative' }}>
         <RadioIcon
           color={colors.checked}
           size={10}
-          style={{ position: 'absolute', left: -3 }}
+          style={{ position: 'absolute', left: -3,top:5 }}
         />
         <Text
           style={useInlineStyle({
             fontFamily: fontName.medium,
-            fontSize: 14,
+            fontSize: 24,
             color: '#000',
             paddingLeft: 20,
           })}>
@@ -98,7 +98,7 @@ const Card = props => {
       <Text
         style={useInlineStyle({
           fontFamily: fontName.medium,
-          fontSize: 14,
+          fontSize: 24,
           color: '#000',
           paddingTop: 5,
         })}>
@@ -106,7 +106,7 @@ const Card = props => {
         <Text
           style={useInlineStyle({
             fontFamily: fontName.regular,
-            fontSize: 12,
+            fontSize: 22,
             color: '#000',
           })}>
           - {cropItemCycle} {t("Day Cycle")}
@@ -118,10 +118,10 @@ const Card = props => {
       <Text
         style={useInlineStyle({
           fontFamily: fontName.bold,
-          fontSize: 16,
+          fontSize: 26,
           color: '#000',
-          paddingTop: 10,
-          paddingBottom: 10,
+          paddingTop: 20,
+          paddingBottom: 15,
         })}>
         {name}
       </Text>
@@ -173,13 +173,13 @@ const Home = () => {
     });
   }, []);
   const renderItem = ({ item }) => (
-    <ShadowCard style={styles.scrollItem}>
+    <ShadowCard style={styles.scrollItem} hiddenShadow={true}>
       <View style={styles.scrollContainer}>
-        <View style={useInlineStyle({ width: 250 })}>
+        <View style={useInlineStyle({ width: 350 })}>
           <Text
             style={useInlineStyle({
               fontFamily: fontName.medium,
-              fontSize: 14,
+              fontSize: 26,
               color: '#000',
             })}>
             {t('Room')} #{item.serial_number}
@@ -197,7 +197,7 @@ const Home = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderRadius: 8,
-                padding: 15,
+                padding: 20,
                 paddingBottom: 10,
               })}>
 
@@ -206,7 +206,7 @@ const Home = () => {
                   style={useInlineStyle({
                     fontFamily: fontName.bold,
                     color: '#000',
-                    fontSize: 14,
+                    fontSize: 24,
                     paddingBottom: 5,
                   })}>
                   {item.max}
@@ -215,7 +215,7 @@ const Home = () => {
                   style={useInlineStyle({
                     fontFamily: fontName.medium,
                     color: '#000',
-                    fontSize: 10,
+                    fontSize: 18,
                     paddingBottom: 5,
                   })}>
                   {t('MaxCurrentTemperature')}
@@ -226,7 +226,7 @@ const Home = () => {
                   style={useInlineStyle({
                     fontFamily: fontName.bold,
                     color: '#000',
-                    fontSize: 14,
+                    fontSize: 24
                   })}>
                   {item.low}
                 </Text>
@@ -234,7 +234,7 @@ const Home = () => {
                   style={useInlineStyle({
                     fontFamily: fontName.medium,
                     color: '#000',
-                    fontSize: 10,
+                    fontSize: 18,
                   })}>
                     {t('LowCurrentTemperature')}
                 </Text>
@@ -266,39 +266,43 @@ const Home = () => {
   );
   return (
     <View style={{ flex: 1 }}>
-      <View style={styles.headerContainer}>
+      <View style={useInlineStyle({paddingLeft:32})}>
+      <ScreenHeader title={t('Dashboard')} subtitle={`[ ${t("Bright Renaissance")} - ${t("Zone")} A]`} hiddenBack />
+      </View>
+     
+      {/* <View style={styles.headerContainer}>
         <Text style={styles.headerText1}>{t('Dashboard')}</Text>
         <Text style={styles.headerText2}>
           {t(getMonth())} {new Date().getDate()},{new Date().getFullYear()}
           <Text style={styles.headerText3}>{`[ ${t("Bright Renaissance")} - ${t("Zone")} A]`}</Text>
         </Text>
-      </View>
+      </View> */}
       <View style={styles.navContainer}>
-        <ShadowCard style={styles.navItem}>
+        <ShadowCard style={styles.navItem}  hiddenShadow={true}>
           <View style={styles.left}>
             <IconButton style={styles.navBtn}>
-              <IconShezhi size={adaptationConvert(20)} color="#000" />
+              <IconShezhi size={adaptationConvert(30)} color="#000" />
             </IconButton>
             <Text style={styles.navText}>{t("Settings")}</Text>
           </View>
-          <IconJinrujiantouxiao size={adaptationConvert(20)} />
+          <IconJinrujiantouxiao size={adaptationConvert(30)} />
         </ShadowCard>
-        <ShadowCard style={[styles.navItem, { marginLeft: 0 }]}>
+        <ShadowCard style={[styles.navItem, { marginLeft: 0 }]}  hiddenShadow={true}>
           <View style={[styles.left]}>
             <IconButton style={[styles.navBtn, { backgroundColor: '#cbfaff' }]}>
-              <IconBaogao size={adaptationConvert(20)} />
+              <IconBaogao size={adaptationConvert(30)} />
               <Badge
                 count={2}
-                style={{ position: 'absolute', top: -5, right: -5 }}
+                style={{ position: 'absolute', top: -10, right: -10}}
               />
             </IconButton>
             <Text style={styles.navText}>{t("Review Tickets")}</Text>
           </View>
-          <IconJinrujiantouxiao size={adaptationConvert(20)} />
+          <IconJinrujiantouxiao size={adaptationConvert(30)} />
         </ShadowCard>
       </View>
       <View style={styles.scroll}>
-        <View style={{ width: '96%' }}>
+        <View style={{  }}>
           <FlatList
             data={data} // 您的数据数组
             renderItem={(abc, dd) => {
@@ -314,31 +318,31 @@ const Home = () => {
 
 const styles = createStyles({
   headerContainer: {
-    paddingLeft: '2%',
+    paddingLeft: 32,
   },
   headerText1: {
     color: '#2a2a2a',
     fontFamily: 'pingfanghk-semibold',
     fontWeight: '500',
-    fontSize: 16,
+    fontSize: 32,
   },
   headerText2: {
     color: '#656363',
     paddingTop: 0,
     fontFamily: 'pingfanghk-light',
     fontWeight: '500',
-    fontSize: 14,
+    fontSize: 26,
     paddingTop: 0,
   },
   headerText3: {
     color: '#000',
     fontFamily: fontName.regular,
-    fontSize: 14,
+    fontSize: 26,
   },
   navText: {
     paddingLeft: 15,
     color: '#000',
-    fontSize: 15,
+    fontSize: 28,
     fontFamily: fontName.regular,
   },
   navContainer: {
@@ -347,15 +351,14 @@ const styles = createStyles({
     alignItems: 'center',
     flexDirection: 'row',
     marginTop: 15,
-    paddingLeft: '2%',
-    paddingRight: '2%',
+    paddingLeft: 32,
+    paddingRight: 32,
   },
   navItem: {
     backgroundColor: '#fff',
     width: '48%',
-    height: 60,
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 10,
     borderColor: '#f4f4f4',
     display: 'flex',
     justifyContent: 'space-between',
@@ -370,13 +373,14 @@ const styles = createStyles({
     flexDirection: 'row',
   },
   scrollItem: {
-    padding: 10,
+    padding: 20,
     backgroundColor: '#fff',
     borderRadius: 10,
     borderColor: '#f4f4f4',
     borderWidth: 1,
     marginBottom: 15,
-    paddingLeft: 15,
+    paddingLeft: 20,
+    paddingTop:15,
   },
   scrollContainer: {
     display: 'flex',
@@ -384,7 +388,8 @@ const styles = createStyles({
     flexDirection: 'row',
   },
   scroll: {
-    marginLeft: '2%',
+    paddingLeft: 32,
+    paddingRight:32,
     marginTop: 15,
     width: '100%',
     flex: 1,
@@ -400,8 +405,8 @@ const styles = createStyles({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
-    width: 40,
-    height: 40,
+    width: 60,
+    height: 60,
     backgroundColor: '#e1e1e1',
     borderRadius: 10,
     position: 'relative',

@@ -1,14 +1,15 @@
 import React from 'react';
 import AutoView from 'src/components/AutoView/View';
 import SelectLanguage from './SelectLanganug';
+import ViewContainer from 'src/components/ViewContainer';
 
 const Setting = () => {
   return (
-    <AutoView style={{flex: 1}}>
+    <ViewContainer style={{flex: 1}}>
       <AutoView isRow>
         <SelectLanguage />
       </AutoView>
-    </AutoView>
+    </ViewContainer>
   );
 };
 

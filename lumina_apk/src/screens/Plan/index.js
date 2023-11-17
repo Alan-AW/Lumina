@@ -19,6 +19,7 @@ import {useNavigation} from '@react-navigation/native';
 import ShadowCard from 'src/components/Shadow';
 import { getMonth } from 'src/helpers/utils';
 import { useTranslation } from 'react-i18next';
+import ScreenHeader from 'src/components/ScreenHeader';
 
 
 const Plan = () => {
@@ -26,38 +27,30 @@ const Plan = () => {
   const { t } = useTranslation();
   return (
     <View style={styles.container}>
-      <View style={[styles.flex, styles.header]}>
-        <ShadowCard style={styles.backBtn}>
-          <IconButton onPress={() => navigation.goBack()}>
-            <IconJiantouCopy size={adaptationConvert(16)} />
-          </IconButton>
-        </ShadowCard>
-        <View style={useInlineStyle({paddingTop: 3})}>
-          <Text style={styles.headerText1}>{t("Analytics")}</Text>
+      <ScreenHeader title={t("Analytics")} otherNode={()=>{
+        return (
           <View
-            style={[
-              styles.flex,
-              {alignItems: 'center', justifyContent: 'flex-start'},
-            ]}>
-            <View>
-              <Text style={styles.headerText2}>
-              {t(getMonth())} {new Date().getDate()},{new Date().getFullYear()}
-                <Text style={styles.headerText3}>{`[ ${t('Zone')} A ${t('Room')} #1`}</Text>
-              </Text>
-            </View>
-            <RadioIcon color={colors.checked} size={10} />
-            <View>
-              <Text style={styles.headerText3}>{`${t('Aisle')} #001]`}</Text>
-            </View>
+          style={[
+            styles.flex,
+            {alignItems: 'center', justifyContent: 'flex-start'},
+          ]}>
+          <View>
+          <Text style={styles.headerText3}>{`[ ${t('Zone')} A ${t('Room')} #1`}</Text>
+          </View>
+          <RadioIcon color={colors.checked} size={10} />
+          <View>
+            <Text style={styles.headerText3}>{`${t('Aisle')} #001]`}</Text>
           </View>
         </View>
-      </View>
-      <View style={[styles.flex, {flex: 1}]}>
+        )
+      }} />
+  
+      <View style={[styles.flex, useInlineStyle({flex: 1,marginTop:32})]}>
         <View
-          style={useInlineStyle({width: '59%', height: '100%', marginTop: 15})}>
+          style={useInlineStyle({width: '59%', height: '100%'})}>
           <View
             style={useInlineStyle({
-              height: 290,
+              height: '50%',
               backgroundColor: '#fff',
               position: 'relative',
               padding: 20,
@@ -68,10 +61,10 @@ const Plan = () => {
             <View
               style={useInlineStyle({
                 position: 'absolute',
-                left: -10,
-                width: '100%',
-                height: 370,
-                top: -30,
+                left: -20,
+                width: '110%',
+                height: '110%',
+                top: 20,
                 zIndex: 1,
               })}>
               <Chart4 option={false} />
@@ -83,20 +76,20 @@ const Plan = () => {
               ]}>
               <IconButton
                 style={useInlineStyle({
-                  width: 40,
-                  height: 40,
+                  width: 50,
+                  height: 50,
                   backgroundColor: '#cbfaff',
                   justifyContent: 'center',
                   alignItems: 'center',
                   borderRadius: 5,
                 })}>
-                <IconZhexiantu size={adaptationConvert(12)} />
+                <IconZhexiantu size={adaptationConvert(22)} />
               </IconButton>
               <Text
                 style={useInlineStyle({
-                  fontSize: 14,
+                  fontSize: 25,
                   fontFamily: fontName.medium,
-                  paddingLeft: 10,
+                  paddingLeft: 20,
                   color: '#2a2a2a',
                 })}>
                 {t('Analytics')} | {t('AveragePlantTemperature')} ({t('Last')} 18 {t('Days')})
@@ -128,10 +121,10 @@ const Plan = () => {
           </View>
           <View
             style={useInlineStyle({
-              height: 290,
+              height: '50%',
               backgroundColor: '#fff',
               position: 'relative',
-              padding: 20,
+              padding: 24,
               borderColor: '#f4f4f4',
               borderWidth: 1,
               borderRadius: 20,
@@ -140,10 +133,10 @@ const Plan = () => {
             <View
               style={useInlineStyle({
                 position: 'absolute',
-                left: -10,
-                width: '100%',
-                height: 370,
-                top: -30,
+                left: -30,
+                width: '110%',
+                height: '110%',
+                top: 30,
                 zIndex: 1,
               })}>
               <Chart2 option={false} />
@@ -155,18 +148,18 @@ const Plan = () => {
               ]}>
               <IconButton
                 style={useInlineStyle({
-                  width: 40,
-                  height: 40,
+                  width: 50,
+                  height: 50,
                   backgroundColor: '#cbfaff',
                   justifyContent: 'center',
                   alignItems: 'center',
                   borderRadius: 5,
                 })}>
-                <IconZhexiantu size={adaptationConvert(12)} />
+                <IconZhexiantu size={adaptationConvert(22)} />
               </IconButton>
               <Text
                 style={useInlineStyle({
-                  fontSize: 14,
+                  fontSize: 26,
                   fontFamily: fontName.medium,
                   paddingLeft: 10,
                   color: '#2a2a2a',
@@ -203,16 +196,15 @@ const Plan = () => {
           style={useInlineStyle({
             width: '38%',
             height: '100%',
-            marginTop: 15,
             marginLeft: '2.5%',
             marginRight: '2.5%',
           })}>
           <View
             style={useInlineStyle({
-              height: 600,
+              height: '101.5%',
               backgroundColor: '#fff',
               position: 'relative',
-              padding: 20,
+              padding: 24,
               borderColor: '#f4f4f4',
               borderWidth: 1,
               borderRadius: 20,
@@ -221,9 +213,9 @@ const Plan = () => {
               style={useInlineStyle({
                 position: 'absolute',
                 left: 20,
-                width: '100%',
-                height: 670,
-                top: -30,
+                width: '105%',
+                height: '102.5%',
+                top: 60,
                 zIndex: 1,
               })}>
               <Chart3 option={false} />
@@ -235,18 +227,18 @@ const Plan = () => {
               ]}>
               <IconButton
                 style={useInlineStyle({
-                  width: 40,
-                  height: 40,
+                  width: 50,
+                  height: 50,
                   backgroundColor: '#cbfaff',
                   justifyContent: 'center',
                   alignItems: 'center',
                   borderRadius: 5,
                 })}>
-                <IconZhexiantu size={adaptationConvert(12)} />
+                <IconZhexiantu size={adaptationConvert(22)} />
               </IconButton>
               <Text
                 style={useInlineStyle({
-                  fontSize: 14,
+                  fontSize: 26,
                   fontFamily: fontName.medium,
                   paddingLeft: 10,
                   color: '#2a2a2a',
@@ -323,7 +315,7 @@ const styles = createStyles({
   headerText3: {
     color: '#000',
     fontFamily: fontName.regular,
-    fontSize: 14,
+    fontSize: 26,
   },
   backBtn:{
     backgroundColor: '#fff',

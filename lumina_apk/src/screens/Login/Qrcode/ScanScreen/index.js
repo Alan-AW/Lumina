@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { View, Animated, StyleSheet, Easing,Dimensions,Platform } from 'react-native';
 
-const WINDOW =Dimensions.get('window')
+const WINDOW =Dimensions.get('screen')
 
 const ScanAnimation = () => {
   const scanAnimation = useRef(new Animated.Value(-2)).current;
@@ -14,7 +14,7 @@ const ScanAnimation = () => {
           shadowOpacity: 0.5,
           shadowOffset: {width: 0, height: 50},
           borderRadius: 5,
-          backgroundColor: '#666',
+          backgroundColor: '#129d52',
           // width: Dimensions.get('window').width - 40,
         },
       }),
@@ -33,7 +33,7 @@ const ScanAnimation = () => {
     Animated.loop(
       Animated.timing(scanAnimation, {
         toValue: WINDOW.height,
-        duration: 4000,
+        duration: 4500,
         easing: Easing.linear,
         useNativeDriver: true,
       })
@@ -73,11 +73,13 @@ const styles = StyleSheet.create({
     height: 2,
     width: '80%', // Adjust the width of the scan line
     backgroundColor: '#129d52',
+    borderRadius:10,
+    opacity:0.5,
   },
   card: {
     margin: 0,
-    elevation: 50,
-    shadowRadius: 24,
+    elevation: 6,
+    shadowRadius: 0,
     shadowOffset: {
       width: 30,
       height: 18,

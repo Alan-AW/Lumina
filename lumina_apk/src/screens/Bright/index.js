@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, ScrollView} from 'react-native';
-import {IconButton} from 'src/components/Button';
+import React, { useEffect, useState } from 'react';
+import { View, Text, ScrollView } from 'react-native';
+import { IconButton } from 'src/components/Button';
 import RadioIcon from 'src/components/RadioIcon';
 import colors from 'src/constants/colors';
-import {fontName} from 'src/constants/font';
+import { fontName } from 'src/constants/font';
 import {
   adaptationConvert,
   createStyles,
@@ -22,10 +22,11 @@ import ProgressBarIcon from 'src/components/ProgressBarIcon';
 import ShadowCard from 'src/components/Shadow';
 import Chart1 from '../Plan/Chart1';
 import BrightCard from './BrightCard';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import {getLiveList} from 'src/apis/home';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { getLiveList } from 'src/apis/home';
 import { useTranslation } from 'react-i18next';
 import { getMonth } from 'src/helpers/utils';
+import ScreenHeader from 'src/components/ScreenHeader';
 
 function GetPercent(num, total) {
   num = parseFloat(num);
@@ -80,91 +81,81 @@ const Bright = () => {
   }, [routes.params]);
   return (
     <View style={styles.container}>
-      <View style={[styles.flex, styles.header]}>
-        <AutoView isRow>
-          <ShadowCard style={styles.backBtn}>
-            <IconButton onPress={() => navigation.goBack()}>
-              <IconJiantouCopy size={adaptationConvert(16)} />
-            </IconButton>
-          </ShadowCard>
-
-          <View style={useInlineStyle({paddingTop: 3})}>
-            <Text style={styles.headerText1}>{t("Bright Renaissance")}</Text>
-            <View
-              style={[
-                styles.flex,
-                {alignItems: 'center', justifyContent: 'flex-start'},
-              ]}>
-              <View>
-                <Text style={styles.headerText2}>
-                {t(getMonth())} {new Date().getDate()},{new Date().getFullYear()}
-                  <Text
-                    style={
-                      styles.headerText3
-                    }>{`[${t('Bright Renaissance')} - ${t("Zone")} A ${t("Room")} #${childData.serial_number} -`}</Text>
-                </Text>
-              </View>
-              <RadioIcon color={colors.checked} size={10} />
-              <View>
-                <Text
-                  style={
-                    styles.headerText3
-                  }>{`${t('Aisle')} #${cardData.serial_number}]`}</Text>
-              </View>
+      <ScreenHeader title={t("Bright Renaissance")} otherNode={() => {
+        return (
+          <>
+            <Text style={styles.headerText2}>
+              <Text
+                style={
+                  styles.headerText3
+                }>{`[${t('Bright Renaissance')} - ${t("Zone")} A ${t("Room")} #${childData.serial_number} -`}</Text>
+            </Text>
+            <RadioIcon color={colors.checked} size={10} style={{ paddingBottom: 0 }} />
+            <View>
+              <Text
+                style={
+                  styles.headerText3
+                }>{`${t('Aisle')} #${cardData.serial_number}]`}</Text>
             </View>
-          </View>
-        </AutoView>
+          </>
+        )
+      }
+      }
+        right={
+          () => {
+            return (
 
-        <AutoView style={{width: 250}}>
-          <AutoView
-            isRow
-            style={{paddingBottom: 10, justifyContent: 'flex-end'}}>
-            <AutoText style={{color: '#000', fontWeight: '600'}} type="bold">
-              {t("Day")} {cardData.currentDay}
-            </AutoText>
-            <AutoText style={{color: '#2a2a2a'}}>
-              - {cardData.max} {t('Day Cycle')}
-            </AutoText>
-          </AutoView>
+              <AutoView style={{ width: 250 }}>
+                <AutoView
+                  isRow
+                  style={{ paddingBottom: 10, justifyContent: 'flex-end' }}>
+                  <AutoText size={20} style={{ color: '#000', fontWeight: '600' }} type="bold">
+                    {t("Day")} {cardData.currentDay}
+                  </AutoText>
+                  <AutoText size={20} style={{ color: '#2a2a2a' }}>
+                    - {cardData.max} {t('Day Cycle')}
+                  </AutoText>
+                </AutoView>
 
-          <ProgressBarIcon
-            value={GetPercent(cardData.currentDay, cardData.max)}
-          />
-        </AutoView>
-      </View>
-      <AutoView isRow style={{marginTop: 15}}>
+                <ProgressBarIcon
+                  value={GetPercent(cardData.currentDay, cardData.max)}
+                />
+              </AutoView>
+            )
+          }
+        } />
+
+      <AutoView isRow style={{ marginTop: 32 }}>
         <ShadowCard
           style={useInlineStyle({
-            width: 437,
+            width: 737,
             backgroundColor: '#fff',
-            height: 330,
+            height: 630,
             borderRadius: 10,
-            padding: 10,
-            paddingTop: 15,
-            paddingLeft: 15,
-            paddingRight: 0,
+            padding: 32,
+            paddingTop: 24,
           })}>
           <AutoView
             isRow
-            style={{justifyContent: 'space-between', paddingRight: 15}}>
+            style={{ justifyContent: 'space-between', paddingRight: 15 }}>
             <AutoView isRow>
               <IconButton
                 style={useInlineStyle({
                   backgroundColor: '#cbfaff',
-                  width: 30,
-                  height: 30,
+                  width: 50,
+                  height: 50,
                   borderRadius: 5,
                   justifyContent: 'center',
                   alignItems: 'center',
                 })}>
-                <IconXiangji color="#157a86" size={adaptationConvert(20)} />
+                <IconXiangji color="#157a86" size={adaptationConvert(26)} />
               </IconButton>
-              <AutoText size={13} style={{paddingLeft: 15, color: '#2a2a2a'}}>
+              <AutoText size={22} style={{ paddingLeft: 15, color: '#2a2a2a' }}>
                 {t('LiveCamera')}
               </AutoText>
             </AutoView>
             <IconButton>
-              <IconJinrujiantouxiao size={adaptationConvert(15)} />
+              <IconJinrujiantouxiao size={adaptationConvert(26)} />
             </IconButton>
           </AutoView>
           <AutoView
@@ -172,7 +163,7 @@ const Bright = () => {
             style={{
               height: '100%',
               flexWrap: 'wrap',
-              marginTop: 5,
+              marginTop: 20,
               paddingLeft: 0,
             }}>
             {liveData.map((item, index) => {
@@ -188,14 +179,14 @@ const Bright = () => {
                   key={index}
                   isCenter
                   style={{
-                    width: 45,
-                    height: 27,
+                    width: 77,
+                    height: 50,
                     backgroundColor: '#86d88b',
                     marginTop,
                     marginRight,
                     borderRadius: 3,
                   }}>
-                  <AutoText size={10}>{item}℃</AutoText>
+                  <AutoText size={20}>{item}℃</AutoText>
                 </AutoView>
               );
             })}
@@ -204,46 +195,47 @@ const Bright = () => {
         <ShadowCard
           style={useInlineStyle({
             backgroundColor: '#fff',
-            height: 330,
-            width: 705,
+            height: 630,
+            flex: 1,
             marginLeft: 35,
             backgroundColor: '#fff',
             borderRadius: 10,
-            padding: 15,
+            padding: 32,
+            paddingTop: 24,
             position: 'relative',
           })}>
           <AutoView
             isRow
-            style={{justifyContent: 'space-between'}}
+            style={{ justifyContent: 'space-between' }}
             onPress={() => navigation.navigate('Plan')}>
             <AutoView isRow>
               <IconButton
                 style={useInlineStyle({
                   backgroundColor: '#cbfaff',
-                  width: 30,
-                  height: 30,
+                  width: 50,
+                  height: 50,
                   borderRadius: 5,
                   justifyContent: 'center',
                   alignItems: 'center',
                 })}>
-                <IconZhexiantu color="#157a86" size={adaptationConvert(20)} />
+                <IconZhexiantu color="#157a86" size={adaptationConvert(26)} />
               </IconButton>
-              <AutoText size={13} style={{paddingLeft: 15, color: '#2a2a2a'}}>
+              <AutoText size={22} style={{ paddingLeft: 15, color: '#2a2a2a' }}>
                 {t('Analytics')} | {t('AveragePlantTemperature')} ({t('last')} 18 {t('Days')})
               </AutoText>
             </AutoView>
             <IconButton>
-              <IconJinrujiantouxiao size={adaptationConvert(15)} />
+              <IconJinrujiantouxiao size={adaptationConvert(26)} />
             </IconButton>
           </AutoView>
           {echartsData && (
             <View
               style={useInlineStyle({
                 position: 'absolute',
-                left: -10,
-                width: '100%',
-                height: 370,
-                top: -30,
+                left: 0,
+                width: '105%',
+                height: '105%',
+                top: 0,
                 zIndex: 1,
               })}>
               <Chart1 data={echartsData} width={350} />
@@ -261,42 +253,44 @@ const Bright = () => {
             <AutoView isRow>
               <AutoView isRow>
                 <RadioIcon size={10} color="#40848b" />
-                <AutoText style={{paddingLeft: 5}}>{`≤21.0C`}</AutoText>
+                <AutoText style={{ paddingLeft: 5 }}>{`≤21.0C`}</AutoText>
               </AutoView>
-              <AutoView isRow style={{marginLeft: 10, marginRight: 10}}>
+              <AutoView isRow style={{ marginLeft: 10, marginRight: 10 }}>
                 <RadioIcon size={10} color="#79d87f" />
-                <AutoText style={{paddingLeft: 5}}>{`≤21.0C`}</AutoText>
+                <AutoText style={{ paddingLeft: 5 }}>{`≤21.0C`}</AutoText>
               </AutoView>
               <AutoView isRow>
                 <RadioIcon size={10} color="#df6175" />
-                <AutoText style={{paddingLeft: 5}}>{`≤21.0C`}</AutoText>
+                <AutoText style={{ paddingLeft: 5 }}>{`≤21.0C`}</AutoText>
               </AutoView>
             </AutoView>
           </View>
         </ShadowCard>
       </AutoView>
-      <AutoView isRow style={{marginTop: 20, position: 'relative'}}>
+      <AutoView isRow style={{ marginTop: 32, position: 'relative' }}>
         {tempData.map((item, index) => {
           return (
             <BrightCard key={index} item={item} index={index}></BrightCard>
           );
         })}
       </AutoView>
-      <AutoView isRow style={{marginTop: 22, alignItems: 'center',position:'absolute',left:40,bottom:15}}>
+      <AutoView isRow style={{ marginTop: 22, alignItems: 'center', position: 'absolute', left: 40, bottom: 15 }}>
         <ShadowCard
+          isBtn
+          onPress={() => navigation.navigate('AdminTools')}
           style={useInlineStyle({
             borderRadius: 10,
-            width: 205,
-            height: 50,
+            width: 405,
+            height: 70,
             justifyContent: 'center',
             alignItems: 'flex-start',
             paddingLeft: 15,
           })}>
-          <AutoView isRow onPress={() => navigation.navigate('AdminTools')}>
-            <IconButton>
-              <IconShezhi size={adaptationConvert(25)} />
+          <AutoView isRow >
+            <IconButton style={{ paddingTop: 2 }}>
+              <IconShezhi size={adaptationConvert(26)} />
             </IconButton>
-            <AutoText style={{paddingLeft: 15, color: '#000'}}>
+            <AutoText style={{ paddingLeft: 15, color: '#000', alignItems: 'center' }} >
               {t("AdminTools")}
             </AutoText>
           </AutoView>
@@ -305,27 +299,27 @@ const Bright = () => {
           style={useInlineStyle({
             borderRadius: 10,
             marginLeft: 37,
-            width: 947,
-            height: 48,
+            flex: 1,
+            height: 68,
             justifyContent: 'center',
             alignItems: 'flex-start',
-            paddingLeft: 10,
+            paddingLeft: 32,
           })}>
           <AutoView isRow>
             <AutoView
               style={{
                 backgroundColor: '#cbfaff',
-                paddingLeft: 7,
-                paddingRight: 7,
+                paddingLeft: 14,
+                paddingRight: 14,
                 paddingTop: 7,
-                paddingBottom: 7,
+                paddingBottom: 14,
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderRadius: 5,
               }}>
-              <AutoText size={14}>{t('Cultivars')}</AutoText>
+              <AutoText size={24}>{t('Cultivars')}</AutoText>
             </AutoView>
-            <AutoText style={{paddingLeft: 15, color: '#000'}}>
+            <AutoText style={{ paddingLeft: 15, color: '#000' }}>
               {t('ButterheadLettuce')}, {t("Leaf")}/{t("BataviaLettuce")}
             </AutoText>
           </AutoView>
@@ -337,12 +331,11 @@ const Bright = () => {
 
 const styles = createStyles({
   container: {
-    padding: 30,
+    padding: 32,
     paddingTop: 0,
-    paddingLeft: 40,
     flex: 1,
-    position:'relative',
-    height:'100%',
+    position: 'relative',
+    height: '100%',
   },
   backBtn: {
     backgroundColor: '#fff',
@@ -379,7 +372,8 @@ const styles = createStyles({
   headerText3: {
     color: '#000',
     fontFamily: fontName.regular,
-    fontSize: 14,
+    fontSize: 26,
+    alignItems: 'center'
   },
 });
 

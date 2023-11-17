@@ -15,6 +15,7 @@ import {useCameraPermission} from 'react-native-vision-camera'
 import storage from 'src/helpers/storage';
 import DialogServer from 'src/helpers/modal';
 import { useTranslation } from 'react-i18next';
+import { fontName } from 'src/constants/font';
 
 const WINDOW=Dimensions.get('window')
 
@@ -73,16 +74,16 @@ const FormContent=({navigation})=>{
             shadowColor: 'black',
           }}>
         <View style={styles.content}>
-        <Text style={{textAlign:'center'}} >{t('Login')}</Text>
+        <Text style={useInlineStyle({textAlign:'center',fontSize:40,fontFamily:fontName.bold})} >{t('Login')}</Text>
            <TextInput style={styles.item} value={account} onChangeText={text=>setAccount(text)}  placeholder={t('account')} />
            <TextInput style={styles.item} value={password} onChangeText={text=>setPassWord(text)}   secureTextEntry={true}  placeholder={t('password')} />
            <View style={styles.qrcode}>
             <IconButton onPress={()=>qrCode()}>
-            <IconWeixinsaoma />
+            <IconWeixinsaoma size={26} />
             </IconButton>
            
            </View>
-            <TextButton style={styles.loginBtn} testStyle={useInlineStyle({color:'#fff',fontSize:25})} onPress={()=>login()}>{t('Login')}</TextButton>
+            <TextButton style={styles.loginBtn} testStyle={useInlineStyle({color:'#fff',fontSize:48})} onPress={()=>login()}>{t('Login')}</TextButton>
         </View>
         </ShadowCard>
     )
@@ -126,18 +127,18 @@ const styles=createStyles({
         marginTop:14,
         borderWidth:1,
         borderRadius:3,
-        padding:10,
+        padding:20,
         paddingBottom:5,
-        width:500,
+        width:800,
         borderWidth:0,
         borderBottomWidth:1,
         borderBottomColor:'#e8e8e8',
-        fontSize:25,
+        fontSize:48,
     },
     loginBtn:{
         backgroundColor:'#2a2a2a',
-        paddingTop:15,
-        paddingBottom:15,
+        paddingTop:24,
+        paddingBottom:24,
         borderRadius:5,
         display:'flex',
         alignItems:'center',

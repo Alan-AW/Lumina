@@ -60,6 +60,7 @@
    "FarRed":"Far Red",
    "systemTips":"This device is in Growing Mode . You can manually adjust thepump when the automatic setting is turned off.",
     "SelectLanguage":"设置语言",
-    "LoginSuccess":"登录成功"
+    "LoginSuccess":"登录成功",
+    "videoTitle":"视频预览"
    
 }

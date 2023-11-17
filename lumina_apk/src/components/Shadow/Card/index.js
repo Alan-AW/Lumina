@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
-import {View, Dimensions, StyleSheet, Platform, ViewProps, Alert, Text} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, Platform, ViewProps, Alert, Text} from 'react-native';
 import {createStyles} from 'src/helpers/style';
 
 
@@ -31,6 +31,14 @@ const Card = (props) => {
         },
       }),
   })();
+
+  if(props.isBtn){
+    return (
+      <TouchableOpacity onPress={()=>props.onPress()} style={[cardStyle.container, styles.card, props.style]}>
+         {props.children}
+      </TouchableOpacity>
+    )
+  }
 
   return (
     <View style={[cardStyle.container, styles.card, props.style]}>

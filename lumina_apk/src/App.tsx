@@ -6,12 +6,12 @@ import UseModal from './components/Modal';
 import DialogServer from './helpers/modal';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import './helpers/i18next';
-import Orientation from 'react-native-orientation-locker';
+
 
 
 export default function App() {
   useEffect(()=>{
-    Orientation.lockToLandscapeLeft()
+   //Orientation.lockToLandscapeLeft()
   },[])
   return (
     <GestureHandlerRootView style={{flex: 1}}>

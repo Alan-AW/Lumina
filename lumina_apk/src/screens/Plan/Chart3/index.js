@@ -33,7 +33,7 @@ const option = {
         interval: 0, // 解决x轴名称过长问题
         rotate:45,
         color: '#999',
-        fontSize: adaptationConvert(12),
+        fontSize: adaptationConvert(18),
       },
       axisLine: {
         lineStyle: {
@@ -157,7 +157,7 @@ const Chart3 = () => {
       // @ts-ignore
       chart = echarts.init(chartRef.current, 'light', {
         renderer: 'svg',
-        width: 245,
+        width: chartWidth,
         height: chartHeight,
       });
       chart.setOption(option);

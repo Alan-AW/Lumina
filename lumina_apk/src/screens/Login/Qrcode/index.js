@@ -37,12 +37,15 @@ const QrCode = props => {
 
   useEffect(() => {
     dispatch(updateMenuStatus(true));
-    // Orientation.lockToPortrait();
+    Orientation.lockToPortrait();
     // translateY.value = withRepeat(
     //   withTiming(800, { duration: 5000 }),
     //   0,
     //   true
     // );
+    return ()=>{
+      Orientation.lockToLandscapeLeft();
+    }
   }, []);
   //处理扫码后的登录
   useEffect(() => {

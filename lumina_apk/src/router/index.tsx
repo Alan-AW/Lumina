@@ -95,7 +95,11 @@ export default function Router() {
             onStateChange={(event:any) => {
               console.log('onStateChange', event);
               if(event && event.routes.length>0){
-                setCurrentRoute(event.routes[event.routes.length-1].name)
+                const findRouteItem=event.routes.find((i:any)=>i.name===currentRoute);
+                if(!findRouteItem){
+                  setCurrentRoute(event.routes[event.routes.length-1].name)
+                }
+                
               }
              
             }}>

@@ -1,15 +1,27 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {View, Dimensions, StyleSheet, Platform, ViewProps} from 'react-native';
+import {View, Dimensions, StyleSheet, TouchableOpacity,TouchableOpacityProps, ViewProps} from 'react-native';
 import {createStyles, useInlineStyle} from 'src/helpers/style';
 import Card from './Card'
 
 
+type ShadowCardProps={
+  hiddenShadow?:boolean
+  isBtn?:boolean
+}
 
-const ShadowCard = (props:ViewProps) => {
+const ShadowCard = (props:ViewProps & ShadowCardProps & TouchableOpacityProps) => {
   const style:any=props.style || {}
+
+  if(props.hiddenShadow){
+    return (
+      <View style={style}>
+         {props.children}
+      </View>
+    )
+  }
   return (
-    <Card style={style}>
+    <Card style={style} onPress={props.onPress} isBtn={props.isBtn}>
       {props.children}
     </Card>
   );

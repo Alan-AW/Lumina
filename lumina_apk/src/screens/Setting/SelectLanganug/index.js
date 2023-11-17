@@ -45,7 +45,7 @@ const DropdownComponent = () => {
         marginRight: 15,
       })}>
       <AutoView isRow style={{paddingLeft: 15, paddingTop: 15}}>
-        <AutoText size={16} style={{color: '#666', paddingRight: 20}}>
+        <AutoText size={28} style={{color: '#666', paddingRight: 20}}>
           {t('SelectLanguage')}:{' '}
         </AutoText>
         <Dropdown
@@ -57,7 +57,7 @@ const DropdownComponent = () => {
           maxHeight={300}
           labelField="label"
           itemTextStyle={useInlineStyle({
-            fontSize: 15,
+            fontSize: 28,
             fontFamily: fontName.medium,
           })}
           fontFamily={fontName.medium}
@@ -93,11 +93,11 @@ const styles = createStyles({
     padding: 16,
   },
   dropdown: {
-    height: 50,
+    height: 60,
     borderColor: '#f4f4f4',
-    borderWidth: 0.5,
+    borderWidth: 1,
     borderRadius: 8,
-    width: 200,
+    width: 400,
     backgroundColor: 'white',
     paddingHorizontal: 8,
   },
@@ -119,7 +119,7 @@ const styles = createStyles({
     fontFamily: fontName.medium,
   },
   selectedTextStyle: {
-    fontSize: 16,
+    fontSize: 28,
     fontFamily: fontName.medium,
   },
   iconStyle: {

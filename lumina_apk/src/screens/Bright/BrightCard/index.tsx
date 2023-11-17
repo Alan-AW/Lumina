@@ -13,11 +13,11 @@ type BrightCardProps={
 }
 
 const children:any={
-  0:<IconTaiyangtianqi size={adaptationConvert(25)} color={'#b7a02e'} />,
-  1:<IconZiyuan size={adaptationConvert(25)} color={'#129e8a'}  />,
-  2:<IconRichu  size={adaptationConvert(25)} color={'#fd8112'}  />,
-  3:<IconYun size={adaptationConvert(25)} color={'#177fa1'}  />,
-  4:<IconIconchengzhang size={adaptationConvert(25)} color={'#559f19'} />,
+  0:<IconTaiyangtianqi size={adaptationConvert(26)} color={'#b7a02e'} />,
+  1:<IconZiyuan size={adaptationConvert(26)} color={'#129e8a'}  />,
+  2:<IconRichu  size={adaptationConvert(26)} color={'#fd8112'}  />,
+  3:<IconYun size={adaptationConvert(26)} color={'#177fa1'}  />,
+  4:<IconIconchengzhang size={adaptationConvert(26)} color={'#559f19'} />,
 }
 const btnColor:any={
   0:'#fef7c6',
@@ -38,22 +38,22 @@ const BrightCard = (props:ViewProps & BrightCardProps) => {
   }
   
   return (
-    <ShadowCard style={useInlineStyle({backgroundColor: '#fff', padding: 15,borderRadius:10,marginRight:value,width:200})}>
+    <ShadowCard style={useInlineStyle({backgroundColor: '#fff', padding: 32,borderRadius:10,marginRight:value,width:350})}>
       <AutoView isRow>
-        <IconButton style={useInlineStyle({backgroundColor:btnColor[props.index],width:40,height:40,justifyContent:'center',alignItems:'center',borderRadius:10,})}>{children[props.index]}</IconButton>
+        <IconButton style={useInlineStyle({backgroundColor:btnColor[props.index],width:50,height:50,justifyContent:'center',alignItems:'center',borderRadius:10,})}>{children[props.index]}</IconButton>
         <AutoText style={{paddingLeft:15,color:'#000'}} type='medium'>{props.item.name}</AutoText>
       </AutoView>
-      <AutoView style={{marginTop:15}}>
-        <AutoText size={15} style={{color:'#000'}}>{props.item.label1}</AutoText>
-        <AutoText size={12} style={{paddingTop:5}}>Water Level</AutoText>
+      <AutoView style={{marginTop:32}}>
+        <AutoText size={26} style={{color:'#000'}}>{props.item.label1}</AutoText>
+        <AutoText size={24} style={{paddingTop:10}}>Water Level</AutoText>
       </AutoView>
-      <AutoView style={{marginTop:10}}>
-        <AutoText size={15} style={{color:'#000'}}>{props.item.label2}</AutoText>
-        <AutoText size={12} style={{paddingTop:5}}>EC</AutoText>
+      <AutoView style={{marginTop:32}}>
+        <AutoText size={26} style={{color:'#000'}}>{props.item.label2}</AutoText>
+        <AutoText size={24} style={{paddingTop:10}}>EC</AutoText>
       </AutoView>
-      <AutoView style={{marginTop:10}}>
-        <AutoText size={15} style={{color:'#000'}}>{props.item.label3}</AutoText>
-        <AutoText size={12} style={{paddingTop:5}}>Water Level</AutoText>
+      <AutoView style={{marginTop:32}}>
+        <AutoText size={26} style={{color:'#000'}}>{props.item.label3}</AutoText>
+        <AutoText size={24} style={{paddingTop:10}}>Water Level</AutoText>
       </AutoView>
     </ShadowCard>
   );
