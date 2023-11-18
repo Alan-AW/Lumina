@@ -155,7 +155,7 @@ const AdminTool = (props) => {
                   defaultValue={false}
                   style={{
                     position: 'absolute',
-                    right: -15,
+                    right: -5,
                   }}
                 />
               </AutoView>
@@ -211,7 +211,7 @@ const AdminTool = (props) => {
                   defaultValue={false}
                   style={{
                     position: 'absolute',
-                    right: -15,
+                    right: -5,
                   }}
                 />
               </AutoView>
@@ -225,6 +225,7 @@ const AdminTool = (props) => {
                   justifyContent: 'space-between',
                   paddingLeft: 20,
                   paddingRight: 20,
+
                 }}>
                 <AutoText style={{ color: '#2a2a2a' }}>{t('ManualTrigger')}</AutoText>
                 <IconButton>
@@ -252,6 +253,7 @@ const AdminTool = (props) => {
               borderColor: colors.borderColor,
               borderRadius: 10,
               marginTop: 10,
+              paddingBottom:30,
             }}>
             <AutoView
               style={{
@@ -269,7 +271,7 @@ const AdminTool = (props) => {
                 defaultValue={false}
                 style={{
                   position: 'absolute',
-                  right: -15,
+                  right: -5,
                 }}
               />
             </AutoView>
@@ -285,7 +287,7 @@ const AdminTool = (props) => {
                   position: 'absolute',
                   height: '190%',
                   left: 20,
-                  top: -100,
+                  top: -50,
                   width: '100%',
                 }}>
                 <EChartLine />
