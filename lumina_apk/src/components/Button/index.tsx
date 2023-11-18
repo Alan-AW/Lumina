@@ -9,7 +9,7 @@ import {
   TextStyle,
 } from 'react-native';
 
-const size = 5;
+const size = 10;
 
 const hitSlop = {
   left: size,

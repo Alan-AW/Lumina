@@ -65,7 +65,8 @@ const styles = createStyles({
         color: '#2a2a2a',
         fontWeight: '500',
         fontSize: 32,
-        paddingBottom:12,
+        paddingBottom:15,
+        fontFamily:fontName.bold,
     },
     headerText2: {
         color: '#656363',
