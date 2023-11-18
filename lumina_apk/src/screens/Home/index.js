@@ -65,13 +65,10 @@ const Card = props => {
   const { t } = useTranslation();
   const { title1, title2, name, cropItemCycle,serial_number,img,id } = props.item;
   const navigation = useNavigation();
+
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('Bright',{id,propsItem:props.propsItem,cardItem:{serial_number,currentDay:title2,max:cropItemCycle}})}
-      onLayout={(e) => {
-        const { width, height } = e.nativeEvent.layout;
-        console.log('高度', height);
-      }}
       activeOpacity={1}
       style={useInlineStyle({
         marginRight: 15,
@@ -82,15 +79,16 @@ const Card = props => {
         <RadioIcon
           color={colors.checked}
           size={10}
-          style={{ position: 'absolute', left: -3,top:5 }}
+          style={{ position: 'absolute', left: -3,top:3 }}
         />
         <Text
           style={useInlineStyle({
             fontFamily: fontName.medium,
-            fontSize: 24,
+            fontSize: 27,
             color: '#000',
             lineHeight:30,
-            paddingLeft: 20,
+            paddingTop:3,
+            paddingLeft: 15,
           })}>
           {t("Aisle")} #{serial_number}
         </Text>
@@ -99,7 +97,7 @@ const Card = props => {
       <Text
         style={useInlineStyle({
           fontFamily: fontName.medium,
-          fontSize: 24,
+          fontSize: 23,
           color: '#000',
           lineHeight:30,
           paddingTop: 5,
@@ -108,7 +106,7 @@ const Card = props => {
         <Text
           style={useInlineStyle({
             fontFamily: fontName.regular,
-            fontSize: 22,
+            fontSize: 23,
             color: '#000',
             lineHeight:30,
           })}>
@@ -121,7 +119,7 @@ const Card = props => {
       <Text
         style={useInlineStyle({
           fontFamily: fontName.bold,
-          fontSize: 26,
+          fontSize: 28,
           color: '#000',
           paddingTop: 20,
           paddingBottom: 15,
@@ -134,9 +132,13 @@ const Card = props => {
           borderRadius: 10,
           justifyContent: 'center',
           flexDirection: 'row',
+          paddingBottom:15,
+          paddingTop:15,
+          paddingLeft:30,
+          paddingRight:30,
         })}>
         <Image
-          style={useInlineStyle({ width: 120, height: 120 })}
+          style={useInlineStyle({ width: 240, height: 240,borderRadius:5 })}
           //require('../../asset/img/cai.png')
           source={{uri:img}}
         />
@@ -182,7 +184,7 @@ const Home = () => {
           <Text
             style={useInlineStyle({
               fontFamily: fontName.medium,
-              fontSize: 26,
+              fontSize: 28,
               color: '#000',
             })}>
             {t('Room')} #{item.serial_number}
@@ -199,9 +201,10 @@ const Home = () => {
                 height: '100%',
                 justifyContent: 'center',
                 alignItems: 'center',
-                borderRadius: 8,
-                padding: 20,
-                paddingBottom: 10,
+                borderRadius: 10,
+                padding: 32,
+                paddingBottom: 20,
+                paddingRight:88,
               })}>
 
               <View>
@@ -209,7 +212,7 @@ const Home = () => {
                   style={useInlineStyle({
                     fontFamily: fontName.bold,
                     color: '#000',
-                    fontSize: 24,
+                    fontSize: 27,
                     paddingBottom: 5,
                   })}>
                   {item.max}
@@ -218,7 +221,7 @@ const Home = () => {
                   style={useInlineStyle({
                     fontFamily: fontName.medium,
                     color: '#000',
-                    fontSize: 18,
+                    fontSize: 22,
                     paddingBottom: 5,
                   })}>
                   {t('MaxCurrentTemperature')}
@@ -229,7 +232,8 @@ const Home = () => {
                   style={useInlineStyle({
                     fontFamily: fontName.bold,
                     color: '#000',
-                    fontSize: 24
+                    fontSize: 27,
+                    paddingBottom: 5,
                   })}>
                   {item.low}
                 </Text>
@@ -237,7 +241,7 @@ const Home = () => {
                   style={useInlineStyle({
                     fontFamily: fontName.medium,
                     color: '#000',
-                    fontSize: 18,
+                    fontSize: 22,
                   })}>
                     {t('LowCurrentTemperature')}
                 </Text>
@@ -272,14 +276,6 @@ const Home = () => {
       <View style={useInlineStyle({paddingLeft:32})}>
       <ScreenHeader title={t('Dashboard')} subtitle={`[ ${t("Bright Renaissance")} - ${t("Zone")} A]`} hiddenBack />
       </View>
-     
-      {/* <View style={styles.headerContainer}>
-        <Text style={styles.headerText1}>{t('Dashboard')}</Text>
-        <Text style={styles.headerText2}>
-          {t(getMonth())} {new Date().getDate()},{new Date().getFullYear()}
-          <Text style={styles.headerText3}>{`[ ${t("Bright Renaissance")} - ${t("Zone")} A]`}</Text>
-        </Text>
-      </View> */}
       <View style={styles.navContainer}>
         <ShadowCard style={styles.navItem}  hiddenShadow={true}>
           <View style={styles.left}>
@@ -296,7 +292,7 @@ const Home = () => {
               <IconBaogao size={adaptationConvert(30)} />
               <Badge
                 count={2}
-                style={{ position: 'absolute', top: -10, right: -10}}
+                style={{ position: 'absolute', top: -15, left: 40}}
               />
             </IconButton>
             <Text style={styles.navText}>{t("Review Tickets")}</Text>
@@ -362,7 +358,7 @@ const styles = createStyles({
     width: '48%',
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: '#f4f4f4',
+    borderColor: colors.borderColor,
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -376,14 +372,12 @@ const styles = createStyles({
     flexDirection: 'row',
   },
   scrollItem: {
-    padding: 20,
+    padding: 24,
     backgroundColor: '#fff',
     borderRadius: 10,
-    borderColor: '#f4f4f4',
+    borderColor: colors.borderColor,
     borderWidth: 1,
     marginBottom: 15,
-    paddingLeft: 20,
-    paddingTop:15,
   },
   scrollContainer: {
     display: 'flex',

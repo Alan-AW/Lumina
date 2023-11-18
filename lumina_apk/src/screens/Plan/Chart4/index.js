@@ -76,7 +76,7 @@ const option = {
         return 100;
       },
       axisLabel: {
-        fontSize: adaptationConvert(12),
+        fontSize: adaptationConvert(18),
         formatter: (value, index) => {
           return index === 0 ? '' : value + '%';
         },
@@ -92,7 +92,7 @@ const option = {
   series: [
     {
         data: [
-            20, 20, 15, 15, 15, 12, 15, 20, 20, 15, 15, 15, 12, 15, 20, 20, 15, 15,
+            20, 80, 15, 15, 15, 12, 15, 20, 20, 15, 15, 15, 12, 15, 20, 20, 15, 15,
           ],
       type: 'bar',
       stack: 'one',

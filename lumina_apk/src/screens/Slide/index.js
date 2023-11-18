@@ -111,7 +111,7 @@ const VerticalTabMenu = (props) => {
               size={adaptationConvert(38)}
               color={props.currentRoute === 'baogao' ? defaultColor : checkedColor}
             />
-            <Badge count={2} style={{ position: 'absolute', top: 0, right: 0 }} />
+            <Badge count={2} style={{ position: 'absolute', top: -5, left: 30 }} />
           </TabItem>
           <TabItem isActive={props.currentRoute === 'shizhong'} onPress={() => { }}>
             <IconShizhong
@@ -152,11 +152,12 @@ const styles = createStyles({
     borderBottomColor: 'lightgray',
     flex: 1,
     padding: 20,
+    paddingBottom:0,
     position: 'relative',
     borderRadius: 20,
     justifyContent: 'flex-start',
     borderWidth: 1,
-    borderColor: '#f4f4f4',
+    borderColor: colors.borderColor,
   },
   tabItem: {
     alignItems: 'center',
@@ -188,7 +189,7 @@ const styles = createStyles({
     height: 60,
     width: 60,
     borderWidth: 1,
-    borderColor: '#daebc6',
+    borderColor: colors.borderColor,
     borderRadius: 10,
     overflow: 'hidden'
   },
@@ -210,7 +211,7 @@ const styles = createStyles({
     height: 60,
     width: 60,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: colors.borderColor,
     borderRadius: 10,
     marginTop: 20,
   },

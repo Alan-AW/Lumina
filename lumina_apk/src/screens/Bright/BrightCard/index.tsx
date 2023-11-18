@@ -38,7 +38,7 @@ const BrightCard = (props:ViewProps & BrightCardProps) => {
   }
   
   return (
-    <ShadowCard style={useInlineStyle({backgroundColor: '#fff', padding: 32,borderRadius:10,marginRight:value,width:350})}>
+    <ShadowCard style={useInlineStyle({backgroundColor: '#fff', padding: 32,borderRadius:20,marginRight:value,width:350})}>
       <AutoView isRow>
         <IconButton style={useInlineStyle({backgroundColor:btnColor[props.index],width:50,height:50,justifyContent:'center',alignItems:'center',borderRadius:10,})}>{children[props.index]}</IconButton>
         <AutoText style={{paddingLeft:15,color:'#000'}} type='medium'>{props.item.name}</AutoText>

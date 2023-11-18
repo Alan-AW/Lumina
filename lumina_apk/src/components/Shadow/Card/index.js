@@ -25,7 +25,7 @@ const Card = (props) => {
       StyleSheet.create({
         container: {
           elevation: 0,
-          borderRadius: 0,
+          borderRadius: 10,
           backgroundColor: '#fff',
           // width: Dimensions.get('window').width - 40,
         },
@@ -64,13 +64,13 @@ Card.defaultProps = {
 const styles = createStyles({
   card: {
     margin: 0,
-    elevation: 3,
-    shadowRadius: 24,
+    elevation: 10,
+    shadowRadius: 66,
     shadowOffset: {
-      width: 0,
-      height: 8,
+      width: 32,
+      height: 66,
     },
-    shadowColor: 'black',
+    shadowColor: '#999',
   },
 });
 

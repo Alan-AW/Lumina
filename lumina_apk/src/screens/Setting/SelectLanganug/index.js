@@ -7,6 +7,7 @@ import {useTranslation} from 'react-i18next';
 import {createStyles, useInlineStyle} from 'src/helpers/style';
 import {fontName} from 'src/constants/font';
 import storage from 'src/helpers/storage';
+import colors from 'src/constants/colors';
 
 const WINDOW = Dimensions.get('window');
 
@@ -94,7 +95,7 @@ const styles = createStyles({
   },
   dropdown: {
     height: 60,
-    borderColor: '#f4f4f4',
+    borderColor: colors.borderColor,
     borderWidth: 1,
     borderRadius: 8,
     width: 400,

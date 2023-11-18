@@ -58,16 +58,17 @@ class TouchBtnGroup extends React.Component {
 
 const styles = createStyles({
   btnDefault: {
-    marginLeft: 15,
+    marginLeft: 32,
     padding:10,
     paddingLeft:15,
     paddingRight:15,
-    borderRadius:8,
+    borderRadius:10,
+    paddingTop:15,
 
   
   },
   textDefault: {
-    fontSize: 24,
+    fontSize: 48,
     textAlign: 'center',
   },
 });

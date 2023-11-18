@@ -10,7 +10,7 @@ type SwitchViewProps = {
 const SwitchView = (props: SwitchViewProps & SwitchProps) => {
   const [isChecked, setIsChecked] = React.useState(false);
   const defaultStyle = {
-    transform: [{scaleX: 0.5}, {scaleY: 0.5}],
+    transform: [{scaleX: 0.7}, {scaleY: 0.7}],
   };
   const style: any = props.style || {};
   

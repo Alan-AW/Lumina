@@ -47,6 +47,7 @@ const Bright = () => {
   const [echartsData, setEchartsData] = useState(false);
   const [tempData, setTempData] = useState([]);
 
+
   useEffect(() => {
     console.log(routes, 'routes');
     if (routes && routes.params.id) {
@@ -144,7 +145,7 @@ const Bright = () => {
                   backgroundColor: '#cbfaff',
                   width: 50,
                   height: 50,
-                  borderRadius: 5,
+                  borderRadius: 10,
                   justifyContent: 'center',
                   alignItems: 'center',
                 })}>
@@ -184,7 +185,7 @@ const Bright = () => {
                     backgroundColor: '#86d88b',
                     marginTop,
                     marginRight,
-                    borderRadius: 3,
+                    borderRadius: 5,
                   }}>
                   <AutoText size={20}>{item}℃</AutoText>
                 </AutoView>
@@ -214,7 +215,7 @@ const Bright = () => {
                   backgroundColor: '#cbfaff',
                   width: 50,
                   height: 50,
-                  borderRadius: 5,
+                  borderRadius: 10,
                   justifyContent: 'center',
                   alignItems: 'center',
                 })}>
@@ -232,9 +233,9 @@ const Bright = () => {
             <View
               style={useInlineStyle({
                 position: 'absolute',
-                left: 0,
-                width: '105%',
-                height: '105%',
+                left: -50,
+                width: '117%',
+                height: '110%',
                 top: 0,
                 zIndex: 1,
               })}>
@@ -245,7 +246,7 @@ const Bright = () => {
           <View
             style={useInlineStyle({
               position: 'absolute',
-              left: 20,
+              left: 32,
               width: '100%',
               bottom: 20,
               zIndex: 1,
@@ -267,20 +268,20 @@ const Bright = () => {
           </View>
         </ShadowCard>
       </AutoView>
-      <AutoView isRow style={{ marginTop: 32, position: 'relative' }}>
+      <AutoView isRow style={{ marginTop: 38, position: 'relative' }}>
         {tempData.map((item, index) => {
           return (
             <BrightCard key={index} item={item} index={index}></BrightCard>
           );
         })}
       </AutoView>
-      <AutoView isRow style={{ marginTop: 22, alignItems: 'center', position: 'absolute', left: 40, bottom: 15 }}>
+      <AutoView isRow style={{ marginTop: 22, alignItems: 'center', position: 'absolute', left: 32, bottom: 32 }}>
         <ShadowCard
           isBtn
-          onPress={() => navigation.navigate('AdminTools')}
+          onPress={() => navigation.navigate('AdminTools',{...routes.params})}
           style={useInlineStyle({
             borderRadius: 10,
-            width: 405,
+            width: 350,
             height: 70,
             justifyContent: 'center',
             alignItems: 'flex-start',
@@ -290,7 +291,7 @@ const Bright = () => {
             <IconButton style={{ paddingTop: 2 }}>
               <IconShezhi size={adaptationConvert(26)} />
             </IconButton>
-            <AutoText style={{ paddingLeft: 15, color: '#000', alignItems: 'center' }} >
+            <AutoText style={{ paddingLeft: 15, color: '#000', alignItems: 'center',paddingTop:7 }} >
               {t("AdminTools")}
             </AutoText>
           </AutoView>
@@ -304,6 +305,8 @@ const Bright = () => {
             justifyContent: 'center',
             alignItems: 'flex-start',
             paddingLeft: 32,
+            paddingTop:10,
+            paddingBottom:10,
           })}>
           <AutoView isRow>
             <AutoView
@@ -311,15 +314,15 @@ const Bright = () => {
                 backgroundColor: '#cbfaff',
                 paddingLeft: 14,
                 paddingRight: 14,
-                paddingTop: 7,
+                paddingTop: 14,
                 paddingBottom: 14,
                 justifyContent: 'center',
                 alignItems: 'center',
-                borderRadius: 5,
+                borderRadius: 10,
               }}>
               <AutoText size={24}>{t('Cultivars')}</AutoText>
             </AutoView>
-            <AutoText style={{ paddingLeft: 15, color: '#000' }}>
+            <AutoText style={{ paddingLeft: 15, color: '#000',paddingTop:5, }}>
               {t('ButterheadLettuce')}, {t("Leaf")}/{t("BataviaLettuce")}
             </AutoText>
           </AutoView>
@@ -341,7 +344,7 @@ const styles = createStyles({
     backgroundColor: '#fff',
     width: 35,
     height: 30,
-    borderColor: '#f4f4f4',
+    borderColor: colors.borderColor,
     borderWidth: 1,
     borderRadius: 3,
     justifyContent: 'center',

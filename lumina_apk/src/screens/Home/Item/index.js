@@ -94,7 +94,7 @@ const styles = createStyles({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 8,
+    borderRadius: 10,
     padding: 15,
     paddingBottom: 10,
   },

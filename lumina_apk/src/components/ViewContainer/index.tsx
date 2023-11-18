@@ -1,6 +1,7 @@
 import { View, ViewProps,ScrollView } from 'react-native';
 import React, { useEffect } from 'react';
 import { useInlineStyle } from 'src/helpers/style';
+import colors from 'src/constants/colors';
 
 
 
@@ -14,7 +15,7 @@ const ViewContainer = (props: ViewProps) => {
             borderRadius:10,
             borderWidth:1,
             marginLeft:32,
-            borderColor:'#f4f4f4',
+            borderColor:colors.borderColor,
         })]}>
             {props.children}
         </ScrollView>

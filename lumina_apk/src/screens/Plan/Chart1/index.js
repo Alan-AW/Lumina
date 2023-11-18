@@ -30,7 +30,7 @@ const option = {
         interval: 0, // 解决x轴名称过长问题
         rotate: 45,
         color: '#999',
-        fontSize: adaptationConvert(12),
+        fontSize: adaptationConvert(18),
       },
       axisLine: {
         lineStyle: {
@@ -76,7 +76,7 @@ const option = {
         return 100;
       },
       axisLabel: {
-        fontSize: adaptationConvert(12),
+        fontSize: adaptationConvert(18),
         formatter: (value, index) => {
           return index === 0 ? '' : value + '%';
         },
@@ -115,7 +115,7 @@ const option = {
       ],
       type: 'bar',
       stack: 'one', //堆叠
-      barWidth: adaptationConvert(15),
+      barWidth: adaptationConvert(18),
       color: '#79d87f',
       itemStyle: {
         borderWidth: adaptationConvert(4), //用border设置两个柱形图之间的间距

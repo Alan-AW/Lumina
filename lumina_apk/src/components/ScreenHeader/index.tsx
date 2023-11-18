@@ -9,6 +9,7 @@ import ShadowCard from "../Shadow";
 import { IconButton } from "../Button";
 import { IconJiantouCopy } from "src/iconfont";
 import { useNavigation } from '@react-navigation/native'
+import colors from "src/constants/colors";
 
 type ScreenHeaderProps = {
     right?: () => ReactNode | null,
@@ -25,7 +26,7 @@ const ScreenHeader = (props: ScreenHeaderProps) => {
         <AutoView style={{ justifyContent: 'space-between', alignItems: 'center' }} isRow>
 
 
-            <AutoView isRow>
+            <AutoView isRow style={{alignItems:'flex-start'}}>
                 {
                     !props.hiddenBack && <ShadowCard style={styles.backBtn} hiddenShadow>
                         <IconButton onPress={() => nav.goBack()}>
@@ -64,6 +65,7 @@ const styles = createStyles({
         color: '#2a2a2a',
         fontWeight: '500',
         fontSize: 32,
+        paddingBottom:12,
     },
     headerText2: {
         color: '#656363',
@@ -85,9 +87,9 @@ const styles = createStyles({
         backgroundColor: '#fff',
         width: 50,
         height: 50,
-        borderColor: '#f4f4f4',
+        borderColor: colors.borderColor,
         borderWidth: 1,
-        borderRadius: 3,
+        borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 15,

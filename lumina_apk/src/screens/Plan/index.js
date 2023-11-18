@@ -48,14 +48,12 @@ const Plan = () => {
       <View style={[styles.flex, useInlineStyle({flex: 1,marginTop:32})]}>
         <View
           style={useInlineStyle({width: '59%', height: '100%'})}>
-          <View
+          <ShadowCard
             style={useInlineStyle({
-              height: '50%',
+              height: '48%',
               backgroundColor: '#fff',
               position: 'relative',
-              padding: 20,
-              borderColor: '#f4f4f4',
-              borderWidth: 1,
+              padding: 32,
               borderRadius: 20,
             })}>
             <View
@@ -98,9 +96,9 @@ const Plan = () => {
             <View
               style={useInlineStyle({
                 position: 'absolute',
-                left: 20,
+                left: 32,
                 width: '100%',
-                bottom: 12,
+                bottom: 28,
                 zIndex: 1,
               })}>
               <AutoView isRow>
@@ -118,17 +116,15 @@ const Plan = () => {
                 </AutoView>
               </AutoView>
             </View>
-          </View>
-          <View
+          </ShadowCard>
+          <ShadowCard
             style={useInlineStyle({
-              height: '50%',
+              height: '48%',
               backgroundColor: '#fff',
               position: 'relative',
-              padding: 24,
-              borderColor: '#f4f4f4',
-              borderWidth: 1,
+              padding: 32,
               borderRadius: 20,
-              marginTop: 20,
+              marginTop: '3%',
             })}>
             <View
               style={useInlineStyle({
@@ -170,9 +166,9 @@ const Plan = () => {
             <View
               style={useInlineStyle({
                 position: 'absolute',
-                left: 20,
+                left: 32,
                 width: '100%',
-                bottom: 12,
+                bottom: 28,
                 zIndex: 1,
               })}>
               <AutoView isRow>
@@ -190,13 +186,13 @@ const Plan = () => {
                 </AutoView>
               </AutoView>
             </View>
-          </View>
+          </ShadowCard>
         </View>
-        <View
+        <ShadowCard
           style={useInlineStyle({
             width: '38%',
-            height: '100%',
-            marginLeft: '2.5%',
+            height: '98%',
+            marginLeft: '2%',
             marginRight: '2.5%',
           })}>
           <View
@@ -204,9 +200,7 @@ const Plan = () => {
               height: '101.5%',
               backgroundColor: '#fff',
               position: 'relative',
-              padding: 24,
-              borderColor: '#f4f4f4',
-              borderWidth: 1,
+              padding: 32,
               borderRadius: 20,
             })}>
             <View
@@ -214,8 +208,8 @@ const Plan = () => {
                 position: 'absolute',
                 left: 20,
                 width: '105%',
-                height: '102.5%',
-                top: 60,
+                height: '105%',
+                top: 15,
                 zIndex: 1,
               })}>
               <Chart3 option={false} />
@@ -249,9 +243,9 @@ const Plan = () => {
             <View
               style={useInlineStyle({
                 position: 'absolute',
-                left: 20,
+                left: 32,
                 width: '100%',
-                bottom: 12,
+                bottom: 28,
                 zIndex: 1,
               })}>
               <AutoView isRow>
@@ -270,7 +264,7 @@ const Plan = () => {
               </AutoView>
             </View>
           </View>
-        </View>
+        </ShadowCard>
       </View>
     </View>
   );
@@ -278,7 +272,7 @@ const Plan = () => {
 
 const styles = createStyles({
   container: {
-    padding: 20,
+    padding: 32,
     paddingTop: 0,
     flex: 1,
   },
@@ -286,7 +280,7 @@ const styles = createStyles({
     backgroundColor: '#fff',
     width: 35,
     height: 30,
-    borderColor: '#f4f4f4',
+    borderColor: colors.borderColor,
     borderWidth: 1,
     borderRadius: 3,
     justifyContent: 'center',
@@ -322,7 +316,7 @@ const styles = createStyles({
     backgroundColor: '#fff',
     width: 35,
     height: 30,
-    borderColor: '#f4f4f4',
+    borderColor: colors.borderColor,
     borderWidth: 1,
     borderRadius: 3,
     justifyContent: 'center',
