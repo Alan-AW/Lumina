@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
-import {Dropdown} from 'react-native-element-dropdown';
 import AutoText from 'src/components/AutoView/Text';
 import AutoView from 'src/components/AutoView/View';
 import {useTranslation} from 'react-i18next';
@@ -49,7 +48,7 @@ const DropdownComponent = () => {
         <AutoText size={28} style={{color: '#666', paddingRight: 20,paddingTop:5}}>
           {t('SelectLanguage')}:{' '}
         </AutoText>
-        <Dropdown
+        {/* <Dropdown
           style={[styles.dropdown]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
@@ -81,7 +80,7 @@ const DropdownComponent = () => {
             setIsFocus(false);
           }}
           renderLeftIcon={() => null}
-        />
+        /> */}
       </AutoView>
     </View>
   );
