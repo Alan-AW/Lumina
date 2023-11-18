@@ -151,7 +151,7 @@ const Bright = () => {
                 })}>
                 <IconXiangji color="#157a86" size={adaptationConvert(26)} />
               </IconButton>
-              <AutoText size={22} style={{ paddingLeft: 15, color: '#2a2a2a' }}>
+              <AutoText size={26} style={{ paddingLeft: 15, color: '#2a2a2a' }}>
                 {t('LiveCamera')}
               </AutoText>
             </AutoView>
@@ -221,7 +221,7 @@ const Bright = () => {
                 })}>
                 <IconZhexiantu color="#157a86" size={adaptationConvert(26)} />
               </IconButton>
-              <AutoText size={22} style={{ paddingLeft: 15, color: '#2a2a2a' }}>
+              <AutoText size={26} style={{ paddingLeft: 15, color: '#2a2a2a' }}>
                 {t('Analytics')} | {t('AveragePlantTemperature')} ({t('last')} 18 {t('Days')})
               </AutoText>
             </AutoView>
