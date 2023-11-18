@@ -46,7 +46,7 @@ const DropdownComponent = () => {
         marginRight: 15,
       })}>
       <AutoView isRow style={{paddingLeft: 15, paddingTop: 15}}>
-        <AutoText size={28} style={{color: '#666', paddingRight: 20}}>
+        <AutoText size={28} style={{color: '#666', paddingRight: 20,paddingTop:5}}>
           {t('SelectLanguage')}:{' '}
         </AutoText>
         <Dropdown
