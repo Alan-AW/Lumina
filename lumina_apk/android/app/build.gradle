@@ -80,15 +80,15 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        ndk {
-            abiFilters "armeabi-v7a", "x86"
-        }
+        resValue "string", "build_config_package", "com.Lumina"
+        multiDexEnabled true
     }
-        splits {
+    splits {
         abi {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK
+           include "armeabi-v7a"
         }
     }
   

@@ -43,7 +43,10 @@ const FormContent=({navigation})=>{
             })
             dispatch(loginInSuccess(res.data))
             ToastService.showToast(t("LoginSuccess"))
-            navigation.navigate('Home')
+            navigation.reset({
+                index: 1,
+                routes: [{ name: 'Home' }],
+              });
             dispatch(updateMenuStatus(false))
       
            

@@ -189,7 +189,6 @@ const Chart1 = props => {
   // 获取容器的宽高
   const handleLayout = e => {
     const {width, height} = e.nativeEvent.layout;
-    console.log('获取的rcharts高度',height);
     setChartWidth(width);
     setChartHeight(height);
   };

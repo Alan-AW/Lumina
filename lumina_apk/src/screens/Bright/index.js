@@ -52,7 +52,6 @@ const Bright = () => {
     console.log(routes, 'routes');
     if (routes && routes.params.id) {
       getLiveList(routes.params.id).then(res => {
-        console.log('请求信息', res.data);
         setLiveData(res.data.temperature.flat());
         const data1 = [];
         const data2 = [];

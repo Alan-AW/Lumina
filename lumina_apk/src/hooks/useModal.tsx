@@ -15,8 +15,6 @@ export default function useModal(props?: Partial<ModalProps>) {
   const [visible, setVisible] = useState<boolean>(false);
   const [pending, setPending] = useState<boolean>(enablePending);
 
-  console.log("useModal - render");
-
   // TEMP 解决父级组件更新，子级组件状态不更新问题(父组件传递的值没有再次触发useState的初始挂载)，可用useMemo
   // useEffect(() => {
   //   console.log("useModal - useEffect");

@@ -15,11 +15,9 @@ export default function Splash(props: any) {
     storage
       .load({key: 'userInfo'})
       .then(res => {
-        console.log('找到本地信息，跳转首页');
         props.navigation.navigate('Home');
       })
       .catch(err => {
-        console.log('未找到本地信息，跳转登录');
         props.navigation.navigate('Login');
       });
   }, []);

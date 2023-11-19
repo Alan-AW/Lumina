@@ -63,7 +63,10 @@ const QrCode = props => {
         });
         dispatch(loginInSuccess(res.data));
         dispatch(updateMenuStatus(false));
-        nav.navigate('Home');
+        nav.reset({
+          index: 1,
+          routes: [{ name: 'Home' }],
+        });
       });
     }
   }, [info]);

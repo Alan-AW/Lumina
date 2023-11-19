@@ -83,7 +83,7 @@ function AppStackNavigator() {
 }
 
 export default function Router() {
-  const [currentRoute, setCurrentRoute] = useState('');
+  const [currentRoute, setCurrentRoute] = useState('Home');
   const isHiddenSlider = useAppSelector(state => state.config.isHiddenSlider);
 
 

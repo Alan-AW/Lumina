@@ -15,8 +15,6 @@ function dialogOpen(data:shopProps){
     dialogRef.showModal(data)
 }
 function dialogClose(){
-    console.log('关闭modal');
-    
     dialogRef.closeModal()
 }
 

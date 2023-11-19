@@ -17,7 +17,7 @@ const SwitchView = (props: SwitchViewProps & SwitchProps) => {
   return (
     <Switch
       value={isChecked}
-      style={[useInlineStyle(style), useInlineStyle(defaultStyle)]}
+      style={{transform: [{scaleX: 0.7}, {scaleY: 0.7}],...style}}
       thumbColor={isChecked ? '#fff' : '#757575'}
       trackColor={{false: '#e1e1e1', true: '#a5ce77'}}
       onChange={v => {

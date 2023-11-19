@@ -144,7 +144,6 @@ const EChartLine = () => {
     let chart;
     if (chartRef.current && chartWidth > 0 && chartHeight > 0) {
       // @ts-ignore
-      console.log(chartHeight, '渲染的高度');
       chart = echarts.init(chartRef.current, 'light', {
         renderer: 'svg',
         width: chartWidth,

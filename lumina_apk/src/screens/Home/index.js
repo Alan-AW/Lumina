@@ -71,7 +71,7 @@ const Card = props => {
       onPress={() => navigation.navigate('Bright',{id,propsItem:props.propsItem,cardItem:{serial_number,currentDay:title2,max:cropItemCycle}})}
       activeOpacity={1}
       style={useInlineStyle({
-        marginRight: 15,
+        marginRight: 32,
         position: 'relative',
         zIndex: 6,
       })}>
@@ -173,14 +173,13 @@ const Home = () => {
           })
         }
       })
-      //console.log('请求首页', JSON.stringify(res));
       setData(_data);
     });
   }, []);
   const renderItem = ({ item }) => (
     <ShadowCard style={styles.scrollItem} hiddenShadow={true}>
       <View style={styles.scrollContainer}>
-        <View style={useInlineStyle({ width: 350 })}>
+        <View style={useInlineStyle({ width: 350,marginRight:100 })}>
           <Text
             style={useInlineStyle({
               fontFamily: fontName.medium,

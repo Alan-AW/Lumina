@@ -26,7 +26,7 @@ function* checkVersion() {
   };
   try {
     const response: CheckVersionResponse = yield call(Api.checkVersion, params);
-    console.log(response);
+  
     return true;
   } catch (error) {
     console.warn(error);
@@ -35,7 +35,6 @@ function* checkVersion() {
 }
 
 export default function* watchAuthSaga() {
-  console.log("【Saga】authSagas register");
 
   yield takeLatest(startup.type, startupSaga);
 }

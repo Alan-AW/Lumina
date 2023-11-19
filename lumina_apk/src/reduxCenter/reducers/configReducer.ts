@@ -12,7 +12,6 @@ const initialState: ConfigState = {
 
 const userReducer = createReducer(initialState, builder => {
     builder.addCase(updateMenuStatus.type, (state, action:any) => {
-        console.log('recuder 状态',action.payload);
         
         state.isHiddenSlider = action.payload;
     });

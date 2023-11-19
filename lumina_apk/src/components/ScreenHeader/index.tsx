@@ -28,7 +28,7 @@ const ScreenHeader = (props: ScreenHeaderProps) => {
 
             <AutoView isRow style={{alignItems:'flex-start'}}>
                 {
-                    !props.hiddenBack && <ShadowCard style={styles.backBtn} hiddenShadow>
+                    !props.hiddenBack && <ShadowCard style={styles.backBtn}>
                         <IconButton onPress={() => nav.goBack()}>
                             <IconJiantouCopy size={adaptationConvert(22)} />
                         </IconButton>
