@@ -3,20 +3,19 @@
 """
 
 import pika
+from device.rabbit_mq.config import HOST, PORT, USER, PASSWORD, QUEUE_NAME
+import threading
 
 # 创建凭据对象
-credentials = pika.PlainCredentials('admin', '1ee2097c')
+credentials = pika.PlainCredentials(USER, PASSWORD)
 
 # 创建连接参数对象
-parameters = pika.ConnectionParameters('43.138.127.42', credentials=credentials)
+parameters = pika.ConnectionParameters(HOST, credentials=credentials)
 
 # 链接RabbitMQ
 connection = pika.BlockingConnection(parameters)
 # 控制对象
 channel = connection.channel()
-# 创建队列，队列名称为 hello
-# 为了保证消息队列中一定有一个叫hello的队列，所以生产者和消费者都需要创建一次队列，谁先创建就用谁的。
-channel.queue_declare(queue='device_data_queue')
 
 
 # 回调函数
@@ -30,17 +29,21 @@ def callback(ch, method, properties, body):
     print(f'[x] Received message body is {body}')
 
 
-# 确定监听队列
-channel.basic_consume(
-    queue='device_data_queue',  # 要监听的队列名称
-    auto_ack=True,  # 应答参数，默认应答，简单模式下默认即可
-    on_message_callback=callback  # 回调函数
-)
+def start():
+    # 创建队列
+    channel.queue_declare(queue=QUEUE_NAME)
+    # 确定监听队列
+    channel.basic_consume(
+        queue=QUEUE_NAME,  # 要监听的队列名称
+        auto_ack=True,  # 应答参数，默认应答，简单模式下默认即可
+        on_message_callback=callback  # 回调函数
+    )
+    # 开始监听消息队列
+    print('[*] Waiting for messages.')
+    threading.Thread(target=channel.start_consuming).start()
 
-print('[*] Waiting for messages. To exit press CTRL+C')
-
-# 开始监听消息队列
-channel.start_consuming()
 
 # 停止监听
-# channel.stop_consuming()
+def stop():
+    print('[*] Stopping consumer.')
+    channel.stop_consuming()

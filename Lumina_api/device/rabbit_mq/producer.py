@@ -3,24 +3,25 @@
 """
 
 import pika
-from device.rabbit_mq.config import HOST, PORT, USER, PASSWORD
+from device.rabbit_mq.config import HOST, PORT, USER, PASSWORD, QUEUE_NAME
 
-# 创建凭据对象
-credentials = pika.PlainCredentials(USER, PASSWORD)
 
-# 创建连接参数对象
-parameters = pika.ConnectionParameters(HOST, credentials=credentials)
+def start(message='Hello, RabbitMQ!'):
+    # 创建凭据对象
+    credentials = pika.PlainCredentials(USER, PASSWORD)
 
-# 连接到RabbitMQ服务器
-connection = pika.BlockingConnection(parameters)
-channel = connection.channel()
+    # 创建连接参数对象
+    parameters = pika.ConnectionParameters(HOST, credentials=credentials)
 
-# 声明队列
-channel.queue_declare(queue='device_data_queue')
+    # 连接到RabbitMQ服务器
+    connection = pika.BlockingConnection(parameters)
+    channel = connection.channel()
 
-# 发送消息
-message = 'Hello, RabbitMQ!'
-channel.basic_publish(exchange='', routing_key='device_data_queue', body=message)
+    # 声明队列
+    channel.queue_declare(queue=QUEUE_NAME)
 
-# 关闭连接
-connection.close()
+    # 发送消息
+    channel.basic_publish(exchange='', routing_key='device_data_queue', body=message)
+
+    # 关闭连接
+    connection.close()
