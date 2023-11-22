@@ -61,5 +61,10 @@
     "systemTips": "该设备处于生长模式。当自动设置关闭时，您可以手动调整。",
     "SelectLanguage": "设置语言",
     "LoginSuccess": "登录成功",
-    "videoTitle": "视频预览"
+    "videoTitle": "视频预览",
+    "confirm":"确认",
+    "cancel":"取消",
+    "confirmTitle":"是否退出登录？",
+    "logOutOfLogin":"注销登录"
+
 }

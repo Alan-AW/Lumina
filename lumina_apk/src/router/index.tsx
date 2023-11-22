@@ -111,7 +111,7 @@ export default function Router() {
               )}
 
               <View
-                style={{flex: 1, paddingTop: 10, backgroundColor: '#fffcf7'}}>
+                style={{flex: 1, paddingTop:0, backgroundColor: '#fffcf7'}}>
                 <AppStackNavigator />
               </View>
             </View>
