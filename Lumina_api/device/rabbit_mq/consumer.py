@@ -5,6 +5,13 @@
 import pika
 from device.rabbit_mq.config import HOST, PORT, USER, PASSWORD, QUEUE_NAME
 import threading
+from django.utils.module_loading import import_string
+
+
+# message_model = import_string('device.rabbit_mq.message_db.message_db_data')
+# def message_model(message):
+#     print(message)
+
 
 # 创建凭据对象
 credentials = pika.PlainCredentials(USER, PASSWORD)
@@ -27,6 +34,11 @@ def callback(ch, method, properties, body):
     4. body：表示消息体（body），即实际的消息内容。
     """
     print(f'[x] Received message body is {body}')
+    # message_model = import_string('device.rabbit_mq.message_db.message_db_data')
+    # message_db_data(body)
+    # message_model(body)
+    from device.models import MessageQueueModel
+    MessageQueueModel.objects.create(content=body)
 
 
 def start():
