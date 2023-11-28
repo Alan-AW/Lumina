@@ -68,7 +68,7 @@ const styles = createStyles({
   
   },
   textDefault: {
-    fontSize: 40,
+    fontSize: 50,
     textAlign: 'center',
   },
 });

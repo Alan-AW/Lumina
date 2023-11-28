@@ -87,7 +87,7 @@ const Card = props => {
             fontSize: 27,
             color: '#000',
             lineHeight:30,
-            paddingTop:3,
+            paddingTop:7,
             paddingLeft: 15,
           })}>
           {t("Aisle")} #{serial_number}
@@ -100,7 +100,7 @@ const Card = props => {
           fontSize: 23,
           color: '#000',
           lineHeight:30,
-          paddingTop: 5,
+          paddingTop: 7,
         })}>
         {t("Day")}{title2}
         <Text
@@ -221,7 +221,7 @@ const Home = () => {
                     fontFamily: fontName.medium,
                     color: '#000',
                     fontSize: 22,
-                    paddingBottom: 5,
+                    paddingBottom: 30,
                   })}>
                   {t('MaxCurrentTemperature')}
                 </Text>
@@ -279,7 +279,7 @@ const Home = () => {
         <ShadowCard style={styles.navItem}  hiddenShadow={true}>
           <View style={styles.left}>
             <IconButton style={styles.navBtn}>
-              <IconShezhi size={adaptationConvert(30)} color="#000" />
+              <IconShezhi size={adaptationConvert(38)} color="#000" />
             </IconButton>
             <Text style={styles.navText}>{t("Settings")}</Text>
           </View>
@@ -288,10 +288,10 @@ const Home = () => {
         <ShadowCard style={[styles.navItem, { marginLeft: 0 }]}  hiddenShadow={true}>
           <View style={[styles.left]}>
             <IconButton style={[styles.navBtn, { backgroundColor: '#cbfaff' }]}>
-              <IconBaogao size={adaptationConvert(30)} />
+              <IconBaogao size={adaptationConvert(38)} />
               <Badge
                 count={2}
-                style={{ position: 'absolute', top: -15, left: 40}}
+                style={{ position: 'absolute', top: -20, right: -20}}
               />
             </IconButton>
             <Text style={styles.navText}>{t("Review Tickets")}</Text>
@@ -340,7 +340,7 @@ const styles = createStyles({
   navText: {
     paddingLeft: 15,
     color: '#000',
-    fontSize: 28,
+    fontSize: 30,
     fontFamily: fontName.regular,
   },
   navContainer: {

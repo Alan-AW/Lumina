@@ -19,6 +19,9 @@ const checkedColor = '#2a2a2a';
 
 const defaultColor = '#fff';
 
+const itemSize=46;
+const itemContainerSize=94;
+
 const TabItem = ({ isActive, onPress, children }) => {
   const translateY = new Animated.Value(0);
   const interpolatedColor = translateY.interpolate({
@@ -91,7 +94,7 @@ const VerticalTabMenu = (props) => {
             });
           }}>
             <IconZidingyicaidan
-              size={adaptationConvert(25)}
+              size={adaptationConvert(itemSize-13)}
               color={props.currentRoute === 'Home' ? defaultColor : checkedColor}
             />
           </TabItem>
@@ -102,20 +105,20 @@ const VerticalTabMenu = (props) => {
             });
           }}>
             <IconXiangji
-              size={adaptationConvert(38)}
+              size={adaptationConvert(itemSize)}
               color={props.currentRoute === 'VideoPreview' ? defaultColor : checkedColor}
             />
           </TabItem>
           <TabItem isActive={props.currentRoute === 'baogao'} onPress={() => { }}>
             <IconBaogao
-              size={adaptationConvert(38)}
+              size={adaptationConvert(itemSize)}
               color={props.currentRoute === 'baogao' ? defaultColor : checkedColor}
             />
-            <Badge count={2} style={{ position: 'absolute', top: -5, left: 30 }} />
+            <Badge count={2} style={{ position: 'absolute', top: 10, right: 10 }} />
           </TabItem>
           <TabItem isActive={props.currentRoute === 'shizhong'} onPress={() => { }}>
             <IconShizhong
-              size={adaptationConvert(38)}
+              size={adaptationConvert(itemSize)}
               color={props.currentRoute === 'shizhong' ? defaultColor : checkedColor}
             />
           </TabItem>
@@ -126,7 +129,7 @@ const VerticalTabMenu = (props) => {
             });
           }}>
             <IconShezhi
-              size={adaptationConvert(38)}
+              size={adaptationConvert(itemSize)}
               color={props.currentRoute === 'Setting' ? defaultColor : checkedColor}
             />
           </TabItem>
@@ -137,7 +140,7 @@ const VerticalTabMenu = (props) => {
             <Image source={require('../../asset/img/user.jpg')} style={{ width: '100%', height: '100%' }} />
           </IconButton>
           <IconButton style={styles.helpBtn}>
-            <IconKongxinwenhao size={adaptationConvert(28)} />
+            <IconKongxinwenhao size={adaptationConvert(itemSize)} />
           </IconButton>
         </View>
       </View>
@@ -162,8 +165,8 @@ const styles = createStyles({
   tabItem: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 60,
-    width: 60,
+    height: itemContainerSize,
+    width: itemContainerSize,
     position: 'relative',
     zIndex: 6,
     borderRadius: 8,
@@ -171,14 +174,14 @@ const styles = createStyles({
     justifyContent: 'center',
   },
   logo: {
-    width: 60,
-    height: 60,
+    width: itemContainerSize,
+    height: itemContainerSize,
     alignItems:'center',
     justifyContent:'center'
   },
   logoBtn: {
-    width: 60,
-    height: 60,
+    width: itemContainerSize,
+    height: itemContainerSize,
     marginBottom: 20,
   },
   logo2: {
@@ -186,8 +189,8 @@ const styles = createStyles({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    height: 60,
-    width: 60,
+    height: itemContainerSize,
+    width: itemContainerSize,
     borderWidth: 1,
     borderColor: colors.borderColor,
     borderRadius: 10,
@@ -208,8 +211,8 @@ const styles = createStyles({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 60,
-    width: 60,
+    height: itemContainerSize,
+    width: itemContainerSize,
     borderWidth: 1,
     borderColor: colors.borderColor,
     borderRadius: 10,

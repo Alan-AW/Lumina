@@ -33,6 +33,9 @@ export function createStyles<K extends string>(styles: Record<K, TStyle>): Recor
     for (key in itemStyles) {
       if (typeof itemStyles[key] === "number" && ADAPTATION_CONVERT_STYLE_KEYS.includes(key)) {
         // FIXME 这里明明已经通过typeof确定了number类型，不知为什么方法体中还会有抛出undefined类型的错误
+        if(key==='fontSize'){
+          styles[key]=styles[key]+0
+        }
         (itemStyles[key] as number) = adaptationConvert(itemStyles[key] as number);
         // TODO 后续可以在这里做字体大小调整
       }
@@ -50,6 +53,9 @@ export function useInlineStyle(styles: TStyle): TStyle {
   let key: keyof TStyle;
   for (key in styles) {
     if (typeof styles[key] === "number" && ADAPTATION_CONVERT_STYLE_KEYS.includes(key)) {
+      if(key==='fontSize'){
+        styles[key]=styles[key]+3
+      }
       (styles[key] as number) = adaptationConvert(styles[key] as number);
     }
   }

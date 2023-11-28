@@ -16,7 +16,7 @@ const AutoText = (props: TextProps & AutoTextProps) => {
   };
   const newStyle: any = props.style || {};
   if (props.size) {
-    styles.fontSize = props.size;
+    styles.fontSize = props.size+2;
   }
   if (props.type) {
     styles.fontFamily = fontName[props.type];

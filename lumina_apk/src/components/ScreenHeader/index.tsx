@@ -30,7 +30,7 @@ const ScreenHeader = (props: ScreenHeaderProps) => {
                 {
                     !props.hiddenBack && <ShadowCard style={styles.backBtn}>
                         <IconButton onPress={() => nav.goBack()}>
-                            <IconJiantouCopy size={adaptationConvert(22)} />
+                            <IconJiantouCopy size={adaptationConvert(30)} />
                         </IconButton>
                     </ShadowCard>
                 }
@@ -86,8 +86,8 @@ const styles = createStyles({
     },
     backBtn: {
         backgroundColor: '#fff',
-        width: 50,
-        height: 50,
+        width: 70,
+        height: 70,
         borderColor: colors.borderColor,
         borderWidth: 1,
         borderRadius: 10,
