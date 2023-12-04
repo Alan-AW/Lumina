@@ -5,11 +5,18 @@
 import pika
 from device.rabbit_mq.config import HOST, PORT, USER, PASSWORD
 
-
 QUEUE_NAME = "execution_command_queue"
 
 
-def start(message='Hello, RabbitMQ!'):
+def start(message='Hello, RabbitMQ!', device_id=None):
+    queue_name = QUEUE_NAME
+    # 动态队列名称
+    if device_id:
+        queue_name = f'{device_id}_{QUEUE_NAME}'
+    print('**'*50)
+    print(f'queue_name: {queue_name}')
+    print(f'message: {message}')
+    print('**' * 50)
     # 创建凭据对象
     credentials = pika.PlainCredentials(USER, PASSWORD)
 
@@ -21,14 +28,13 @@ def start(message='Hello, RabbitMQ!'):
     channel = connection.channel()
 
     # 声明队列
-    channel.queue_declare(queue=QUEUE_NAME)
+    channel.queue_declare(queue=queue_name)
 
     # 发送消息
-    channel.basic_publish(exchange='', routing_key='device_data_queue', body=message)
+    channel.basic_publish(exchange='', routing_key=queue_name, body=message)
 
     # 关闭连接
     connection.close()
-
 
 # if __name__ == '__main__':
 #     index = 10

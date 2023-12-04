@@ -1,6 +1,7 @@
 from django.db import models
 
 
+# 监听第一个消息队列的内容，入库
 class MessageQueueModel(models.Model):
     content = models.TextField()
     create_time = models.DateTimeField(auto_now_add=True)

@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from android.views import ZoneDeepDataView, UnitDescView, AndroidSettingsView
+from android.views import ZoneDeepDataView, UnitDescView, AndroidSettingsView, SendDataToMQView
 
 app_name = 'android'
 urlpatterns = [
@@ -9,4 +9,7 @@ urlpatterns = [
     re_path(r'unit/desc/(?P<unit_id>\d+)$', UnitDescView.as_view()),
     # 先不做-2023-11-13
     path('android/settings', AndroidSettingsView.as_view()),
+
+    # 设备上传json数据，入库&&推mq
+    path('send/data/to/mq', SendDataToMQView.as_view()),
 ]

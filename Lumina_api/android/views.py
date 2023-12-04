@@ -1,7 +1,12 @@
 import datetime
+import json
+
 from rest_framework.views import APIView
 from django.http import JsonResponse
+from android.models import SendMessageToQueue
+from device.rabbit_mq.producer import start
 from operations.models import Unit, Temperature, Lighting
+from serializers.android_serializers import SendMessageToQueueSer
 from serializers.operations_serializers import android_home_data, TemperatureSer, LightingSer, AndroidSettingsSer
 from utils.methods import return_response, get_temperature_dict, get_temperature_days_list, \
     get_max_center_min_temperature
@@ -88,6 +93,29 @@ class AndroidSettingsView(APIView):
         ser = AndroidSettingsSer(data=request.data)
         if ser.is_valid():
             ser.save()
+            response = return_response(info='数据保存成功!')
+        else:
+            response = return_response(status=False, error=ser.errors)
+        return JsonResponse(response)
+
+
+# 安卓端发送json数据，数据入库并推上mq动态队列
+class SendDataToMQView(APIView):
+    # 测试阶段开放
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+
+    def post(self, request):
+        data = request.data
+        # 验证数据并入库
+        ser = SendMessageToQueueSer(data=data)
+        if ser.is_valid():
+            ser.save()
+            # 推送消息到动态队列
+            device_id = data.get('device_id')
+            data = data.get('data')
+            start(message=json.dumps(data), device_id=device_id)
             response = return_response(info='数据保存成功!')
         else:
             response = return_response(status=False, error=ser.errors)

@@ -10,7 +10,7 @@ from device.rabbit_mq.config import HOST, PORT, USER, PASSWORD, QUEUE_NAME
 # message_model = import_string('device.rabbit_mq.message_db.message_db_data')
 # def message_model(message):
 #     print(message)
-
+# QUEUE_NAME = "abcdefg_execution_command_queue"
 
 # 创建凭据对象
 credentials = pika.PlainCredentials(USER, PASSWORD)
