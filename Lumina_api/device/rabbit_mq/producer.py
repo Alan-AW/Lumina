@@ -3,7 +3,10 @@
 """
 
 import pika
-from device.rabbit_mq.config import HOST, PORT, USER, PASSWORD, QUEUE_NAME
+from device.rabbit_mq.config import HOST, PORT, USER, PASSWORD
+
+
+QUEUE_NAME = "execution_command_queue"
 
 
 def start(message='Hello, RabbitMQ!'):
