@@ -20,5 +20,13 @@ class SendMessage(APIView):
     throttle_classes = []
 
     def get(self, request):
-        start('测试发消息')
+        msg = {
+            "type": "action",
+            "hardware": ["lighting", "led_pwm"],
+            "instruction": "turn_on",
+            "value": [100, 100, 100],
+            "curve": "linear",
+            "curve_duration": "00:30:00"
+        }
+        start(msg)
         return JsonResponse({'status': 'success'})

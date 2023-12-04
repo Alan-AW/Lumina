@@ -3,9 +3,8 @@
 """
 
 import pika
-from device.rabbit_mq.config import HOST, PORT, USER, PASSWORD, QUEUE_NAME
 import threading
-from django.utils.module_loading import import_string
+from device.rabbit_mq.config import HOST, PORT, USER, PASSWORD, QUEUE_NAME
 
 
 # message_model = import_string('device.rabbit_mq.message_db.message_db_data')
@@ -52,6 +51,7 @@ def start():
     )
     # 开始监听消息队列
     print('[*] Waiting for messages.')
+    # channel.start_consuming()
     threading.Thread(target=channel.start_consuming).start()
 
 

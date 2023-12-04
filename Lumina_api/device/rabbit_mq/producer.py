@@ -25,3 +25,12 @@ def start(message='Hello, RabbitMQ!'):
 
     # 关闭连接
     connection.close()
+
+
+# if __name__ == '__main__':
+#     index = 10
+#     while index > 0:
+#         time.sleep(5)
+#         start(json.dumps(msg))
+#         index -= 1
+#         print(f'index: {index}')
