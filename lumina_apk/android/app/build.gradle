@@ -81,7 +81,7 @@ android {
         versionCode 1
         versionName "1.0"
         resValue "string", "build_config_package", "com.Lumina"
-        multiDexEnabled true
+         multiDexEnabled true
     }
     splits {
         abi {

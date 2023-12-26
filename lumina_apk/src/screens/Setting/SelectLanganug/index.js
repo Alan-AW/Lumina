@@ -42,8 +42,6 @@ const DropdownComponent = () => {
       style={useInlineStyle({
         flex: 1,
         marginLeft: 15,
-        backgroundColor: '#fff',
-        height: WINDOW.height * 2,
         borderRadius: 5,
         marginRight: 15,
       })}>
@@ -80,7 +78,6 @@ const styles = createStyles({
     borderColor: colors.borderColor,
     borderWidth: 1,
     borderRadius: 8,
-    width: 400,
     backgroundColor: 'white',
     paddingHorizontal: 8,
   },

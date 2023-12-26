@@ -61,5 +61,9 @@
     "systemTips":"This device is in Growing Mode . You can manually adjust thepump when the automatic setting is turned off.",
     "SelectLanguage":"Select language",
     "LoginSuccess":"Login Success",
-    "videoTitle":"Video view"
+    "videoTitle":"Video view",
+    "confirm":"confirm",
+    "cancel":"cancel",
+    "confirmTitle":"Do you want to log out?",
+    "logOutOfLogin":"Log out of login"
  }

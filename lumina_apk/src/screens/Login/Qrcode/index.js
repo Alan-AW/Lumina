@@ -91,7 +91,6 @@ const QrCode = props => {
     <>
       <Camera
         style={{flex: 1}}
-        {...props}
         isActive={isActive}
         device={device}
         codeScanner={codeScanner}

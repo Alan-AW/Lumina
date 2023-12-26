@@ -6,7 +6,7 @@ import { IconButton, TextButton } from 'src/components/Button';
 import { createStyles, useInlineStyle } from 'src/helpers/style';
 import ShadowCard from 'src/components/Shadow';
 import { FlexCenter } from 'src/components/FlexView';
-import { IconWeixinsaoma } from 'src/iconfont';
+import { IconSaoma, IconWeixinsaoma } from 'src/iconfont';
 import { useAppDispatch } from 'src/reduxCenter/hooks';
 import { loginIn, loginInSuccess, updateMenuStatus } from 'src/reduxCenter/actionCreators';
 import { requestLogin } from 'src/apis/login';
@@ -62,7 +62,9 @@ const FormContent=({navigation})=>{
             })
             return;
         }
-        navigation.navigate('QrCode')
+        const isHermes = () => !!global.HermesInternal;
+        Alert.alert(`是否启用${isHermes()}`)
+      //  navigation.navigate('QrCode')
         
     }
     return (
@@ -82,7 +84,7 @@ const FormContent=({navigation})=>{
            <TextInput style={styles.item} value={password} onChangeText={text=>setPassWord(text)}   secureTextEntry={true}  placeholder={t('password')} />
            <View style={styles.qrcode}>
             <IconButton onPress={()=>qrCode()}>
-            <IconWeixinsaoma size={26} />
+            <IconSaoma size={26} />
             </IconButton>
            
            </View>
