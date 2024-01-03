@@ -22,8 +22,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'users.apps.UsersConfig',
-    'upload_file.apps.UploadFileConfig',
     'operations.apps.OperationsConfig',
     'android.apps.AndroidConfig',
     'device.apps.DeviceConfig',
@@ -71,10 +71,10 @@ WSGI_APPLICATION = 'Lumina_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'lumina',
-        'USER': 'moquanshengwu',
-        'PASSWORD': 'mo_quan_123456',
-        'HOST': '43.138.127.42',
+        'NAME': 'moquanshengwu',
+        'USER': 'mo_quan_admin',
+        'PASSWORD': 'mo_quan_pwd',
+        'HOST': '47.110.240.100',
         'POST': 3306,
         'OPTIONS': {'charset': 'utf8mb4'}
     }

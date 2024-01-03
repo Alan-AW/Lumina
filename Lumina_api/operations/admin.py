@@ -1,6 +1,6 @@
 from django.contrib import admin
 from operations.models import Company, Zone, Room, RoomDesc, Unit, Temperature, Fertilizer, \
-    Plant, PlantDesc, Lighting, AndroidSettings
+    Plant, PlantDesc, Lighting
 
 
 # 企业
@@ -71,18 +71,17 @@ class LightingAdmin(admin.ModelAdmin):
 @admin.register(Plant)
 class PlantAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'type', 'name_en', 'name_cn', 'desc_en', 'desc_cn', 'status', 'icon_path', 'create_time', 'update_time'
+        'id', 'type', 'name_en', 'name_cn', 'desc_en', 'desc_cn', 'status', 'create_time', 'update_time'
     ]
-    list_editable = ['type', 'name_en', 'name_cn', 'desc_en', 'desc_cn', 'status', 'icon_path']
+    list_editable = ['type', 'name_en', 'name_cn', 'desc_en', 'desc_cn', 'status']
     search_fields = ['type', 'name_en', 'name_cn']
 
 
 # 作物详情
 @admin.register(PlantDesc)
 class PlantDescAdmin(admin.ModelAdmin):
-    list_display = ['id', 'unit', 'plant', 'cycle', 'create_time']
-    list_editable = ['unit', 'plant', 'cycle']
-
+    list_display = ['id', 'unit', 'plant', 'cycle', 'icon_path', 'create_time']
+    list_editable = ['unit', 'plant', 'cycle', 'icon_path', ]
 
 # 安卓端APP设置文件
 # @admin.register(AndroidSettings)

@@ -13,24 +13,26 @@ import {
 import { UserOutlined } from '@ant-design/icons'
 import { Avatar } from 'antd'
 import { USER_TOKEN, FADEINDOWN } from 'contants'
-import { CHANGE_LNTL, CHANGE_SIDER_MENU, CHECK_THEME_COLOR_DRAWER, SET_USER_MESSAGE } from 'contants/reduxContants'
+import { CHANGE_LNTL, CHANGE_SIDER_MENU, CHECK_THEME_COLOR_DRAWER, USER_INFO, USER_PERMISSIONS } from 'contants/reduxContants'
 import Weather from './weather'
 import Timer from './timer'
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+import baseUrl from 'network/baseUrl';
 
 const { Header } = Layout
 const { confirm } = Modal
 
 const TopHeader = props => {
   const {
-    isOpen, isOpenMenu, isOpenDrawer, userMessage,
-    setUserMessage, changeLntl, lntl
+    isOpen, isOpenMenu, isOpenDrawer, userInfo,
+    setUserInfo, setUserPermissions, changeLntl, lntl
   } = props
- const {i18n} = useTranslation()
+  const { i18n } = useTranslation()
   // 执行跳转
   const navigate = useNavigate()
   // 读取用户数据
-  const { account, avatar } = userMessage
+  const { account, avatar } = userInfo
+  console.log(avatar)
   // 用户信息下拉菜单
   const items = [
     {
@@ -45,7 +47,7 @@ const TopHeader = props => {
   // 国际化切换选项
   const lntlOptions = [{ label: 'zh_CN', value: 'zh_CN' }, { label: 'en_GB', value: 'en_GB' }]
   function changeLntlT(val) {
-    i18n.changeLanguage(val==='zh_CN'?'zh':'en')
+    i18n.changeLanguage(val === 'zh_CN' ? 'zh' : 'en')
     changeLntl(val)
   }
   // 点击退出登陆
@@ -70,7 +72,8 @@ const TopHeader = props => {
     // 清除token
     localStorage.removeItem(USER_TOKEN)
     // 清除用户信息
-    setUserMessage({})
+    setUserInfo({})
+    setUserPermissions([])
     // 跳转到登陆页面
     navigate('/login', { replace: true })
   }
@@ -125,7 +128,7 @@ const TopHeader = props => {
               {account}
             </span>
             <Avatar
-              src={avatar ? avatar : 'https://api.cyrilstudio.top/bing/image.php?size=1920x1080'}
+              src={avatar.length ? `${baseUrl()}${avatar}` : '/img/logo.png'}
               style={{ backgroundColor: '#87d068' }}
               icon={<UserOutlined />}
             />
@@ -137,8 +140,8 @@ const TopHeader = props => {
 }
 
 const mapStateToProps = state => {
-  const { siderMenuReducer: { isOpen }, userMessage, themeConfig: { lntl } } = state
-  return { isOpen, userMessage, lntl }
+  const { siderMenuReducer: { isOpen }, userInfo, themeConfig: { lntl } } = state
+  return { isOpen, userInfo, lntl }
 }
 
 const mapDispatchToProps = {
@@ -148,8 +151,11 @@ const mapDispatchToProps = {
   isOpenDrawer() {
     return { type: CHECK_THEME_COLOR_DRAWER }
   },
-  setUserMessage(value) {
-    return { type: SET_USER_MESSAGE, value }
+  setUserInfo(value) {
+    return { type: USER_INFO, value }
+  },
+  setUserPermissions(value) {
+    return { type: USER_PERMISSIONS, value }
   },
   changeLntl(value) {
     return { type: CHANGE_LNTL, value }

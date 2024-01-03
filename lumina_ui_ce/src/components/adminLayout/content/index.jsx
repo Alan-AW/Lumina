@@ -4,7 +4,6 @@
 import { Outlet } from 'react-router-dom'
 import { Layout, theme } from 'antd'
 import TopHeader from '../topHeader'
-import Crumb from '../crumb'
 
 const { Content } = Layout;
 
@@ -15,7 +14,6 @@ const RightContent = () => {
   return (
     <Layout className="site-layout">
       <TopHeader />
-      <Crumb />
       <Content
         style={{
           margin: 'var(--content-margin)',

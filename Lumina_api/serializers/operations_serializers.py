@@ -298,3 +298,12 @@ class ExportDataSer(serializers.ModelSerializer):
     class Meta:
         model = Species
         fields = '__all__'
+
+
+class CompanySer(serializers.ModelSerializer):
+    create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+    update_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+
+    class Meta:
+        model = Company
+        fields = '__all__'

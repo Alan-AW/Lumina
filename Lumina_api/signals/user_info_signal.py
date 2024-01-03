@@ -1,7 +1,7 @@
-from django.db.models.signals import pre_save, post_save, pre_delete
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch.dispatcher import receiver
 from django.db.transaction import atomic
-from users.models import UserInfo, UserAvatar
+from users.models import UserInfo, UserQrcodeImg
 from utils.authentication.jwt_auth import create_jwt_token
 from utils.create_qrcode import create_qr_code
 
@@ -16,7 +16,7 @@ def create_user_avatar_obj(sender, instance, **kwargs):
             qrcode = create_jwt_token({'key': instance.account}, start='qrcode')
             instance.qrcode = qrcode
             qrcode_path = create_qr_code(qrcode, instance.account)
-            UserAvatar.objects.create(user=instance, qrcode=qrcode_path)
+            UserQrcodeImg.objects.create(user=instance, qrcode=qrcode_path)
             instance.save()
     except Exception as e:
         sender.objects.filter(pk=instance.id).delete()
@@ -27,21 +27,6 @@ def create_user_avatar_obj(sender, instance, **kwargs):
 def delete_users_avatar(sender, instance, **kwargs):
     # return None
     try:
-        instance.avatar.avatar.delete(False)
         instance.avatar.qrcode.delete(False)
     except Exception:
         return None
-
-
-# 更新头像或者账户之前自动删除用户原来的头像图片文件
-@receiver(pre_save, sender=UserAvatar)
-def update_users_avatar(sender, instance, **kwargs):
-    if not instance.pk:
-        return
-    try:
-        user_obj = sender.objects.get(pk=instance.pk)
-        old_avatar = user_obj.avatar
-    except sender.DoesNotExist:
-        return
-    if old_avatar and old_avatar != instance.avatar:
-        old_avatar.delete(save=False)

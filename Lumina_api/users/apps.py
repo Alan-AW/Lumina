@@ -7,4 +7,4 @@ class UsersConfig(AppConfig):
     verbose_name = '用户管理'
 
     def ready(self):
-        from signals.user_info_signal import create_user_avatar_obj, update_users_avatar, delete_users_avatar
+        from signals.user_info_signal import create_user_avatar_obj, delete_users_avatar

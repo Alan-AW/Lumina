@@ -11,10 +11,13 @@ export const CHANGE_LNTL = 'changeLntl'
 // 夜间模式
 export const CHANGE_THEME_MODE = 'darkMode'
 // 用户信息
-export const SET_USER_MESSAGE = 'setUserMessage'
+export const USER_INFO = 'userInfo'
+// 用户权限
+export const USER_PERMISSIONS = 'userPermissions'
 // 菜单权限
 export const SET_MENU_PERMISSION = 'setMenuPermission'
 // 下拉框组件请求数据action
 export const SET_ROOMS_CHOICES = 'set_roomsChoices'
 export const SET_ZONE_CHOICES = 'set_zoneChocies'
 export const SET_ROLES_CHOICSE = 'set_roleChocies'
+export const SET_COMPANY_CHOICSE = 'set_companyChocies'

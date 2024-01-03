@@ -1,16 +1,16 @@
-// 用户路由权限列表
-import { SET_USER_MESSAGE } from 'contants/reduxContants'
+// 用户基本信息
+import { USER_INFO } from 'contants/reduxContants'
 
 const inintState = {
   account: '未登录',
   avatar: '',
-  role: ''
+  role: 'AnonymousUser'
 }
 
-const userMessage = (prevState = inintState, action) => {
+const userInfo = (prevState = inintState, action) => {
   const { type, value } = action
   switch (type) {
-    case SET_USER_MESSAGE:
+    case USER_INFO:
       let newUserMessge = { ...prevState }
       newUserMessge = value
       return newUserMessge
@@ -19,4 +19,4 @@ const userMessage = (prevState = inintState, action) => {
   }
 }
 
-export default userMessage
+export default userInfo

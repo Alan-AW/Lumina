@@ -1,7 +1,8 @@
 from django.urls import path, re_path
 from operations.views import RoomView, ZoneView, UnitView, ChoicesZoneView, ChoicesRoomView, ChoicesRoleView, \
-    SaveSensorDataView, ExportThree, SpeciesView, CultivarsView, \
-    ModelsView, PhasesView, InstructionView, ActionView, TriggersView, ChoicesEnvironmentalOptions
+    SaveSensorDataView, ExportThree, SpeciesView, CultivarsView, ChoicesCompanyView, \
+    ModelsView, PhasesView, InstructionView, ActionView, TriggersView, ChoicesEnvironmentalOptions, \
+    CompanyView, CompanyUploadLogo
 
 app_name = 'operations'
 urlpatterns = [
@@ -11,6 +12,9 @@ urlpatterns = [
     path('zone/choices', ChoicesZoneView.as_view()),
     path('room/choices', ChoicesRoomView.as_view()),
     path('role/choices', ChoicesRoleView.as_view()),
+    path('company/choices', ChoicesCompanyView.as_view()),
+    re_path(r'company/uploadlogo/(?P<row_id>\d+)$', CompanyUploadLogo.as_view()),
+    re_path(r'company/(?P<row_id>\d+)?', CompanyView.as_view()),
     re_path(r'save/sensor/(?P<types>temperature|lighting)$', SaveSensorDataView.as_view()),
     # 数据结构导出数据
     path('export/three', ExportThree.as_view()),

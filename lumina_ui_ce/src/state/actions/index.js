@@ -1,7 +1,7 @@
 import {
-  SET_ZONE_CHOICES, SET_ROOMS_CHOICES, SET_ROLES_CHOICSE
+  SET_ZONE_CHOICES, SET_ROOMS_CHOICES, SET_ROLES_CHOICSE, SET_COMPANY_CHOICSE
 } from 'contants/reduxContants'
-import { choicesZones, choicesRooms, choicesRoles } from 'network/api'
+import { choicesZones, choicesRooms, choicesRoles, choicesCompany } from 'network/api'
 
 // 异步获取区域下拉框
 const getZoneAction = () => {
@@ -30,4 +30,13 @@ const getRoleAction = () => {
   }
 }
 
-export { getZoneAction, getRoomAction, getRoleAction }
+// 异步获取公司下拉框
+const getCompanyAction = () => {
+  return dispatch => {
+    choicesCompany().then(res => {
+      dispatch({ type: SET_COMPANY_CHOICSE, value: res.data })
+    })
+  }
+}
+
+export { getZoneAction, getRoomAction, getRoleAction, getCompanyAction }

@@ -2,13 +2,15 @@ import { combineReducers } from 'redux'
 import siderMenuReducer from './openSiderMenu'
 import checkThemeColorDrawer from './openThemeColorDrawer'
 import themeConfig from './themeConfig'
-import userMessage from './userMessage'
-import { zoneList, roomList, roleList } from './selectList'
+import userInfo from './userInfo'
+import userPermissions from './userPermissions'
+import { zoneList, roomList, roleList, companyList } from './selectList'
 
 // 合并reducer
 export default combineReducers({
   siderMenuReducer, checkThemeColorDrawer,
-  themeConfig, userMessage, zoneList, roomList, roleList
+  themeConfig, userInfo, userPermissions,
+  zoneList, roomList, roleList, companyList
 })
 
 // 持久化reducer黑名单
@@ -18,5 +20,6 @@ export const blackList = []
 export const whiteList = [
   'siderMenuReducer',
   'themeConfig',
-  'userMessage'
+  'userPermissions',
+  'userInfo'
 ]

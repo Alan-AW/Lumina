@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from operations.models import Species, Cultivars, Models, Phases, Instruction, Action, Triggers, EnvironmentalOptions
+from operations.models import Species, Cultivars, Models, Phases, Instruction, Action, Triggers, EnvironmentalOptions, \
+    Company
 
 
 class SpeciesDataSer(serializers.ModelSerializer):
@@ -45,7 +46,15 @@ class TriggersDataSer(serializers.ModelSerializer):
 
 
 class EnvironmentalOptionsChoicesSer(serializers.ModelSerializer):
-    
     class Meta:
         model = EnvironmentalOptions
+        fields = ['label', 'value']
+
+
+class ChoicesCompanySer(serializers.ModelSerializer):
+    label = serializers.CharField(source='name')
+    value = serializers.IntegerField(source='id')
+
+    class Meta:
+        model = Company
         fields = ['label', 'value']

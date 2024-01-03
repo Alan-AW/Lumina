@@ -1,23 +1,24 @@
 /**
  * 左侧导航菜单
  */
-import {useState, useEffect, useMemo} from 'react'
-import {connect} from 'react-redux'
-import {useNavigate, useLocation} from 'react-router-dom'
-import {Layout, Menu} from 'antd'
+import { useState, useEffect, useMemo } from 'react'
+import { connect } from 'react-redux'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { Layout, Menu } from 'antd'
 import Logo from '../logo'
-import {FADEINLEFT} from 'contants'
+import { FADEINLEFT } from 'contants'
 import st from './index.module.css'
-import menu from 'common/menuMap'
-import {useTranslation} from "react-i18next";
+import createMenu from 'common/menuMap'
+import { useTranslation } from "react-i18next";
 
-const {Sider} = Layout;
+const { Sider } = Layout;
 
 const NavBar = props => {
-    const {isOpen} = props
+    const { isOpen, userPermissions } = props
+    const [menu, setMenu] = useState([])
     const location = useLocation()
     const navigate = useNavigate()
-    const {i18n} = useTranslation();
+    const { i18n } = useTranslation();
     // 设置展开项
     const [openKeys, setOpenKeys] = useState([location.pathname.split('/').slice(0, -1).join('/')])
     // 高亮菜单
@@ -44,10 +45,14 @@ const NavBar = props => {
         setLightPath(newLightPath)
     }, [location.pathname])
 
+    useEffect(() => {
+        const menu = createMenu(userPermissions.filter(item => item.isNaviLink === true))
+        setMenu(menu)
+    }, [userPermissions])
+
     // 子菜单点击跳转
-    const itemClick = (e) => {
-        const {key} = e
-        navigate(key)
+    const itemClick = e => {
+        navigate(e.key)
     }
 
     return (
@@ -57,7 +62,7 @@ const NavBar = props => {
             collapsed={!isOpen}
             className={st.sider + FADEINLEFT}
         >
-            <Logo title="植物自动化设备后台"/>
+            <Logo title="植物自动化设备后台" />
             <Menu
                 key={i18n.language}
                 mode="inline"
@@ -75,8 +80,8 @@ const NavBar = props => {
 };
 
 const mapStateToProps = state => {
-    const {siderMenuReducer: {isOpen}} = state
-    return {isOpen}
+    const { siderMenuReducer: { isOpen }, userPermissions } = state
+    return { isOpen, userPermissions }
 }
 
 export default connect(mapStateToProps)(NavBar)

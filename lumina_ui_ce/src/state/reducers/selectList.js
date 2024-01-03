@@ -1,7 +1,7 @@
 // 所有select下拉组件数据
 
 import {
-  SET_ZONE_CHOICES, SET_ROOMS_CHOICES, SET_ROLES_CHOICSE
+  SET_ZONE_CHOICES, SET_ROOMS_CHOICES, SET_ROLES_CHOICSE, SET_COMPANY_CHOICSE
 } from 'contants/reduxContants'
 
 // 区域
@@ -49,4 +49,19 @@ const roleList = (prevState = roleInitState, action) => {
   }
 }
 
-export { zoneList, roomList, roleList }
+// 公司
+const companyInitState = []
+
+const companyList = (prevState = companyInitState, action) => {
+  let newState = [...prevState]
+  const { type, value } = action
+  switch (type) {
+    case SET_COMPANY_CHOICSE:
+      newState = value
+      return newState
+    default:
+      return prevState
+  }
+}
+
+export { zoneList, roomList, roleList, companyList }

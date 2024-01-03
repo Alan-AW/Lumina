@@ -1,11 +1,12 @@
-import {useState, useEffect, useMemo} from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Table, notification, Button, message, Popconfirm, Image } from 'antd'
 import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined } from '@ant-design/icons'
 import { getUser, postUser, patchUser, deleteUser } from 'network/api'
+import baseUrl from 'network/baseUrl'
 import EditModalForm from 'components/users/editModal'
 import { FADEIN, pageSize } from 'contants'
 import { openNotification } from 'utils'
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 function UserInfo() {
   const [api, contextHolder] = notification.useNotification()
@@ -14,7 +15,8 @@ function UserInfo() {
   const [tableDataCount, settableDataCount] = useState(0)
   const [openModal, setopenModal] = useState(false)
   const [editSate, seteditSate] = useState(false)
-  const { t } =  useTranslation()
+  const [editRow, setEditRow] = useState(null)
+  const { t } = useTranslation()
   const tableTitle = [
     {
       title: t("user.tableTitle.index"),
@@ -27,7 +29,7 @@ function UserInfo() {
       dataIndex: 'id'
     },
     {
-      title:t("user.tableTitle.account"),
+      title: t("user.tableTitle.account"),
       align: 'center',
       dataIndex: 'account'
     },
@@ -35,6 +37,11 @@ function UserInfo() {
       title: t("user.tableTitle.password"),
       align: 'center',
       dataIndex: 'password'
+    },
+    {
+      title: t("user.tableTitle.company_label"),
+      align: 'center',
+      dataIndex: 'company_label'
     },
     {
       title: t("user.tableTitle.first_name"),
@@ -52,39 +59,33 @@ function UserInfo() {
       dataIndex: 'role_label'
     },
     {
-      title:t("user.tableTitle.status_label"),
+      title: t("user.tableTitle.status_label"),
       align: 'center',
       dataIndex: 'status_label'
     },
     {
       title: t("user.tableTitle.chinese_label"),
       align: 'center',
-      dataIndex: 'chinese_label',
+      dataIndex: 'language_label',
     },
     {
-      title:t("user.tableTitle.qrcode_url"),
+      title: t("user.tableTitle.qrcode_url"),
       align: 'center',
       dataIndex: 'qrcode_url',
-      render: qrcode_url => <Image src={qrcode_url} height={50} />
+      render: qrcode_url => <Image src={`${baseUrl()}${qrcode_url}`} height={50} />
     },
     {
-      title:t("user.tableTitle.avatar_url"),
-      align: 'center',
-      dataIndex: 'avatar_url',
-      render: avatar_url => avatar_url === '' ? '暂无头像' : <Image src={avatar_url} height={50} />
-    },
-    {
-      title:t("user.tableTitle.create_time"),
+      title: t("user.tableTitle.create_time"),
       align: 'center',
       dataIndex: 'create_time'
     },
     {
-      title:t("user.tableTitle.update_time"),
+      title: t("user.tableTitle.update_time"),
       align: 'center',
       dataIndex: 'update_time'
     },
     {
-      title:t("user.tableTitle.action"),
+      title: t("user.tableTitle.action"),
       align: 'center',
       render: row => (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
@@ -142,27 +143,21 @@ function UserInfo() {
   // 点击添加
   const addClick = () => {
     setopenModal(true)
+    setEditRow(null)
     seteditSate(false)
   }
 
   // 点击编辑
   const editClick = row => {
-    const {
-      id, account, password, first_name, last_name, role, status, chinese
-    } = row
+    setEditRow(row)
     seteditSate(true)
-    sessionStorage.setItem('editUserId', id)
-    sessionStorage.setItem('editUserData', JSON.stringify({
-      account, password, first_name, last_name, role, status, chinese
-    }))
     setopenModal(true)
   }
 
   // 提交
   const onOk = value => {
-    console.log(value)
     if (editSate) {
-      const id = sessionStorage.getItem('editUserId')
+      const { id } = value;
       patchUser(id, value).then(res => {
         if (res.status) {
           settableData(tableData.map(item => {
@@ -195,9 +190,6 @@ function UserInfo() {
 
   // 关窗
   const closeModal = () => {
-    sessionStorage.setItem('editUserData', JSON.stringify({
-      account: '', password: '', first_name: '', last_name: '', role: null, status: null, chinese: null
-    }))
     setopenModal(false)
   }
 
@@ -220,7 +212,18 @@ function UserInfo() {
       bordered={true}
       rowKey={item => item.id}
     />
-  ), [tableData,t])
+  ), [tableData, t])
+
+  // 编辑表单弹窗
+  const editModal = useMemo(() => (
+    <EditModalForm
+      openModal={openModal}
+      closeModal={closeModal}
+      onOk={onOk}
+      initValue={editRow}
+      editSate={editSate}
+    />
+  ), [editRow, editSate, openModal])
 
   return (
     <>
@@ -233,12 +236,7 @@ function UserInfo() {
         icon={<PlusOutlined />}
       />
       {table}
-      <EditModalForm
-        openModal={openModal}
-        closeModal={closeModal}
-        onOk={onOk}
-        editSate={editSate}
-      />
+      {editModal}
     </>
   )
 }

@@ -1,15 +1,15 @@
 /**
- * 面包屑
+ * 面包屑-暂时取消
  */
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Breadcrumb } from 'antd'
 import { LocalRouterMap } from 'common/routerMap'
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const Crumb = () => {
   const location = useLocation()
-  const {i18n,t} = useTranslation();
+  const { i18n, t } = useTranslation();
   const pathSnippets = location.pathname.split('/').filter(i => i)
   // 生成面包屑
   const extraBreadcrumbItems = pathSnippets.map((_, index) => {

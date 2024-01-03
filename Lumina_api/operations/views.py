@@ -1,14 +1,15 @@
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from operations.models import Room, Zone, Unit, Temperature, Species, RoomDesc, Lighting, Cultivars, Models, Triggers, \
-    Action, Instruction, Phases, EnvironmentalOptions
+    Action, Instruction, Phases, EnvironmentalOptions, Company
 from serializers.operations_serializers import RoomSer, ZoneSer, UnitSer, ChoicesZoneSer, ChoicesRoomSer, \
-    ChoicesRoleSer, ExportDataSer
+    ChoicesRoleSer, ExportDataSer, CompanySer
 from serializers.three_data_serializers import SpeciesDataSer, CultivarsDataSer, ModelsDataSer, PhasesDataSer, \
-    InstructionDataSer, ActionDataSer, TriggersDataSer, EnvironmentalOptionsChoicesSer
+    InstructionDataSer, ActionDataSer, ChoicesCompanySer, TriggersDataSer, EnvironmentalOptionsChoicesSer
 from users.models import Roles
 from utils.methods import return_response, get_data
 from operations.base_view import BaseView
+from utils.permissions.user_permission import SuperPermission
 
 
 # 区域管理
@@ -161,6 +162,38 @@ class ChoicesRoleView(APIView):
     def public_results(self, request):
         queryset = Roles.objects.all()
         ser = ChoicesRoleSer(queryset, many=True)
+        response = return_response(data=ser.data)
+        return JsonResponse(response)
+
+
+# 公司管理
+class CompanyView(BaseView):
+    permission_classes = [SuperPermission]
+    models = Company
+    serializer = CompanySer
+
+
+# 更换公司logo
+class CompanyUploadLogo(APIView):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+
+    def post(self, request, row_id):
+        try:
+            company = Company.objects.get(id=row_id)
+            company.logo = request.FILES.get('data')
+            company.save()
+            response = return_response(data={"id": company.pk, "logo": company.logo.url}, info='上传成功！')
+        except Company.DoesNotExist as e:
+            response = return_response(status=False, error=f'{e}')
+        return JsonResponse(response)
+
+
+# 选择公司
+class ChoicesCompanyView(APIView):
+    def get(self, request):
+        ser = ChoicesCompanySer(Company.objects.all(), many=True)
         response = return_response(data=ser.data)
         return JsonResponse(response)
 

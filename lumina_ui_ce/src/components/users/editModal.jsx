@@ -4,12 +4,12 @@
 import { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Form, Input, Select, Modal } from 'antd'
-import { getRoleAction } from 'state/actions'
-import {useTranslation} from "react-i18next";
+import { getRoleAction, getCompanyAction } from 'state/actions'
+import { useTranslation } from "react-i18next";
 
 function EditModal(props) {
   const {
-    getRoleAction, roleList,
+    getRoleAction, getCompanyAction, roleList, companyList,
     initValue, openModal, closeModal, onOk, editSate
   } = props
   const [form] = Form.useForm()
@@ -17,16 +17,12 @@ function EditModal(props) {
     { label: '正常', value: 1 },
     { label: '禁用', value: 0 }
   ]
-  let { t } =  useTranslation()
+  let { t } = useTranslation()
   useEffect(() => {
     openModal && roleList.length === 0 && getRoleAction()
-  }, [openModal, roleList])
-
-  // 动态设置编辑时的表单内容
-  const editRowData = JSON.parse(sessionStorage.getItem('editUserData'))
-  useEffect(() => {
-    openModal && editRowData !== {} && form.setFieldsValue(editRowData)
-  }, [editRowData, openModal])
+    openModal && companyList.length === 0 && getCompanyAction()
+    openModal && initValue && form.setFieldsValue(initValue)
+  }, [openModal, roleList, initValue])
 
   // 关窗
   const onCancelModal = () => {
@@ -45,7 +41,7 @@ function EditModal(props) {
   return (
     <Modal
       open={openModal}
-      title={editSate ? t('user.EditModalTitle1'):t('user.EditModalTitle2')}
+      title={editSate ? t('user.EditModalTitle1') : t('user.EditModalTitle2')}
       okText={t('user.EditModalbtnConfirm')}
       cancelText={t('user.EditModalbtnCancel')}
       onCancel={onCancelModal}
@@ -56,8 +52,11 @@ function EditModal(props) {
         form={form}
         layout="vertical"
         name="form_in_edit_modal"
-        initialValues={initValue}
       >
+        <Form.Item name='id' hidden>
+          <Input />
+        </Form.Item>
+
         <Form.Item name='account' label={t("user.tableTitle.account") + '：'} rules={[
           { required: true, message: t("user.rules.account") }
         ]}>
@@ -80,22 +79,22 @@ function EditModal(props) {
           { required: true, message: t("user.rules.first_name") }
         ]}>
           <Input
-              placeholder={t("user.placeholder.first_name")}
+            placeholder={t("user.placeholder.first_name")}
             style={{ width: '100%' }}
           />
         </Form.Item>
 
-        <Form.Item name='last_name' label={t("user.tableTitle.last_name") + '：'}  rules={[
-          { required: true, message: t("user.rules.last_name")}
+        <Form.Item name='last_name' label={t("user.tableTitle.last_name") + '：'} rules={[
+          { required: true, message: t("user.rules.last_name") }
         ]}>
           <Input
-              placeholder={t("user.placeholder.last_name")}
+            placeholder={t("user.placeholder.last_name")}
             style={{ width: '100%' }}
           />
         </Form.Item>
 
         <Form.Item name='role' label={t("user.tableTitle.role_label") + '：'} rules={[
-          { required: true, message:  t("user.rules.role_label") }
+          { required: true, message: t("user.rules.role_label") }
         ]}>
           <Select
             allowClear
@@ -105,7 +104,18 @@ function EditModal(props) {
           />
         </Form.Item>
 
-        <Form.Item name='status'  label={t("user.tableTitle.status_label") + '：'} rules={[
+        <Form.Item name='company' label={t("user.tableTitle.company_label") + '：'} rules={[
+          { required: true, message: t("user.rules.company") }
+        ]}>
+          <Select
+            allowClear
+            placeholder={t("user.placeholder.company")}
+            style={{ minWidth: '150px' }}
+            options={companyList}
+          />
+        </Form.Item>
+
+        <Form.Item name='status' label={t("user.tableTitle.status_label") + '：'} rules={[
           { required: true, message: t("user.rules.status_label") }
         ]}>
           <Select
@@ -116,14 +126,14 @@ function EditModal(props) {
           />
         </Form.Item>
 
-        <Form.Item name='chinese' label={t("user.tableTitle.chinese_label") + '：'} rules={[
-          { required: true, message: t("user.rules.chinese_label") }
+        <Form.Item name='language' label={t("user.tableTitle.language_label") + '：'} rules={[
+          { required: true, message: t("user.rules.language_label") }
         ]}>
           <Select
             allowClear
-            placeholder={t("user.placeholder.chinese_label")}
+            placeholder={t("user.placeholder.language_label")}
             style={{ minWidth: '150px' }}
-            options={[{ label: 'chinese', value: 1 }, { label: 'english', value: 0 }]}
+            options={[{ label: '中文', value: 1 }, { label: 'english', value: 0 }]}
           />
         </Form.Item>
 
@@ -133,12 +143,13 @@ function EditModal(props) {
 }
 
 const mapStateToProps = state => {
-  const { roleList } = state
-  return { roleList }
+  const { roleList, companyList } = state
+  return { roleList, companyList }
 }
 
 const mapDispatchToProps = {
-  getRoleAction
+  getRoleAction,
+  getCompanyAction
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditModal)

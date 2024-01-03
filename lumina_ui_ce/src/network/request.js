@@ -3,7 +3,7 @@ import { message } from 'antd'
 import nProgress from 'nprogress'
 import { USER_TOKEN } from 'contants'
 import { storageThatExpries } from 'utils'
-import { baseUrl } from './baseUrl'
+import baseUrl from './baseUrl'
 
 axios.defaults.headers["Content-Type"] = "application/json;charset=utf-8"
 
@@ -11,7 +11,7 @@ axios.defaults.headers["Content-Type"] = "application/json;charset=utf-8"
 nProgress.configure({ easing: 'ease', speed: 500, showSpinner: false })
 
 const instance = axios.create({
-  baseURL: baseUrl,
+  baseURL: baseUrl(),
   timeout: 5000
 })
 

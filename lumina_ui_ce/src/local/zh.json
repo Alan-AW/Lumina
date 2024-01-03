@@ -27,13 +27,13 @@
       "id": "ID",
       "account": "用户账号",
       "password": "用户密码",
+      "company_label": "公司名称",
       "first_name": "姓",
       "last_name": "名",
       "role_label": "用户角色",
       "status_label": "用户状态",
       "chinese_label": "用户语言",
       "qrcode_url": "二维码",
-      "avatar_url": "头像",
       "create_time": "创建时间",
       "update_time": "更新时间",
       "action": "操作"
@@ -47,6 +47,7 @@
       "password": "用户密码不可为空！",
       "first_name": "用户姓名不可为空！",
       "last_name": "用户姓名不可为空！",
+      "company": "必须选择公司！",
       "role_label": "用户角色必须选择！",
       "status_label": "用户状态必须选择！",
       "chinese_label": "用户语言必须选择！"

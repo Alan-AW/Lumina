@@ -3,7 +3,7 @@
  */
 import { connect } from 'react-redux'
 import st from './index.module.css'
-const logoSrc = require('assets/img/logo/Logo.png')
+const logoSrc = '/img/Logo.png'
 
 
 const Logo = (props) => {

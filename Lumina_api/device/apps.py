@@ -1,5 +1,7 @@
+import os
+import subprocess
 from django.apps import AppConfig
-from device.rabbit_mq import consumer
+from django.conf import settings
 
 
 class DeviceConfig(AppConfig):
@@ -7,5 +9,6 @@ class DeviceConfig(AppConfig):
     name = 'device'
 
     def ready(self):
-        # 项目启动开始监听队列
-        consumer.start()
+        # 启动你的Python脚本,开始监听队列
+        script_path = os.path.join(settings.BASE_DIR, 'device', 'rabbit_mq', 'consumer.py')
+        subprocess.Popen(['python', script_path])

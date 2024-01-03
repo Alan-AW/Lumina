@@ -8,19 +8,19 @@ import {
   EditOutlined, EllipsisOutlined, SettingOutlined, UserOutlined
 } from '@ant-design/icons'
 import { connect } from 'react-redux'
-import { SET_USER_MESSAGE } from 'contants/reduxContants'
+import { USER_INFO } from 'contants/reduxContants'
 import { updateUserInfo, uploadImg } from 'network/api'
 import { FADEIN, passwordReg } from 'contants'
 import { randomOnePortry, openNotification } from 'utils'
-import UploadImg from 'components/upload'
+import getBaseUrl from 'network/baseUrl'
 
 const Index = props => {
-  const { userMessage, setUserMessage } = props
-  const { account, avatar, role } = userMessage
+  const { userInfo } = props
+  const { account, avatar, role } = userInfo
   // 路由跳转
   const navigate = useNavigate()
   // bing每日一图
-  const imgCover = "https://api.cyrilstudio.top/bing/image.php?size=1920x1080"
+  const imgCover = "/img/logo.png"
   // 修改用户信息对话框状态
   const [isModalOpen, setisModalOpen] = useState(false)
   // 修改用户信息表单ref
@@ -45,18 +45,18 @@ const Index = props => {
 
   // 修改用户信息确认回调
   const handleOk = () => {
-    editUserMessage.current?.validateFields().then(value => {
-      updateUserInfo(value).then(res => {
-        if (res.status) {
-          message.success('账户信息修改成功！请重新登陆！')
-          // 账户密码修改成功之后，清空用户信息，进入登陆页面
-          setUserMessage({})
-          navigate('/login?next=admin')
-        } else {
-          openNotification(api, 'error', res.errs)
-        }
-      })
-    })
+    // editUserMessage.current?.validateFields().then(value => {
+    //   updateUserInfo(value).then(res => {
+    //     if (res.status) {
+    //       message.success('账户信息修改成功！请重新登陆！')
+    //       // 账户密码修改成功之后，清空用户信息，进入登陆页面
+    //       setUserInfo({})
+    //       navigate('/login?next=admin')
+    //     } else {
+    //       openNotification(api, 'error', res.errs)
+    //     }
+    //   })
+    // })
   }
 
   // 取消修改用户信息
@@ -67,15 +67,15 @@ const Index = props => {
 
   // 头像上传成功返回之后回调
   const uploadSuccess = res => {
-    if (res.status) {
-      const newUserMessage = { ...userMessage }
-      newUserMessage.avatar = res.data.avatar_url
-      setUserMessage(newUserMessage)
-      message.success(res.info)
-      setisEditOpen(false)
-    } else {
-      openNotification(api, 'error', res.errs)
-    }
+    // if (res.status) {
+    //   const newUserMessage = { ...useInfo }
+    //   newUserMessage.avatar = res.data.avatar_url
+    //   setUserInfo(newUserMessage)
+    //   message.success(res.info)
+    //   setisEditOpen(false)
+    // } else {
+    //   openNotification(api, 'error', res.errs)
+    // }
   }
   // 头像上传失败回调
   const uploadError = () => {
@@ -119,7 +119,7 @@ const Index = props => {
               avatar={
                 <Avatar
                   size={64}
-                  src={avatar}
+                  src={`${getBaseUrl()}${avatar}`}
                   style={{ backgroundColor: '#87d068' }}
                   icon={<UserOutlined />}
                 />
@@ -131,7 +131,7 @@ const Index = props => {
         </Col>
       </Row>
       {/* 修改用户信息对话框 */}
-      <Modal
+      {/* <Modal
         title="修改用户信息"
         open={isModalOpen}
         onOk={handleOk}
@@ -141,7 +141,7 @@ const Index = props => {
           ref={editUserMessage}
           name="basic"
           autoComplete="off"
-          initialValues={{ account: userMessage.account }}
+          initialValues={{ account: useInfo.account }}
         >
           <Form.Item
             label="Account"
@@ -199,9 +199,9 @@ const Index = props => {
             <Input.Password autoComplete='off' />
           </Form.Item>
         </Form>
-      </Modal>
+      </Modal> */}
       {/* 修改头像对话框 */}
-      <Modal
+      {/* <Modal
         width="260px"
         style={{ textAlign: 'center' }}
         title="上传新头像"
@@ -212,19 +212,19 @@ const Index = props => {
         <UploadImg
           api={uploadAvatarImg} useCrop={true}
         />
-      </Modal>
+      </Modal> */}
     </div>
   )
 }
 
 const mapStateToProps = state => {
-  const { userMessage } = state
-  return { userMessage }
+  const { userInfo } = state
+  return { userInfo }
 }
 
 const mapDispatchToProps = {
-  setUserMessage(value) {
-    return { type: SET_USER_MESSAGE, value }
+  setUserInfo(value) {
+    return { type: USER_INFO, value }
   }
 }
 

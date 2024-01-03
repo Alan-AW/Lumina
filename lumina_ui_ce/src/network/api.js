@@ -20,6 +20,8 @@ export const choicesZones = () => axios.get('/manager/zone/choices')
 export const choicesRooms = () => axios.get('/manager/room/choices')
 export const choicesRoles = () => axios.get('/manager/role/choices')
 export const choicesEnvironmentalOptions = () => axios.get('/manager/choices/environmentalOptions')
+export const choicesCompany = () => axios.get('/manager/company/choices')
+export const getNavPermission = () => axios.get('/auth/permission/choices')
 
 // 用户管理页面
 export const getUser = params => axios.get('/auth/user/', { params })
@@ -31,6 +33,24 @@ export const getZone = params => axios.get('/manager/zone/', { params })
 export const postZone = data => axios.post('/manager/zone/', data)
 export const patchZone = (id, data) => axios.patch(`/manager/zone/${id}`, data)
 export const deleteZone = id => axios.delete(`/manager/zone/${id}`)
+// 角色管理页面
+export const getRoles = params => axios.get('/auth/roles/', { params })
+export const postRoles = data => axios.post('/auth/roles/', data)
+export const patchRoles = (id, data) => axios.patch(`/auth/roles/${id}`, data)
+export const deleteRoles = id => axios.delete(`/auth/roles/${id}`)
+// 权限管理页面
+export const getPermission = params => axios.get('/auth/permission/', { params })
+export const postPermission = data => axios.post('/auth/permission/', data)
+export const patchPermission = data => axios.patch('/auth/permission/', data)
+export const deletePermission = data => axios.delete('/auth/permission/', { data })
+// 日志查看
+export const getLogs = params => axios.get('/auth/logs', { params })
+// 公司管理
+export const getCompany = params => axios.get('/manager/company/', { params })
+export const postCompany = data => axios.post('/manager/company/', data)
+export const patchCompany = (id, data) => axios.patch(`/manager/company/${id}`, data)
+export const deleteCompany = id => axios.delete(`/manager/company/${id}`)
+export const uploadCompanyLogoApi = (id, data) => axios.post(`/manager/company/uploadlogo/${id}`, data, uploadHeaders)
 // 房间管理页面
 export const getRooms = params => axios.get('/manager/room/', { params })
 export const postRooms = data => axios.post('/manager/room/', data)

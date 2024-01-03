@@ -1,14 +1,20 @@
 from django.db import models
-from upload_file.models import UploadFile
 
 
 # 企业表
 class Company(models.Model):
-    name = models.CharField(max_length=64, verbose_name='企业名称')
-    address = models.CharField(max_length=256, verbose_name='企业地址')
+    name = models.CharField(max_length=64, unique=True, verbose_name='企业名称')
+    address = models.CharField(max_length=255, unique=True, verbose_name='企业地址')
     legal_rep = models.CharField(max_length=8, verbose_name='企业法人')
     tel = models.CharField(max_length=14, verbose_name='联系电话')
     email = models.CharField(max_length=64, verbose_name='企业邮箱')
+
+    def logo_upload_path(self, instance):
+        return f'companyLogo/{self.name}/{instance}'
+
+    logo = models.ImageField(
+        upload_to=logo_upload_path, null=True, blank=True, verbose_name='企业logo'
+    )
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 
@@ -20,9 +26,9 @@ class Company(models.Model):
         return f'{self.name}'
 
 
-# 区域表
+# 区域表-好像无用了
 class Zone(models.Model):
-    name = models.CharField(max_length=64, verbose_name='区域名称')
+    name = models.CharField(max_length=64, unique=True, verbose_name='区域名称')
     company = models.ForeignKey(
         to=Company, to_field='id', on_delete=models.CASCADE, related_name='zones', verbose_name='所属企业'
     )
@@ -41,10 +47,10 @@ class Zone(models.Model):
 
 # 房间表
 class Room(models.Model):
-    serial_number = models.CharField(max_length=512, verbose_name='房间编号')
     zone = models.ForeignKey(
         to=Zone, to_field='id', on_delete=models.CASCADE, related_name='rooms', verbose_name='所属区域'
     )
+    serial_number = models.CharField(max_length=255, unique=True, verbose_name='房间编号')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 
@@ -58,12 +64,12 @@ class Room(models.Model):
 
 # 机器表
 class Unit(models.Model):
-    serial_number = models.CharField(max_length=512, verbose_name='机器编号')
-    deviceId = models.CharField(max_length=512, verbose_name='设备编号')
-    deviceSecret = models.CharField(max_length=512, verbose_name='设备密钥')
     room = models.ForeignKey(
         to=Room, to_field='id', on_delete=models.CASCADE, related_name='units', verbose_name='所属房间'
     )
+    serial_number = models.CharField(max_length=255, unique=True, verbose_name='机器编号')
+    deviceId = models.CharField(max_length=255, unique=True, verbose_name='设备编号')
+    deviceSecret = models.CharField(max_length=255, unique=True, verbose_name='设备密钥')
     status = models.IntegerField(choices=((0, '禁用'), (1, '正常')), verbose_name='机器状态', default=1)
     components = models.JSONField(null=True, blank=True, verbose_name='安卓端显示组件列表')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
@@ -154,7 +160,6 @@ class Plant(models.Model):
     desc_en = models.TextField(verbose_name='英文描述')
     desc_cn = models.TextField(verbose_name='中文描述')
     status = models.IntegerField(choices=((0, '禁用'), (1, '正常')), verbose_name='作物状态', default=1)
-    icon_path = models.OneToOneField(to=UploadFile, to_field='id', on_delete=models.CASCADE, verbose_name='作物图片')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 
@@ -172,6 +177,7 @@ class PlantDesc(models.Model):
                              verbose_name='所属机器')
     plant = models.ForeignKey(to=Plant, to_field='id', related_name='desc', on_delete=models.CASCADE,
                               verbose_name='作物信息')
+    icon_path = models.CharField(max_length=512, verbose_name='作物图片')
     cycle = models.IntegerField(default=1, verbose_name='作物周期')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='播种时间')
 
@@ -183,6 +189,7 @@ class PlantDesc(models.Model):
         return self.plant.name_cn
 
 
+# 安卓设备的设置内容
 class AndroidSettings(models.Model):
     phase_control = models.JSONField(verbose_name='Phase Control')
     automatic = models.IntegerField(default=50)
@@ -198,6 +205,7 @@ class AndroidSettings(models.Model):
         verbose_name = '参数设置'
 
 
+# 以下 Species - HardwareOptions为第二期开发的树结构数据表模型
 class Species(models.Model):
     name_en = models.CharField(max_length=64, verbose_name='英文名')
     name_cn = models.CharField(max_length=64, verbose_name='中文名')

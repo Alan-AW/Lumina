@@ -6,7 +6,6 @@ import pika
 import threading
 from device.rabbit_mq.config import HOST, PORT, USER, PASSWORD, QUEUE_NAME
 
-
 # message_model = import_string('device.rabbit_mq.message_db.message_db_data')
 # def message_model(message):
 #     print(message)
@@ -59,3 +58,7 @@ def start():
 def stop():
     print('[*] Stopping consumer.')
     channel.stop_consuming()
+
+
+if __name__ == '__main__':
+    start()

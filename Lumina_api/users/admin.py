@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.conf import settings as sys
-from users.models import Permission, Roles, UserInfo, UserAvatar
+from users.models import Permission, Roles, UserInfo, UserQrcodeImg, Logs
 
 admin.site.site_header = sys.ADMIN_SITE_HEADER
 admin.site.site_title = sys.ADMIN_SITE_TITLE
@@ -24,13 +24,21 @@ class RolesAdmin(admin.ModelAdmin):
 @admin.register(UserInfo)
 class UserInfoAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'account', 'password', 'first_name', 'last_name', 'role', 'status', 'qrcode', 'company', 'create_time', 'update_time'
+        'id', 'account', 'password', 'is_super', 'first_name', 'last_name', 'role', 'status', 'qrcode', 'company',
+        'create_time', 'update_time'
     ]
-    list_editable = ['account', 'password', 'first_name', 'last_name', 'role', 'company', 'status']
+    list_editable = ['account', 'password', 'is_super', 'first_name', 'last_name', 'role', 'company', 'status']
     search_fields = ['account', 'first_name', 'last_name']
 
 
-@admin.register(UserAvatar)
+@admin.register(UserQrcodeImg)
 class UserAvatarAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'avatar', 'qrcode']
-    list_editable = ['user', 'avatar', 'qrcode']
+    list_display = ['id', 'user', 'qrcode']
+    list_editable = ['user', 'qrcode']
+
+
+@admin.register(Logs)
+class LogsAdmin(admin.ModelAdmin):
+    list_display = ['id', 'username', 'role', 'table_name', 'command', 'content', 'create_time']
+    readonly_fields = ['username', 'role', 'table_name', 'command', 'content', 'create_time']
+    search_fields = ['username', 'command']

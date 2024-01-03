@@ -27,13 +27,13 @@
       "id": "ID",
       "account": "Account",
       "password": "Password",
+      "company_label": "Company",
       "first_name": "First Name",
       "last_name": "Last Name",
       "role_label": "Role",
       "status_label": "Status",
-      "chinese_label": "User language",
+      "language_label": "User language",
       "qrcode_url": "QR Code",
-      "avatar_url": "Avatar",
       "create_time": "Create Time",
       "update_time": "Update Time",
       "action": "Action"
@@ -44,6 +44,7 @@
     "EditModalbtnConfirm": "Confirm",
     "rules": {
       "account": "User account cannot be empty!",
+      "company": "User Company cannot be empty!",
       "password": "User password cannot be empty!",
       "first_name": "User first name cannot be empty!",
       "last_name": "User last name cannot be empty!",
@@ -58,7 +59,7 @@
       "last_name": "Please enter user last name",
       "role_label": "Please select user role",
       "status_label": "Please select user status",
-      "chinese_label": "Please select user language"
+      "language_label": "Please select user language"
     }
   },
   "Zone": {
