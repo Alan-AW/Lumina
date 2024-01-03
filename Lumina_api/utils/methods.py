@@ -26,7 +26,7 @@ def get_data(model=None, is_query: bool = False, request=None, view=None, ser_cl
     else:
         page_obj = model
         ser = ser_class(instance=page_obj, many=many)
-        data = ser.data
+        data = {'results': [ser.data], 'count': 1}
     return data
 
 

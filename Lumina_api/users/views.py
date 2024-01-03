@@ -7,8 +7,8 @@ from utils.authentication.jwt_auth import create_jwt_token
 from utils.methods import return_response, get_data
 from serializers.user_serializers import UserLoginSerializer, UserInfoSer, RolesSer, PermissionSerializers, \
     permission_and_menu_ser, LogsSer
-from serializers.operations_serializers import LoginZoneDataSer
 from utils.permissions.user_permission import SuperPermission
+from utils.create_log import create_logs
 
 
 class LoginView(APIView):
@@ -27,11 +27,10 @@ class LoginView(APIView):
         # elif user_obj.role.title != 'Manager':
         #     response = return_response(status=False, error='对不起您无权使用本系统!')
         else:
-            data = get_data(model=user_obj, ser_class=UserLoginSerializer, many=False)
+            ser = UserLoginSerializer(user_obj, many=False)
+            data = ser.data
             data['token'] = create_jwt_token({'id': user_obj.id})
-            # zones_queryset = user_obj.company.zones.all()
-            # zones_ser = LoginZoneDataSer(zones_queryset, many=True)
-            # data['zone'] = zones_ser.data
+            create_logs(user_obj, UserInfo, 1, None)
             response = return_response(status=True, data=data, info='登陆成功！')
         return JsonResponse(response)
 
@@ -51,6 +50,7 @@ class UserInfoView(APIView):
         ser = UserInfoSer(data=data)
         if ser.is_valid():
             ser.save()
+            create_logs(request.user, UserInfo, 2, request.data)
             response = return_response(data=ser.data, info='用户创建成功！')
         else:
             response = return_response(status=False, error=ser.errors)
@@ -61,6 +61,7 @@ class UserInfoView(APIView):
         ser = UserInfoSer(instance=instance, data=request.data)
         if ser.is_valid():
             ser.save()
+            create_logs(request.user, UserInfo, 3, request.data)
             response = return_response(data=ser.data, info='用户信息更新成功！')
         else:
             response = return_response(status=False, error=ser.errors)
@@ -69,13 +70,14 @@ class UserInfoView(APIView):
     def delete(self, request, row_id=None):
         try:
             result = UserInfo.objects.get(pk=row_id).delete()
+            create_logs(request.user, UserInfo, 4, request.data)
             response = return_response(info=f'成功删除{result}条数据！', data=int(row_id))
         except UserInfo.DoesNotExist as e:
             response = return_response(status=False, error=f'{e}')
         return JsonResponse(response)
 
 
-# 修改个人信息
+# 修改个人信息-暂时不用
 class UpdateUserInfo(APIView):
 
     def post(self, request):
@@ -90,6 +92,7 @@ class UpdateUserInfo(APIView):
 
 # 角色管理
 class RolesView(BaseView):
+    create_log = True
     permission_classes = [SuperPermission]
     models = Roles
     serializer = RolesSer
@@ -114,6 +117,7 @@ class PermissionView(BaseView):
         ser = PermissionSerializers(data=request.data)
         if ser.is_valid():
             ser.save()
+            create_logs(request.user, Permission, 2, request.data)
             response = return_response(data=ser.data, info='权限添加成功！')
         else:
             response = return_response(status=False, error=ser.errors)
@@ -124,6 +128,7 @@ class PermissionView(BaseView):
         ser = PermissionSerializers(instance=permission_obj, data=request.data)
         if ser.is_valid():
             ser.save()
+            create_logs(request.user, Permission, 3, request.data)
             response = return_response(data=ser.data, info='权限更新成功！')
         else:
             response = return_response(status=False, error=ser.errors)
@@ -132,6 +137,7 @@ class PermissionView(BaseView):
     def delete(self, request, *args, **kwargs):
         queryset = Permission.objects.filter(id=request.data)
         if queryset.delete()[0] > 0:
+            create_logs(request.user, Permission, 4, request.data)
             response = return_response(info='删除成功!')
         else:
             response = return_response(info='删除失败!')
@@ -143,6 +149,13 @@ class LogsView(APIView):
     permission_classes = [SuperPermission]
 
     def get(self, request):
-        data = get_data(Logs, False, request, self, LogsSer)
+        if request.user.is_super:
+            # 超级用户查看所有日志
+            queryset = Logs.objects.all()
+        else:
+            # 管理员查看当前公司下的所有用户的日志
+            username = [i.account for i in request.user.company.account.all()]
+            queryset = Logs.objects.filter(username__in=username)
+        data = get_data(queryset, True, request, self, LogsSer)
         response = return_response(data=data)
         return JsonResponse(response)

@@ -16,7 +16,6 @@ export const uploadImg = data => axios.post('/auth/update', data, uploadHeaders)
 export const updateUserInfo = data => axios.post('/auth/update', data)
 
 // 下拉框数据获取
-export const choicesZones = () => axios.get('/manager/zone/choices')
 export const choicesRooms = () => axios.get('/manager/room/choices')
 export const choicesRoles = () => axios.get('/manager/role/choices')
 export const choicesEnvironmentalOptions = () => axios.get('/manager/choices/environmentalOptions')

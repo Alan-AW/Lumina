@@ -31,11 +31,6 @@ function Roles(props) {
       render: (row, value, index) => <b>{index + 1}</b>
     },
     {
-      title: "ID",
-      align: 'center',
-      dataIndex: 'id'
-    },
-    {
       title: '角色名称',
       dataIndex: 'title',
       align: 'center',

@@ -27,11 +27,6 @@ function Company(props) {
       render: (row, value, index) => <b>{index + 1}</b>
     },
     {
-      title: "ID",
-      align: 'center',
-      dataIndex: 'id'
-    },
-    {
       title: "企业名称",
       align: 'center',
       dataIndex: 'name'

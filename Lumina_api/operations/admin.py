@@ -1,5 +1,5 @@
 from django.contrib import admin
-from operations.models import Company, Zone, Room, RoomDesc, Unit, Temperature, Fertilizer, \
+from operations.models import Company, Room, RoomDesc, Unit, Temperature, Fertilizer, \
     Plant, PlantDesc, Lighting
 
 
@@ -11,19 +11,11 @@ class CompanyAdmin(admin.ModelAdmin):
     search_fields = ['name', 'address', 'tel', 'email', 'legal_rep']
 
 
-# 区域
-@admin.register(Zone)
-class ZoneAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'company', 'status', 'create_time', 'update_time', 'time_zone']
-    list_editable = ['name', 'company', 'status', 'time_zone']
-    search_fields = ['name', 'company']
-
-
 # 房间
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
-    list_display = ['id', 'serial_number', 'zone', 'create_time', 'update_time']
-    list_editable = ['serial_number', 'zone']
+    list_display = ['id', 'serial_number', 'company', 'create_time', 'update_time']
+    list_editable = ['serial_number', 'company']
     search_fields = ['serial_number']
 
 
@@ -37,9 +29,9 @@ class RoomDescAdmin(admin.ModelAdmin):
 # 机器
 @admin.register(Unit)
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ['id', 'serial_number', 'deviceId', 'deviceSecret', 'room', 'status', 'components', 'create_time',
+    list_display = ['id', 'serial_number', 'deviceId', 'deviceSecret', 'room', 'status', 'create_time',
                     'update_time']
-    list_editable = ['serial_number', 'deviceId', 'deviceSecret', 'room', 'status', 'components']
+    list_editable = ['serial_number', 'deviceId', 'deviceSecret', 'room', 'status']
     search_fields = ['serial_number']
 
 

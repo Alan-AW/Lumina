@@ -21,11 +21,6 @@ function Logs(props) {
       render: (row, value, index) => <b>{index + 1}</b>
     },
     {
-      title: "ID",
-      align: 'center',
-      dataIndex: 'id'
-    },
-    {
       title: "用户名",
       align: 'center',
       dataIndex: 'username'

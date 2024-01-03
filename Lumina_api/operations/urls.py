@@ -1,16 +1,15 @@
 from django.urls import path, re_path
-from operations.views import RoomView, ZoneView, UnitView, ChoicesZoneView, ChoicesRoomView, ChoicesRoleView, \
+from operations.views import RoomView, UnitView, ChoicesRoomView, ChoicesRoleView, \
     SaveSensorDataView, ExportThree, SpeciesView, CultivarsView, ChoicesCompanyView, \
     ModelsView, PhasesView, InstructionView, ActionView, TriggersView, ChoicesEnvironmentalOptions, \
     CompanyView, CompanyUploadLogo
 
 app_name = 'operations'
 urlpatterns = [
-    re_path(r'zone/(?P<row_id>\d+)?$', ZoneView.as_view()),
-    re_path(r'room/(?P<row_id>\d+)?$', RoomView.as_view()),
     re_path(r'unit/(?P<row_id>\d+)?$', UnitView.as_view()),
-    path('zone/choices', ChoicesZoneView.as_view()),
+    re_path(r'room/(?P<row_id>\d+)?$', RoomView.as_view()),
     path('room/choices', ChoicesRoomView.as_view()),
+    path('company/choices', ChoicesCompanyView.as_view()),
     path('role/choices', ChoicesRoleView.as_view()),
     path('company/choices', ChoicesCompanyView.as_view()),
     re_path(r'company/uploadlogo/(?P<row_id>\d+)$', CompanyUploadLogo.as_view()),

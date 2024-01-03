@@ -4,13 +4,13 @@ import checkThemeColorDrawer from './openThemeColorDrawer'
 import themeConfig from './themeConfig'
 import userInfo from './userInfo'
 import userPermissions from './userPermissions'
-import { zoneList, roomList, roleList, companyList } from './selectList'
+import { roomList, roleList, companyList } from './selectList'
 
 // 合并reducer
 export default combineReducers({
   siderMenuReducer, checkThemeColorDrawer,
   themeConfig, userInfo, userPermissions,
-  zoneList, roomList, roleList, companyList
+  roomList, roleList, companyList
 })
 
 // 持久化reducer黑名单

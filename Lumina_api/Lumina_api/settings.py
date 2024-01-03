@@ -71,9 +71,9 @@ WSGI_APPLICATION = 'Lumina_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'moquanshengwu',
-        'USER': 'mo_quan_admin',
-        'PASSWORD': 'mo_quan_pwd',
+        'NAME': 'mqsw',
+        'USER': 'mqsw',
+        'PASSWORD': 'HTHY6JbPMF5AxHKc',
         'HOST': '47.110.240.100',
         'POST': 3306,
         'OPTIONS': {'charset': 'utf8mb4'}

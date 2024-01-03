@@ -24,11 +24,6 @@ function UserInfo() {
       render: (row, value, index) => <b>{index + 1}</b>
     },
     {
-      title: t("user.tableTitle.id"),
-      align: 'center',
-      dataIndex: 'id'
-    },
-    {
       title: t("user.tableTitle.account"),
       align: 'center',
       dataIndex: 'account'

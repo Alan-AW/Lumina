@@ -1,9 +1,11 @@
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from utils.methods import return_response, get_data
+from utils.create_log import create_logs
 
 
 class BaseView(APIView):
+    create_log = False
     models = None
     serializer = None
     get_filter = None
@@ -21,6 +23,8 @@ class BaseView(APIView):
         ser = self.serializer(data=request.data)
         if ser.is_valid():
             ser.save()
+            if self.create_log:
+                create_logs(request.user, self.models, 2, request.data)
             response = return_response(data=ser.data, info='添加操作成功！')
         else:
             response = return_response(status=False, error=ser.errors)
@@ -31,6 +35,8 @@ class BaseView(APIView):
         ser = self.serializer(instance=queryset, data=request.data)
         if ser.is_valid():
             ser.save()
+            if self.create_log:
+                create_logs(request.user, self.models, 3, request.data)
             response = return_response(data=ser.data, info='信息更新成功！')
         else:
             response = return_response(status=False, error=ser.errors)
@@ -39,6 +45,8 @@ class BaseView(APIView):
     def delete(self, request, row_id):
         try:
             data = self.models.objects.filter(id=row_id).delete()
+            if self.create_log:
+                create_logs(request.user, self.models, 4, row_id)
             response = return_response(data=int(row_id), info=f'成功删除{data}条数据！')
         except self.models.DoesNotExist as e:
             response = return_response(status=False, error=f'{e}')

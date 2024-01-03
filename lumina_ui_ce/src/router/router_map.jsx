@@ -25,8 +25,6 @@ const Company = lazy(() => import('pages/company'))
 const Logs = lazy(() => import('pages/logs'))
 // 房间管理
 const Room = lazy(() => import('pages/room'))
-// 区域管理
-const Zone = lazy(() => import('pages/zone'))
 // 机器管理
 const Unit = lazy(() => import('pages/unit'))
 // 三维表格模版
@@ -46,7 +44,6 @@ const LocalRouterMap = {
   '/permission': { icon: <LockOutlined />, element: <Permission /> },
   '/company': { icon: <UsergroupAddOutlined />, element: <Company /> },
   '/logs': { icon: <UsergroupAddOutlined />, element: <Logs /> },
-  '/zone': { icon: <ApartmentOutlined />, element: <Zone /> },
   '/room': { icon: <LockOutlined />, element: <Room /> },
   '/unit': { icon: <ClusterOutlined />, element: <Unit /> },
   '/three_table': { icon: <ClusterOutlined />, element: <ThreeTable /> },

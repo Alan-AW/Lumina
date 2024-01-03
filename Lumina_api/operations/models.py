@@ -26,29 +26,30 @@ class Company(models.Model):
         return f'{self.name}'
 
 
-# 区域表-好像无用了
-class Zone(models.Model):
-    name = models.CharField(max_length=64, unique=True, verbose_name='区域名称')
-    company = models.ForeignKey(
-        to=Company, to_field='id', on_delete=models.CASCADE, related_name='zones', verbose_name='所属企业'
-    )
-    status = models.IntegerField(choices=((0, '禁用'), (1, '正常')), verbose_name='区域状态', default=1)
-    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
-    update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
-    time_zone = models.CharField(max_length=32, verbose_name='时区码')
-
-    class Meta:
-        db_table = 'zone'
-        verbose_name = '区域管理'
-
-    def __str__(self):
-        return f'{self.name}'
+# 区域表-好像无用了-2024-1-3确定删除该表
+# class Zone(models.Model):
+#     name = models.CharField(max_length=64, unique=True, verbose_name='区域名称')
+#     company = models.ForeignKey(
+#         to=Company, to_field='id', on_delete=models.CASCADE, related_name='zones', verbose_name='所属企业'
+#     )
+#     status = models.IntegerField(choices=((0, '禁用'), (1, '正常')), verbose_name='区域状态', default=1)
+#     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
+#     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
+#     time_zone = models.CharField(max_length=32, verbose_name='时区码')
+# 
+#     class Meta:
+#         db_table = 'zone'
+#         verbose_name = '区域管理'
+# 
+#     def __str__(self):
+#         return f'{self.name}'
 
 
 # 房间表
 class Room(models.Model):
-    zone = models.ForeignKey(
-        to=Zone, to_field='id', on_delete=models.CASCADE, related_name='rooms', verbose_name='所属区域'
+    company = models.ForeignKey(
+        to=Company, to_field='id', on_delete=models.CASCADE, null=True, blank=True,
+        related_name='rooms', verbose_name='所属公司'
     )
     serial_number = models.CharField(max_length=255, unique=True, verbose_name='房间编号')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
@@ -71,7 +72,6 @@ class Unit(models.Model):
     deviceId = models.CharField(max_length=255, unique=True, verbose_name='设备编号')
     deviceSecret = models.CharField(max_length=255, unique=True, verbose_name='设备密钥')
     status = models.IntegerField(choices=((0, '禁用'), (1, '正常')), verbose_name='机器状态', default=1)
-    components = models.JSONField(null=True, blank=True, verbose_name='安卓端显示组件列表')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 
