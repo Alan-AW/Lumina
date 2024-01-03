@@ -10,6 +10,8 @@ import { FADEIN, pageSize } from 'contants'
 import { openNotification } from 'utils'
 import CompanyEditModal from 'components/company'
 import UploadImg from 'components/upload'
+import PermissionBtn from 'components/permissionButton/permissionBtn'
+import PermissionPopconfirm from 'components/permissionButton/permissionPopconfirm'
 
 function Company(props) {
   const [api, contextHolder] = notification.useNotification()
@@ -84,13 +86,14 @@ function Company(props) {
             icon={<UploadOutlined />}
             onClick={() => uploadLogo(row)}
           />
-          <Popconfirm
+          <PermissionPopconfirm
             title='删除企业'
             description='确定删除该企业？'
             okText="Yes"
             okType='danger'
             cancelText="No"
-            onConfirm={() => deleteRow(row)}
+            allowRoles={['Administrator']}
+            callback={() => deleteRow(row)}
             icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
           >
             <Button
@@ -98,7 +101,7 @@ function Company(props) {
               danger
               icon={<DeleteOutlined />}
             />
-          </Popconfirm>
+          </PermissionPopconfirm>
         </div>
       )
     }
@@ -267,11 +270,12 @@ function Company(props) {
   return (
     <>
       {contextHolder}
-      <Button
+      <PermissionBtn
+        callback={addClick}
+        allowRoles={['Administrator']}
         children="添加企业"
         style={{ marginBottom: "var(--content-margin)" }}
-        type="primary"
-        onClick={addClick}
+        type='primary'
         icon={<PlusOutlined />}
       />
       {table}
