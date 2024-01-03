@@ -4,25 +4,21 @@
 import { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Form, Input, Select, Modal } from 'antd'
-import { getZoneAction } from 'state/actions'
-import {useTranslation} from "react-i18next";
+import { getCompanyAction } from 'state/actions'
+import { useTranslation } from "react-i18next";
 
 function EditModal(props) {
   const {
-    zoneList, getZoneAction,
+    companyList, getCompanyAction,
     initValue, openModal, closeModal, onOk, editSate
   } = props
   const [form] = Form.useForm()
-  const { t } =  useTranslation()
-  useEffect(() => {
-    openModal && zoneList.length === 0 && getZoneAction()
-  }, [openModal])
+  const { t } = useTranslation()
 
-  // 动态设置编辑时的表单内容
-  const editRowData = JSON.parse(sessionStorage.getItem('editRowData'))
   useEffect(() => {
-    openModal && editRowData !== {} && form.setFieldsValue(editRowData)
-  }, [editRowData, openModal])
+    openModal && companyList.length === 0 && getCompanyAction()
+    openModal && editSate && initValue && form.setFieldsValue(initValue)
+  }, [openModal, editSate, initValue])
 
   // 关窗
   const onCancelModal = () => {
@@ -42,7 +38,7 @@ function EditModal(props) {
   return (
     <Modal
       open={openModal}
-      title={editSate ? t('room.EditModalTitle1'):t('room.EditModalTitle2')}
+      title={editSate ? t('room.EditModalTitle1') : t('room.EditModalTitle2')}
       okText={t('room.EditModalbtnConfirm')}
       cancelText={t('room.EditModalbtnCancel')}
       onCancel={onCancelModal}
@@ -53,25 +49,24 @@ function EditModal(props) {
         form={form}
         layout="vertical"
         name="form_in_edit_modal"
-        initialValues={initValue}
       >
 
-        <Form.Item name='zone' label={t("room.tableTitle.zone") + '：'} rules={[
-          { required: true, message: t("room.rules.zone") }
+        <Form.Item name='company' label='选择公司' rules={[
+          { required: true, message: '公司不可为空!' }
         ]}>
           <Select
             allowClear
-            placeholder={t("room.placeholder.zone")}
+            placeholder='请选择公司'
             style={{ minWidth: '150px' }}
-            options={zoneList}
+            options={companyList}
           />
         </Form.Item>
 
         <Form.Item name='serial_number' label={t("room.tableTitle.serial_number") + '：'} rules={[
-          { required: true, message: t("room.rules.serial_number")}
+          { required: true, message: t("room.rules.serial_number") }
         ]}>
           <Input
-              placeholder={t("room.placeholder.serial_number")}
+            placeholder={t("room.placeholder.serial_number")}
             style={{ width: '100%' }}
           />
         </Form.Item>
@@ -81,12 +76,12 @@ function EditModal(props) {
 }
 
 const mapStateToProps = state => {
-  const { zoneList } = state
-  return { zoneList }
+  const { companyList } = state
+  return { companyList }
 }
 
 const mapDispatchToProps = {
-  getZoneAction
+  getCompanyAction
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditModal)

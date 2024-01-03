@@ -20,11 +20,6 @@ function Action(props) {
       render: (row, value, index) => <b>{index + 1}</b>
     },
     {
-      title: 'ID',
-      align: 'center',
-      dataIndex: 'id'
-    },
-    {
       title: 'snippet_type',
       align: 'center',
       dataIndex: 'snippet_type'

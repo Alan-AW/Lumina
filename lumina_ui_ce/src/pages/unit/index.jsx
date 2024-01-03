@@ -1,31 +1,26 @@
-import {useState, useEffect, useMemo} from 'react'
-import {Table, notification, Button, message, Popconfirm} from 'antd'
-import {PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined} from '@ant-design/icons'
-import {getUnit, postUnit, patchUnit, deleteUnit} from 'network/api'
+import { useState, useEffect, useMemo } from 'react'
+import { Table, notification, Button, message, Popconfirm } from 'antd'
+import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined } from '@ant-design/icons'
+import { getUnit, postUnit, patchUnit, deleteUnit } from 'network/api'
 import EditModalForm from 'components/unit/editModal'
-import {FADEIN, pageSize} from 'contants'
-import {openNotification} from 'utils'
-import {useTranslation} from "react-i18next";
+import { FADEIN, pageSize } from 'contants'
+import { openNotification } from 'utils'
+import { useTranslation } from "react-i18next";
 
 
 function Unit() {
     const [api, contextHolder] = notification.useNotification()
-    const [params, setparams] = useState({page: 1})
+    const [params, setparams] = useState({ page: 1 })
     const [tableData, settableData] = useState([])
     const [tableDataCount, settableDataCount] = useState(0)
     const [openModal, setopenModal] = useState(false)
     const [editSate, seteditSate] = useState(false)
-    const {t} = useTranslation()
+    const { t } = useTranslation()
     const tableTitle = [
         {
             title: t("unit.tableTitle.index"),
             align: 'center',
             render: (row, value, index) => <b>{index + 1}</b>
-        },
-        {
-            title: t("unit.tableTitle.id"),
-            align: 'center',
-            dataIndex: 'id'
         },
         {
             title: t("unit.tableTitle.serial_number"),
@@ -53,12 +48,6 @@ function Unit() {
             dataIndex: 'status_label'
         },
         {
-            title: t("unit.tableTitle.components"),
-            align: 'center',
-            dataIndex: 'components',
-            render: components => <>{components.join(',')}</>
-        },
-        {
             title: t("unit.tableTitle.create_time"),
             align: 'center',
             dataIndex: 'create_time'
@@ -72,11 +61,11 @@ function Unit() {
             title: t("unit.tableTitle.action"),
             align: 'center',
             render: row => (
-                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-evenly'}}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
                     <Button
                         type='primary'
                         shape='circle'
-                        icon={<EditOutlined/>}
+                        icon={<EditOutlined />}
                         onClick={() => editClick(row)}
                     />
                     <Popconfirm
@@ -86,12 +75,12 @@ function Unit() {
                         okType='danger'
                         cancelText="No"
                         onConfirm={() => deleteRow(row)}
-                        icon={<QuestionCircleOutlined style={{color: 'red'}}/>}
+                        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
                     >
                         <Button
                             shape='circle'
                             danger
-                            icon={<DeleteOutlined/>}
+                            icon={<DeleteOutlined />}
                         />
                     </Popconfirm>
                 </div>
@@ -133,7 +122,7 @@ function Unit() {
 
     // 点击编辑
     const editClick = row => {
-        const {id, serial_number, deviceId, deviceSecret, components, status, room} = row
+        const { id, serial_number, deviceId, deviceSecret, components, status, room } = row
         seteditSate(true)
         sessionStorage.setItem('editUnitId', id)
         sessionStorage.setItem('editUnitData', JSON.stringify({
@@ -150,7 +139,7 @@ function Unit() {
     // 提交
     const onOk = value => {
         // 取出组件列表数据
-        const {components} = value
+        const { components } = value
         // 将组件列表字符串为一个数组
         let components_list = components.split(',')
         // 删除空字符串
@@ -202,7 +191,7 @@ function Unit() {
     const paginationProps = {
         total: tableDataCount,
         pageSize,
-        onChange: page => setparams({page})
+        onChange: page => setparams({ page })
     }
 
     // 表格
@@ -217,17 +206,17 @@ function Unit() {
             bordered={true}
             rowKey={item => item.id}
         />
-    ), [tableData,t])
+    ), [tableData, t])
 
     return (
         <>
             {contextHolder}
             <Button
                 children={t("unit.addUnit")}
-                style={{marginBottom: "var(--content-margin)"}}
+                style={{ marginBottom: "var(--content-margin)" }}
                 type="primary"
                 onClick={addClick}
-                icon={<PlusOutlined/>}
+                icon={<PlusOutlined />}
             />
             {table}
             <EditModalForm

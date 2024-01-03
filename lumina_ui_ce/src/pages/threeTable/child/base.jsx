@@ -22,11 +22,6 @@ function Base(props) {
       render: (row, value, index) => <b>{index + 1}</b>
     },
     {
-      title: 'ID',
-      align: 'center',
-      dataIndex: 'id'
-    },
-    {
       title: 'status',
       align: 'center',
       dataIndex: 'status'

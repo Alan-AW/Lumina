@@ -21,11 +21,6 @@ function Models(props) {
       render: (row, value, index) => <b>{index + 1}</b>
     },
     {
-      title: 'ID',
-      align: 'center',
-      dataIndex: 'id'
-    },
-    {
       title: 'name_en',
       align: 'center',
       dataIndex: 'name_en'

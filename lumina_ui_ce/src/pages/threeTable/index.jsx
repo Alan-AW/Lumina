@@ -1,30 +1,25 @@
-import {useEffect, useState, useMemo} from 'react'
-import {Table, Button, Popconfirm, message, notification} from 'antd'
-import {PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined} from '@ant-design/icons'
+import { useEffect, useState, useMemo } from 'react'
+import { Table, Button, Popconfirm, message, notification } from 'antd'
+import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined } from '@ant-design/icons'
 import SpeciesModal from 'components/threeData/speciesModal'
 import Cultivars from './child/cultivars'
 import Models from './child/models'
-import {FADEIN, pageSize} from 'contants'
-import {getSpecies, postSpecies, patchSpecies, deleteSpecies} from 'network/api'
-import {openNotification} from 'utils'
-import {useTranslation} from "react-i18next";
+import { FADEIN, pageSize } from 'contants'
+import { getSpecies, postSpecies, patchSpecies, deleteSpecies } from 'network/api'
+import { openNotification } from 'utils'
+import { useTranslation } from "react-i18next";
 
 function ThreeTable() {
     const [api, contextHolder] = notification.useNotification()
-    const [params, setparams] = useState({page: 1})
+    const [params, setparams] = useState({ page: 1 })
     const [tableData, settableData] = useState([])
     const [tableDataCount, settableDataCount] = useState(1)
-    const {t} = useTranslation()
+    const { t } = useTranslation()
     const tableTitle = [
         {
             title: t("threeTable.tableTitle.index"),
             align: 'center',
             render: (row, value, index) => <b>{index + 1}</b>
-        },
-        {
-            title: t("threeTable.tableTitle.id"),
-            align: 'center',
-            dataIndex: 'id'
         },
         {
             title: t("threeTable.tableTitle.name_en"),
@@ -50,11 +45,11 @@ function ThreeTable() {
             title: t("threeTable.tableTitle.action"),
             align: 'center',
             render: row => (
-                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-evenly'}}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
                     <Button
                         type='primary'
                         shape='circle'
-                        icon={<EditOutlined/>}
+                        icon={<EditOutlined />}
                         onClick={() => editClick(row)}
                     />
                     <Popconfirm
@@ -64,12 +59,12 @@ function ThreeTable() {
                         okType='danger'
                         cancelText="No"
                         onConfirm={() => deleteRow(row)}
-                        icon={<QuestionCircleOutlined style={{color: 'red'}}/>}
+                        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
                     >
                         <Button
                             shape='circle'
                             danger
-                            icon={<DeleteOutlined/>}
+                            icon={<DeleteOutlined />}
                         />
                     </Popconfirm>
                     <Button
@@ -170,7 +165,7 @@ function ThreeTable() {
     const paginationProps = {
         total: tableDataCount,
         pageSize,
-        onChange: page => setparams({...params, page})
+        onChange: page => setparams({ ...params, page })
     }
 
     // 表格
@@ -191,10 +186,10 @@ function ThreeTable() {
             {contextHolder}
             <Button
                 type='primary'
-                icon={<PlusOutlined/>}
+                icon={<PlusOutlined />}
                 children={t("threeTable.addTable")}
                 onClick={addClick}
-                style={{marginBottom: 'var(--content-margin)'}}
+                style={{ marginBottom: 'var(--content-margin)' }}
             />
             {table}
             <SpeciesModal
@@ -213,7 +208,7 @@ function ThreeTable() {
                 />
             }
             {
-                showModels && <Models cultivarsId={cultivarsId}/>
+                showModels && <Models cultivarsId={cultivarsId} />
             }
         </>
     )

@@ -5,7 +5,7 @@ import { getRooms, postRooms, patchRooms, deleteRooms } from 'network/api'
 import EditModalForm from 'components/room/editModal'
 import { FADEIN, pageSize } from 'contants'
 import { openNotification } from 'utils'
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 function Room() {
   const [api, contextHolder] = notification.useNotification()
@@ -14,7 +14,8 @@ function Room() {
   const [tableDataCount, settableDataCount] = useState(0)
   const [openModal, setopenModal] = useState(false)
   const [editSate, seteditSate] = useState(false)
-  const { t } =  useTranslation()
+  const [editRow, seteditRow] = useState()
+  const { t } = useTranslation()
   const tableTitle = [
     {
       title: t("room.tableTitle.index"),
@@ -22,32 +23,27 @@ function Room() {
       render: (row, value, index) => <b>{index + 1}</b>
     },
     {
-      title: t("room.tableTitle.id"),
-      align: 'center',
-      dataIndex: 'id'
-    },
-    {
       title: t("room.tableTitle.serial_number"),
       align: 'center',
       dataIndex: 'serial_number'
     },
     {
-      title: t("room.tableTitle.zone_name"),
+      title: '所属公司',
       align: 'center',
-      dataIndex: 'zone_name'
+      dataIndex: 'company_name'
     },
     {
-      title:t("room.tableTitle.create_time"),
+      title: t("room.tableTitle.create_time"),
       align: 'center',
       dataIndex: 'create_time'
     },
     {
-      title:t("room.tableTitle.update_time"),
+      title: t("room.tableTitle.update_time"),
       align: 'center',
       dataIndex: 'update_time'
     },
     {
-      title:t("room.tableTitle.action"),
+      title: t("room.tableTitle.action"),
       align: 'center',
       render: row => (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
@@ -58,8 +54,8 @@ function Room() {
             onClick={() => editClick(row)}
           />
           <Popconfirm
-              title={t("room.deltitle")}
-              description={t("room.description")}
+            title={t("room.deltitle")}
+            description={t("room.description")}
             okText="Yes"
             okType='danger'
             cancelText="No"
@@ -104,16 +100,16 @@ function Room() {
 
   // 点击添加房间
   const addClick = () => {
+    seteditSate(false)
+    seteditRow()
     setopenModal(true)
     seteditSate(false)
   }
 
   // 点击编辑房间
   const editClick = row => {
-    const { id, serial_number, zone } = row
     seteditSate(true)
-    sessionStorage.setItem('editRowId', id)
-    sessionStorage.setItem('editRowData', JSON.stringify({ serial_number, zone }))
+    seteditRow(row)
     setopenModal(true)
   }
 
@@ -165,7 +161,7 @@ function Room() {
   // 表格
   const table = useMemo(() => (
     <Table
-      title={() =>t("room.title")}
+      title={() => t("room.title")}
       className={FADEIN}
       dataSource={tableData}
       columns={tableTitle}
@@ -174,12 +170,12 @@ function Room() {
       bordered={true}
       rowKey={item => item.id}
     />
-  ), [tableData,t])
+  ), [tableData, t])
 
   return (
     <>{contextHolder}
       <Button
-          children={t("room.addRoom")}
+        children={t("room.addRoom")}
         style={{ marginBottom: "var(--content-margin)" }}
         type="primary"
         onClick={addClick}
@@ -191,6 +187,7 @@ function Room() {
         closeModal={closeModal}
         onOk={onOk}
         editSate={editSate}
+        initValue={editRow}
       />
     </>
   )

@@ -23,11 +23,6 @@ function Phases() {
       render: (row, value, index) => <b>{index + 1}</b>
     },
     {
-      title: 'ID',
-      align: 'center',
-      dataIndex: 'id'
-    },
-    {
       title: 'phase_index',
       align: 'center',
       dataIndex: 'phase_index'
