@@ -4,6 +4,7 @@
 import { useEffect, useState } from 'react'
 import { Modal, Form, Input, Tree } from 'antd'
 import { getPermission } from 'network/api'
+import { useTranslation } from "react-i18next";
 
 function RolesEditModal(props) {
   const {
@@ -12,7 +13,7 @@ function RolesEditModal(props) {
 
   const [allPermissions, setAllPermissions] = useState([])
   const [form] = Form.useForm()
-
+  const { t, i18n } = useTranslation()
   useEffect(() => {
     // 开窗时当树allPermissions 为空时，获取所有权限树
     openModal && !allPermissions.length && getData()
@@ -53,8 +54,9 @@ function RolesEditModal(props) {
   return (
     <Modal
       open={openModal}
-      title={editSate ? '编辑角色信息' : '添加角色'}
+      title={editSate ? t('roles.EditRoles') : t('roles.AddRoles')}
       okText='ok'
+      destroyOnClose={true}
       cancelText='cancel'
       onCancel={onCancelModal}
       onOk={onOkModal}
@@ -69,17 +71,17 @@ function RolesEditModal(props) {
           <Input />
         </Form.Item>
 
-        <Form.Item name="title" label="角色名称"
+        <Form.Item name="title" label={t('roles.tableTitle.title')}
           rules={[
-            { required: true, message: '角色名不可为空!' },
+            { required: true, message: t('roles.rules.title') },
           ]}
         >
           <Input />
         </Form.Item>
 
-        <Form.Item name="permission" valuePropName='checked' label="可访问权限"
+        <Form.Item name="permission" valuePropName='checked' label={t('roles.tableTitle.permission')}
           rules={[
-            { required: true, message: '每个角色至少有一个权限!' },
+            { required: true, message: t('roles.rules.permission') },
           ]}
         >
           <Tree

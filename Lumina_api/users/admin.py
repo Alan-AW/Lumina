@@ -9,8 +9,8 @@ admin.site.index_title = sys.ADMIN_SITE_INDEX_TITLE
 
 @admin.register(Permission)
 class PermissionAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'url', 'isNaviLink', 'create_time', 'update_time', 'pid']
-    list_editable = ['title', 'url', 'isNaviLink', 'pid']
+    list_display = ['id', 'title', 'url', 'isNaviLink', 'index', 'create_time', 'update_time', 'pid']
+    list_editable = ['title', 'url', 'isNaviLink', 'index', 'pid']
     search_fields = ['title', 'url']
 
 

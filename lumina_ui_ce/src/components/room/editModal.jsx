@@ -51,12 +51,12 @@ function EditModal(props) {
         name="form_in_edit_modal"
       >
 
-        <Form.Item name='company' label='选择公司' rules={[
-          { required: true, message: '公司不可为空!' }
+        <Form.Item name='company'  label={t("room.tableTitle.company") + '：'} rules={[
+          { required: true, message: t("room.rules.company")}
         ]}>
           <Select
             allowClear
-            placeholder='请选择公司'
+            placeholder={t("room.placeholder.company")}
             style={{ minWidth: '150px' }}
             options={companyList}
           />

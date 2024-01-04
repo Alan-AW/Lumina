@@ -3,12 +3,13 @@
  */
 import { useEffect } from 'react'
 import { Form, Input, Modal } from 'antd'
+import { useTranslation } from "react-i18next";
 
 function CompanyEditModal(props) {
   const {
     initValue, openModal, closeModal, onOk, editSate
   } = props
-
+  const { t, i18n } = useTranslation()
   const [form] = Form.useForm()
 
   useEffect(() => {
@@ -33,7 +34,7 @@ function CompanyEditModal(props) {
   return (
     <Modal
       open={openModal}
-      title={editSate ? '编辑企业信息' : '添加企业'}
+      title={editSate ? t('company.EditCompany') : t('company.AddCompany')}
       okText='ok'
       cancelText='cancel'
       onCancel={onCancelModal}
@@ -49,47 +50,47 @@ function CompanyEditModal(props) {
           <Input />
         </Form.Item>
 
-        <Form.Item name='name' label='企业名称' rules={[
-          { required: true, message: '企业名称不可为空!' }
+        <Form.Item name='name' label={t('company.tableTitle.name')} rules={[
+          { required: true, message: t('company.rules.name') }
         ]}>
           <Input
-            placeholder='请输入企业名称'
+            placeholder={t('company.placeholder.name')}
             style={{ width: '100%' }}
           />
         </Form.Item>
 
-        <Form.Item name='address' label='企业地址' rules={[
-          { required: true, message: '企业地址不可为空!' }
+        <Form.Item name='address' label={t('company.tableTitle.address')} rules={[
+          { required: true, message: t('company.rules.address') }
         ]}>
           <Input
-            placeholder='请输入企业地址'
+            placeholder={t('company.placeholder.address')}
             style={{ width: '100%' }}
           />
         </Form.Item>
 
-        <Form.Item name='legal_rep' label='企业法人' rules={[
-          { required: true, message: '企业法人不可为空!' }
+        <Form.Item name='legal_rep' label={t('company.tableTitle.legal_rep')} rules={[
+          { required: true, message: t('company.rules.legal_rep') }
         ]}>
           <Input
-            placeholder='请输入企业法人'
+            placeholder={t('company.placeholder.legal_rep')}
             style={{ width: '100%' }}
           />
         </Form.Item>
 
-        <Form.Item name='tel' label='企业电话' rules={[
-          { required: true, message: '企业电话不可为空!' }
+        <Form.Item name='tel' label={t('company.tableTitle.tel')} rules={[
+          { required: true, message: t('company.rules.tel') }
         ]}>
           <Input
-            placeholder='请输入企业电话'
+            placeholder={t('company.placeholder.tel')}
             style={{ width: '100%' }}
           />
         </Form.Item>
 
-        <Form.Item name='email' label='企业邮箱' rules={[
-          { required: true, message: '企业邮箱不可为空!' }
+        <Form.Item name='email' label={t('company.tableTitle.email')} rules={[
+          { required: true, message: t('company.rules.email') }
         ]}>
           <Input
-            placeholder='请输入企业邮箱'
+            placeholder={t('company.placeholder.email')}
             style={{ width: '100%' }}
           />
         </Form.Item>

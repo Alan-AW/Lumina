@@ -1,7 +1,7 @@
 /**
  * 角色管理页面
  */
-import { useState, useEffect, useMemo } from 'react'
+import {useState, useEffect, useMemo, useCallback} from 'react'
 import { Table, Button, message, Popconfirm, notification } from 'antd'
 import {
   EditOutlined,
@@ -15,6 +15,7 @@ import {
 import { FADEIN, pageSize } from 'contants'
 import { openNotification } from 'utils'
 import RolesEditModal from 'components/roles'
+import {useTranslation} from "react-i18next";
 
 function Roles(props) {
   const [api, contextHolder] = notification.useNotification()
@@ -24,29 +25,32 @@ function Roles(props) {
   const [openModal, setopenModal] = useState(false)
   const [editSate, seteditSate] = useState(false)
   const [editRow, setEditRow] = useState(null)
+  const {t, i18n} = useTranslation()
+
+
   const tableTitle = [
     {
-      title: '序号',
+      title: t('roles.tableTitle.index'),
       align: 'center',
       render: (row, value, index) => <b>{index + 1}</b>
     },
     {
-      title: '角色名称',
+      title: t('roles.tableTitle.title'),
       dataIndex: 'title',
       align: 'center',
     },
     {
-      title: "创建时间",
+      title: t('roles.tableTitle.create_time'),
       align: 'center',
       dataIndex: 'create_time'
     },
     {
-      title: "更新时间",
+      title: t('roles.tableTitle.update_time'),
       align: 'center',
       dataIndex: 'update_time'
     },
     {
-      title: '操作',
+      title: t('roles.tableTitle.action'),
       align: 'center',
       render: row => (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
@@ -57,8 +61,8 @@ function Roles(props) {
             onClick={() => editClick(row)}
           />
           <Popconfirm
-            title="删除角色"
-            description="确定要删除该角色吗?"
+            title={t('roles.DelRoles')}
+            description={t('roles.DelRolesDES')}
             okText="Yes"
             okType='danger'
             cancelText="No"
@@ -157,7 +161,7 @@ function Roles(props) {
 
   const table = useMemo(() => (
     <Table
-      title={() => '角色管理'}
+      title={() =>t('roles.title')}
       className={FADEIN}
       dataSource={tableData}
       columns={tableTitle}
@@ -166,7 +170,7 @@ function Roles(props) {
       bordered={true}
       rowKey={item => item.id}
     />
-  ), [tableData])
+  ), [tableData,i18n.language])
 
   const closeModal = () => {
     setopenModal(false)
@@ -186,7 +190,7 @@ function Roles(props) {
     <>
       {contextHolder}
       <Button
-        children="添加角色"
+        children={t('roles.AddRoles')}
         style={{ marginBottom: "var(--content-margin)" }}
         type="primary"
         onClick={addClick}

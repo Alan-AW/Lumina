@@ -32,7 +32,7 @@
       "last_name": "Last Name",
       "role_label": "Role",
       "status_label": "Status",
-      "language_label": "User language",
+      "chinese_label": "User language",
       "qrcode_url": "QR Code",
       "create_time": "Create Time",
       "update_time": "Update Time",
@@ -101,12 +101,14 @@
       "index": "Index",
       "id": "ID",
       "serial_number": "Room Number",
+      "company_name": "Affiliated company",
       "zone_name": "Zone Name",
       "time_zone": "Time Zone",
       "create_time": "Create Time",
       "update_time": "Update Time",
       "action": "Action",
-      "zone": "Zone"
+      "zone": "Zone",
+      "company": "Select Company"
     },
     "EditModalTitle1": "Edit Room",
     "EditModalTitle2": "Add Room",
@@ -114,11 +116,13 @@
     "EditModalbtnConfirm": "Confirm",
     "rules": {
       "zone": "The zone must be selected!",
-      "serial_number": "The room number cannot be empty!"
+      "serial_number": "The room number cannot be empty!",
+      "company": "Company cannot be empty!"
     },
     "placeholder": {
       "zone": "Please select the zone",
-      "serial_number": "Please enter the room number"
+      "serial_number": "Please enter the room number",
+      "company": "Please select a company"
     }
   },
   "unit": {
@@ -192,5 +196,117 @@
     "room": "room ",
     "unit": "unit ",
     "three_table": "three table"
+  },
+  "Menu": {
+    "权限管理": "permissionsManagement",
+    "角色管理": "roleManagement",
+    "公司管理": "corporateGovernance",
+    "用户管理": "userManagement",
+    "房间管理": "roomManagement",
+    "机器管理": "machineManagement",
+    "操作日志": "operationLogs"
+  },
+  "Permission": {
+    "title": "Permission Management",
+    "OK": "Open",
+    "OFF": "Close",
+    "DelPermissions": "Delete Permission",
+    "AddPermissions": "Add Permission",
+    "EditPermissions": "Edit Permission",
+    "DelPermissionsDES": "Are you sure you want to delete this permission?",
+    "tableTitle": {
+      "index": "Index",
+      "title": "Permission Name",
+      "url": "Permission Address",
+      "MenuPermissions": "Menu Permissions",
+      "create_time": "Creation Time",
+      "update_time": "Update Time",
+      "action": "Action",
+      "pid_id": "Parent Permission"
+    },
+    "rules": {
+      "title": "Permission name cannot be empty!",
+      "url": "Permission address cannot be empty!",
+      "isNaviLink": "Menu permission cannot be empty!"
+    },
+    "placeholder": {
+      "title": "Enter permission name!",
+      "url": "Enter permission address"
+    }
+  },
+  "company": {
+    "title": "Company Management",
+    "uploadModalTitle": "Upload Logo",
+    "OK": "Open",
+    "OFF": "Close",
+    "DelCompany": "Delete Company",
+    "AddCompany": "Add Company",
+    "EditCompany": "Edit Company Information",
+    "DelCompanyDES": "Are you sure you want to delete this company?",
+    "tableTitle": {
+      "index": "Index",
+      "name": "Company Name",
+      "address": "Company Address",
+      "legal_rep": "Legal Representative",
+      "tel": "Contact Phone",
+      "email": "Company Email",
+      "logo": "Company Logo",
+      "create_time": "Creation Time",
+      "update_time": "Update Time",
+      "action": "Action"
+    },
+    "rules": {
+      "name": "Company name cannot be empty!",
+      "address": "Company address cannot be empty!",
+      "legal_rep": "Legal representative cannot be empty!",
+      "tel": "Company phone cannot be empty!",
+      "email": "Company email cannot be empty!"
+    },
+    "placeholder": {
+      "name": "Enter company name!",
+      "address": "Enter company address",
+      "legal_rep": "Enter legal representative",
+      "tel": "Enter company phone",
+      "email": "Enter company email"
+    }
+  },
+  "roles":  {
+    "title": "Role Management",
+    "OK": "Open",
+    "OFF": "Close",
+    "DelRoles": "Delete Role",
+    "AddRoles": "Add Role",
+    "EditRoles": "Edit Role Information",
+    "DelRolesDES": "Are you sure you want to delete this role?",
+    "tableTitle": {
+      "index": "Index",
+      "title": "Role Name",
+      "create_time": "Creation Time",
+      "update_time": "Update Time",
+      "action": "Action",
+      "permission": "Accessible Permissions"
+    },
+    "rules": {
+      "title": "Role name cannot be empty!",
+      "permission": "Each role must have at least one permission!",
+      "isNaviLink": "Menu permission cannot be empty!"
+    },
+    "placeholder": {
+      "title": "Enter role name!",
+      "url": "Enter permission address"
+    }
+  },
+  "logs": {
+    "tableTitle": {
+      "index": "Index",
+      "username": "Username",
+      "role": "User Role",
+      "table_name": "Data Table",
+      "command_label": "Operation Command",
+      "content": "Modified Content",
+      "create_time": "Creation Time"
+    }
   }
+
+
 }

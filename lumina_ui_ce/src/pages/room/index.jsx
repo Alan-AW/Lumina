@@ -28,7 +28,7 @@ function Room() {
       dataIndex: 'serial_number'
     },
     {
-      title: '所属公司',
+      title: t("room.tableTitle.company_name"),
       align: 'center',
       dataIndex: 'company_name'
     },

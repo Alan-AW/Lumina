@@ -2,10 +2,12 @@ import { useState, useEffect, useMemo } from 'react'
 import { Table, Tag } from 'antd'
 import { getLogs } from 'network/api'
 import { FADEIN, pageSize } from 'contants'
+import {useTranslation} from "react-i18next";
 
 function Logs(props) {
   const [params, setparams] = useState({ page: 1 })
   const [tableData, settableData] = useState([])
+  const {t, i18n} = useTranslation()
   const [tableDataCount, settableDataCount] = useState(0)
   const textareaStyle = {
     outline: 'none',
@@ -16,27 +18,27 @@ function Logs(props) {
   }
   const tableTitle = [
     {
-      title: '序号',
+      title: t('logs.tableTitle.index'),
       align: 'center',
       render: (row, value, index) => <b>{index + 1}</b>
     },
     {
-      title: "用户名",
+      title: t('logs.tableTitle.username'),
       align: 'center',
       dataIndex: 'username'
     },
     {
-      title: "用户角色",
+      title: t('logs.tableTitle.role'),
       align: 'center',
       dataIndex: 'role'
     },
     {
-      title: "数据表",
+      title: t('logs.tableTitle.table_name'),
       align: 'center',
       dataIndex: 'table_name'
     },
     {
-      title: "操作指令",
+      title: t('logs.tableTitle.command_label'),
       align: 'center',
       render: (row, value, index) => {
         const colorList = ['#999', 'green', 'blue', 'red']
@@ -44,7 +46,7 @@ function Logs(props) {
       }
     },
     {
-      title: "修改内容",
+      title: t('logs.tableTitle.content'),
       align: 'center',
       dataIndex: 'content',
       render: content => {
@@ -53,7 +55,7 @@ function Logs(props) {
       }
     },
     {
-      title: "创建时间",
+      title: t('logs.tableTitle.create_time'),
       align: 'center',
       dataIndex: 'create_time'
     },
@@ -90,7 +92,7 @@ function Logs(props) {
       bordered={true}
       rowKey={item => item.id}
     />
-  ), [tableData])
+  ), [tableData,i18n.language])
 
   return (
     <>{table}</>

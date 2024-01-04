@@ -102,11 +102,13 @@
       "id": "ID",
       "serial_number": "房间编号",
       "zone_name": "区域状态",
+      "company_name": "所属公司",
       "time_zone": "所属地区",
       "create_time": "创建时间",
       "update_time": "更新时间",
       "action": "操作",
-      "zone": "选择区域"
+      "zone": "选择区域",
+      "company": "选择公司"
     },
     "EditModalTitle1": "编辑房间",
     "EditModalTitle2": "添加房间",
@@ -114,11 +116,13 @@
     "EditModalbtnConfirm": "确定",
     "rules": {
       "zone": "区域必须选择！",
-      "serial_number": "区域时区不可为空！"
+      "serial_number": "区域时区不可为空！",
+      "company": "公司不可为空!"
     },
     "placeholder": {
       "zone": "请选择区域",
-      "serial_number": "请输入区域时区"
+      "serial_number": "请输入区域时区",
+      "company": "请选择公司"
     }
   },
   "unit": {
@@ -192,5 +196,115 @@
     "room": "房间管理",
     "unit": "机器管理",
     "three_table": "机器管理"
+  },
+  "Menu": {
+    "权限管理": "权限管理",
+    "角色管理": "角色管理",
+    "公司管理": "公司管理",
+    "用户管理": "用户管理",
+    "房间管理": "房间管理",
+    "机器管理": "机器管理",
+    "操作日志": "操作日志"
+  },
+  "Permission": {
+    "title": "权限管理",
+    "OK": "开启",
+    "OFF": "关闭",
+    "DelPermissions": "删除权限",
+    "AddPermissions": "添加权限",
+    "EditPermissions": "编辑权限",
+    "DelPermissionsDES": "确定要删除该权限吗?",
+    "tableTitle": {
+      "index": "序号",
+      "title": "权限名称",
+      "url": "权限地址",
+      "MenuPermissions": "菜单权限",
+      "create_time": "创建时间",
+      "update_time": "更新时间",
+      "action": "操作",
+      "pid_id": "上级权限"
+    },
+    "rules": {
+      "title": "权限名称不可为空!",
+      "url": "权限地址不可为空！",
+      "isNaviLink": "菜单权限不可为空!"
+    },
+    "placeholder": {
+      "title": "请输入权限名称！",
+      "url": "请输入权限地址"
+    }
+  },
+  "company": {
+    "title": "公司管理",
+    "uploadModalTitle": "上传logo",
+    "OK": "开启",
+    "OFF": "关闭",
+    "DelCompany": "删除企业",
+    "AddCompany": "添加企业",
+    "EditCompany": "编辑企业信息",
+    "DelCompanyDES": "确定删除该企业？",
+    "tableTitle": {
+      "index": "序号",
+      "name": "企业名称",
+      "address": "企业地址",
+      "legal_rep": "企业法人",
+      "tel": "联系电话",
+      "email": "企业邮箱",
+      "logo": "企业logo",
+      "create_time": "创建时间",
+      "update_time": "更新时间",
+      "action": "操作"
+    },
+    "rules": {
+      "name": "企业名称不可为空!",
+      "address": "企业地址不可为空！",
+      "legal_rep": "企业法人不可为空!",
+      "tel": "企业电话不可为空!",
+      "email": "企业邮箱不可为空!"
+    },
+    "placeholder": {
+      "name": "请输入企业名称！",
+      "address": "请输入企业地址",
+      "legal_rep": "请输入企业法人",
+      "tel": "请输入企业电话",
+      "email": "请输入企业邮箱"
+    }
+  },
+  "roles":  {
+    "title": "角色管理",
+    "OK": "开启",
+    "OFF": "关闭",
+    "DelRoles": "删除角色",
+    "AddRoles": "添加角色",
+    "EditRoles": "编辑角色信息",
+    "DelRolesDES": "确定要删除该角色吗?",
+    "tableTitle": {
+      "index": "序号",
+      "title": "角色名称",
+      "create_time": "创建时间",
+      "update_time": "更新时间",
+      "action": "操作",
+      "permission": "可访问权限"
+    },
+    "rules": {
+      "title": "角色名不可为空!",
+      "permission": "每个角色至少有一个权限！",
+      "isNaviLink": "菜单权限不可为空!"
+    },
+    "placeholder": {
+      "title": "请输入权限名称！",
+      "url": "请输入权限地址"
+    }
+  },
+  "logs": {
+    "tableTitle": {
+      "index": "序号",
+      "username": "用户名",
+      "role": "用户角色",
+      "table_name": "数据表",
+      "command_label": "操作指令",
+      "content": "修改内容",
+      "create_time": "创建时间"
+    }
   }
 }

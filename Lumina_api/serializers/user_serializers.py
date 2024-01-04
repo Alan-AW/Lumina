@@ -10,26 +10,32 @@ class UserLoginSerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField()
     qrcode = serializers.SerializerMethodField()
     role = serializers.CharField(source='role.title')
+    company_name = serializers.SerializerMethodField()
     permissions = serializers.SerializerMethodField()
 
     def get_avatar(self, row):
         try:
             url = row.company.logo.url
         except Exception:
-            url = ''
+            url = '/media/companyLogo/default.png'
         return url
 
     def get_qrcode(self, row):
         return row.qr.qrcode.url if row.qr.qrcode else ''
 
+    def get_company_name(self, row):
+        if row.company:
+            return row.company.name
+        return '无公司'
+
     def get_permissions(self, row):
-        queryset = row.role.permission.all()
+        queryset = row.role.permission.all().order_by('index')
         permission_list = permission_and_menu_ser(queryset)
         return permission_list
 
     class Meta:
         model = UserInfo
-        fields = ['account', 'first_name', 'last_name', 'role', 'avatar', 'qrcode', 'permissions']
+        fields = ['account', 'first_name', 'last_name', 'role', 'avatar', 'qrcode', 'company_name', 'permissions']
 
 
 class PermissionSerializers(serializers.ModelSerializer):

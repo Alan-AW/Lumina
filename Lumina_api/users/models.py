@@ -7,6 +7,7 @@ class Permission(models.Model):
     title = models.CharField(verbose_name='权限名称', max_length=32)
     url = models.CharField(verbose_name='url', max_length=128)
     isNaviLink = models.BooleanField(verbose_name='菜单', default=True)
+    index = models.IntegerField(null=True, blank=True, verbose_name='菜单权限排序')
     create_time = models.DateTimeField(auto_now_add=True, null=True, verbose_name='注册时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
     pid = models.ForeignKey(

@@ -9,7 +9,7 @@ import Logo from '../logo'
 import { FADEINLEFT } from 'contants'
 import st from './index.module.css'
 import createMenu from 'common/menuMap'
-import { useTranslation } from "react-i18next";
+import { useTranslation ,Trans } from "react-i18next";
 
 const { Sider } = Layout;
 
@@ -18,7 +18,7 @@ const NavBar = props => {
     const [menu, setMenu] = useState([])
     const location = useLocation()
     const navigate = useNavigate()
-    const { i18n } = useTranslation();
+    const { i18n,t } = useTranslation();
     // 设置展开项
     const [openKeys, setOpenKeys] = useState([location.pathname.split('/').slice(0, -1).join('/')])
     // 高亮菜单
@@ -35,6 +35,9 @@ const NavBar = props => {
             setOpenKeys([]);
         }
     }
+    useEffect(() => {
+        console.log(i18n)
+    }, [i18n.language]);
 
     const getPaths = (path, inverseLevel) => [path.split('/').slice(0, inverseLevel).join('/')]
 
@@ -47,7 +50,12 @@ const NavBar = props => {
 
     useEffect(() => {
         const menu = createMenu(userPermissions.filter(item => item.isNaviLink === true))
-        setMenu(menu)
+        setMenu(menu.map(obj=>{
+            return {
+                ...obj,
+                label:<Trans i18nKey={'Menu.'+obj.label}></Trans>
+            }
+        }))
     }, [userPermissions])
 
     // 子菜单点击跳转

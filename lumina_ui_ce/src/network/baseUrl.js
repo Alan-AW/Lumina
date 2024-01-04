@@ -2,6 +2,7 @@
 
 const BaseUrl = {
   development: 'http://localhost:8000',
+  // development: 'http://lumina.toriches.cn',
   production: 'http://lumina.toriches.cn'
 }
 

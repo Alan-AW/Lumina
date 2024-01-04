@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Form, Input, Select, Modal, Switch } from 'antd'
 import { getNavPermission } from 'network/api'
+import {useTranslation} from "react-i18next";
 
 function EditPermission(props) {
   const {
@@ -8,7 +9,7 @@ function EditPermission(props) {
   } = props
   const [form] = Form.useForm()
   const [naviPermission, setnaviPermission] = useState([])
-
+  const { t ,i18n} = useTranslation()
   useEffect(() => {
     openModal && initValue && form.setFieldsValue(initValue)
     openModal && !naviPermission.length && getNaviPermissions()
@@ -45,7 +46,7 @@ function EditPermission(props) {
   return (
     <Modal
       open={openModal}
-      title={editSate ? '编辑权限' : '添加权限'}
+      title={editSate ? t('Permission.EditPermissions') : t('Permission.AddPermissions')}
       onCancel={onCancelModal}
       onOk={onOkModal}
       getContainer={false}
@@ -60,40 +61,40 @@ function EditPermission(props) {
           <Input />
         </Form.Item>
 
-        <Form.Item name='title' label='权限名称' rules={[
-          { required: true, message: '权限名称不可为空!' }
+        <Form.Item name='title' label={t('Permission.tableTitle.title')} rules={[
+          { required: true, message: t('Permission.rules.title') }
         ]}>
           <Input
-            placeholder='请输入权限名称！'
+            placeholder={t('Permission.placeholder.title')}
             style={{ width: '100%' }}
           />
         </Form.Item>
 
-        <Form.Item name='url' label='权限地址' rules={[
-          { required: true, message: '权限地址不可为空!' }
+        <Form.Item name='url' label={t('Permission.tableTitle.url')}  rules={[
+          { required: true, message: t('Permission.rules.url')}
         ]}>
           <Input
-            placeholder='请输入权限地址！'
+              placeholder={t('Permission.placeholder.url')}
             style={{ width: '100%' }}
           />
         </Form.Item>
 
-        <Form.Item name='isNaviLink' valuePropName="checked" label='菜单权限' rules={[
-          { required: true, message: '菜单权限不可为空!' }
+        <Form.Item name='isNaviLink' valuePropName="checked" label={t('Permission.tableTitle.MenuPermissions')} rules={[
+          { required: true, message: t('Permission.rules.isNaviLink')}
         ]}>
           <Switch
-            checkedChildren="开启"
-            unCheckedChildren="关闭"
+            checkedChildren={t('Permission.OK')}
+            unCheckedChildren={t('Permission.OFF')}
           // defaultChecked={true}
           />
         </Form.Item>
 
-        <Form.Item name='pid_id' label='上级权限' rules={[
+        <Form.Item name='pid_id'label={t('Permission.tableTitle.pid_id')} rules={[
           { required: false }
         ]}>
           <Select
             allowClear
-            placeholder='上级权限'
+            placeholder={t('Permission.tableTitle.pid_id')}
             style={{ minWidth: '150px' }}
             options={naviPermission}
           />

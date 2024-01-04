@@ -1,15 +1,15 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  Card, Avatar, Col, Row, Tag, Modal,
-  notification, message, Form, Input
+  Card, Avatar, Col, Row, Tag,
+  notification, message
 } from 'antd'
 import {
   EditOutlined, EllipsisOutlined, SettingOutlined, UserOutlined
 } from '@ant-design/icons'
 import { connect } from 'react-redux'
 import { USER_INFO } from 'contants/reduxContants'
-import { updateUserInfo, uploadImg } from 'network/api'
+// import { updateUserInfo, uploadImg } from 'network/api'
 import { FADEIN, passwordReg } from 'contants'
 import { randomOnePortry, openNotification } from 'utils'
 import getBaseUrl from 'network/baseUrl'
@@ -18,25 +18,25 @@ const Index = props => {
   const { userInfo } = props
   const { account, avatar, role } = userInfo
   // 路由跳转
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   // bing每日一图
   const imgCover = "/img/logo.png"
   // 修改用户信息对话框状态
-  const [isModalOpen, setisModalOpen] = useState(false)
+  // const [isModalOpen, setisModalOpen] = useState(false)
   // 修改用户信息表单ref
   const editUserMessage = useRef(null)
   // 修改头像弹窗
-  const [isEditOpen, setisEditOpen] = useState(false)
+  // const [isEditOpen, setisEditOpen] = useState(false)
   // 错误提示
-  const [api, contextHolder] = notification.useNotification()
+  // const [api, contextHolder] = notification.useNotification()
 
   // 点击修改信息按钮
   const editClick = isSetting => {
     // if (!userMessage.default) {
     if (isSetting) {
-      setisModalOpen(true)
+      // setisModalOpen(true)
     } else {
-      setisEditOpen(true)
+      // setisEditOpen(true)
     }
     // } else {
     //   message.warning('该账户为默认账户，禁止修改任何信息！')
@@ -60,10 +60,10 @@ const Index = props => {
   }
 
   // 取消修改用户信息
-  const handleCancel = () => {
-    editUserMessage.current?.resetFields()
-    setisModalOpen(false)
-  }
+  // const handleCancel = () => {
+  //   editUserMessage.current?.resetFields()
+  //   setisModalOpen(false)
+  // }
 
   // 头像上传成功返回之后回调
   const uploadSuccess = res => {
@@ -78,17 +78,17 @@ const Index = props => {
     // }
   }
   // 头像上传失败回调
-  const uploadError = () => {
-    message.error(`文件上传失败！`)
-  }
+  // const uploadError = () => {
+  //   message.error(`文件上传失败！`)
+  // }
   // 上传头像回调
-  const uploadAvatarImg = (fileData) => {
-    uploadImg({ avatar: fileData.data }).then(uploadSuccess).catch(uploadError)
-  }
+  // const uploadAvatarImg = (fileData) => {
+  //   uploadImg({ avatar: fileData.data }).then(uploadSuccess).catch(uploadError)
+  // }
   // 修改头像取消
-  const cancelUploadAvatar = () => {
-    setisEditOpen(false)
-  }
+  // const cancelUploadAvatar = () => {
+  //   setisEditOpen(false)
+  // }
 
   // 点击...回调
   const otherClick = () => {
@@ -99,7 +99,7 @@ const Index = props => {
 
   return (
     <div className={FADEIN}>
-      {contextHolder}
+      {/* {contextHolder} */}
       <Row gutter={24}>
         <Col span={6}>
           {/* 用户信息 */}
@@ -120,7 +120,7 @@ const Index = props => {
                 <Avatar
                   size={64}
                   src={`${getBaseUrl()}${avatar}`}
-                  style={{ backgroundColor: '#87d068' }}
+                  // style={{ backgroundColor: '#87d068' }}
                   icon={<UserOutlined />}
                 />
               }

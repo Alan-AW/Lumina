@@ -12,6 +12,7 @@ import {
 import { FADEIN } from 'contants'
 import { openNotification } from 'utils'
 import EditPermissionModal from 'components/permissions'
+import { useTranslation } from "react-i18next";
 
 function Permission(props) {
   const [api, contextHolder] = notification.useNotification()
@@ -19,44 +20,45 @@ function Permission(props) {
   const [openModal, setopenModal] = useState(false)
   const [editSate, seteditSate] = useState(false)
   const [editRow, setEditRow] = useState(null)
+  const { t, i18n } = useTranslation()
   const tableTitle = [
     {
-      title: '序号',
+      title: t("Permission.tableTitle.index"),
       align: 'center',
       render: (row, value, index) => <b>{index + 1}</b>
     },
     {
-      title: '权限名称',
+      title: t("Permission.tableTitle.title"),
       dataIndex: 'title',
       align: 'center',
     },
     {
-      title: '权限地址',
+      title: t("Permission.tableTitle.url"),
       dataIndex: 'url',
       align: 'center',
     },
     {
-      title: '菜单权限',
+      title: t("Permission.tableTitle.MenuPermissions"),
       align: 'center',
       render: row => <Switch
-        checkedChildren="开启"
-        unCheckedChildren="关闭"
+        checkedChildren={t("Permission.OK")}
+        unCheckedChildren={t("Permission.OFF")}
         checked={row.isNaviLink}
         onChange={e => changeNaviLink(row, e)}
       />
     },
     {
-      title: "创建时间",
+      title: t("Permission.tableTitle.create_time"),
       align: 'center',
       dataIndex: 'create_time'
     },
     {
-      title: "更新时间",
+      title: t("Permission.tableTitle.update_time"),
       align: 'center',
       dataIndex: 'update_time'
     },
     {
-      title: '操作',
+      title: t("Permission.tableTitle.action"),
       align: 'center',
       render: row => (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
@@ -67,8 +69,8 @@ function Permission(props) {
             onClick={() => editClick(row)}
           />
           <Popconfirm
-            title="删除权限"
-            description="确定要删除该权限吗?"
+            title={t("Permission.DelPermissions")}
+            description={t("Permission.DelPermissionsDES")}
             okText="Yes"
             okType='danger'
             cancelText="No"
@@ -162,7 +164,7 @@ function Permission(props) {
 
   const table = useMemo(() => (
     <Table
-      title={() => '权限管理'}
+      title={() => t('Permission.title')}
       className={FADEIN}
       dataSource={tableData}
       columns={tableTitle}
@@ -170,7 +172,7 @@ function Permission(props) {
       bordered={true}
       rowKey={item => item.id}
     />
-  ), [tableData])
+  ), [tableData, i18n.language])
 
   const edit = useMemo(() => (
     <EditPermissionModal
@@ -186,7 +188,7 @@ function Permission(props) {
     <>
       {contextHolder}
       <Button
-        children="添加权限"
+        children={t('Permission.AddPermissions')}
         style={{ marginBottom: "var(--content-margin)" }}
         type="primary"
         onClick={addClick}
