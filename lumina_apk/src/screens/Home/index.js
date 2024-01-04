@@ -275,7 +275,7 @@ const Home = () => {
       <View style={useInlineStyle({paddingLeft:32})}>
       <ScreenHeader title={t('Dashboard')} subtitle={`[ ${t("Bright Renaissance")} - ${t("Zone")} A]`} hiddenBack />
       </View>
-      <View style={styles.navContainer}>
+      {/* <View style={styles.navContainer}>
         <ShadowCard style={styles.navItem}  hiddenShadow={true}>
           <View style={styles.left}>
             <IconButton style={styles.navBtn}>
@@ -298,7 +298,7 @@ const Home = () => {
           </View>
           <IconJinrujiantouxiao size={adaptationConvert(30)} />
         </ShadowCard>
-      </View>
+      </View> */}
       <View style={styles.scroll}>
         <View style={{  }}>
           <FlatList
