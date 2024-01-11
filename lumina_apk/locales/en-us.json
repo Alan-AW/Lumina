@@ -65,5 +65,13 @@
     "confirm":"confirm",
     "cancel":"cancel",
     "confirmTitle":"Do you want to log out?",
-    "logOutOfLogin":"Log out of login"
+    "logOutOfLogin":"Log out of login",
+    "lastName": "lastName",
+    "firstName": "firstName",
+    "avatar": "avatar",
+    "role": "role",
+    "company": "company",
+    "userInfo":"Personal Information",
+    "loginQRCode":"login QRCode"
+
  }

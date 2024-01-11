@@ -65,6 +65,13 @@
     "confirm":"确认",
     "cancel":"取消",
     "confirmTitle":"是否退出登录？",
-    "logOutOfLogin":"注销登录"
+    "logOutOfLogin":"注销登录",
+    "lastName": "名",
+    "firstName": "姓",
+    "avatar": "头像",
+    "role": "角色",
+    "company": "公司",
+    "userInfo":"个人信息",
+    "loginQRCode":"登录二维码"
 
 }

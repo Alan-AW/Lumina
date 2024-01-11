@@ -20,6 +20,7 @@ import Plan from 'src/screens/Plan';
 import Bright from 'src/screens/Bright';
 import VideoPrew from 'src/screens/VideoPrew';
 import Setting from 'src/screens/Setting';
+import User from 'src/screens/User';
 
 
 const AppStack = createNativeStackNavigator<AppStackParamList>();
@@ -36,6 +37,11 @@ function AppStackNavigator() {
       <AppStack.Screen
         name="Login"
         component={Login}
+        options={{headerShown: false}}
+      />
+        <AppStack.Screen
+        name="User"
+        component={User}
         options={{headerShown: false}}
       />
       <AppStack.Screen

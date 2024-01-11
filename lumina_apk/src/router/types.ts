@@ -13,6 +13,7 @@ export type AppStackParamList = {
   AdminTools: undefined;
   VideoPreview: undefined;
   Setting: undefined;
+  User: undefined;
   
   
   

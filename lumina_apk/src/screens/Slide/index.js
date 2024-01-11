@@ -14,6 +14,8 @@ import {
 import colors from 'src/constants/colors';
 import { adaptationConvert, createStyles, useInlineStyle } from 'src/helpers/style';
 import Badge from 'src/components/Badge';
+import { useAppSelector } from 'src/reduxCenter/hooks';
+import { baseUrl } from 'src/apis/config';
 
 const checkedColor = '#2a2a2a';
 
@@ -50,6 +52,7 @@ const VerticalTabMenu = (props) => {
   const [activeTab, setActiveTab] = useState(props.currentRoute);
 
   const navigation = useNavigation();
+  const state=useAppSelector((state)=>state.user.userInfo)
 
 
   const handleTabPress = index => {
@@ -109,13 +112,15 @@ const VerticalTabMenu = (props) => {
               color={props.currentRoute === 'VideoPreview' ? defaultColor : checkedColor}
             />
           </TabItem>
-          <TabItem isActive={props.currentRoute === 'baogao'} onPress={() => { }}>
+          {/* <TabItem isActive={props.currentRoute === 'baogao'} onPress={() => { }}>
             <IconBaogao
               size={adaptationConvert(itemSize)}
               color={props.currentRoute === 'baogao' ? defaultColor : checkedColor}
             />
             <Badge count={2} style={{ position: 'absolute', top: 10, right: 10 }} />
           </TabItem>
+            <Badge count={2} style={{ position: 'absolute', top: -5, left: 30 }} />
+          </TabItem> */}
           <TabItem isActive={props.currentRoute === 'shizhong'} onPress={() => { }}>
             <IconShizhong
               size={adaptationConvert(itemSize)}
@@ -136,8 +141,16 @@ const VerticalTabMenu = (props) => {
         </View>
 
         <View style={useInlineStyle({ position: 'absolute', bottom: 30 })}>
-          <IconButton style={styles.logo2}>
-            <Image source={require('../../asset/img/user.jpg')} style={{ width: '100%', height: '100%' }} />
+          <IconButton style={styles.logo2} onPress={() => {
+            navigation.reset({
+              index: 1,
+              routes: [{ name: 'User' }],
+            });
+          }}>
+            {
+              state && state.avatar && <Image source={{uri:`${baseUrl+state.avatar}`}} style={{ width: '100%', height: '100%' }} />
+            }
+            
           </IconButton>
           <IconButton style={styles.helpBtn}>
             <IconKongxinwenhao size={adaptationConvert(itemSize)} />

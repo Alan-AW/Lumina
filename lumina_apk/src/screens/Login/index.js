@@ -22,7 +22,7 @@ const WINDOW=Dimensions.get('window')
 
 const FormContent=({navigation})=>{
     const [account,setAccount]=useState('test')
-    const [password,setPassWord]=useState('test')
+    const [password,setPassWord]=useState('123456')
     const { hasPermission, requestPermission } = useCameraPermission();
     const dispatch=useAppDispatch()
     const { t } = useTranslation();
@@ -31,6 +31,7 @@ const FormContent=({navigation})=>{
        
        
         requestLogin({account,password}).then(res=>{
+            console.log(res,'登陆');
             if(res && !res.status){
                 ToastService.showToast(res.errs)
                 return;
@@ -51,7 +52,8 @@ const FormContent=({navigation})=>{
       
            
         }).catch(err=>{
-            Alert.alert(JSON.stringify(err.message))
+            console.log(err);
+            //Alert.alert(JSON.stringify(err || err.message))
            // ToastService.showToast("登录失败")
         })
     }
