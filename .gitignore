@@ -2,6 +2,7 @@
  *.pyc
 __pycache__/
 envs/
+require_world/
 
 #db.sqlite3
 db.sqlite3-journal

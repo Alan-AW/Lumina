@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Table, notification, Button, message, Popconfirm } from 'antd'
-import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined } from '@ant-design/icons'
+import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined, SettingOutlined } from '@ant-design/icons'
 import { getUnit, postUnit, patchUnit, deleteUnit } from 'network/api'
 import EditModalForm from 'components/unit/editModal'
+import SettingModal from 'components/unit/settingModal'
 import { FADEIN, pageSize } from 'contants'
 import { openNotification } from 'utils'
 import { useTranslation } from "react-i18next";
@@ -13,8 +14,13 @@ function Unit() {
     const [params, setparams] = useState({ page: 1 })
     const [tableData, settableData] = useState([])
     const [tableDataCount, settableDataCount] = useState(0)
+    // 编辑弹窗
     const [openModal, setopenModal] = useState(false)
     const [editSate, seteditSate] = useState(false)
+    const [editRow, setEditRow] = useState(null)
+    // 设置弹窗
+    const [openSettingModal, setOpenSettingModal] = useState(false)
+    const [unitId, setUnitId] = useState(null)
     const { t } = useTranslation()
     const tableTitle = [
         {
@@ -68,6 +74,12 @@ function Unit() {
                         icon={<EditOutlined />}
                         onClick={() => editClick(row)}
                     />
+                    <Button
+                        type='primary'
+                        shape='circle'
+                        icon={<SettingOutlined />}
+                        onClick={() => setClick(row)}
+                    />
                     <Popconfirm
                         title={t("unit.deltitle")}
                         description={t("unit.description")}
@@ -88,6 +100,8 @@ function Unit() {
         }
     ]
 
+
+
     useEffect(() => {
         getData()
     }, [params])
@@ -105,7 +119,7 @@ function Unit() {
     const deleteRow = row => {
         deleteUnit(row.id).then(res => {
             if (res.status) {
-                settableData(tableData.filter(item => item.id !== res.data))
+                settableData(tableData.filter(item => item.id !== parseInt(res.data)))
                 settableDataCount(tableDataCount - 1)
                 message.success(res.info)
             } else {
@@ -122,69 +136,66 @@ function Unit() {
 
     // 点击编辑
     const editClick = row => {
-        const { id, serial_number, deviceId, deviceSecret, components, status, room } = row
+        setEditRow(row)
         seteditSate(true)
-        sessionStorage.setItem('editUnitId', id)
-        sessionStorage.setItem('editUnitData', JSON.stringify({
-            serial_number,
-            status,
-            room,
-            deviceId,
-            deviceSecret,
-            components
-        }))
         setopenModal(true)
+    }
+
+    // 点击设置
+    const setClick = row => {
+        setUnitId(row.id)
+        setOpenSettingModal(true)
+    }
+
+    const unitSettingModal = useMemo(() => (
+        <SettingModal
+            id={unitId}
+            openModal={openSettingModal}
+            closeModal={() => setOpenSettingModal(false)}
+        />
+    ), [unitId, openSettingModal])
+
+    // 添加
+    const postData = data => {
+        postUnit(data).then(res => {
+            if (res.status) {
+                settableData([res.data, ...tableData])
+                settableDataCount(tableDataCount + 1)
+                setopenModal(false)
+                message.success(res.info)
+            } else {
+                openNotification(api, 'error', res.errs)
+            }
+        })
+    }
+
+    // 更新
+    const patchData = (id, data) => {
+        patchUnit(id, data).then(res => {
+            if (res.status) {
+                settableData(tableData.map(item => {
+                    if (item.id === res.data.id) {
+                        item = res.data
+                    }
+                    return item
+                }))
+                setopenModal(false)
+                message.success(res.info)
+            } else {
+                openNotification(api, 'error', res.errs)
+            }
+        })
     }
 
     // 提交
     const onOk = value => {
-        // 取出组件列表数据
-        const { components } = value
-        // 将组件列表字符串为一个数组
-        let components_list = components.split(',')
-        // 删除空字符串
-        components_list = components_list.filter(item => item !== '')
-        if (components_list.length === 0) {
-            return message.error('组件列表不能只输入 ,')
-        }
-        value.components = components_list
+        // 提出数据
+        const { id, ...data } = value
         if (editSate) {
-            const id = sessionStorage.getItem('editUnitId')
-            patchUnit(id, value).then(res => {
-                if (res.status) {
-                    settableData(tableData.map(item => {
-                        if (item.id === res.data.id) {
-                            item = res.data
-                        }
-                        return item
-                    }))
-                    closeModal()
-                    message.success(res.info)
-                } else {
-                    openNotification(api, 'error', res.errs)
-                }
-            })
+            patchData(id, data)
         } else {
-            postUnit(value).then(res => {
-                if (res.status) {
-                    settableData([res.data, ...tableData])
-                    settableDataCount(tableDataCount + 1)
-                    closeModal()
-                    message.success(res.info)
-                } else {
-                    openNotification(api, 'error', res.errs)
-                }
-            })
+            postData(data)
         }
-    }
-
-    // 关窗
-    const closeModal = () => {
-        sessionStorage.setItem('editUnitData', JSON.stringify({
-            serial_number: '', status: null, room: null,
-            deviceId: '', deviceSecret: '', components: ''
-        }))
-        setopenModal(false)
     }
 
     // 分页
@@ -208,6 +219,16 @@ function Unit() {
         />
     ), [tableData, t])
 
+    const editModal = useMemo(() => (
+        <EditModalForm
+            openModal={openModal}
+            closeModal={() => setopenModal(false)}
+            initValue={editRow}
+            onOk={onOk}
+            editSate={editSate}
+        />
+    ), [openModal, editRow])
+
     return (
         <>
             {contextHolder}
@@ -219,12 +240,8 @@ function Unit() {
                 icon={<PlusOutlined />}
             />
             {table}
-            <EditModalForm
-                openModal={openModal}
-                closeModal={closeModal}
-                onOk={onOk}
-                editSate={editSate}
-            />
+            {editModal}
+            {unitSettingModal}
         </>
     )
 }

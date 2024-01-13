@@ -18,15 +18,12 @@ function EditModal(props) {
         { label: '正常', value: 1 },
         { label: '禁用', value: 0 }
     ]
-    useEffect(() => {
-        openModal && roomList.length === 0 && getRoomAction()
-    }, [openModal, roomList])
 
     // 动态设置编辑时的表单内容
-    const editRowData = JSON.parse(sessionStorage.getItem('editUnitData'))
     useEffect(() => {
-        openModal && editRowData !== {} && form.setFieldsValue(editRowData)
-    }, [editRowData, openModal])
+        openModal && roomList.length === 0 && getRoomAction()
+        openModal && initValue && form.setFieldsValue(initValue)
+    }, [initValue, openModal, roomList])
 
     // 关窗
     const onCancelModal = () => {
@@ -37,6 +34,7 @@ function EditModal(props) {
     // 确定提交
     const onOkModal = () => {
         form.validateFields().then(value => {
+            form.resetFields()
             onOk(value)
         }).catch(err => {
             console.log(err);
@@ -56,8 +54,10 @@ function EditModal(props) {
                 form={form}
                 layout="vertical"
                 name="form_in_edit_modal"
-                initialValues={initValue}
             >
+                <Form.Item name='id' hidden>
+                    <Input />
+                </Form.Item>
 
                 <Form.Item name='status' label={t("unit.tableTitle.status_label") + '：'} rules={[
                     { required: true, message: t("unit.rules.status_label") }

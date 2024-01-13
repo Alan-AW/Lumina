@@ -1,7 +1,7 @@
 import {
-  SET_ROOMS_CHOICES, SET_ROLES_CHOICSE, SET_COMPANY_CHOICSE
+  SET_ROOMS_CHOICES, SET_ROLES_CHOICSE, SET_COMPANY_CHOICSE, SET_UNIT_SETTING_CHOICSE
 } from 'contants/reduxContants'
-import { choicesRooms, choicesRoles, choicesCompany } from 'network/api'
+import { choicesRooms, choicesRoles, choicesCompany, choicesUnitSetList } from 'network/api'
 
 // 异步获取房间下拉框
 const getRoomAction = () => {
@@ -30,4 +30,13 @@ const getCompanyAction = () => {
   }
 }
 
-export { getRoomAction, getRoleAction, getCompanyAction }
+// 异步获取设备功能列表下拉框
+const getUnitSetListAction = (language) => {
+  return dispatch => {
+    choicesUnitSetList(language).then(res => {
+      dispatch({ type: SET_UNIT_SETTING_CHOICSE, value: res.data })
+    })
+  }
+}
+
+export { getRoomAction, getRoleAction, getCompanyAction, getUnitSetListAction }
