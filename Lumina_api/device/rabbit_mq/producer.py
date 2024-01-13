@@ -8,11 +8,10 @@ from device.rabbit_mq.config import HOST, PORT, USER, PASSWORD
 QUEUE_NAME = "execution_command_queue"
 
 
-def start(message='Hello, RabbitMQ!', device_id=None):
-    queue_name = QUEUE_NAME
+def start(message='Hello, RabbitMQ!', device_id=None, queue_name=QUEUE_NAME):
     # 动态队列名称
     if device_id:
-        queue_name = f'{device_id}_{QUEUE_NAME}'
+        queue_name = f'{device_id}_{queue_name}'
     print('**'*50)
     print(f'queue_name: {queue_name}')
     print(f'message: {message}')

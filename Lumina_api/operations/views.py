@@ -1,12 +1,11 @@
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from operations.models import Room, Unit, Temperature, Species, RoomDesc, Lighting, Cultivars, Models, Triggers, \
-    Action, Instruction, Phases, EnvironmentalOptions, Company
-from serializers.operations_serializers import RoomSer, UnitSer, ChoicesRoomSer, \
-    ChoicesRoleSer, ExportDataSer, CompanySer
+    Action, Instruction, Phases, Company, UnitSettingsList, UnitSetting
+from serializers.operations_serializers import RoomSer, UnitSer, ExportDataSer, CompanySer, UnitSettingsListSer, \
+    UnitSettingSer
 from serializers.three_data_serializers import SpeciesDataSer, CultivarsDataSer, ModelsDataSer, PhasesDataSer, \
-    InstructionDataSer, ActionDataSer, ChoicesCompanySer, TriggersDataSer, EnvironmentalOptionsChoicesSer
-from users.models import Roles
+    InstructionDataSer, ActionDataSer, TriggersDataSer
 from utils.methods import return_response, get_data
 from operations.base_view import BaseView
 from utils.permissions.user_permission import SuperPermission
@@ -102,38 +101,42 @@ class UnitView(APIView):
         return JsonResponse(response)
 
 
-# 选择房间
-class ChoicesRoomView(APIView):
+# 机器功能管理
+class UnitSettingView(APIView):
     permission_classes = [SuperPermission]
 
-    def get(self, request):
-        return self.public_results(request)
-
-    def post(self, request):
-        return self.public_results(request)
-
-    def public_results(self, request):
-        if request.user.is_super:
-            queryset = Room.objects.all()
-        else:
-            queryset = request.user.company.rooms.all()
-        ser = ChoicesRoomSer(queryset, many=True)
-        response = return_response(data=ser.data)
+    def get(self, request, unit_id):
+        queryset = UnitSetting.objects.filter(unit_id=unit_id)
+        ser = UnitSettingSer(queryset, many=True)
+        data = ser.data
+        response = return_response(data=data)
         return JsonResponse(response)
 
-
-# 选择角色
-class ChoicesRoleView(APIView):
-    def get(self, request):
-        return self.public_results(request)
-
-    def post(self, request):
-        return self.public_results(request)
-
-    def public_results(self, request):
-        queryset = Roles.objects.all()
-        ser = ChoicesRoleSer(queryset, many=True)
-        response = return_response(data=ser.data)
+    def patch(self, request, unit_id):
+        settings = request.data.get('settings')
+        if not settings or not isinstance(settings, list):
+            response = return_response(status=False, error='请选择配置项！')
+            return JsonResponse(response)
+        try:
+            unit_obj = Unit.objects.get(id=unit_id)
+            # 取出现有的配置项 id 列表
+            unit_cmd_ids = [unit.cmd.id for unit in UnitSetting.objects.filter(unit_id=unit_id)]
+            if not unit_cmd_ids:
+                add_list = settings
+            else:
+                # 取交集
+                intersection = list(set(settings) & set(unit_cmd_ids))
+                # 分别计算原始数据中要删除的部分和新数据中要新增的部分
+                add_list = list(set(settings) - set(intersection))
+                del_list = list(set(unit_cmd_ids) - set(intersection))
+                # 删除旧的配置
+                UnitSetting.objects.filter(unit_id=unit_id, cmd_id__in=del_list).delete()
+            # 创建新的功能配置
+            for i in add_list:
+                UnitSetting.objects.create(unit_id=unit_id, cmd_id=i)
+        except Unit.DoesNotExist:
+            return_response(status=False, error=f'未找到id为{unit_id}的设备！')
+        response = return_response(info='设置成功！')
         return JsonResponse(response)
 
 
@@ -173,18 +176,11 @@ class CompanyUploadLogo(APIView):
         return JsonResponse(response)
 
 
-# 选择公司
-class ChoicesCompanyView(APIView):
-    def get(self, request):
-        if request.user.is_super:
-            queryset = Company.objects.all()
-            ser = ChoicesCompanySer(queryset, many=True)
-            response = return_response(data=ser.data)
-        else:
-            queryset = request.user.company
-            ser = ChoicesCompanySer(queryset, many=False)
-            response = return_response(data=[ser.data])
-        return JsonResponse(response)
+# 设备设置项列表管理
+class UnitSettingsListView(BaseView):
+    permission_classes = [SuperPermission]
+    models = UnitSettingsList
+    serializer = UnitSettingsListSer
 
 
 # 传感器请求保存数据
@@ -263,11 +259,3 @@ class TriggersView(BaseView):
     models = Triggers
     serializer = TriggersDataSer
     get_filter = 'phases_id'
-
-
-class ChoicesEnvironmentalOptions(APIView):
-    def get(self, request):
-        queryset = EnvironmentalOptions.objects.all()
-        ser = EnvironmentalOptionsChoicesSer(queryset, many=True)
-        response = return_response(data=ser.data)
-        return JsonResponse(response)

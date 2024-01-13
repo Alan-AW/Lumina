@@ -62,36 +62,6 @@
       "language_label": "Please select user language"
     }
   },
-  "Zone": {
-    "addZone": "Add Zone",
-    "title": "Zone management",
-    "deltitle": "Delete Zone",
-    "description": "Are you sure you want to delete this zone?",
-    "tableTitle": {
-      "index": "Index",
-      "id": "ID",
-      "name": "Zone Name",
-      "status_label": "Status",
-      "time_zone": "Time Zone",
-      "create_time": "Create Time",
-      "update_time": "Update Time",
-      "action": "Action"
-    },
-    "EditModalTitle1": "Edit Zone",
-    "EditModalTitle2": "Add Zone",
-    "EditModalbtnCancel": "Cancel",
-    "EditModalbtnConfirm": "Confirm",
-    "rules": {
-      "status_label": "The region status must be selected!",
-      "name": "The zone name cannot be empty!",
-      "time_zone": "Regional time zones cannot be empty!"
-    },
-    "placeholder": {
-      "status_label": "Please select the status of the region",
-      "name": "Please enter the zone name",
-      "time_zone": "Please select the time zone of the region"
-    }
-  },
   "room": {
     "addRoom": "Add Room",
     "title": "Room management",
@@ -130,6 +100,15 @@
     "title": "Unit management",
     "deltitle": "Delete Unit",
     "description": "Are you sure you want to delete this unit?",
+    "SettingModal": {
+      "Title": "Edit Function",
+      "OkText": "ok",
+      "CancelText": "cancel",
+      "FormLabel": "Configuration items",
+      "rules": {
+        "settings": "Please select a configuration!"
+      }
+    },
     "tableTitle": {
       "index": "Index",
       "id": "ID",
@@ -204,7 +183,8 @@
     "用户管理": "userManagement",
     "房间管理": "roomManagement",
     "机器管理": "machineManagement",
-    "操作日志": "operationLogs"
+    "操作日志": "operationLogs",
+    "设备功能列表": "unitSetList"
   },
   "Permission": {
     "title": "Permission Management",
@@ -270,7 +250,7 @@
       "email": "Enter company email"
     }
   },
-  "roles":  {
+  "roles": {
     "title": "Role Management",
     "OK": "Open",
     "OFF": "Close",
@@ -306,7 +286,45 @@
       "content": "Modified Content",
       "create_time": "Creation Time"
     }
+  },
+  "unitSetList": {
+    "EditModal": "Edit configuration",
+    "AddModal": "Add configuration",
+    "title": "Device configuration",
+    "AddUnitSetList": "AddUnitSetting",
+    "DelUnitSet": "Delete Setting",
+    "DelUnitDES": "Are you sure you want to delete this setting?",
+    "tableTitle": {
+      "index": "序号",
+      "cmd": "cmd",
+      "desc_cn": "desc_cn",
+      "desc_en": "desc_en",
+      "component": "component",
+      "min_value": "min_value",
+      "max_value": "max_value",
+      "step": "step",
+      "unit_cn": "unit_cn",
+      "unit_en": "unit_en",
+      "create_time": "create_time",
+      "update_time": "update_time",
+      "action": "Action"
+    },
+    "placeholder": {
+      "cmd": "Please enter a command name",
+      "desc_cn": "Please enter the explanation in Chinese",
+      "desc_en": "Please enter an explanation in English",
+      "component": "Please select a component type",
+      "min_value": "Please enter a minimum value",
+      "max_value": "Please enter the maximum value",
+      "step": "Please enter an adjustment range",
+      "unit_cn": "Please enter the unit in Chinese",
+      "unit_en": "Please enter the unit in English"
+    },
+    "rules": {
+      "cmd": "The command name cannot be empty!",
+      "desc_cn": "Chinese explanations cannot be empty!",
+      "desc_en": "English explanations can't be empty!",
+      "component": "The component type cannot be empty!"
+    }
   }
-
-
 }

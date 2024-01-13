@@ -92,7 +92,7 @@ class Logs(models.Model):
     role = models.CharField(max_length=32, verbose_name='角色')
     table_name = models.CharField(max_length=32, verbose_name='表名')
     command = models.IntegerField(
-        choices=((1, 'login'), (2, 'create'), (3, 'update'), (4, 'delete')), verbose_name='指令类型'
+        choices=((1, 'login'), (2, 'create'), (3, 'update'), (4, 'delete'), (5, 'put_mq')), verbose_name='指令类型'
     )
     content = models.JSONField(default=None, null=True, blank=True, verbose_name='日志内容')
     create_time = models.DateTimeField(auto_now_add=True, null=True, verbose_name='操作时间')

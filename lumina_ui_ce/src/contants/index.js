@@ -6,7 +6,7 @@
 export const USER_TOKEN = "userToken"
 
 // 分页器每页默认数据条数
-export const pageSize = 20
+export const pageSize = 10
 
 // 右下角提醒内容title
 export const MAP_MESSAGE_TITLE = {

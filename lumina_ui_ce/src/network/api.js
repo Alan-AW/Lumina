@@ -20,6 +20,7 @@ export const choicesRooms = () => axios.get('/manager/room/choices')
 export const choicesRoles = () => axios.get('/manager/role/choices')
 export const choicesEnvironmentalOptions = () => axios.get('/manager/choices/environmentalOptions')
 export const choicesCompany = () => axios.get('/manager/company/choices')
+export const choicesUnitSetList = language => axios.get(`/manager/unit/settings/list/choices?language=${language}`)
 export const getNavPermission = () => axios.get('/auth/permission/choices')
 
 // 用户管理页面
@@ -27,11 +28,11 @@ export const getUser = params => axios.get('/auth/user/', { params })
 export const postUser = data => axios.post('/auth/user/', data)
 export const patchUser = (id, data) => axios.patch(`/auth/user/${id}`, data)
 export const deleteUser = id => axios.delete(`/auth/user/${id}`)
-// 区域管理页面
-export const getZone = params => axios.get('/manager/zone/', { params })
-export const postZone = data => axios.post('/manager/zone/', data)
-export const patchZone = (id, data) => axios.patch(`/manager/zone/${id}`, data)
-export const deleteZone = id => axios.delete(`/manager/zone/${id}`)
+// 区域管理页面-取消了区域管理
+// export const getZone = params => axios.get('/manager/zone/', { params })
+// export const postZone = data => axios.post('/manager/zone/', data)
+// export const patchZone = (id, data) => axios.patch(`/manager/zone/${id}`, data)
+// export const deleteZone = id => axios.delete(`/manager/zone/${id}`)
 // 角色管理页面
 export const getRoles = params => axios.get('/auth/roles/', { params })
 export const postRoles = data => axios.post('/auth/roles/', data)
@@ -60,6 +61,14 @@ export const getUnit = params => axios.get('/manager/unit/', { params })
 export const postUnit = data => axios.post('/manager/unit/', data)
 export const patchUnit = (id, data) => axios.patch(`/manager/unit/${id}`, data)
 export const deleteUnit = id => axios.delete(`/manager/unit/${id}`)
+// 机器功能设置
+export const getUnitSet = id => axios.get(`/manager/unit/settings/${id}`)
+export const patchUnitSet = (id, data) => axios.patch(`/manager/unit/settings/${id}`, data)
+// 机器功能列表
+export const getSetList = params => axios.get('/manager/unit/settings/list/', { params })
+export const postSetList = data => axios.post('/manager/unit/settings/list/', data)
+export const patchSetList = (id, data) => axios.patch(`/manager/unit/settings/list/${id}`, data)
+export const deleteSetList = id => axios.delete(`/manager/unit/settings/list/${id}`)
 // 树结构
 export const exportThreeData = () => axios.get('/manager/export/three')
 export const getSpecies = params => axios.get('/manager/species/', { params })

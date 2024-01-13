@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Form, Input, Select, Modal, Switch } from 'antd'
 import { getNavPermission } from 'network/api'
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 function EditPermission(props) {
   const {
@@ -9,7 +9,7 @@ function EditPermission(props) {
   } = props
   const [form] = Form.useForm()
   const [naviPermission, setnaviPermission] = useState([])
-  const { t ,i18n} = useTranslation()
+  const { t, i18n } = useTranslation()
   useEffect(() => {
     openModal && initValue && form.setFieldsValue(initValue)
     openModal && !naviPermission.length && getNaviPermissions()
@@ -70,17 +70,17 @@ function EditPermission(props) {
           />
         </Form.Item>
 
-        <Form.Item name='url' label={t('Permission.tableTitle.url')}  rules={[
-          { required: true, message: t('Permission.rules.url')}
+        <Form.Item name='url' label={t('Permission.tableTitle.url')} rules={[
+          { required: true, message: t('Permission.rules.url') }
         ]}>
           <Input
-              placeholder={t('Permission.placeholder.url')}
+            placeholder={t('Permission.placeholder.url')}
             style={{ width: '100%' }}
           />
         </Form.Item>
 
         <Form.Item name='isNaviLink' valuePropName="checked" label={t('Permission.tableTitle.MenuPermissions')} rules={[
-          { required: true, message: t('Permission.rules.isNaviLink')}
+          { required: true, message: t('Permission.rules.isNaviLink') }
         ]}>
           <Switch
             checkedChildren={t('Permission.OK')}
@@ -89,7 +89,7 @@ function EditPermission(props) {
           />
         </Form.Item>
 
-        <Form.Item name='pid_id'label={t('Permission.tableTitle.pid_id')} rules={[
+        <Form.Item name='pid_id' label={t('Permission.tableTitle.pid_id')} rules={[
           { required: false }
         ]}>
           <Select

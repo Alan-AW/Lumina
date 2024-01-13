@@ -62,36 +62,6 @@
       "chinese_label": "请选择用户语言"
     }
   },
-  "Zone": {
-    "addZone": "添加区域",
-    "title": "区域管理",
-    "deltitle": "删除区域",
-    "description": "确定要删除这个区域吗?",
-    "tableTitle": {
-      "index": "序号",
-      "id": "ID",
-      "name": "区域名称",
-      "status_label": "区域状态",
-      "time_zone": "所处时区",
-      "create_time": "创建时间",
-      "update_time": "更新时间",
-      "action": "操作"
-    },
-    "EditModalTitle1": "编辑区域",
-    "EditModalTitle2": "添加区域",
-    "EditModalbtnCancel": "取消",
-    "EditModalbtnConfirm": "确定",
-    "rules": {
-      "status_label": "区域状态必须选择！",
-      "name": "区域名称不可为空！",
-      "time_zone": "区域时区不可为空！"
-    },
-    "placeholder": {
-      "status_label": "请选择区域状态",
-      "name": "请输入区域名称",
-      "time_zone": "请输入区域时区"
-    }
-  },
   "room": {
     "addRoom": "添加房间",
     "title": "房间管理",
@@ -148,6 +118,15 @@
     "EditModalTitle2": "添加机器",
     "EditModalbtnCancel": "取消",
     "EditModalbtnConfirm": "确定",
+    "SettingModal": {
+      "Title": "修改功能",
+      "OkText": "确定",
+      "CancelText": "取消",
+      "FormLabel": "配置项",
+      "rules": {
+        "settings": "请选择配置!"
+      }
+    },
     "rules": {
       "status_label": "机器状态必须选择！",
       "serial_number": "机器编号不可为空！",
@@ -204,7 +183,8 @@
     "用户管理": "用户管理",
     "房间管理": "房间管理",
     "机器管理": "机器管理",
-    "操作日志": "操作日志"
+    "操作日志": "操作日志",
+    "设备功能列表": "设备功能"
   },
   "Permission": {
     "title": "权限管理",
@@ -270,7 +250,7 @@
       "email": "请输入企业邮箱"
     }
   },
-  "roles":  {
+  "roles": {
     "title": "角色管理",
     "OK": "开启",
     "OFF": "关闭",
@@ -305,6 +285,45 @@
       "command_label": "操作指令",
       "content": "修改内容",
       "create_time": "创建时间"
+    }
+  },
+  "unitSetList": {
+    "EditModal": "编辑配置",
+    "AddModal": "添加配置",
+    "title": "设备配置",
+    "AddUnitSetList": "添加配置",
+    "DelUnitSet": "删除配置",
+    "DelUnitDES": "确定删除该功能吗?",
+    "tableTitle": {
+      "index": "序号",
+      "cmd": "指令名称",
+      "desc_cn": "中文解释",
+      "desc_en": "英文解释",
+      "component": "组件类型",
+      "min_value": "最小值",
+      "max_value": "最大值",
+      "step": "调整区间",
+      "unit_cn": "中文单位",
+      "unit_en": "英文单位",
+      "create_time": "创建时间",
+      "update_time": "更新时间"
+    },
+    "placeholder": {
+      "cmd": "请输入指令名称",
+      "desc_cn": "请输入中文解释",
+      "desc_en": "请输入英文解释",
+      "component": "请选择组件类型",
+      "min_value": "请输入最小值",
+      "max_value": "请输入最大值",
+      "step": "请输入调整区间",
+      "unit_cn": "请输入中文单位",
+      "unit_en": "请输入英文单位！"
+    },
+    "rules": {
+      "cmd": "指令名称不可为空！",
+      "desc_cn": "中文解释不可为空！",
+      "desc_en": "英文解释不可为空！",
+      "component": "组件类型不可为空！"
     }
   }
 }

@@ -4,7 +4,7 @@
 
 import { lazy } from 'react'
 import {
-  ClusterOutlined, HomeOutlined, ApartmentOutlined,
+  ClusterOutlined, HomeOutlined,
   LockOutlined, UsergroupAddOutlined
 } from '@ant-design/icons'
 import { Trans } from "react-i18next";
@@ -27,6 +27,8 @@ const Logs = lazy(() => import('pages/logs'))
 const Room = lazy(() => import('pages/room'))
 // 机器管理
 const Unit = lazy(() => import('pages/unit'))
+// 机器设置项列表
+const UnitSetList = lazy(() => import('pages/unitSetList'))
 // 三维表格模版
 const ThreeTable = lazy(() => import('pages/threeTable'))
 const Cultivars = lazy(() => import('pages/threeTable/child/cultivars'))
@@ -46,6 +48,7 @@ const LocalRouterMap = {
   '/logs': { icon: <UsergroupAddOutlined />, element: <Logs /> },
   '/room': { icon: <LockOutlined />, element: <Room /> },
   '/unit': { icon: <ClusterOutlined />, element: <Unit /> },
+  '/unit_set_list': { icon: <ClusterOutlined />, element: <UnitSetList /> },
   '/three_table': { icon: <ClusterOutlined />, element: <ThreeTable /> },
   '/cultivars': <Cultivars />,
   '/models': <Models />,

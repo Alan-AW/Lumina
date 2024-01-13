@@ -26,23 +26,25 @@ class Company(models.Model):
         return f'{self.name}'
 
 
+"""
 # 区域表-好像无用了-2024-1-3确定删除该表
-# class Zone(models.Model):
-#     name = models.CharField(max_length=64, unique=True, verbose_name='区域名称')
-#     company = models.ForeignKey(
-#         to=Company, to_field='id', on_delete=models.CASCADE, related_name='zones', verbose_name='所属企业'
-#     )
-#     status = models.IntegerField(choices=((0, '禁用'), (1, '正常')), verbose_name='区域状态', default=1)
-#     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
-#     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
-#     time_zone = models.CharField(max_length=32, verbose_name='时区码')
-# 
-#     class Meta:
-#         db_table = 'zone'
-#         verbose_name = '区域管理'
-# 
-#     def __str__(self):
-#         return f'{self.name}'
+class Zone(models.Model):
+    name = models.CharField(max_length=64, unique=True, verbose_name='区域名称')
+    company = models.ForeignKey(
+        to=Company, to_field='id', on_delete=models.CASCADE, related_name='zones', verbose_name='所属企业'
+    )
+    status = models.IntegerField(choices=((0, '禁用'), (1, '正常')), verbose_name='区域状态', default=1)
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
+    update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
+    time_zone = models.CharField(max_length=32, verbose_name='时区码')
+
+    class Meta:
+        db_table = 'zone'
+        verbose_name = '区域管理'
+
+    def __str__(self):
+        return f'{self.name}'
+"""
 
 
 # 房间表
@@ -63,7 +65,7 @@ class Room(models.Model):
         return f'{self.serial_number}'
 
 
-# 机器表
+# 机器设备表
 class Unit(models.Model):
     room = models.ForeignKey(
         to=Room, to_field='id', on_delete=models.CASCADE, related_name='units', verbose_name='所属房间'
@@ -81,6 +83,50 @@ class Unit(models.Model):
 
     def __str__(self):
         return f'{self.serial_number}-{self.deviceId}'
+
+
+# 设备功能值管理表
+class UnitSetting(models.Model):
+    unit = models.ForeignKey(
+        to='Unit', to_field='id', on_delete=models.CASCADE, related_name='settings', verbose_name='设备名称'
+    )
+    cmd = models.ForeignKey(
+        to='UnitSettingsList', to_field='id', on_delete=models.CASCADE, related_name='unit_set', verbose_name='设置名称'
+    )
+    auto = models.BooleanField(default=True, verbose_name='是否自动')
+    value = models.CharField(max_length=255, verbose_name='设置值')
+
+    class Meta:
+        db_table = 'unit_setting'
+        verbose_name = '机器设置'
+        unique_together = ('unit', 'cmd')
+        ordering = ('cmd',)
+
+    def __str__(self):
+        return f'{self.unit.serial_number}-{self.cmd.cmd}'
+
+
+# 机器设备所支持的功能
+class UnitSettingsList(models.Model):
+    cmd = models.CharField(max_length=64, verbose_name='指令名称')
+    desc_cn = models.CharField(max_length=64, verbose_name='中文解释')
+    desc_en = models.CharField(max_length=64, verbose_name='英文解释')
+    component = models.IntegerField(choices=((1, 'slide'), (2, 'switch')), default=1, verbose_name='组件类型')
+    min_value = models.CharField(max_length=8, null=True, blank=True, verbose_name='最小值')
+    max_value = models.CharField(max_length=8, null=True, blank=True, verbose_name='最大值')
+    step = models.CharField(max_length=8, null=True, blank=True, verbose_name='调整区间')
+    unit_cn = models.CharField(max_length=16, null=True, blank=True, verbose_name='中文单位')
+    unit_en = models.CharField(max_length=16, null=True, blank=True, verbose_name='英文单位')
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
+    update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
+
+    class Meta:
+        db_table = 'unit_settings_list'
+        verbose_name = 'APP参数设置'
+        ordering = ('id',)
+
+    def __str__(self):
+        return self.cmd
 
 
 # 房间详情传感器-业务系统第二期已弃用该表，暂保留该实体表
@@ -176,7 +222,7 @@ class PlantDesc(models.Model):
     unit = models.ForeignKey(to=Unit, to_field='id', related_name='plant_desc', on_delete=models.CASCADE,
                              verbose_name='所属机器')
     plant = models.ForeignKey(to=Plant, to_field='id', related_name='desc', on_delete=models.CASCADE,
-                              verbose_name='作物信息')
+                              verbose_name='作物算法信息')
     icon_path = models.CharField(max_length=512, verbose_name='作物图片')
     cycle = models.IntegerField(default=1, verbose_name='作物周期')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='播种时间')
@@ -187,22 +233,6 @@ class PlantDesc(models.Model):
 
     def __str__(self):
         return self.plant.name_cn
-
-
-# 安卓设备的设置内容
-class AndroidSettings(models.Model):
-    phase_control = models.JSONField(verbose_name='Phase Control')
-    automatic = models.IntegerField(default=50)
-    uvb = models.IntegerField(default=50)
-    uvc = models.BooleanField(default=True)
-    deep_blue = models.IntegerField(default=50)
-    main = models.IntegerField(default=50)
-    hyper_red = models.IntegerField(default=50)
-    far_red = models.IntegerField(default=50)
-
-    class Meta:
-        db_table = 'android_settings'
-        verbose_name = '参数设置'
 
 
 # 以下 Species - HardwareOptions为第二期开发的树结构数据表模型

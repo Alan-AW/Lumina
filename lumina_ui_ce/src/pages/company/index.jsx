@@ -1,29 +1,29 @@
 /**
  * 公司管理
  */
-import {useState, useEffect, useMemo} from 'react'
-import {Modal, Table, notification, Button, message, Popconfirm, Image} from 'antd'
-import {PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined, UploadOutlined} from '@ant-design/icons'
+import { useState, useEffect, useMemo } from 'react'
+import { Modal, Table, notification, Button, message, Image } from 'antd'
+import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined, UploadOutlined } from '@ant-design/icons'
 import baseUrl from 'network/baseUrl'
-import {getCompany, postCompany, patchCompany, deleteCompany, uploadCompanyLogoApi} from 'network/api'
-import {FADEIN, pageSize} from 'contants'
-import {openNotification} from 'utils'
+import { getCompany, postCompany, patchCompany, deleteCompany, uploadCompanyLogoApi } from 'network/api'
+import { FADEIN, pageSize } from 'contants'
+import { openNotification } from 'utils'
 import CompanyEditModal from 'components/company'
 import UploadImg from 'components/upload'
 import PermissionBtn from 'components/permissionButton/permissionBtn'
 import PermissionPopconfirm from 'components/permissionButton/permissionPopconfirm'
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 function Company(props) {
     const [api, contextHolder] = notification.useNotification()
-    const [params, setparams] = useState({page: 1})
+    const [params, setparams] = useState({ page: 1 })
     const [tableData, settableData] = useState([])
     const [tableDataCount, settableDataCount] = useState(0)
     const [openModal, setopenModal] = useState(false)
     const [openUploadModal, setOpenUploadModal] = useState(false)
     const [editSate, seteditSate] = useState(false)
     const [editRow, setEditRow] = useState(null)
-    const {t, i18n} = useTranslation()
+    const { t, i18n } = useTranslation()
 
     const tableTitle = [
         {
@@ -60,7 +60,7 @@ function Company(props) {
             title: t("company.tableTitle.logo"),
             align: 'center',
             dataIndex: 'logo',
-            render: logo => <Image src={`${baseUrl()}${logo}`} height={50}/>
+            render: logo => <Image src={`${baseUrl()}${logo}`} height={50} />
         },
         {
             title: t("company.tableTitle.create_time"),
@@ -76,17 +76,17 @@ function Company(props) {
             title: t("company.tableTitle.action"),
             align: 'center',
             render: row => (
-                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-evenly'}}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
                     <Button
                         type='primary'
                         shape='circle'
-                        icon={<EditOutlined/>}
+                        icon={<EditOutlined />}
                         onClick={() => editClick(row)}
                     />
                     <Button
                         type='primary'
                         shape='circle'
-                        icon={<UploadOutlined/>}
+                        icon={<UploadOutlined />}
                         onClick={() => uploadLogo(row)}
                     />
                     <PermissionPopconfirm
@@ -97,12 +97,12 @@ function Company(props) {
                         cancelText="No"
                         allowRoles={['Administrator']}
                         callback={() => deleteRow(row)}
-                        icon={<QuestionCircleOutlined style={{color: 'red'}}/>}
+                        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
                     >
                         <Button
                             shape='circle'
                             danger
-                            icon={<DeleteOutlined/>}
+                            icon={<DeleteOutlined />}
                         />
                     </PermissionPopconfirm>
                 </div>
@@ -155,7 +155,7 @@ function Company(props) {
     const paginationProps = {
         total: tableDataCount,
         pageSize,
-        onChange: page => setparams({page})
+        onChange: page => setparams({ page })
     }
 
     // 表格
@@ -170,7 +170,7 @@ function Company(props) {
             bordered={true}
             rowKey={item => item.id}
         />
-    ), [tableData,i18n.language])
+    ), [tableData, i18n.language])
 
     // 关窗
     const closeModal = () => {
@@ -181,7 +181,7 @@ function Company(props) {
     const onOk = value => {
         if (editSate) {
             // 编辑
-            const {id} = value
+            const { id } = value
             patchCompany(id, value).then(res => {
                 if (res.status) {
                     settableData(tableData.map(item => {
@@ -230,7 +230,7 @@ function Company(props) {
 
     // 上传组件回调上传方法
     const uploadCompanyLogo = data => {
-        const {id} = editRow
+        const { id } = editRow
         uploadCompanyLogoApi(id, data).then(res => {
             if (res.status) {
                 settableData(tableData.map(item => {
@@ -256,7 +256,7 @@ function Company(props) {
         <Modal
             title={t('company.uploadModalTitle')}
             width="260px"
-            style={{textAlign: 'center'}}
+            style={{ textAlign: 'center' }}
             open={openUploadModal}
             onCancel={() => setOpenUploadModal(false)}
             footer=''
@@ -277,9 +277,9 @@ function Company(props) {
                 callback={addClick}
                 allowRoles={['Administrator']}
                 children={t('company.AddCompany')}
-                style={{marginBottom: "var(--content-margin)"}}
+                style={{ marginBottom: "var(--content-margin)" }}
                 type='primary'
-                icon={<PlusOutlined/>}
+                icon={<PlusOutlined />}
             />
             {table}
             {uploadModal}

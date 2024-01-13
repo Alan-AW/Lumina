@@ -2,12 +2,13 @@ import json
 
 from django.conf import settings as sys
 from rest_framework import serializers
-from operations.models import Company, Room, Unit, Temperature, Lighting, AndroidSettings, Species, \
-    Cultivars, Models, Phases, Instruction, Action, Triggers
+from operations.models import Company, Room, Unit, Temperature, Lighting, UnitSetting, Species, \
+    Cultivars, Models, Phases, Instruction, Action, Triggers, UnitSettingsList
 from users.models import Roles
 from utils.methods import computed_sowing_time
 
 
+# 房间管理序列化
 class RoomSer(serializers.ModelSerializer):
     serial_number = serializers.CharField(max_length=512)
     company = serializers.SlugRelatedField(slug_field='id', queryset=Company.objects.all())
@@ -20,6 +21,7 @@ class RoomSer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+# 设备管理序列化
 class UnitSer(serializers.ModelSerializer):
     serial_number = serializers.CharField(max_length=512)
     room = serializers.SlugRelatedField(slug_field='id', queryset=Room.objects)
@@ -73,25 +75,7 @@ class RoomDeepSer(serializers.ModelSerializer):
         fields = ['id', 'serial_number', 'units']
 
 
-# 第二期单独为安卓端返回房间详情信息
-class RoomDescSer(serializers.ModelSerializer):
-    serial_number = serializers.CharField(max_length=512, read_only=True)
-    max_current = serializers.SerializerMethodField()
-    min_current = serializers.SerializerMethodField()
-
-    def get_max_current(self, row):
-        return "25℃"
-
-    def get_min_current(self, row):
-        return "20℃"
-
-    class Meta:
-        model = Room
-        fields = ['id', 'serial_number', 'max_current', 'min_current']
-
-
 # 第二期安卓端登陆成功后，获取区域内所有房间的所有信息-已废弃
-
 def android_zones_deep_data(rooms):
     results = []
     for room in rooms:
@@ -122,24 +106,45 @@ def android_zones_deep_data(rooms):
     return results
 
 
-# 第三期正式版，安卓首页接口，与上面一样
+# 第二期单独为安卓端返回房间详情信息-使用中(2024-1-13)
+class RoomDescSer(serializers.ModelSerializer):
+    serial_number = serializers.CharField(max_length=512, read_only=True)
+    max_current = serializers.SerializerMethodField()
+    min_current = serializers.SerializerMethodField()
+
+    def get_max_current(self, row):
+        return "25℃"
+
+    def get_min_current(self, row):
+        return "20℃"
+
+    class Meta:
+        model = Room
+        fields = ['id', 'serial_number', 'max_current', 'min_current']
+
+
+# 第三期正式版，安卓首页接口数据序列化-使用中(2024-1-13)
 def unitsDescSer(units):
     data_list = []
+    # 循环房间内所有机器设备
     for unit in units:
+        # 循环每台设备中种植的作物详情信息（有多少作物）
         for plant_desc in unit.plant_desc.all():
+            # 如果当前作物在种植周期内
             if plant_desc.cycle > computed_sowing_time(plant_desc.create_time):
+                # 收集数据
                 data_list.append({
-                    "id": unit.id,
-                    "serial_number": unit.serial_number,
-                    "cropItemDay": computed_sowing_time(plant_desc.create_time),
-                    "cropItemCycle": plant_desc.cycle,
-                    "cropItemName": plant_desc.plant.name_cn,
-                    "url": f'{sys.API_BASE_URL}{plant_desc.plant.icon_path.file.url}'
+                    "id": unit.id,  # 设备唯一id
+                    "serial_number": unit.serial_number,  # 设备名称
+                    "cropItemDay": computed_sowing_time(plant_desc.create_time),  # 已种植时间
+                    "cropItemCycle": plant_desc.cycle,  # 作物周期
+                    "cropItemName": plant_desc.plant.name_cn,  # 作物中文名称
+                    "url": plant_desc.icon_path  # 作物图片
                 })
     return data_list
 
 
-# 第三期正式版，安卓首页接口主序列化程序
+# 第三期正式版，安卓首页接口主序列化程序-使用中(2024-1-13)
 def android_home_data(rooms):
     # 遍历每一个房间
     data_list = []
@@ -176,10 +181,35 @@ class LightingSer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# 设置序列化
-class AndroidSettingsSer(serializers.ModelSerializer):
+# 公司管理序列化
+class CompanySer(serializers.ModelSerializer):
+    create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+    update_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+
     class Meta:
-        model = AndroidSettings
+        model = Company
+        fields = '__all__'
+
+
+# 设备支持功能列表序列化
+class UnitSettingsListSer(serializers.ModelSerializer):
+    component_name = serializers.CharField(source='get_component_display', read_only=True)
+    create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+    update_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+
+    class Meta:
+        model = UnitSettingsList
+        fields = '__all__'
+
+
+# 设备设置项序列化
+class UnitSettingSer(serializers.ModelSerializer):
+    serial_number = serializers.CharField(source='unit.serial_number', read_only=True)
+    deviceId = serializers.CharField(source='unit.deviceId', read_only=True)
+    cmd_name = serializers.CharField(source='cmd.cmd', read_only=True)
+
+    class Meta:
+        model = UnitSetting
         fields = '__all__'
 
 
@@ -264,13 +294,4 @@ class ExportDataSer(serializers.ModelSerializer):
 
     class Meta:
         model = Species
-        fields = '__all__'
-
-
-class CompanySer(serializers.ModelSerializer):
-    create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
-    update_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
-
-    class Meta:
-        model = Company
         fields = '__all__'

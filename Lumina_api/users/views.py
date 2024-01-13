@@ -20,8 +20,7 @@ class LoginView(APIView):
         user = request.data
         user_obj = None
         if user:
-            user['status'] = 1
-            user_obj = UserInfo.objects.filter(**user).first()
+            user_obj = UserInfo.objects.filter(**user, status=1).first()
         if not user_obj:
             response = return_response(status=False, error='用户名或密码错误！')
         # elif user_obj.role.title != 'Manager':

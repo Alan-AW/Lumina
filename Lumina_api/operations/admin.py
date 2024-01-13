@@ -1,6 +1,6 @@
 from django.contrib import admin
 from operations.models import Company, Room, RoomDesc, Unit, Temperature, Fertilizer, \
-    Plant, PlantDesc, Lighting
+    Plant, PlantDesc, Lighting, UnitSetting, UnitSettingsList
 
 
 # 企业
@@ -19,13 +19,6 @@ class RoomAdmin(admin.ModelAdmin):
     search_fields = ['serial_number']
 
 
-# 房间详情
-@admin.register(RoomDesc)
-class RoomDescAdmin(admin.ModelAdmin):
-    list_display = ['id', 'room', 'json_val']
-    list_editable = ['room', 'json_val']
-
-
 # 机器
 @admin.register(Unit)
 class UnitAdmin(admin.ModelAdmin):
@@ -33,6 +26,27 @@ class UnitAdmin(admin.ModelAdmin):
                     'update_time']
     list_editable = ['serial_number', 'deviceId', 'deviceSecret', 'room', 'status']
     search_fields = ['serial_number']
+
+
+# 设备功能值管理
+@admin.register(UnitSetting)
+class UnitSettingsAdmin(admin.ModelAdmin):
+    list_display = ['id', 'unit', 'cmd', 'auto', 'value']
+    list_editable = ['unit', 'cmd', 'auto', 'value']
+    search_fields = ['unit']
+
+
+# 机器设备所支持的功能
+@admin.register(UnitSettingsList)
+class UnitSettingsListAdmin(admin.ModelAdmin):
+    list_display = [
+        'id', 'cmd', 'desc_cn', 'desc_en', 'component', 'step',
+        'min_value', 'max_value', 'unit_cn', 'unit_en', 'create_time', 'update_time'
+    ]
+    list_editable = [
+        'cmd', 'desc_cn', 'desc_en', 'component', 'step',
+        'min_value', 'max_value', 'unit_cn', 'unit_en'
+    ]
 
 
 # 温度传感器
@@ -74,9 +88,3 @@ class PlantAdmin(admin.ModelAdmin):
 class PlantDescAdmin(admin.ModelAdmin):
     list_display = ['id', 'unit', 'plant', 'cycle', 'icon_path', 'create_time']
     list_editable = ['unit', 'plant', 'cycle', 'icon_path', ]
-
-# 安卓端APP设置文件
-# @admin.register(AndroidSettings)
-# class AndroidSettingsAdmin(admin.ModelAdmin):
-#     list_display = ['id', 'phase_control', 'automatic', 'uvb', 'uvc', 'deep_blue', 'main', 'hyper_red', 'far_red']
-#     list_editable = ['phase_control', 'automatic', 'uvb', 'uvc', 'deep_blue', 'main', 'hyper_red', 'far_red']

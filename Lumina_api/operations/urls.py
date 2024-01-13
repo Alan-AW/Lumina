@@ -1,19 +1,33 @@
 from django.urls import path, re_path
-from operations.views import RoomView, UnitView, ChoicesRoomView, ChoicesRoleView, \
-    SaveSensorDataView, ExportThree, SpeciesView, CultivarsView, ChoicesCompanyView, \
-    ModelsView, PhasesView, InstructionView, ActionView, TriggersView, ChoicesEnvironmentalOptions, \
-    CompanyView, CompanyUploadLogo
+from operations.views import RoomView, UnitView, SaveSensorDataView, ExportThree, SpeciesView, CultivarsView, \
+    ModelsView, PhasesView, InstructionView, ActionView, TriggersView, CompanyView, CompanyUploadLogo, UnitSettingsListView, \
+    UnitSettingView
+from operations.choices_api_view import ChoicesRoomView, ChoicesRoleView, ChoicesCompanyView, \
+    ChoicesEnvironmentalOptions, ChoicesUnitSettings
 
 app_name = 'operations'
 urlpatterns = [
-    re_path(r'unit/(?P<row_id>\d+)?$', UnitView.as_view()),
+    # 房间管理
     re_path(r'room/(?P<row_id>\d+)?$', RoomView.as_view()),
+    # 机器设备管理
+    re_path(r'unit/(?P<row_id>\d+)?$', UnitView.as_view()),
+    # 机器功能设置
+    re_path(r'unit/settings/(?P<unit_id>\d+)$', UnitSettingView.as_view()),
+    # 下拉框选项
     path('room/choices', ChoicesRoomView.as_view()),
     path('company/choices', ChoicesCompanyView.as_view()),
     path('role/choices', ChoicesRoleView.as_view()),
     path('company/choices', ChoicesCompanyView.as_view()),
+    path('unit/settings/list/choices', ChoicesUnitSettings.as_view()),
+    path('choices/environmentalOptions', ChoicesEnvironmentalOptions.as_view()),
+    # 上传公司logo
     re_path(r'company/uploadlogo/(?P<row_id>\d+)$', CompanyUploadLogo.as_view()),
+    # 公司管理
     re_path(r'company/(?P<row_id>\d+)?', CompanyView.as_view()),
+    # 设备可用设置项管理
+    re_path(r'unit/settings/list/(?P<row_id>\d+)?', UnitSettingsListView.as_view()),
+    # ############################## 以下API是否需要：待定 ##############################
+    # 传感器请求保存数据
     re_path(r'save/sensor/(?P<types>temperature|lighting)$', SaveSensorDataView.as_view()),
     # 数据结构导出数据
     path('export/three', ExportThree.as_view()),
@@ -25,5 +39,4 @@ urlpatterns = [
     re_path(r'instruction/(?P<row_id>\d+)?$', InstructionView.as_view()),
     re_path(r'action/(?P<row_id>\d+)?$', ActionView.as_view()),
     re_path(r'triggers/(?P<row_id>\d+)?$', TriggersView.as_view()),
-    path('choices/environmentalOptions', ChoicesEnvironmentalOptions.as_view())
 ]
