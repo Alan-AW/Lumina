@@ -176,10 +176,10 @@ class AndroidSettingsView(APIView):
 
 # 安卓端修改设备功能配置项入库并推到mq动态队列
 class SendCmdToMQView(APIView):
-    # permission_classes = [ExcludeSuperPermission]
-    authentication_classes = []
-    permission_classes = []
-    throttle_classes = []
+    permission_classes = [ExcludeSuperPermission]
+    # authentication_classes = []
+    # permission_classes = []
+    # throttle_classes = []
 
     def post(self, request, unit_id):
         # 只发送修改部分的内容即可，未修改的不推送，也不发过来
@@ -199,7 +199,7 @@ class SendCmdToMQView(APIView):
                     update_data = {'auto': item['auto'], 'value': item['value']}
                     UnitSetting.objects.filter(unit=unit_obj, cmd__cmd=item['cmd']).update(**update_data)
                 # 记录日志
-                # create_logs(request, UnitSetting, 5, data)
+                create_logs(request, UnitSetting, 5, data)
                 # 推入队列
                 mq_data = list(map(lambda item: {**item, 'decideId': unit_obj.deviceId}, data))
                 start(message=json.dumps(mq_data), device_id=unit_obj.deviceId, queue_name='manual_command_queue')
