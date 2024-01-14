@@ -30,7 +30,7 @@ const ScreenHeader = (props: ScreenHeaderProps) => {
                 {
                     !props.hiddenBack && <ShadowCard style={styles.backBtn}>
                         <IconButton onPress={() => nav.goBack()}>
-                            <IconJiantouCopy size={adaptationConvert(22)} />
+                            <IconJiantouCopy size={adaptationConvert(30)} />
                         </IconButton>
                     </ShadowCard>
                 }

@@ -6,7 +6,7 @@ import AutoView from 'src/components/AutoView/View';
 const SlideView = ({title,onChange}) => {
   return (
     <AutoView>
-      <AutoText style={{paddingLeft: 30, color: '#2a2a2a',paddingTop:32}} size={24}>{title}</AutoText>
+      <AutoText style={{paddingLeft: 30, color: '#2a2a2a',paddingTop:40,lineHeight:40}} size={24}>{title}</AutoText>
       <Slider
         maximumTrackTintColor="#ccc"
         minimumTrackTintColor="#559e18"

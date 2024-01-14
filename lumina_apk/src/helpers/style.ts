@@ -36,6 +36,9 @@ export function createStyles<K extends string>(styles: Record<K, TStyle>): Recor
         // if(key=='fontSize'){
         //   itemStyles[key]=itemStyles[key]+30;
         // }
+        if(key==='fontSize'){
+          styles[key]=styles[key]+0
+        }
         (itemStyles[key] as number) = adaptationConvert(itemStyles[key] as number);
         // TODO 后续可以在这里做
       }
@@ -53,6 +56,9 @@ export function useInlineStyle(styles: TStyle): TStyle {
   let key: keyof TStyle;
   for (key in styles) {
     if (typeof styles[key] === "number" && ADAPTATION_CONVERT_STYLE_KEYS.includes(key)) {
+      if(key==='fontSize'){
+        styles[key]=styles[key]+3
+      }
       (styles[key] as number) = adaptationConvert(styles[key] as number);
     }
   }

@@ -47,7 +47,7 @@ const AdminTool = (props) => {
                 borderWidth: 1,
                 borderRadius: 10,
               }}>
-              <AutoView style={{ height: 60 }} isRow>
+              <AutoView style={{ height: 80 }} isRow>
                 <AutoText
                   style={{ color: '#2a2a2a', paddingLeft: 15, paddingRight: 20 }}>
                   {t('CurrentPhase')} ({t('Germination')}:6~7 {t('days')})
@@ -59,7 +59,7 @@ const AdminTool = (props) => {
                   borderTopWidth: 1,
                   borderColor: colors.borderColor,
                   alignItems: 'center',
-                  height: 60,
+                  height: 80,
                   justifyContent: 'space-between',
                   paddingLeft: 20,
                   paddingRight: 20,
@@ -70,12 +70,12 @@ const AdminTool = (props) => {
                 </IconButton>
               </AutoView>
             </AutoView>
-            <AutoText style={{ paddingTop: 12 }} numberOfLines={2} size={22}>
+            <AutoText style={{ paddingTop: 20 }} numberOfLines={2} size={22}>
               {t('PhaseControlTips')}
             </AutoText>
           </AutoView>
           <AutoView style={{ marginTop: 48 }}>
-            <AutoText size={26} style={{ color: '#000' }}>
+            <AutoText size={26} style={{ color: '#000',paddingTop:5 }}>
               {t('Days')}/{t('NightChamberTemperature')}
             </AutoText>
             <AutoView
@@ -88,7 +88,7 @@ const AdminTool = (props) => {
               }}>
               <AutoView
                 style={{
-                  height: 60,
+                  height: 80,
                   justifyContent: 'space-between',
                   position: 'relative',
                   paddingLeft: 20,
@@ -110,7 +110,7 @@ const AdminTool = (props) => {
                   borderTopWidth: 1,
                   borderColor: colors.borderColor,
                   alignItems: 'center',
-                  height: 60,
+                  height: 80,
                   paddingLeft: 20,
                   paddingRight: 20,
                   justifyContent: 'space-between',
@@ -124,7 +124,7 @@ const AdminTool = (props) => {
                 </AutoView>
               </AutoView>
             </AutoView>
-            <AutoText style={{ paddingTop: 12 }} size={22}>
+            <AutoText style={{ paddingTop: 20 }} size={22}>
               {t('temperatureTips')}
             </AutoText>
           </AutoView>
@@ -142,7 +142,7 @@ const AdminTool = (props) => {
               }}>
               <AutoView
                 style={{
-                  height: 60,
+                  height: 80,
                   justifyContent: 'space-between',
                   position: 'relative',
                   paddingLeft: 20,
@@ -166,7 +166,7 @@ const AdminTool = (props) => {
                   borderTopWidth: 1,
                   borderColor: colors.borderColor,
                   alignItems: 'center',
-                  height: 60,
+                  height: 80,
                   justifyContent: 'space-between',
                   paddingLeft: 20,
                   paddingRight: 20,
@@ -178,7 +178,7 @@ const AdminTool = (props) => {
                 </IconButton>
               </AutoView>
             </AutoView>
-            <AutoText style={{ paddingTop: 8 }} size={22}>
+            <AutoText style={{ paddingTop: 20 }} size={22}>
               {t('floweringTips')}
             </AutoText>
           </AutoView>
@@ -202,7 +202,7 @@ const AdminTool = (props) => {
             }}>
             <AutoView
               style={{
-                height: 60,
+                height: 80,
                 justifyContent: 'space-between',
                 position: 'relative',
                 paddingLeft: 20,
@@ -211,7 +211,7 @@ const AdminTool = (props) => {
                 borderBottomColor: '#f4f4f4',
               }}
               isRow>
-              <AutoText style={{ color: '#2a2a2a' }}>{t('AutoClimate')}</AutoText>
+              <AutoText style={{ color: '#2a2a2a',paddingTop:20 }} size={26}>{t('AutoClimate')}</AutoText>
               <SwitchView
                 defaultValue={false}
                 style={{
@@ -246,7 +246,7 @@ const AdminTool = (props) => {
               })
             }
           </AutoView>
-          <AutoText size={22} style={{ paddingTop: 8 }}>
+          <AutoText size={22} style={{ paddingTop: 20 }}>
             {t('systemTips')}
           </AutoText>
         </AutoView>

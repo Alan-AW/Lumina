@@ -113,9 +113,11 @@ const VerticalTabMenu = (props) => {
           </TabItem>
           {/* <TabItem isActive={props.currentRoute === 'baogao'} onPress={() => { }}>
             <IconBaogao
-              size={adaptationConvert(38)}
+              size={adaptationConvert(itemSize)}
               color={props.currentRoute === 'baogao' ? defaultColor : checkedColor}
             />
+            <Badge count={2} style={{ position: 'absolute', top: 10, right: 10 }} />
+          </TabItem>
             <Badge count={2} style={{ position: 'absolute', top: -5, left: 30 }} />
           </TabItem> */}
           <TabItem isActive={props.currentRoute === 'shizhong'} onPress={() => { }}>

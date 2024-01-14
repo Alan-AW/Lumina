@@ -73,6 +73,7 @@ const FormContent=({navigation})=>{
         <ShadowCard style={{
             margin: 0,
             elevation: 24,
+            width:400,
             shadowRadius: 24,
             shadowOffset: {
               width: 0,
@@ -81,7 +82,7 @@ const FormContent=({navigation})=>{
             shadowColor: 'black',
           }}>
         <View style={styles.content}>
-        <Text style={useInlineStyle({textAlign:'center',fontSize:40,fontFamily:fontName.bold,lineHeight:40,})} >{t('Login')}</Text>
+        <Text style={useInlineStyle({textAlign:'center',fontSize:40,fontFamily:fontName.bold,lineHeight:50,})} >{t('Login')}</Text>
            <TextInput style={styles.item} value={account} onChangeText={text=>setAccount(text)}  placeholder={t('account')} />
            <TextInput style={styles.item} value={password} onChangeText={text=>setPassWord(text)}   secureTextEntry={true}  placeholder={t('password')} />
            <View style={styles.qrcode}>
@@ -90,7 +91,7 @@ const FormContent=({navigation})=>{
             </IconButton>
            
            </View>
-            <TextButton style={styles.loginBtn} testStyle={useInlineStyle({color:'#fff',fontSize:48})} onPress={()=>login()}>{t('Login')}</TextButton>
+            <TextButton style={styles.loginBtn} testStyle={useInlineStyle({color:'#fff',fontSize:40})} onPress={()=>login()}>{t('Login')}</TextButton>
         </View>
         </ShadowCard>
     )
@@ -136,7 +137,8 @@ const styles=createStyles({
         borderRadius:3,
         padding:20,
         paddingBottom:5,
-        width:800,
+        width:'90%',
+        marginLeft:'5%',
         borderWidth:0,
         borderBottomWidth:1,
         borderBottomColor:'#e8e8e8',
@@ -159,7 +161,7 @@ const styles=createStyles({
         justifyContent:'flex-end',
         display:'flex',
         flexDirection:'row',
-        marginTop:10,
+        marginTop:20,
       },
 })
 

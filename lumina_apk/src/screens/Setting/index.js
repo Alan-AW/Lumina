@@ -53,7 +53,7 @@ const Setting = ({navigation}) => {
               borderWidth: 1,
               borderRadius: 10,
             }}>
-            <AutoText>{t('logOutOfLogin')}</AutoText>
+            <AutoText style={{lineHeight:40}} size={24}>{t('logOutOfLogin')}</AutoText>
           </IconButton>
         </ShadowCard>
       </AutoView>

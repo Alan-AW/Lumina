@@ -42,14 +42,14 @@ const option = {
             interval: 0, // 解决x轴名称过长问题
             rotate:45,
             color: '#999',
-            fontSize: adaptationConvert(18),
+            fontSize: adaptationConvert(24),
           },
     }],
     yAxis: {
         type: 'value',
         axisLabel: {
             color: '#666',
-            fontSize:adaptationConvert(18)
+            fontSize:adaptationConvert(24)
         },
         interval: 20,
         max: function (value) {
