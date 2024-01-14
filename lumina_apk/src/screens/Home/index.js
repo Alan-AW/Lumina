@@ -154,6 +154,8 @@ const Home = () => {
   useEffect(() => {
     getIndexList().then(res => {
 
+      console.log(res.data,66696);
+
       const _data = res.data.map(item => {
 
         const { max_current, min_current, serial_number } = item.room_desc;
@@ -174,6 +176,8 @@ const Home = () => {
         }
       })
       setData(_data);
+    }).catch(err=>{
+      console.log(err,66696);
     });
   }, []);
   const renderItem = ({ item }) => (
@@ -248,7 +252,7 @@ const Home = () => {
             </View>
           </View>
         </View>
-        <ScrollView horizontal style={{ minHeight: 118.25 }}>
+        <ScrollView horizontal style={{ minHeight: 118.25 }} showsHorizontalScrollIndicator={false}>
           {item.data.map((item2, index) => {
             return (
               <Card

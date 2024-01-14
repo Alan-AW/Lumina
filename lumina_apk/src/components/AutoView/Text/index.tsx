@@ -10,13 +10,15 @@ type AutoTextProps = {
 
 const AutoText = (props: TextProps & AutoTextProps) => {
   let styles: TextStyle | any = {
-    fontSize: 24,
+    fontSize: 35,
     fontFamily: fontName.medium,
-    lineHeight:30,
+    lineHeight:40,
+    
   };
   const newStyle: any = props.style || {};
   if (props.size) {
-    styles.fontSize = props.size;
+    styles.fontSize = props.size+5;
+    styles.lineHeight = styles.fontSize+2;
   }
   if (props.type) {
     styles.fontFamily = fontName[props.type];

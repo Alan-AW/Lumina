@@ -21,6 +21,8 @@ const checkedColor = '#2a2a2a';
 
 const defaultColor = '#fff';
 
+const iconContainerSize=80;
+const iconSize=48;
 const TabItem = ({ isActive, onPress, children }) => {
   const translateY = new Animated.Value(0);
   const interpolatedColor = translateY.interpolate({
@@ -94,7 +96,7 @@ const VerticalTabMenu = (props) => {
             });
           }}>
             <IconZidingyicaidan
-              size={adaptationConvert(25)}
+              size={adaptationConvert(iconSize-13)}
               color={props.currentRoute === 'Home' ? defaultColor : checkedColor}
             />
           </TabItem>
@@ -105,7 +107,7 @@ const VerticalTabMenu = (props) => {
             });
           }}>
             <IconXiangji
-              size={adaptationConvert(38)}
+              size={adaptationConvert(iconSize)}
               color={props.currentRoute === 'VideoPreview' ? defaultColor : checkedColor}
             />
           </TabItem>
@@ -118,7 +120,7 @@ const VerticalTabMenu = (props) => {
           </TabItem> */}
           <TabItem isActive={props.currentRoute === 'shizhong'} onPress={() => { }}>
             <IconShizhong
-              size={adaptationConvert(38)}
+              size={adaptationConvert(iconSize)}
               color={props.currentRoute === 'shizhong' ? defaultColor : checkedColor}
             />
           </TabItem>
@@ -129,7 +131,7 @@ const VerticalTabMenu = (props) => {
             });
           }}>
             <IconShezhi
-              size={adaptationConvert(38)}
+              size={adaptationConvert(iconSize)}
               color={props.currentRoute === 'Setting' ? defaultColor : checkedColor}
             />
           </TabItem>
@@ -148,7 +150,7 @@ const VerticalTabMenu = (props) => {
             
           </IconButton>
           <IconButton style={styles.helpBtn}>
-            <IconKongxinwenhao size={adaptationConvert(28)} />
+            <IconKongxinwenhao size={adaptationConvert(iconSize-10)} />
           </IconButton>
         </View>
       </View>
@@ -173,8 +175,8 @@ const styles = createStyles({
   tabItem: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 60,
-    width: 60,
+    height: iconContainerSize,
+    width: iconContainerSize,
     position: 'relative',
     zIndex: 6,
     borderRadius: 8,
@@ -182,14 +184,14 @@ const styles = createStyles({
     justifyContent: 'center',
   },
   logo: {
-    width: 60,
-    height: 60,
+    width: iconContainerSize,
+    height: iconContainerSize,
     alignItems:'center',
     justifyContent:'center'
   },
   logoBtn: {
-    width: 60,
-    height: 60,
+    width: iconContainerSize,
+    height: iconContainerSize,
     marginBottom: 20,
   },
   logo2: {
@@ -197,8 +199,8 @@ const styles = createStyles({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    height: 60,
-    width: 60,
+    height: iconContainerSize,
+    width: iconContainerSize,
     borderWidth: 1,
     borderColor: colors.borderColor,
     borderRadius: 10,
@@ -219,8 +221,8 @@ const styles = createStyles({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 60,
-    width: 60,
+    height: iconContainerSize,
+    width: iconContainerSize,
     borderWidth: 1,
     borderColor: colors.borderColor,
     borderRadius: 10,

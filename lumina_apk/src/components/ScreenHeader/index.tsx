@@ -64,7 +64,7 @@ const styles = createStyles({
     headerText1: {
         color: '#2a2a2a',
         fontWeight: '500',
-        fontSize: 32,
+        fontSize: 40,
         paddingBottom:15,
         fontFamily:fontName.bold,
     },
@@ -86,14 +86,14 @@ const styles = createStyles({
     },
     backBtn: {
         backgroundColor: '#fff',
-        width: 50,
-        height: 50,
+        width: 70,
+        height: 70,
         borderColor: colors.borderColor,
         borderWidth: 1,
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 15,
+        marginRight: 30,
     },
 })
 

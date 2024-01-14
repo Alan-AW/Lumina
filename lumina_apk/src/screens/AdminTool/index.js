@@ -3,81 +3,26 @@ import { Text, View, Switch } from 'react-native';
 import { IconButton, TextButton } from 'src/components/Button';
 import TouchBtnGroup from 'src/components/TouchBtnGroup';
 import {
-  adaptationConvert,
   createStyles,
-  useInlineStyle,
 } from 'src/helpers/style';
-import Slider from '@react-native-community/slider';
 import AutoView from 'src/components/AutoView/View';
-import ShadowCard from 'src/components/Shadow';
-import { IconJiantouCopy, IconShuaxin } from 'src/iconfont';
 import { fontName } from 'src/constants/font';
 import AutoText from 'src/components/AutoView/Text';
 import SwitchView from 'src/components/Switch';
 import EChartLine from './EChartLine';
 import SlideView from './SlideView';
 import { useTranslation } from 'react-i18next';
-import { getMonth } from 'src/helpers/utils';
-import ScreenHeader from 'src/components/ScreenHeader';
-import RadioIcon from 'src/components/RadioIcon';
-import { useRoute } from '@react-navigation/native';
 import colors from 'src/constants/colors';
+import AdminToolHeader from './Header';
+import Controller from './Controller';
 
 const AdminTool = (props) => {
   const [isAutoClimate, setIsAutoClimate] = useState(false);
   const [isAutoFlower, setIsAutoFlower] = useState(false);
-  const routes = useRoute();
-  const cardData = routes.params.cardItem;
-  const childData = routes.params.propsItem;
   const { t } = useTranslation();
   return (
     <View style={styles.container}>
-      <ScreenHeader title={t("Bright Renaissance")} otherNode={() => {
-        return (
-          <>
-            <Text style={styles.headerText2}>
-              <Text
-                style={
-                  styles.headerText3
-                }>{`[${t('Bright Renaissance')} - ${t("Zone")} A ${t("Room")} #${childData.serial_number} -`}</Text>
-            </Text>
-            <RadioIcon color={colors.checked} size={10} style={{ paddingBottom: 0 }} />
-            <View>
-              <Text
-                style={
-                  styles.headerText3
-                }>{`${t('Aisle')} #${cardData.serial_number}]`}</Text>
-            </View>
-          </>
-        )
-      }
-      }
-        right={
-          () => {
-            return (
-
-              <AutoView
-                style={{
-                  backgroundColor: '#fff',
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  borderColor: colors.borderColor,
-                  paddingLeft: 15,
-                  paddingRight: 15,
-                  paddingTop:20,
-                  paddingBottom:20,
-                }}
-                isRow>
-                <IconButton>
-                  <IconShuaxin size={adaptationConvert(26)} color="#000" />
-                </IconButton>
-                <AutoText size={24} style={{ color: '#2a2a2a', paddingLeft: 16 }}>
-                  {t('RestoreToDefaults')}
-                </AutoText>
-              </AutoView>
-            )
-          }
-        } />
+     <AdminToolHeader />
       <AutoView
         isRow
         style={{
@@ -89,9 +34,9 @@ const AdminTool = (props) => {
           paddingLeft: 32,
           marginTop: 20,
         }}>
-        <AutoView style={{width:'30%'}}>
+        <AutoView style={{ width: '30%' }}>
           <AutoView>
-            <AutoText size={28} style={{ color: '#000',paddingTop:5, }}>
+            <AutoText size={28} style={{ color: '#000', paddingTop: 5, }}>
               {t('PhaseControl')}
             </AutoText>
             <AutoView
@@ -244,7 +189,7 @@ const AdminTool = (props) => {
             width: '30%',
             marginLeft: 20,
           }}>
-          <AutoText size={28} style={{ color: '#000',paddingTop:5 }}>
+          <AutoText size={28} style={{ color: '#000', paddingTop: 5 }}>
             {t('LightingSystem')}
           </AutoText>
           <AutoView
@@ -253,7 +198,7 @@ const AdminTool = (props) => {
               borderColor: colors.borderColor,
               borderRadius: 10,
               marginTop: 10,
-              paddingBottom:30,
+              paddingBottom: 30,
             }}>
             <AutoView
               style={{
@@ -280,7 +225,7 @@ const AdminTool = (props) => {
                 height: 240,
                 position: 'relative',
                 marginTop: 0,
-                marginBottom:32,
+                marginBottom: 32,
               }}>
               <AutoView
                 style={{
@@ -305,6 +250,7 @@ const AdminTool = (props) => {
             {t('systemTips')}
           </AutoText>
         </AutoView>
+        <Controller />
       </AutoView>
     </View>
   );
