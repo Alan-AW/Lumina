@@ -20,6 +20,8 @@ export function getSetting(params: getSetting) {
 }
 
 export function submitAdmin(params:any) {
+  console.log('请求参数',params);
+  
   return httpAxios.post<any>(`${baseUrl}/android/send/cmd/to/mq/${params.id}`, params.data);
 }
 

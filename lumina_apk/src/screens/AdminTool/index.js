@@ -30,11 +30,12 @@ const AdminTool = (props) => {
           backgroundColor: '#fff',
           padding: 32,
           alignItems: 'flex-start',
-          paddingTop: 30,
-          paddingLeft: 32,
+          paddingTop: 60,
+          paddingLeft: 100,
+          paddingRight:100,
           marginTop: 20,
         }}>
-        <AutoView style={{ width: '30%' }}>
+        {/* <AutoView style={{ width: '30%' }}>
           <AutoView>
             <AutoText size={28} style={{ color: '#000', paddingTop: 5, }}>
               {t('PhaseControl')}
@@ -249,7 +250,7 @@ const AdminTool = (props) => {
           <AutoText size={22} style={{ paddingTop: 20 }}>
             {t('systemTips')}
           </AutoText>
-        </AutoView>
+        </AutoView> */}
         <Controller />
       </AutoView>
     </View>

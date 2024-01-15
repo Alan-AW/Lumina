@@ -10,45 +10,52 @@ import ToastService from "src/helpers/toast";
 const AUTO_TYPE = 'AUTO_TYPE'
 const SLIDER_TYPE = 'SLIDER_TYPE'
 
-function debounce(func, delay) {
-    let timeoutId;
+function format(str) {
+    if (str.length >= 2) {
+        let unit = str.substring(str.length - 1, str.length);
+        if (unit === '%') {
+            return Number(str.replace(unit, ''))
+        }
 
-    return function (...args) {
-        clearTimeout(timeoutId);
+    }
 
-        timeoutId = setTimeout(() => {
-            func(...args);
-        }, delay);
-    };
+    return str;
 }
 
 
 const ControllerItem = (props) => {
     const { item = {}, onChange } = props;
-    const [auto, setAuto] = useState(false);
-    const [sliderValue, setSilderValue] = useState('');
-    useEffect(() => {
-        const value = Number(item.value)
-        if (typeof sliderValue === 'string' && item.value && isNaN(value)) {
-            setSilderValue(value);
-        }
-    }, [sliderValue, item.value])
+    const [auto, setAuto] = useState(item.auto);
+    const [sliderValue, setSilderValue] = useState(Number(format(item.value)));
+    const minValue = Number(format(item.min_value));
+    const maxValue = Number(format(item.max_value));
+    const step = Number(item.step);
+    console.log({
+        value:Number(format(item.value)),
+        desc:item.desc,
+        minValue,
+        maxValue,
+    });
+    // useEffect(() => {
+    //     const value = Number(item.value)
+    //     if (typeof sliderValue === 'string' && item.value && isNaN(value)) {
+    //         setSilderValue(value);
+    //     }
+    // }, [sliderValue, item.value])
 
     // console.log(6666);
 
-    useEffect(() => {
-        debounce(onChange({
-            ...item,
-            auto,
-            value: sliderValue,
+    // useEffect(() => {
+    //     debounce(onChange({
+    //         ...item,
+    //         auto,
+    //         value: sliderValue,
 
-        }), 2000
-        )
+    //     }), 2000
+    //     )
 
-    }, [auto, sliderValue])
-    const minValue = Number(item.min_value);
-    const maxValue = Number(item.max_value);
-    const step = Number(item.step);
+    // }, [auto, sliderValue])
+
 
     function submit(item, callback) {
         submitAdmin({ id: 1, data: [item] }).then(res => {
@@ -71,6 +78,7 @@ const ControllerItem = (props) => {
     }
 
 
+    const _value=Number(sliderValue).toFixed(2);
 
 
     return (
@@ -79,7 +87,17 @@ const ControllerItem = (props) => {
                 <AutoText>{item.desc}</AutoText>
                 <AutoView>
                     <Switch thumbColor={auto ? '#fff' : '#757575'}
-                        trackColor={{ false: '#e1e1e1', true: '#a5ce77' }} onChange={(value) => setAuto(!auto)} value={auto} />
+                        trackColor={{ false: '#e1e1e1', true: '#a5ce77' }} onChange={(value) => {
+                            submit({
+                                auto: !auto,
+                                cmd: item.cmd,
+                                value:  item.max_value.indexOf('%')>=0?_value+'%':_value,
+                            }, () => {
+                                setAuto(!auto)
+                            });
+
+
+                        }} value={auto} />
                 </AutoView>
             </AutoView>
             <AutoView style={{ height: 60, alignItems: 'center', justifyContent: 'center', }}>
@@ -91,7 +109,7 @@ const ControllerItem = (props) => {
                         submit({
                             auto,
                             cmd: item.cmd,
-                            value: sliderValue,
+                            value:  item.max_value.indexOf('%')>=0?_value+'%':_value,
                         })
                     }}
                     onValueChange={(v) => setSilderValue(v)}

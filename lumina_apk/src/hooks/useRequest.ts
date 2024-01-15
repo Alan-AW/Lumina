@@ -19,6 +19,8 @@ const useRequest = <T>(fetch: any) => {
                 } catch (error: any) {
                     setError(error.message || 'An error occurred');
                 } finally {
+                    console.log('请求次数',11);
+                    
                     setLoading(false);
                 }
             };
@@ -26,7 +28,7 @@ const useRequest = <T>(fetch: any) => {
             fetchData();
         }
 
-    }, [fetch]);
+    }, [fetch,loading]);
 
     return {
         data,

@@ -19,7 +19,7 @@ function hasItem(searchData, item, key = 'cmd') {
 const Controller = () => {
     // const { t,i18n } = useTranslation();
     const { loading, data, error } = useRequest(() => getSetting({ id: 1, language: 'zh' }));
-    //console.log(data, '请求信息');
+    console.log(data, '请求信息');
     const update = useRef([]);
 
     useEffect(() => {
@@ -34,12 +34,24 @@ const Controller = () => {
         } else {
             update.current = [...update.current, item];
         }
-      
+
 
     }
     return (
         <AutoView style={{ flex: 1 }}>
             <Loading loading={loading}>
+
+                <AutoView isRow style={{ alignItems: 'center', justifyContent: 'flex-end',paddingBottom:30,borderRadius:5 }}>
+                    <AutoView isRow style={{marginRight:30}}>
+                        <AutoView style={{ width: 70, height: 30, backgroundColor: '#a5ce77' }} />
+                        <AutoText style={{paddingLeft:10}}>开</AutoText>
+                    </AutoView>
+                    <AutoView isRow>
+                        <AutoView style={{ width: 70, height: 30, backgroundColor: '#e1e1e1',borderRadius:5 }} />
+                        <AutoText style={{paddingLeft:10}}>关</AutoText>
+                    </AutoView>
+
+                </AutoView>
                 <AutoView>
                     {
                         data.map((item, index) => {
