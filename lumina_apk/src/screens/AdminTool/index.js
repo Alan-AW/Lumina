@@ -30,10 +30,10 @@ const AdminTool = (props) => {
           backgroundColor: '#fff',
           padding: 32,
           alignItems: 'flex-start',
-          paddingTop: 60,
-          paddingLeft: 100,
-          paddingRight:100,
-          marginTop: 20,
+          paddingTop: 32,
+          paddingLeft:48,
+          paddingRight:48,
+          marginTop: 30,
         }}>
         {/* <AutoView style={{ width: '30%' }}>
           <AutoView>

@@ -56,17 +56,14 @@ const AdminToolHeader=()=>{
                       borderWidth: 1,
                       borderRadius: 10,
                       borderColor: colors.borderColor,
-                      paddingLeft: 15,
-                      paddingRight: 15,
-                      paddingTop: 15,
-                      paddingBottom: 15,
+                      padding:10,
                     }}
                     isRow>
                     <AutoView isRow>
                       <IconButton>
-                        <IconShuaxin size={adaptationConvert(26)} color="#000" />
+                        <IconShuaxin size={adaptationConvert(30)} color="#000" />
                       </IconButton>
-                      <AutoText size={35} style={{ color: '#2a2a2a', paddingLeft: 16 }}>
+                      <AutoText size={25} style={{ color: '#2a2a2a', paddingLeft: 16 }}>
                         {t('RestoreToDefaults')}
                       </AutoText>
                     </AutoView>

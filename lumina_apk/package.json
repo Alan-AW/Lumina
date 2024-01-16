@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android --active-arch-only",
+    "dev": "react-native run-android --active-arch-only",
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start --reset-cache",
@@ -11,7 +11,6 @@
     "start-no-cache": "npx react-native start --reset-cache",
     "prod": "cd android && ./gradlew assembleRelease && cd ..",
     "prodTest": "npx react-native run-android --variant=release",
-    "dev": "npm run icon-reset && npx react-native run-android --active-arch-only",
     "icon-reset": "npx iconfont-rn",
     "initDebug": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
     "apk": "yarn initDebug && cd android && ./gradlew assembleDebug  && cd ..",

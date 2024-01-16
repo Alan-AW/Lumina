@@ -63,7 +63,7 @@ const styles = createStyles({
     },
     headerText1: {
         color: '#2a2a2a',
-        fontWeight: '500',
+        fontWeight: '700',
         fontSize: 40,
         paddingBottom:15,
         fontFamily:fontName.bold,

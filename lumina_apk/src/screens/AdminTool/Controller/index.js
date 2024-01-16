@@ -1,13 +1,15 @@
 
 import Slider from "@react-native-community/slider";
-import React, { useEffect, useRef, useState } from "react";
-import { Switch } from "react-native-gesture-handler";
+import React, { useEffect, useRef, useState, useMemo } from "react";
+import { ScrollView, Switch } from "react-native-gesture-handler";
+import { View } from 'react-native'
 import { getSetting, submitAdmin } from "src/apis/home";
 import AutoText from "src/components/AutoView/Text";
 import AutoView from "src/components/AutoView/View";
 import Loading from "src/components/Loading";
 import useRequest from "src/hooks/useRequest";
 import ControllerItem from "./item/Item";
+import ShadowCard from "src/components/Shadow";
 
 // import { useTranslation } from 'react-i18next';
 
@@ -16,49 +18,94 @@ function hasItem(searchData, item, key = 'cmd') {
     return searchData.map(i => i[key]).includes(item[key])
 }
 
+function getMaxHeight(height1, height2) {
+    if (height1 && !height2) {
+        return height1;
+    }
+    if (!height1 && height2) {
+        return height2
+    }
+    if (height1 && height2) {
+        return height1 > height2 ? height1 : height2
+    }
+}
+
 const Controller = () => {
     // const { t,i18n } = useTranslation();
     const { loading, data, error } = useRequest(() => getSetting({ id: 1, language: 'zh' }));
-    console.log(data, '请求信息');
-    const update = useRef([]);
 
-    useEffect(() => {
-        if (data && Array.isArray(data)) {
-            update.current = data;
+    const [container, setContainer] = useState({
 
+    })
+
+    const dataMap = useMemo(() => {
+        const _value = [];
+        if (data) {
+            console.log(data, '请求信息');
+            for (let key in data) {
+                _value.push({
+                    title: key,
+                    clildren: data[key]
+                })
+            }
+            return _value;
         }
+        return _value;
+
     }, [data])
-    function handleChange(item) {
-        if (hasItem(update.current, item)) {
-            update.current = update.current.filter(i => i.cmd != item.cmd)
-        } else {
-            update.current = [...update.current, item];
-        }
 
 
-    }
+
     return (
-        <AutoView style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1 }}>
             <Loading loading={loading}>
-
-                <AutoView isRow style={{ alignItems: 'center', justifyContent: 'flex-end',paddingBottom:30,borderRadius:5 }}>
-                    <AutoView isRow style={{marginRight:30}}>
-                        <AutoView style={{ width: 70, height: 30, backgroundColor: '#a5ce77' }} />
-                        <AutoText style={{paddingLeft:10}}>开</AutoText>
+                <AutoView isRow style={{ alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 0, borderRadius: 5 }}>
+                    <AutoView isRow style={{ marginRight: 30 }}>
+                        <AutoView style={{ width: 50, height: 30, backgroundColor: '#a5ce77' }} />
+                        <AutoText style={{ paddingLeft: 10 }}>自动</AutoText>
                     </AutoView>
                     <AutoView isRow>
-                        <AutoView style={{ width: 70, height: 30, backgroundColor: '#e1e1e1',borderRadius:5 }} />
-                        <AutoText style={{paddingLeft:10}}>关</AutoText>
+                        <AutoView style={{ width: 50, height: 30, backgroundColor: '#e1e1e1', borderRadius: 5 }} />
+                        <AutoText style={{ paddingLeft: 10 }}>手动</AutoText>
                     </AutoView>
 
                 </AutoView>
-                <AutoView>
+                <AutoView style={{ alignItems: 'flex-start', justifyContent: 'space-between', width: '100%', flexWrap: 'wrap' }} isRow>
                     {
-                        data.map((item, index) => {
+                        dataMap.map((item, index) => {
                             return (
-                                <AutoView key={index}>
-                                    <ControllerItem item={item} onChange={(v) => handleChange(v)} />
+                                <AutoView key={index} 
+                                // onLayout={(event) => {
+                                //     const { height } = event.nativeEvent.layout;
+                                //     console.log('容器高度' + index, height);
+                                //     if (!container[index]) {
+                                //         setContainer({
+                                //             ...container,
+                                //             [index]: height,
+                                //         })
+                                //     }
+
+
+                                // }} 
+                                style={{ width: '48%', margin: 10, padding: 20 }}>
+                                    <ShadowCard style={{ height: getMaxHeight(container[index], container[index + 1]),padding:16,minHeight:500 }}>
+                                        <AutoView style={{ paddingLeft: 0, paddingRight: 32, marginBottom: 20 }}>
+                                            <AutoText style={{ fontWeight: '700', }}>{item.title}</AutoText>
+                                        </AutoView>
+                                        <AutoView>
+                                            {
+                                                item.clildren.map((_value, _index) => {
+                                                    return (
+                                                        <ControllerItem key={_index} item={_value} />
+                                                    )
+                                                })
+                                            }
+
+                                        </AutoView>
+
+                                    </ShadowCard>
                                 </AutoView>
+
                             )
                         })
                     }
@@ -68,7 +115,7 @@ const Controller = () => {
 
 
             </Loading>
-        </AutoView>
+        </ScrollView>
 
     )
 }
