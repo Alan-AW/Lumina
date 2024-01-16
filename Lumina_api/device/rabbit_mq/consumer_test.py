@@ -10,7 +10,7 @@ HOST = '43.138.127.42'
 PORT = 5372
 USER = 'admin'
 PASSWORD = '1ee2097c'
-QUEUE_NAME = "execution_command_queue"
+QUEUE_NAME = "001-1_manual_command_queue"
 
 
 # message_model = import_string('device.rabbit_mq.message_db.message_db_data')

@@ -114,10 +114,10 @@ class SendDataToMQView(APIView):
 
 # 安卓端设备功能值参数读取-支持国际化
 class AndroidSettingsView(APIView):
-    # permission_classes = [ExcludeSuperPermission]
-    authentication_classes = []
-    permission_classes = []
-    throttle_classes = []
+    permission_classes = [ExcludeSuperPermission]
+    # authentication_classes = []
+    # permission_classes = []
+    # throttle_classes = []
 
     def get(self, request, unit_id):
         unit_obj = Unit.objects.filter(pk=unit_id).first()
@@ -139,7 +139,10 @@ class AndroidSettingsView(APIView):
             {'cmd': 'target_h2o2_concentration', 'value': '5'},
             {'cmd': 'reservoir_uv', 'value': '2'},
             {'cmd': 'day_night_cycle_hours', 'value': '20'},
+            {'cmd': 'spectra_450_laser', 'value': ''},
+            {'cmd': 'spectra_660_laser', 'value': ''},
         ]
+        result = {}
         # 不管数据库有没有数据，都直接更新一下 value 值
         for index, item in enumerate(default_value):
             # 搜索当前设备的当前设置的值
@@ -160,7 +163,8 @@ class AndroidSettingsView(APIView):
             cmd_obj = UnitSettingsList.objects.filter(cmd=item['cmd']).first()
             desc = language == 'en' and cmd_obj.desc_en or cmd_obj.desc_cn
             unit = language == 'en' and cmd_obj.unit_en or cmd_obj.unit_cn
-            default_value[index] = {
+            category = language == 'en' and cmd_obj.get_category_en_display() or cmd_obj.get_category_cn_display()
+            result_item = {
                 **item,
                 'auto': unit_set_obj.auto,
                 'desc': desc,
@@ -170,7 +174,12 @@ class AndroidSettingsView(APIView):
                 'step': cmd_obj.step,
                 'unit': unit
             }
-        response = return_response(data=default_value)
+            if category not in result.keys():
+                result[category] = []
+                result[category].append(result_item)
+            else:
+                result[category].append(result_item)
+        response = return_response(data=result)
         return JsonResponse(response)
 
 
@@ -199,7 +208,7 @@ class SendCmdToMQView(APIView):
                     update_data = {'auto': item['auto'], 'value': item['value']}
                     UnitSetting.objects.filter(unit=unit_obj, cmd__cmd=item['cmd']).update(**update_data)
                 # 记录日志
-                create_logs(request, UnitSetting, 5, data)
+                create_logs(request.user, UnitSetting, 5, data)
                 # 推入队列
                 mq_data = list(map(lambda item: {**item, 'decideId': unit_obj.deviceId}, data))
                 start(message=json.dumps(mq_data), device_id=unit_obj.deviceId, queue_name='manual_command_queue')

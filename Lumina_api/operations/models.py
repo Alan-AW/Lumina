@@ -111,6 +111,20 @@ class UnitSettingsList(models.Model):
     cmd = models.CharField(max_length=64, verbose_name='指令名称')
     desc_cn = models.CharField(max_length=64, verbose_name='中文解释')
     desc_en = models.CharField(max_length=64, verbose_name='英文解释')
+    category_cn = models.IntegerField(null=True, blank=True, choices=(
+        (1, '营养液及灌溉'),
+        (2, '日夜周期'),
+        (3, '气候控制'),
+        (4, '光合作用'),
+        (5, '系统设备'),
+    ), verbose_name='中文分类')
+    category_en = models.IntegerField(null=True, blank=True, choices=(
+        (1, 'Fertigation'),
+        (2, 'Day-Night Cycle'),
+        (3, 'Climate Control'),
+        (4, 'Photosynthesis'),
+        (5, 'System'),
+    ), verbose_name='英文分类')
     component = models.IntegerField(choices=((1, 'slide'), (2, 'switch')), default=1, verbose_name='组件类型')
     min_value = models.CharField(max_length=8, null=True, blank=True, verbose_name='最小值')
     max_value = models.CharField(max_length=8, null=True, blank=True, verbose_name='最大值')
