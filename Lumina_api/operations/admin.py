@@ -40,11 +40,11 @@ class UnitSettingsAdmin(admin.ModelAdmin):
 @admin.register(UnitSettingsList)
 class UnitSettingsListAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'cmd', 'desc_cn', 'desc_en', 'component', 'step',
+        'id', 'cmd', 'category_cn', 'category_en', 'desc_cn', 'desc_en', 'component', 'step',
         'min_value', 'max_value', 'unit_cn', 'unit_en', 'create_time', 'update_time'
     ]
     list_editable = [
-        'cmd', 'desc_cn', 'desc_en', 'component', 'step',
+        'cmd', 'category_cn', 'category_en', 'desc_cn', 'desc_en', 'component', 'step',
         'min_value', 'max_value', 'unit_cn', 'unit_en'
     ]
 
