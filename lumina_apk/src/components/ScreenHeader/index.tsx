@@ -37,7 +37,7 @@ const ScreenHeader = (props: ScreenHeaderProps) => {
                 <View>
                     <Text style={styles.headerText1}>{props.title}
                     </Text>
-                    <AutoView style={{ alignItems: 'center',position:'relative', }} isRow>
+                    <AutoView style={{ alignItems: 'center',position:'relative' }} isRow>
                         <Text style={styles.headerText2}>
                             {t(getMonth())} {new Date().getDate()},{new Date().getFullYear()}
                         </Text>
@@ -65,7 +65,7 @@ const styles = createStyles({
         color: '#2a2a2a',
         fontWeight: '700',
         fontSize: 40,
-        paddingBottom:15,
+        // paddingBottom:5,
         fontFamily:fontName.bold,
     },
     headerText2: {

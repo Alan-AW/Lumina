@@ -150,7 +150,7 @@ const Bright = () => {
                 })}>
                 <IconXiangji color="#157a86" size={adaptationConvert(38)} />
               </IconButton>
-              <AutoText size={26} style={{ paddingLeft: 15, color: '#2a2a2a',paddingTop:10 }}>
+              <AutoText style={{ paddingLeft: 15, color: '#2a2a2a' }}>
                 {t('LiveCamera')}
               </AutoText>
             </AutoView>
@@ -201,7 +201,6 @@ const Bright = () => {
             backgroundColor: '#fff',
             borderRadius: 10,
             padding: 32,
-            paddingTop: 24,
             position: 'relative',
           })}>
           <AutoView
@@ -220,7 +219,7 @@ const Bright = () => {
                 })}>
                 <IconZhexiantu color="#157a86" size={adaptationConvert(38)} />
               </IconButton>
-              <AutoText size={26} style={{ paddingLeft: 15, color: '#2a2a2a',paddingTop:10 }}>
+              <AutoText style={{ paddingLeft: 15, color: '#2a2a2a' }}>
                 {t('Analytics')} | {t('AveragePlantTemperature')} ({t('last')} 18 {t('Days')})
               </AutoText>
             </AutoView>
@@ -277,22 +276,21 @@ const Bright = () => {
       <AutoView isRow style={{ marginTop: 22, alignItems: 'center', position: 'absolute', left: 32, bottom: 32 }}>
         <ShadowCard
           isBtn
-          onPress={() => navigation.navigate('AdminTools',{...routes.params})}
+          onPress={() => navigation.navigate('AdminTools', { ...routes.params })}
           style={useInlineStyle({
             borderRadius: 10,
             width: 350,
             height: 88,
             justifyContent: 'flex-start',
-            alignItems:'center',
-            flexDirection:'row',
+            alignItems: 'center',
+            flexDirection: 'row',
             paddingLeft: 15,
-            paddingTop:10,
           })}>
           <AutoView isRow >
             <IconButton style={{ paddingTop: 0 }}>
               <IconShezhi size={adaptationConvert(38)} />
             </IconButton>
-            <AutoText style={{ paddingLeft: 15, color: '#000', alignItems: 'center',paddingTop:10 }} >
+            <AutoText style={{ paddingLeft: 15, color: '#000', alignItems: 'center' }} >
               {t("AdminTools")}
             </AutoText>
           </AutoView>
@@ -304,28 +302,24 @@ const Bright = () => {
             flex: 1,
             height: 88,
             justifyContent: 'flex-start',
-            alignItems:'center',
-            flexDirection:'row',
+            alignItems: 'center',
+            flexDirection: 'row',
             paddingLeft: 32,
-            paddingTop:15,
-            paddingBottom:10,
           })}>
           <AutoView isRow>
             <AutoView
               style={{
                 backgroundColor: '#cbfaff',
-                paddingLeft: 14,
-                paddingRight: 14,
-                paddingTop: 20,
-                paddingBottom: 14,
+                paddingVertical: 7,
+                paddingHorizontal: 14,
                 justifyContent: 'center',
                 alignItems: 'center',
-                flexDirection:'row',
+                flexDirection: 'row',
                 borderRadius: 10,
               }}>
               <AutoText size={24}>{t('Cultivars')}</AutoText>
             </AutoView>
-            <AutoText style={{ paddingLeft: 15, color: '#000',paddingTop:10, }}>
+            <AutoText style={{ paddingLeft: 15, color: '#000' }}>
               {t('ButterheadLettuce')}, {t("Leaf")}/{t("BataviaLettuce")}
             </AutoText>
           </AutoView>
@@ -379,7 +373,7 @@ const styles = createStyles({
     color: '#000',
     fontFamily: fontName.regular,
     fontSize: 26,
-    lineHeight:30,
+    lineHeight: 30,
     alignItems: 'center'
   },
 });

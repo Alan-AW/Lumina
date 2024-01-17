@@ -206,7 +206,8 @@ const styles = createStyles({
     borderWidth: 1,
     borderColor: colors.borderColor,
     borderRadius: 10,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    marginBottom:50,
   },
   text1: {
     fontSize: 26,

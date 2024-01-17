@@ -72,6 +72,8 @@
     "role": "role",
     "company": "company",
     "userInfo":"Personal Information",
-    "loginQRCode":"login QRCode"
+    "loginQRCode":"login QRCode",
+    "automatic":"automatic",
+    "Manual":"Manual"
 
  }

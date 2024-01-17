@@ -10,6 +10,7 @@ import Loading from "src/components/Loading";
 import useRequest from "src/hooks/useRequest";
 import ControllerItem from "./item/Item";
 import ShadowCard from "src/components/Shadow";
+import { useTranslation } from "react-i18next";
 
 // import { useTranslation } from 'react-i18next';
 
@@ -32,7 +33,9 @@ function getMaxHeight(height1, height2) {
 
 const Controller = () => {
     // const { t,i18n } = useTranslation();
-    const { loading, data, error } = useRequest(() => getSetting({ id: 1, language: 'zh' }));
+    
+    const { loading, data, error } = useRequest(() => getSetting({ id: 1, language: i18n.language }));
+    const { t,i18n } = useTranslation();
 
     const [container, setContainer] = useState({
 
@@ -41,7 +44,6 @@ const Controller = () => {
     const dataMap = useMemo(() => {
         const _value = [];
         if (data) {
-            console.log(data, '请求信息');
             for (let key in data) {
                 _value.push({
                     title: key,
@@ -62,11 +64,11 @@ const Controller = () => {
                 <AutoView isRow style={{ alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 0, borderRadius: 5 }}>
                     <AutoView isRow style={{ marginRight: 30 }}>
                         <AutoView style={{ width: 50, height: 30, backgroundColor: '#a5ce77' }} />
-                        <AutoText style={{ paddingLeft: 10 }}>自动</AutoText>
+                        <AutoText style={{ paddingLeft: 10 }}>{t('automatic')}</AutoText>
                     </AutoView>
                     <AutoView isRow>
                         <AutoView style={{ width: 50, height: 30, backgroundColor: '#e1e1e1', borderRadius: 5 }} />
-                        <AutoText style={{ paddingLeft: 10 }}>手动</AutoText>
+                        <AutoText style={{ paddingLeft: 10 }}>{t('Manual')}</AutoText>
                     </AutoView>
 
                 </AutoView>

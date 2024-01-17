@@ -63,12 +63,12 @@ const MyCustomProgressBar = props => {
 
 const Card = props => {
   const { t } = useTranslation();
-  const { title1, title2, name, cropItemCycle,serial_number,img,id } = props.item;
+  const { title1, title2, name, cropItemCycle, serial_number, img, id } = props.item;
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Bright',{id,propsItem:props.propsItem,cardItem:{serial_number,currentDay:title2,max:cropItemCycle}})}
+      onPress={() => navigation.navigate('Bright', { id, propsItem: props.propsItem, cardItem: { serial_number, currentDay: title2, max: cropItemCycle } })}
       activeOpacity={1}
       style={useInlineStyle({
         marginRight: 32,
@@ -79,15 +79,15 @@ const Card = props => {
         <RadioIcon
           color={colors.checked}
           size={10}
-          style={{ position: 'absolute', left: -3,top:3 }}
+          style={{ position: 'absolute', left: -3, top: 3 }}
         />
         <Text
           style={useInlineStyle({
             fontFamily: fontName.medium,
             fontSize: 27,
             color: '#000',
-            lineHeight:30,
-            paddingTop:7,
+            lineHeight: 30,
+            paddingTop: 7,
             paddingLeft: 15,
           })}>
           {t("Aisle")} #{serial_number}
@@ -99,7 +99,7 @@ const Card = props => {
           fontFamily: fontName.medium,
           fontSize: 23,
           color: '#000',
-          lineHeight:30,
+          lineHeight: 30,
           paddingTop: 7,
         })}>
         {t("Day")}{title2}
@@ -108,13 +108,13 @@ const Card = props => {
             fontFamily: fontName.regular,
             fontSize: 23,
             color: '#000',
-            lineHeight:30,
+            lineHeight: 30,
           })}>
           - {cropItemCycle} {t("Day Cycle")}
         </Text>
       </Text>
       <View style={useInlineStyle({ marginTop: 10 })}>
-        <MyCustomProgressBar value={GetPercent(title2,cropItemCycle)} />
+        <MyCustomProgressBar value={GetPercent(title2, cropItemCycle)} />
       </View>
       <Text
         style={useInlineStyle({
@@ -132,15 +132,15 @@ const Card = props => {
           borderRadius: 10,
           justifyContent: 'center',
           flexDirection: 'row',
-          paddingBottom:15,
-          paddingTop:15,
-          paddingLeft:30,
-          paddingRight:30,
+          paddingBottom: 15,
+          paddingTop: 15,
+          paddingLeft: 30,
+          paddingRight: 30,
         })}>
         <Image
-          style={useInlineStyle({ width: 240, height: 240,borderRadius:5 })}
+          style={useInlineStyle({ width: 240, height: 240, borderRadius: 5 })}
           //require('../../asset/img/cai.png')
-          source={{uri:img}}
+          source={{ uri: img }}
         />
       </View>
     </TouchableOpacity>
@@ -154,7 +154,7 @@ const Home = () => {
   useEffect(() => {
     getIndexList().then(res => {
 
-      console.log(res.data,66696);
+      console.log(res.data, 66696);
 
       const _data = res.data.map(item => {
 
@@ -168,7 +168,7 @@ const Home = () => {
               ..._item,
               name2: _item.cropItemName,
               date: _item.cropItemDay,
-              serial_number:_item.serial_number,
+              serial_number: _item.serial_number,
               img: _item.url,
               cropItemCycle: _item.cropItemCycle,
             }
@@ -176,108 +176,113 @@ const Home = () => {
         }
       })
       setData(_data);
-    }).catch(err=>{
-      console.log(err,66696);
+    }).catch(err => {
+      console.log(err, 66696);
     });
   }, []);
-  const renderItem = ({ item }) => (
-    <ShadowCard style={styles.scrollItem} hiddenShadow={true}>
-      <View style={styles.scrollContainer}>
-        <View style={useInlineStyle({ width: 350,marginRight:100 })}>
-          <Text
-            style={useInlineStyle({
-              fontFamily: fontName.medium,
-              fontSize: 28,
-              color: '#000',
-            })}>
-            {t('Room')} #{item.serial_number}
-          </Text>
-          <View
-            style={useInlineStyle({
-              position: 'absolute',
-              bottom: 0,
-              justifyContent: 'flex-end',
-            })}>
+  const renderItem = ({ item }) => {
+    if (item.data.length===0) {
+      return null;
+    }
+    return (
+      <ShadowCard style={styles.scrollItem} hiddenShadow={true}>
+        <View style={styles.scrollContainer}>
+          <View style={useInlineStyle({ width: 350, marginRight: 100 })}>
+            <Text
+              style={useInlineStyle({
+                fontFamily: fontName.medium,
+                fontSize: 28,
+                color: '#000',
+              })}>
+              {t('Room')} #{item.serial_number}
+            </Text>
             <View
               style={useInlineStyle({
-                backgroundColor: '#cbfaff',
-                height: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 10,
-                padding: 32,
-                paddingBottom: 20,
-                paddingRight:88,
+                position: 'absolute',
+                bottom: 0,
+                justifyContent: 'flex-end',
               })}>
+              <View
+                style={useInlineStyle({
+                  backgroundColor: '#cbfaff',
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 10,
+                  padding: 32,
+                  paddingBottom: 20,
+                  paddingRight: 88,
+                })}>
 
-              <View>
-                <Text
-                  style={useInlineStyle({
-                    fontFamily: fontName.bold,
-                    color: '#000',
-                    fontSize: 27,
-                    paddingBottom: 5,
-                  })}>
-                  {item.max}
-                </Text>
-                <Text
-                  style={useInlineStyle({
-                    fontFamily: fontName.medium,
-                    color: '#000',
-                    fontSize: 22,
-                    paddingBottom: 30,
-                  })}>
-                  {t('MaxCurrentTemperature')}
-                </Text>
-              </View>
-              <View style={useInlineStyle({ marginTop: 5 })}>
-                <Text
-                  style={useInlineStyle({
-                    fontFamily: fontName.bold,
-                    color: '#000',
-                    fontSize: 27,
-                    paddingBottom: 5,
-                  })}>
-                  {item.low}
-                </Text>
-                <Text
-                  style={useInlineStyle({
-                    fontFamily: fontName.medium,
-                    color: '#000',
-                    fontSize: 22,
-                  })}>
+                <View>
+                  <Text
+                    style={useInlineStyle({
+                      fontFamily: fontName.bold,
+                      color: '#000',
+                      fontSize: 27,
+                      paddingBottom: 5,
+                    })}>
+                    {item.max}
+                  </Text>
+                  <Text
+                    style={useInlineStyle({
+                      fontFamily: fontName.medium,
+                      color: '#000',
+                      fontSize: 22,
+                      paddingBottom: 30,
+                    })}>
+                    {t('MaxCurrentTemperature')}
+                  </Text>
+                </View>
+                <View style={useInlineStyle({ marginTop: 5 })}>
+                  <Text
+                    style={useInlineStyle({
+                      fontFamily: fontName.bold,
+                      color: '#000',
+                      fontSize: 27,
+                      paddingBottom: 5,
+                    })}>
+                    {item.low}
+                  </Text>
+                  <Text
+                    style={useInlineStyle({
+                      fontFamily: fontName.medium,
+                      color: '#000',
+                      fontSize: 22,
+                    })}>
                     {t('LowCurrentTemperature')}
-                </Text>
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
+          <ScrollView horizontal style={{ minHeight: 118.25 }} showsHorizontalScrollIndicator={false}>
+            {item.data.map((item2, index) => {
+              return (
+                <Card
+                  key={index}
+                  propsItem={item}
+                  item={{
+                    id: item2.id,
+                    title1: item2.name1,
+                    title2: item2.date,
+                    name: item2.name2,
+                    img: item2.img,
+                    serial_number: item2.serial_number,
+                    cropItemCycle: item2.cropItemCycle
+                  }}
+                />
+              );
+            })}
+          </ScrollView>
         </View>
-        <ScrollView horizontal style={{ minHeight: 118.25 }} showsHorizontalScrollIndicator={false}>
-          {item.data.map((item2, index) => {
-            return (
-              <Card
-                key={index}
-                propsItem={item}
-                item={{
-                  id:item2.id,
-                  title1: item2.name1,
-                  title2: item2.date,
-                  name: item2.name2,
-                  img:item2.img,
-                  serial_number:item2.serial_number,
-                  cropItemCycle: item2.cropItemCycle
-                }}
-              />
-            );
-          })}
-        </ScrollView>
-      </View>
-    </ShadowCard>
-  );
+      </ShadowCard>
+    )
+  };
   return (
     <View style={{ flex: 1 }}>
-      <View style={useInlineStyle({paddingLeft:32})}>
-      <ScreenHeader title={t('Dashboard')} subtitle={`[ ${t("Bright Renaissance")} - ${t("Zone")} A]`} hiddenBack />
+      <View style={useInlineStyle({ paddingLeft: 32 })}>
+        <ScreenHeader title={t('Dashboard')} subtitle={`[ ${t("Bright Renaissance")} - ${t("Zone")} A]`} hiddenBack />
       </View>
       {/* <View style={styles.navContainer}>
         <ShadowCard style={styles.navItem}  hiddenShadow={true}>
@@ -304,7 +309,7 @@ const Home = () => {
         </ShadowCard>
       </View> */}
       <View style={styles.scroll}>
-        <View style={{  }}>
+        <View style={{}}>
           <FlatList
             data={data} // 您的数据数组
             renderItem={(abc, dd) => {
@@ -389,7 +394,7 @@ const styles = createStyles({
   },
   scroll: {
     paddingLeft: 32,
-    paddingRight:32,
+    paddingRight: 32,
     marginTop: 15,
     width: '100%',
     flex: 1,

@@ -72,6 +72,8 @@
     "role": "角色",
     "company": "公司",
     "userInfo":"个人信息",
-    "loginQRCode":"登录二维码"
+    "loginQRCode":"登录二维码",
+    "automatic":"自动",
+    "Manual":"手动"
 
 }
