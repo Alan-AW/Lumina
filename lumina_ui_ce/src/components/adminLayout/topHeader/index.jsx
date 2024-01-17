@@ -128,7 +128,7 @@ const TopHeader = props => {
               {account}
             </span>
             <Avatar
-              src={avatar.length ? `${baseUrl()}${avatar}` : '/img/logo.png'}
+              src={avatar.length ? `${baseUrl()}${avatar}` : './img/logo.png'}
               style={{ backgroundColor: '#87d068' }}
               icon={<UserOutlined />}
             />

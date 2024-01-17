@@ -20,7 +20,7 @@ const Index = props => {
   // 路由跳转
   // const navigate = useNavigate()
   // bing每日一图
-  const imgCover = "/img/logo.png"
+  const imgCover = "./img/Logo.png"
   // 修改用户信息对话框状态
   // const [isModalOpen, setisModalOpen] = useState(false)
   // 修改用户信息表单ref
@@ -101,7 +101,7 @@ const Index = props => {
     <div className={FADEIN}>
       {/* {contextHolder} */}
       <Row gutter={24}>
-        <Col span={6}>
+        <Col span={10}>
           {/* 用户信息 */}
           <Card
             hoverable
