@@ -141,6 +141,13 @@ class AndroidSettingsView(APIView):
             {'cmd': 'day_night_cycle_hours', 'value': '20'},
             {'cmd': 'spectra_450_laser', 'value': ''},
             {'cmd': 'spectra_660_laser', 'value': ''},
+            {'cmd': 'looper_motor', 'value': '2'},
+            {'cmd': 'air_curtain', 'value': '20'},
+            {'cmd': 'spectra', 'value': ''},
+            {'cmd': 'spectra_main_led', 'value': '1000'},
+            {'cmd': 'spectra_450_led', 'value': '200'},
+            {'cmd': 'target_amb_temp', 'value': '30'},
+            {'cmd': 'target_amb_rh', 'value': '20%'},
         ]
         result = {}
         # 不管数据库有没有数据，都直接更新一下 value 值
