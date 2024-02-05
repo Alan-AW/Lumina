@@ -1,7 +1,7 @@
 from django.urls import path, re_path
 from operations.views import RoomView, UnitView, SaveSensorDataView, ExportThree, SpeciesView, CultivarsView, \
     ModelsView, PhasesView, InstructionView, ActionView, TriggersView, CompanyView, CompanyUploadLogo, UnitSettingsListView, \
-    UnitSettingView
+    UnitSettingView, GetUnitOnlineView, UnitInfoView
 from operations.choices_api_view import ChoicesRoomView, ChoicesRoleView, ChoicesCompanyView, \
     ChoicesEnvironmentalOptions, ChoicesUnitSettings
 
@@ -39,4 +39,9 @@ urlpatterns = [
     re_path(r'instruction/(?P<row_id>\d+)?$', InstructionView.as_view()),
     re_path(r'action/(?P<row_id>\d+)?$', ActionView.as_view()),
     re_path(r'triggers/(?P<row_id>\d+)?$', TriggersView.as_view()),
+    # 2024-2-4新增功能接口
+    # 1.开放接口查询所有在线和不在线的设备
+    path('get/unit/online', GetUnitOnlineView.as_view()),
+    # 2.开放接口查询指定设备信息
+    re_path(r'get/unit/info/(?P<device_id>\d+)$', UnitInfoView.as_view()),
 ]

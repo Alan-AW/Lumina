@@ -259,3 +259,37 @@ class TriggersView(BaseView):
     models = Triggers
     serializer = TriggersDataSer
     get_filter = 'phases_id'
+
+
+# 查询所有在线设备和不在线设备
+class GetUnitOnlineView(APIView):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+
+    def get(self, request):
+        unit_count = Unit.objects.all().count()
+        data = {
+            'online_count': 200,
+            'outline_count': 200,
+            'unit_count': unit_count,
+            'online_list': [0, 0, 0, 0],
+            'outline_list': [0, 0, 0, 1],
+        }
+        return JsonResponse(return_response(data=data))
+
+
+# 查询指定deviceId设备详情
+class UnitInfoView(APIView):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+
+    def get(self, request, device_id):
+        try:
+            unit = Unit.objects.get(deviceId=device_id)
+            ser = UnitSer(unit, many=False)
+            response = return_response(data=ser.data)
+        except Unit.DoesNotExist:
+            response = return_response(status=False, error='deviceId错误！')
+        return JsonResponse(response)
