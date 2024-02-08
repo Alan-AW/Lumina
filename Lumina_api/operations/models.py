@@ -150,6 +150,7 @@ class Cultivar(models.Model):
     name_en = models.CharField(max_length=64, verbose_name='英文名称')
     desc_cn = models.CharField(max_length=255, verbose_name='中文描述')
     desc_en = models.CharField(max_length=255, verbose_name='英文描述')
+    cycle = models.IntegerField(default=1, verbose_name='种植周期')
     algorithm = models.ManyToManyField(to='Algorithm', verbose_name='算法集')
 
     class Meta:
@@ -171,6 +172,7 @@ class Algorithm(models.Model):
     desc_en = models.CharField(max_length=255, verbose_name='算法描述en')
     choices_cn = models.JSONField(default=list, verbose_name='算法选项cn')
     choices_en = models.JSONField(default=list, verbose_name='算法选项en')
+    choices_self = models.BooleanField(default=False, verbose_name='自定义选项,APP端用于分辨是否有子集的字段')
     cmd = models.JSONField(default=list, verbose_name='算法指令集')
     app_show = models.BooleanField(default=True, verbose_name='是否显示在APP')
 
@@ -179,29 +181,88 @@ class Algorithm(models.Model):
         verbose_name = '种植品类算法'
         ordering = ('-id',)
 
+    def __str__(self):
+        return f'{self.subject_cn}-{self.title_cn}'
+
+
+# 设备作物详情表
+class UnitPlantDesc(models.Model):
+    unit = models.ForeignKey(
+        to=Unit, to_field='id', related_name='plant_desc', on_delete=models.CASCADE, verbose_name='设备'
+    )
+    cultivar = models.ForeignKey(to=Cultivar, on_delete=models.CASCADE, verbose_name='种植品类')
+    algorithm = models.JSONField(default=list, blank=True, verbose_name='算法指令集')
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='种植时间')
+
+    class Meta:
+        db_table = 'unit_plant_desc'
+        verbose_name = '作物详情'
+
+    def __str__(self):
+        return self.unit.deviceId
+
 
 cultivarAlgorithmTable = [
-    {'subject_cn': '种植⽬标', 'subject_en': 'Grow Objectives', 'title_cn': '⽣⻓速度', 'title_en': 'Growth Speed', 'desc_cn': '说明', 'desc_en': 'Description', 'choices_cn': ['正常', '加速', '放缓'], 'choices_en': ['Regular', 'Sped Up', 'Slowed Down'], 'cmd': [], 'app_show': True},
-    {'subject_cn': '种植⽬标', 'subject_en': 'Grow Objectives', 'title_cn': '次⽣代谢物', 'title_en': 'Secondary Metabolites', 'desc_cn': '说明', 'desc_en': 'Description', 'choices_cn': ['正常', '更多'], 'choices_en': ['Regular', 'More'], 'cmd': [], 'app_show': True},
-    {'subject_cn': '种植⽬标', 'subject_en': 'Grow Objectives', 'title_cn': '产物⼤⼩', 'title_en': 'Produce Size', 'desc_cn': '说明', 'desc_en': 'Description', 'choices_cn': ['正常', '更大', '偏小'], 'choices_en': ['Regular', 'Larger', 'Smaller'], 'cmd': [], 'app_show': True},
-    {'subject_cn': '种植⽬标', 'subject_en': 'Grow Objectives', 'title_cn': '有效成分', 'title_en': 'Phytochemical Composition', 'desc_cn': '说明', 'desc_en': 'Description', 'choices_cn': ['正常', '更多'], 'choices_en': ['Regular', 'More'], 'cmd': [], 'app_show': True},
-    {'subject_cn': '种植⽬标', 'subject_en': 'Grow Objectives', 'title_cn': '⼝味组成', 'title_en': 'Flavour', 'desc_cn': '说明', 'desc_en': 'Description', 'choices_cn': ['正常', '偏甜', '偏酸'], 'choices_en': ['Regular', 'Sweeter', 'More Sour'], 'cmd': [], 'app_show': True},
-    {'subject_cn': '种植⽬标', 'subject_en': 'Grow Objectives', 'title_cn': '⼝感组成', 'title_en': 'Texture', 'desc_cn': '说明', 'desc_en': 'Description', 'choices_cn': ['正常', '偏嫩', '偏脆'], 'choices_en': ['Regular', 'More Tender', 'Crunchier'], 'cmd': [], 'app_show': True},
-    {'subject_cn': '种植技巧', 'subject_en': 'Grow Techniques', 'title_cn': '⾃动紫外线⾍害消杀', 'title_en': 'Auto UV Disinfection', 'desc_cn': '⾃动紫外线⾍害消杀', 'desc_en': 'Auto UV Disinfection', 'choices_cn': ['开', '关'], 'choices_en': ['on', 'off'], 'cmd': [], 'app_show': True},
-    {'subject_cn': '种植技巧', 'subject_en': 'Grow Techniques', 'title_cn': '⾃动防治绿藻', 'title_en': 'Auto Algae', 'desc_cn': '⾃动防治绿藻', 'desc_en': 'Auto Algae', 'choices_cn': ['开', '关'], 'choices_en': ['on', 'off'], 'cmd': [], 'app_show': True},
-    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '催芽', 'title_en': 'Germination', 'desc_cn': '催芽', 'desc_en': 'Germination', 'choices_cn': [], 'choices_en': [], 'cmd': [], 'app_show': True},
-    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '缓苗期', 'title_en': 'Transplant Recovery', 'desc_cn': '缓苗期', 'desc_en': 'Transplant Recovery', 'choices_cn': [], 'choices_en': [], 'cmd': [], 'app_show': True},
-    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '育苗', 'title_en': 'Seedling', 'desc_cn': '育苗', 'desc_en': 'Seedling', 'choices_cn': [], 'choices_en': [], 'cmd': [], 'app_show': True},
-    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '营养⽣⻓-早期', 'title_en': 'Early Vegetative', 'desc_cn': '营养⽣⻓-早期', 'desc_en': 'Early Vegetative', 'choices_cn': [], 'choices_en': [], 'cmd': [], 'app_show': True},
-    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '营养⽣⻓-中期', 'title_en': 'Mid Vegetative', 'desc_cn': '营养⽣⻓-中期', 'desc_en': 'Mid Vegetative', 'choices_cn': [], 'choices_en': [], 'cmd': [], 'app_show': True},
-    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '营养⽣⻓-后期', 'title_en': 'Late Vegetative', 'desc_cn': '营养⽣⻓-后期', 'desc_en': 'Late Vegetative', 'choices_cn': [], 'choices_en': [], 'cmd': [], 'app_show': True},
-    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '花期-早期', 'title_en': 'Early Flowering', 'desc_cn': '花期-早期', 'desc_en': 'Early Flowering', 'choices_cn': [], 'choices_en': [], 'cmd': [], 'app_show': True},
-    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '花期-中期', 'title_en': 'Mid Flowering', 'desc_cn': '花期-中期', 'desc_en': 'Mid Flowering', 'choices_cn': [], 'choices_en': [], 'cmd': [], 'app_show': True},
-    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '花期-后期', 'title_en': 'Late Flowering', 'desc_cn': '花期-后期', 'desc_en': 'Late Flowering', 'choices_cn': [], 'choices_en': [], 'cmd': [], 'app_show': True},
-    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '结果期-早期', 'title_en': 'Early Flowering', 'desc_cn': '结果期-早期', 'desc_en': 'Early Flowering', 'choices_cn': [], 'choices_en': [], 'cmd': [], 'app_show': True},
-    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '结果期-中期', 'title_en': 'Mid Fruiting', 'desc_cn': '结果期-中期', 'desc_en': 'Mid Fruiting', 'choices_cn': [], 'choices_en': [], 'cmd': [], 'app_show': True},
-    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '结果期-晚期', 'title_en': 'Late Fruiting', 'desc_cn': '结果期-晚期', 'desc_en': 'Late Fruiting', 'choices_cn': [], 'choices_en': [], 'cmd': [], 'app_show': True},
-    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '越冬期', 'title_en': 'Wintering', 'desc_cn': '越冬期', 'desc_en': 'Wintering', 'choices_cn': [], 'choices_en': [], 'cmd': [], 'app_show': True},
+    {'subject_cn': '种植⽬标', 'subject_en': 'Grow Objectives', 'title_cn': '⽣⻓速度', 'title_en': 'Growth Speed',
+     'desc_cn': '说明', 'desc_en': 'Description', 'choices_cn': ['正常', '加速', '放缓'],
+     'choices_en': ['Regular', 'Sped Up', 'Slowed Down'], 'cmd': [], 'app_show': True},
+    {'subject_cn': '种植⽬标', 'subject_en': 'Grow Objectives', 'title_cn': '次⽣代谢物',
+     'title_en': 'Secondary Metabolites', 'desc_cn': '说明', 'desc_en': 'Description', 'choices_cn': ['正常', '更多'],
+     'choices_en': ['Regular', 'More'], 'cmd': [], 'app_show': True},
+    {'subject_cn': '种植⽬标', 'subject_en': 'Grow Objectives', 'title_cn': '产物⼤⼩', 'title_en': 'Produce Size',
+     'desc_cn': '说明', 'desc_en': 'Description', 'choices_cn': ['正常', '更大', '偏小'],
+     'choices_en': ['Regular', 'Larger', 'Smaller'], 'cmd': [], 'app_show': True},
+    {'subject_cn': '种植⽬标', 'subject_en': 'Grow Objectives', 'title_cn': '有效成分',
+     'title_en': 'Phytochemical Composition', 'desc_cn': '说明', 'desc_en': 'Description',
+     'choices_cn': ['正常', '更多'], 'choices_en': ['Regular', 'More'], 'cmd': [], 'app_show': True},
+    {'subject_cn': '种植⽬标', 'subject_en': 'Grow Objectives', 'title_cn': '⼝味组成', 'title_en': 'Flavour',
+     'desc_cn': '说明', 'desc_en': 'Description', 'choices_cn': ['正常', '偏甜', '偏酸'],
+     'choices_en': ['Regular', 'Sweeter', 'More Sour'], 'cmd': [], 'app_show': True},
+    {'subject_cn': '种植⽬标', 'subject_en': 'Grow Objectives', 'title_cn': '⼝感组成', 'title_en': 'Texture',
+     'desc_cn': '说明', 'desc_en': 'Description', 'choices_cn': ['正常', '偏嫩', '偏脆'],
+     'choices_en': ['Regular', 'More Tender', 'Crunchier'], 'cmd': [], 'app_show': True},
+    {'subject_cn': '种植技巧', 'subject_en': 'Grow Techniques', 'title_cn': '⾃动紫外线⾍害消杀',
+     'title_en': 'Auto UV Disinfection', 'desc_cn': '⾃动紫外线⾍害消杀', 'desc_en': 'Auto UV Disinfection',
+     'choices_cn': ['开', '关'], 'choices_en': ['on', 'off'], 'cmd': [], 'app_show': True},
+    {'subject_cn': '种植技巧', 'subject_en': 'Grow Techniques', 'title_cn': '⾃动防治绿藻', 'title_en': 'Auto Algae',
+     'desc_cn': '⾃动防治绿藻', 'desc_en': 'Auto Algae', 'choices_cn': ['开', '关'], 'choices_en': ['on', 'off'],
+     'cmd': [], 'app_show': True},
+    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '催芽', 'title_en': 'Germination', 'desc_cn': '催芽',
+     'desc_en': 'Germination', 'choices_cn': [], 'choices_en': [], 'cmd': [], 'app_show': True},
+    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '缓苗期', 'title_en': 'Transplant Recovery',
+     'desc_cn': '缓苗期', 'desc_en': 'Transplant Recovery', 'choices_cn': [], 'choices_en': [], 'cmd': [],
+     'app_show': True},
+    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '育苗', 'title_en': 'Seedling', 'desc_cn': '育苗',
+     'desc_en': 'Seedling', 'choices_cn': [], 'choices_en': [], 'cmd': [], 'app_show': True},
+    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '营养⽣⻓-早期', 'title_en': 'Early Vegetative',
+     'desc_cn': '营养⽣⻓-早期', 'desc_en': 'Early Vegetative', 'choices_cn': [], 'choices_en': [], 'cmd': [],
+     'app_show': True},
+    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '营养⽣⻓-中期', 'title_en': 'Mid Vegetative',
+     'desc_cn': '营养⽣⻓-中期', 'desc_en': 'Mid Vegetative', 'choices_cn': [], 'choices_en': [], 'cmd': [],
+     'app_show': True},
+    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '营养⽣⻓-后期', 'title_en': 'Late Vegetative',
+     'desc_cn': '营养⽣⻓-后期', 'desc_en': 'Late Vegetative', 'choices_cn': [], 'choices_en': [], 'cmd': [],
+     'app_show': True},
+    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '花期-早期', 'title_en': 'Early Flowering',
+     'desc_cn': '花期-早期', 'desc_en': 'Early Flowering', 'choices_cn': [], 'choices_en': [], 'cmd': [],
+     'app_show': True},
+    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '花期-中期', 'title_en': 'Mid Flowering',
+     'desc_cn': '花期-中期', 'desc_en': 'Mid Flowering', 'choices_cn': [], 'choices_en': [], 'cmd': [],
+     'app_show': True},
+    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '花期-后期', 'title_en': 'Late Flowering',
+     'desc_cn': '花期-后期', 'desc_en': 'Late Flowering', 'choices_cn': [], 'choices_en': [], 'cmd': [],
+     'app_show': True},
+    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '结果期-早期', 'title_en': 'Early Flowering',
+     'desc_cn': '结果期-早期', 'desc_en': 'Early Flowering', 'choices_cn': [], 'choices_en': [], 'cmd': [],
+     'app_show': True},
+    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '结果期-中期', 'title_en': 'Mid Fruiting',
+     'desc_cn': '结果期-中期', 'desc_en': 'Mid Fruiting', 'choices_cn': [], 'choices_en': [], 'cmd': [],
+     'app_show': True},
+    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '结果期-晚期', 'title_en': 'Late Fruiting',
+     'desc_cn': '结果期-晚期', 'desc_en': 'Late Fruiting', 'choices_cn': [], 'choices_en': [], 'cmd': [],
+     'app_show': True},
+    {'subject_cn': '⽣⻓阶段', 'subject_en': 'Phases', 'title_cn': '越冬期', 'title_en': 'Wintering', 'desc_cn': '越冬期',
+     'desc_en': 'Wintering', 'choices_cn': [], 'choices_en': [], 'cmd': [], 'app_show': True},
 ]
 
 
@@ -272,43 +333,6 @@ class Lighting(models.Model):
 
     def __str__(self):
         return self.deviceId
-
-
-# 作物&算法
-class Plant(models.Model):
-    type = models.CharField(max_length=8, verbose_name='算法类型')
-    name_en = models.CharField(max_length=32, verbose_name='英文名')
-    name_cn = models.CharField(max_length=32, verbose_name='中文名')
-    desc_en = models.TextField(verbose_name='英文描述')
-    desc_cn = models.TextField(verbose_name='中文描述')
-    status = models.IntegerField(choices=((0, '禁用'), (1, '正常')), verbose_name='作物状态', default=1)
-    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
-    update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
-
-    class Meta:
-        db_table = 'plant'
-        verbose_name = '作物算法'
-
-    def __str__(self):
-        return self.name_cn
-
-
-# 作物详情
-class PlantDesc(models.Model):
-    unit = models.ForeignKey(to=Unit, to_field='id', related_name='plant_desc', on_delete=models.CASCADE,
-                             verbose_name='所属机器')
-    plant = models.ForeignKey(to=Plant, to_field='id', related_name='desc', on_delete=models.CASCADE,
-                              verbose_name='作物算法信息')
-    icon_path = models.CharField(max_length=512, verbose_name='作物图片')
-    cycle = models.IntegerField(default=1, verbose_name='作物周期')
-    create_time = models.DateTimeField(auto_now_add=True, verbose_name='播种时间')
-
-    class Meta:
-        db_table = 'plant_desc'
-        verbose_name = '作物详情'
-
-    def __str__(self):
-        return self.plant.name_cn
 
 
 # 以下 Species - HardwareOptions为第二期开发的树结构数据表模型

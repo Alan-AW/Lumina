@@ -69,15 +69,26 @@ WSGI_APPLICATION = 'Lumina_api.wsgi.application'
 # }
 
 DATABASES = {
+    # 默认测试库
     'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mqsw_test',
+        'USER': 'mqsw_test',
+        'PASSWORD': 'crFtCczbNhiXeiZP',
+        'HOST': '47.110.240.100',
+        'POST': 3306,
+        'OPTIONS': {'charset': 'utf8mb4'}
+    },
+    # 正式库
+    'online': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mqsw',
         'USER': 'mqsw',
         'PASSWORD': 'HTHY6JbPMF5AxHKc',
-        'HOST': '47.110.240.100',
+        'HOST': '127.0.0.1',
         'POST': 3306,
         'OPTIONS': {'charset': 'utf8mb4'}
-    }
+    },
 }
 
 # Password validation

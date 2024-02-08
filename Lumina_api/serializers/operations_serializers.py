@@ -1,6 +1,7 @@
 import json
 
 from django.conf import settings as sys
+from django.forms import model_to_dict
 from rest_framework import serializers
 from operations.models import Company, Room, Unit, Temperature, Lighting, UnitSetting, Species, \
     Cultivars, Models, Phases, Instruction, Action, Triggers, UnitSettingsList
@@ -124,35 +125,40 @@ class RoomDescSer(serializers.ModelSerializer):
 
 
 # 第三期正式版，安卓首页接口数据序列化-使用中(2024-1-13)
-def unitsDescSer(units):
-    data_list = []
+# 接口调整支持国际化，且字段调整为去品类表中查询数据集-2024-2-5
+def unitsDescSer(units, en=False):
+    result = []
     # 循环房间内所有机器设备
     for unit in units:
         # 循环每台设备中种植的作物详情信息（有多少作物）
-        for plant_desc in unit.plant_desc.all():
+        data_list = unit.plant_desc.all().values(
+            'id', 'cultivar__icon', 'cultivar__cycle', 'cultivar__name_cn', 'cultivar__name_en', 'create_time'
+        )
+        for plant_desc in data_list:
             # 如果当前作物在种植周期内
-            if plant_desc.cycle > computed_sowing_time(plant_desc.create_time):
+            if plant_desc['cultivar__cycle'] > computed_sowing_time(plant_desc['create_time']):
                 # 收集数据
-                data_list.append({
+                item = {
                     "id": unit.id,  # 设备唯一id
                     "serial_number": unit.serial_number,  # 设备名称
-                    "cropItemDay": computed_sowing_time(plant_desc.create_time),  # 已种植时间
-                    "cropItemCycle": plant_desc.cycle,  # 作物周期
-                    "cropItemName": plant_desc.plant.name_cn,  # 作物中文名称
-                    "url": plant_desc.icon_path  # 作物图片
-                })
-    return data_list
+                    "cropItemDay": computed_sowing_time(plant_desc['create_time']),  # 已种植时间
+                    "cropItemCycle": plant_desc['cultivar__cycle'],  # 作物周期
+                    "cropItemName": plant_desc['cultivar__name_en'] if en else plant_desc['cultivar__name_cn'],  # 作物名称
+                    "url": plant_desc['cultivar__icon']  # 作物图片
+                }
+                result.append(item)
+    return result
 
 
 # 第三期正式版，安卓首页接口主序列化程序-使用中(2024-1-13)
-def android_home_data(rooms):
+def android_home_data(rooms, en=False):
     # 遍历每一个房间
     data_list = []
     for room in rooms:
         # 为每一个房间生成一个详情数据
         data_list.append({
             "room_desc": RoomDescSer(room, many=False).data,
-            "units_desc_list": unitsDescSer(room.units.all())
+            "units_desc_list": unitsDescSer(room.units.all(), en)
         })
     return data_list
 

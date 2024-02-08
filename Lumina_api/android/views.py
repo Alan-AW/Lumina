@@ -5,9 +5,10 @@ from django.db.transaction import atomic
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from device.rabbit_mq.producer import start
-from operations.models import Unit, Temperature, Lighting, UnitSetting, UnitSettingsList
-from serializers.android_serializers import SendMessageToQueueSer
-from serializers.operations_serializers import android_home_data, TemperatureSer, LightingSer, UnitSettingSer
+from operations.models import Unit, Temperature, Lighting, UnitSetting, UnitSettingsList, Cultivar, UnitPlantDesc
+from serializers.android_serializers import SendMessageToQueueSer, CultivarCnChoicesSer, CultivarEnChoicesSer, \
+    algorithm_choices_inal_ser, ValidateUnitCultivarAlgorithmToMqSer
+from serializers.operations_serializers import android_home_data, TemperatureSer, LightingSer
 from utils.methods import return_response, get_temperature_dict, get_temperature_days_list, \
     get_max_center_min_temperature
 from utils.create_log import create_logs
@@ -15,12 +16,13 @@ from utils.permissions.user_permission import ExcludeSuperPermission
 
 
 # 安卓端请求本公司所有房间内的所有数据--调整完毕(2024-1-13)
-class ZoneDeepDataView(APIView):
+class CompanyRoomDeepDataView(APIView):
     permission_classes = [ExcludeSuperPermission]
 
     def get(self, request):
+        language = request.query_params.get('language')
         queryset = request.user.company.rooms.all()
-        data = android_home_data(queryset)
+        data = android_home_data(queryset, en=language == 'en')
         response = return_response(data=data)
         return JsonResponse(response)
 
@@ -85,6 +87,8 @@ class UnitDescView(APIView):
 
 # 安卓端请求机器图表数据-此接口第二期做（正式版）
 class UnitChartView(APIView):
+    permission_classes = [ExcludeSuperPermission]
+
     def get(self, request, unit_id):
         pass
 
@@ -115,6 +119,7 @@ class SendDataToMQView(APIView):
 # 安卓端设备功能值参数读取-支持国际化
 class AndroidSettingsView(APIView):
     permission_classes = [ExcludeSuperPermission]
+
     # authentication_classes = []
     # permission_classes = []
     # throttle_classes = []
@@ -193,6 +198,7 @@ class AndroidSettingsView(APIView):
 # 安卓端修改设备功能配置项入库并推到mq动态队列
 class SendCmdToMQView(APIView):
     permission_classes = [ExcludeSuperPermission]
+
     # authentication_classes = []
     # permission_classes = []
     # throttle_classes = []
@@ -222,4 +228,67 @@ class SendCmdToMQView(APIView):
                 response = return_response(info='设置成功!')
         except Exception as e:
             response = return_response(status=False, error=str(e))
+        return JsonResponse(response)
+
+
+# 安卓端为设备添加品类,选择品类API
+class CultivarChoicesView(APIView):
+    permission_classes = [ExcludeSuperPermission]
+
+    def get(self, request):
+        query_params = request.query_params.get('language')
+        if query_params == 'en':
+            ser = CultivarEnChoicesSer
+        else:
+            ser = CultivarCnChoicesSer
+        queryset = Cultivar.objects.all()
+        data = ser(queryset, many=True).data
+        response = return_response(data=data)
+        return JsonResponse(response)
+
+
+# 安卓端选择了品类之后，返回该品类的算法供用户选择
+class CultivarAlgorithmChoicesView(APIView):
+    permission_classes = [ExcludeSuperPermission]
+
+    def get(self, request, cultivar_id):
+        language = request.query_params.get('language')
+        cultivar_obj = Cultivar.objects.filter(pk=cultivar_id).first()
+        if not cultivar_obj:
+            response = return_response(status=False, error=f'未找到“{cultivar_id}”的品类！')
+            return JsonResponse(response)
+        # 搜索出该品类的所有算法
+        queryset = cultivar_obj.algorithm.all()
+        data = algorithm_choices_inal_ser(queryset, language=language)
+        response = return_response(data=data)
+        return JsonResponse(response)
+
+
+# 安卓端选择了算法之后将数据提交到服务器进行处理和推送
+class SendAlgorithmToMQView(APIView):
+    permission_classes = [ExcludeSuperPermission]
+
+    def post(self, request):
+        language = request.query_params.get('language')
+        en = language == 'en'
+        #  读取数据
+        ser = ValidateUnitCultivarAlgorithmToMqSer(data=request.data)
+        if ser.is_valid():
+            # 数据验证通过提取数据
+            data = ser.validated_data
+            device_id = data.get('device_id')
+            unit = data.get('unit')
+            cultivar = data.get('cultivar')
+            algorithm = data.get('algorithm')
+            # 添加设备的种植内容
+            UnitPlantDesc.objects.create(
+                unit=unit, cultivar=cultivar, algorithm=algorithm
+            )
+            # 将算法数据推上mq队列
+            # start(message=json.dumps(algorithm), device_id=device_id, queue_name='_command')
+            # 返回提示信息
+            info = 'The data was saved successfully!' if en else '数据保存成功！'
+            response = return_response(info=info)
+        else:
+            response = return_response(status=False, error=ser.errors)
         return JsonResponse(response)

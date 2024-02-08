@@ -9,6 +9,6 @@ class DeviceConfig(AppConfig):
     name = 'device'
 
     def ready(self):
-        # 启动你的Python脚本,开始监听队列
+        # 启动Python脚本,开始监听队列
         script_path = os.path.join(settings.BASE_DIR, 'device', 'rabbit_mq', 'consumer.py')
         subprocess.Popen(['python', script_path])

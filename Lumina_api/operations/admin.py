@@ -1,6 +1,6 @@
 from django.contrib import admin
-from operations.models import Company, Room, RoomDesc, Unit, Temperature, Fertilizer, \
-    Plant, PlantDesc, Lighting, UnitSetting, UnitSettingsList
+from operations.models import Company, Room, Unit, Temperature, Fertilizer, \
+    UnitPlantDesc, Lighting, UnitSetting, UnitSettingsList, Cultivar, Algorithm
 
 
 # 企业
@@ -49,6 +49,34 @@ class UnitSettingsListAdmin(admin.ModelAdmin):
     ]
 
 
+# 品类表
+@admin.register(Cultivar)
+class CultivarAdmin(admin.ModelAdmin):
+    filter_horizontal = ('algorithm',)
+    list_display = ['id', 'icon', 'name_en', 'name_cn', 'desc_cn', 'desc_en', 'cycle']
+    list_editable = ['icon', 'name_en', 'name_cn', 'desc_cn', 'desc_en', 'cycle']
+
+
+# 品类算法表
+@admin.register(Algorithm)
+class AlgorithmAdmin(admin.ModelAdmin):
+    list_display = [
+        'id', 'subject_cn', 'subject_en', 'title_cn', 'title_en', 'desc_cn', 'desc_en',
+        'choices_cn', 'choices_en', 'choices_self', 'cmd', 'app_show'
+    ]
+    list_editable = [
+        'subject_cn', 'subject_en', 'title_cn', 'title_en', 'desc_cn', 'desc_en',
+        'choices_cn', 'choices_en', 'choices_self', 'cmd', 'app_show'
+    ]
+
+
+# 设备种植的品类详情
+@admin.register(UnitPlantDesc)
+class UnitPlantDescAdmin(admin.ModelAdmin):
+    list_display = ['id', 'unit', 'cultivar', 'algorithm', 'create_time']
+    list_editable = ['unit', 'cultivar', 'algorithm']
+
+
 # 温度传感器
 @admin.register(Temperature)
 class TemperatureAdmin(admin.ModelAdmin):
@@ -71,20 +99,3 @@ class LightingAdmin(admin.ModelAdmin):
     list_display = ['id', 'moment', 'deviceId', 'deviceSecret', 'json_val']
     list_editable = ['deviceId', 'deviceSecret', 'json_val']
     search_fields = ['deviceId', 'deviceSecret']
-
-
-# 作物
-@admin.register(Plant)
-class PlantAdmin(admin.ModelAdmin):
-    list_display = [
-        'id', 'type', 'name_en', 'name_cn', 'desc_en', 'desc_cn', 'status', 'create_time', 'update_time'
-    ]
-    list_editable = ['type', 'name_en', 'name_cn', 'desc_en', 'desc_cn', 'status']
-    search_fields = ['type', 'name_en', 'name_cn']
-
-
-# 作物详情
-@admin.register(PlantDesc)
-class PlantDescAdmin(admin.ModelAdmin):
-    list_display = ['id', 'unit', 'plant', 'cycle', 'icon_path', 'create_time']
-    list_editable = ['unit', 'plant', 'cycle', 'icon_path', ]
