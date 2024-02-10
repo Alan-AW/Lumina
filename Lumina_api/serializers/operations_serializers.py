@@ -4,7 +4,7 @@ from django.conf import settings as sys
 from django.forms import model_to_dict
 from rest_framework import serializers
 from operations.models import Company, Room, Unit, Temperature, Lighting, UnitSetting, Species, \
-    Cultivars, Models, Phases, Instruction, Action, Triggers, UnitSettingsList
+    Cultivars, Models, Phases, Instruction, Action, Triggers, UnitSettingsList, Cultivar
 from users.models import Roles
 from utils.methods import computed_sowing_time
 
@@ -189,6 +189,10 @@ class LightingSer(serializers.ModelSerializer):
 
 # 公司管理序列化
 class CompanySer(serializers.ModelSerializer):
+    address = serializers.CharField(allow_null=True, allow_blank=True)
+    legal_rep = serializers.CharField(allow_null=True, allow_blank=True)
+    tel = serializers.CharField(allow_null=True, allow_blank=True)
+    email = serializers.CharField(allow_null=True, allow_blank=True)
     create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
     update_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
 
@@ -206,6 +210,13 @@ class UnitSettingsListSer(serializers.ModelSerializer):
     class Meta:
         model = UnitSettingsList
         fields = '__all__'
+
+
+# 品类管理序列化
+class CultivarSer(serializers.ModelSerializer):
+    class Meta:
+        model = Cultivar
+        exclude = ['algorithm']
 
 
 # 设备设置项序列化

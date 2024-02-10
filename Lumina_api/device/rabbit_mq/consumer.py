@@ -1,15 +1,13 @@
-"""
-消费者
-"""
-
 import pika
-import threading
+
 # from device.rabbit_mq.config import HOST, PORT, USER, PASSWORD, QUEUE_NAME
+
 HOST = '43.138.127.42'
 PORT = 5372
 USER = 'admin'
 PASSWORD = '1ee2097c'
 QUEUE_NAME = 'device_data_queue'
+
 # message_model = import_string('device.rabbit_mq.message_db.message_db_data')
 # def message_model(message):
 #     print(message)
@@ -35,12 +33,15 @@ def callback(ch, method, properties, body):
     3. properties：表示属性（properties），包含了与消息相关的属性信息，例如消息的持久性、优先级等。
     4. body：表示消息体（body），即实际的消息内容。
     """
-    print(f'[x] Received message body is {body}')
-    # message_model = import_string('device.rabbit_mq.message_db.message_db_data')
-    # message_db_data(body)
-    # message_model(body)
+    print('↓' * 50)
+    print('收到队列消息：')
+    print(body)
+    print('↑' * 50)
+    # 将字节串转为字典
+    data = eval(body)
+    device_id = data.get('deviceId') or 'error:can_not_find_device_id'
     from device.models import MessageQueueModel
-    MessageQueueModel.objects.create(content=body)
+    MessageQueueModel.objects.create(device_id=device_id, content=data)
 
 
 def start():
@@ -53,16 +54,14 @@ def start():
         on_message_callback=callback  # 回调函数
     )
     # 开始监听消息队列
-    print('[*] Waiting for messages.')
-    # channel.start_consuming()
-    threading.Thread(target=channel.start_consuming).start()
+    print('+' * 50)
+    print('开始监听队列消息')
+    print('+' * 50)
+    channel.start_consuming()
+    # threading.Thread(target=channel.start_consuming).start()
 
 
 # 停止监听
 def stop():
     print('[*] Stopping consumer.')
     channel.stop_consuming()
-
-
-if __name__ == '__main__':
-    start()

@@ -25,6 +25,7 @@ function CompanyEditModal(props) {
   // 确定提交
   const onOkModal = () => {
     form.validateFields().then(value => {
+      form.resetFields()
       onOk(value)
     }).catch(err => {
       console.log(err);
@@ -45,6 +46,7 @@ function CompanyEditModal(props) {
         form={form}
         layout="vertical"
         name="form_in_edit_modal"
+        initialValues={{ address: '', legal_rep: '', tel: '', email: '' }}
       >
         <Form.Item name='id' hidden>
           <Input />
@@ -59,36 +61,28 @@ function CompanyEditModal(props) {
           />
         </Form.Item>
 
-        <Form.Item name='address' label={t('company.tableTitle.address')} rules={[
-          { required: true, message: t('company.rules.address') }
-        ]}>
+        <Form.Item name='address' label={t('company.tableTitle.address')} >
           <Input
             placeholder={t('company.placeholder.address')}
             style={{ width: '100%' }}
           />
         </Form.Item>
 
-        <Form.Item name='legal_rep' label={t('company.tableTitle.legal_rep')} rules={[
-          { required: true, message: t('company.rules.legal_rep') }
-        ]}>
+        <Form.Item name='legal_rep' label={t('company.tableTitle.legal_rep')}>
           <Input
             placeholder={t('company.placeholder.legal_rep')}
             style={{ width: '100%' }}
           />
         </Form.Item>
 
-        <Form.Item name='tel' label={t('company.tableTitle.tel')} rules={[
-          { required: true, message: t('company.rules.tel') }
-        ]}>
+        <Form.Item name='tel' label={t('company.tableTitle.tel')}>
           <Input
             placeholder={t('company.placeholder.tel')}
             style={{ width: '100%' }}
           />
         </Form.Item>
 
-        <Form.Item name='email' label={t('company.tableTitle.email')} rules={[
-          { required: true, message: t('company.rules.email') }
-        ]}>
+        <Form.Item name='email' label={t('company.tableTitle.email')} >
           <Input
             placeholder={t('company.placeholder.email')}
             style={{ width: '100%' }}

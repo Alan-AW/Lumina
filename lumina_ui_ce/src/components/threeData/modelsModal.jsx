@@ -17,6 +17,7 @@ function ModelsModal(props) {
   // 确定提交
   const onOkModal = () => {
     form.validateFields().then(value => {
+      form.resetFields()
       onOk(value)
     }).catch(err => {
       console.log(err);

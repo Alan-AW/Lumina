@@ -1,9 +1,9 @@
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from operations.models import Room, Unit, Temperature, Species, RoomDesc, Lighting, Cultivars, Models, Triggers, \
-    Action, Instruction, Phases, Company, UnitSettingsList, UnitSetting
+    Action, Instruction, Phases, Company, UnitSettingsList, UnitSetting, Cultivar
 from serializers.operations_serializers import RoomSer, UnitSer, ExportDataSer, CompanySer, UnitSettingsListSer, \
-    UnitSettingSer
+    UnitSettingSer, CultivarSer
 from serializers.three_data_serializers import SpeciesDataSer, CultivarsDataSer, ModelsDataSer, PhasesDataSer, \
     InstructionDataSer, ActionDataSer, TriggersDataSer
 from utils.methods import return_response, get_data
@@ -211,56 +211,6 @@ class SaveSensorDataView(APIView):
         return JsonResponse(response)
 
 
-# 树型结构6张表导出
-class ExportThree(APIView):
-    def get(self, request):
-        data = get_data(Species, False, request, self, ExportDataSer)
-        response = return_response(data=data)
-        return JsonResponse(response)
-
-
-# 树型结构分表数据管理
-class SpeciesView(BaseView):
-    models = Species
-    serializer = SpeciesDataSer
-
-
-class CultivarsView(BaseView):
-    models = Cultivars
-    serializer = CultivarsDataSer
-    get_filter = 'species_id'
-
-
-class ModelsView(BaseView):
-    models = Models
-    serializer = ModelsDataSer
-    get_filter = 'cultivars_id'
-
-
-class PhasesView(BaseView):
-    models = Phases
-    serializer = PhasesDataSer
-    get_filter = 'f_model_id'
-
-
-class InstructionView(BaseView):
-    models = Instruction
-    serializer = InstructionDataSer
-    get_filter = 'phases_id'
-
-
-class ActionView(BaseView):
-    models = Action
-    serializer = ActionDataSer
-    get_filter = 'base_id'
-
-
-class TriggersView(BaseView):
-    models = Triggers
-    serializer = TriggersDataSer
-    get_filter = 'phases_id'
-
-
 # 查询所有在线设备和不在线设备
 class GetUnitOnlineView(APIView):
     authentication_classes = []
@@ -279,7 +229,7 @@ class GetUnitOnlineView(APIView):
         return JsonResponse(return_response(data=data))
 
 
-# 查询指定deviceId设备详情
+# 查询指定deviceId设备详情,该接口用于查询脚本监听的mq队列存入的数据，用device_id进行查询值
 class UnitInfoView(APIView):
     authentication_classes = []
     permission_classes = []
@@ -293,3 +243,78 @@ class UnitInfoView(APIView):
         except Unit.DoesNotExist:
             response = return_response(status=False, error='deviceId错误！')
         return JsonResponse(response)
+
+
+# 品类管理
+class CultivarView(BaseView):
+    permission_classes = [SuperPermission]
+    models = Cultivar
+    serializer = CultivarSer
+
+
+# 树型结构6张表导出
+class ExportThree(APIView):
+    def get(self, request):
+        data = get_data(Species, False, request, self, ExportDataSer)
+        response = return_response(data=data)
+        return JsonResponse(response)
+
+
+# 树型结构分表数据管理
+class SpeciesView(BaseView):
+    models = Species
+    serializer = SpeciesDataSer
+
+
+class CultivarsView(BaseView):
+    models = Cultivars
+    serializer = CultivarsDataSer
+
+    def get_queryset(self, request, *args, **kwargs):
+        queryset = self.models.objects.filter(species_id=kwargs.get('row_id'))
+        return queryset
+
+
+class ModelsView(BaseView):
+    models = Models
+    serializer = ModelsDataSer
+
+    def get_queryset(self, request, *args, **kwargs):
+        queryset = self.models.objects.filter(cultivars_id=kwargs.get('row_id'))
+        return queryset
+
+
+class PhasesView(BaseView):
+    models = Phases
+    serializer = PhasesDataSer
+
+    def get_queryset(self, request, *args, **kwargs):
+        queryset = self.models.objects.filter(f_model_id=kwargs.get('row_id'))
+        return queryset
+
+
+class InstructionView(BaseView):
+    models = Instruction
+    serializer = InstructionDataSer
+
+    def get_queryset(self, request, *args, **kwargs):
+        queryset = self.models.objects.filter(phases_id=kwargs.get('row_id'))
+        return queryset
+
+
+class ActionView(BaseView):
+    models = Action
+    serializer = ActionDataSer
+
+    def get_queryset(self, request, *args, **kwargs):
+        queryset = self.models.objects.filter(base_id=kwargs.get('row_id'))
+        return queryset
+
+
+class TriggersView(BaseView):
+    models = Triggers
+    serializer = TriggersDataSer
+
+    def get_queryset(self, request, *args, **kwargs):
+        queryset = self.models.objects.filter(phases_id=kwargs.get('row_id'))
+        return queryset

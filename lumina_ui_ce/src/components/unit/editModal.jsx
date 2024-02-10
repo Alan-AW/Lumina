@@ -35,6 +35,7 @@ function EditModal(props) {
     const onOkModal = () => {
         form.validateFields().then(value => {
             form.resetFields()
+            form.resetFields()
             onOk(value)
         }).catch(err => {
             console.log(err);

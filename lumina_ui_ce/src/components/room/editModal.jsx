@@ -29,6 +29,7 @@ function EditModal(props) {
   // 确定提交
   const onOkModal = () => {
     form.validateFields().then(value => {
+      form.resetFields()
       onOk(value)
     }).catch(err => {
       console.log(err);
@@ -51,8 +52,8 @@ function EditModal(props) {
         name="form_in_edit_modal"
       >
 
-        <Form.Item name='company'  label={t("room.tableTitle.company") + '：'} rules={[
-          { required: true, message: t("room.rules.company")}
+        <Form.Item name='company' label={t("room.tableTitle.company") + '：'} rules={[
+          { required: true, message: t("room.rules.company") }
         ]}>
           <Select
             allowClear

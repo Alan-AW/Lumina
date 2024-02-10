@@ -47,6 +47,7 @@ function BaseModal(props) {
         value.duration = value.duration.format('HH:mm:ss')
         value.interval = value.interval.format('HH:mm:ss')
       }
+      form.resetFields()
       onOk(value)
     }).catch(err => {
       console.log(err)

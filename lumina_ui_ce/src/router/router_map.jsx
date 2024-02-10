@@ -29,6 +29,8 @@ const Room = lazy(() => import('pages/room'))
 const Unit = lazy(() => import('pages/unit'))
 // 机器设置项列表
 const UnitSetList = lazy(() => import('pages/unitSetList'))
+// 品种管理
+const Cultivar = lazy(() => import('pages/cultivar'))
 // 三维表格模版
 const ThreeTable = lazy(() => import('pages/threeTable'))
 const Cultivars = lazy(() => import('pages/threeTable/child/cultivars'))
@@ -40,7 +42,7 @@ const Triggers = lazy(() => import('pages/threeTable/child/triggers'))
 // 路由映射
 const LocalRouterMap = {
   'index': { element: <Home /> },
-  '/': { title: < Trans i18nKey="LocalRouterMap.index" />, icon: <HomeOutlined />, element: <AdminLayout /> },
+  '/': { icon: <HomeOutlined />, element: <AdminLayout /> },
   '/user': { icon: <UsergroupAddOutlined />, element: <User /> },
   '/roles': { icon: <UsergroupAddOutlined />, element: <Roles /> },
   '/permission': { icon: <LockOutlined />, element: <Permission /> },
@@ -49,6 +51,7 @@ const LocalRouterMap = {
   '/room': { icon: <LockOutlined />, element: <Room /> },
   '/unit': { icon: <ClusterOutlined />, element: <Unit /> },
   '/unit_set_list': { icon: <ClusterOutlined />, element: <UnitSetList /> },
+  '/cultivar': { icon: <ClusterOutlined />, element: <Cultivar /> },
   '/three_table': { icon: <ClusterOutlined />, element: <ThreeTable /> },
   '/cultivars': <Cultivars />,
   '/models': <Models />,

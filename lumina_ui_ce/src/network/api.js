@@ -69,6 +69,11 @@ export const getSetList = params => axios.get('/manager/unit/settings/list/', { 
 export const postSetList = data => axios.post('/manager/unit/settings/list/', data)
 export const patchSetList = (id, data) => axios.patch(`/manager/unit/settings/list/${id}`, data)
 export const deleteSetList = id => axios.delete(`/manager/unit/settings/list/${id}`)
+// 品类管理
+export const getCultvar = params => axios.get('/manager/cultivar/', { params })
+export const postCultvar = data => axios.post('/manager/cultivar/', data)
+export const patchCultvar = (id, data) => axios.patch(`/manager/cultivar/${id}`, data)
+export const deleteCultvar = id => axios.delete(`/manager/cultivar/${id}`)
 // 树结构
 export const exportThreeData = () => axios.get('/manager/export/three')
 export const getSpecies = params => axios.get('/manager/species/', { params })

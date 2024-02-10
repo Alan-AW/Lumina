@@ -183,6 +183,7 @@
     "用户管理": "userManagement",
     "房间管理": "roomManagement",
     "机器管理": "machineManagement",
+    "品类管理": "CultivarManagement",
     "操作日志": "operationLogs",
     "设备功能列表": "unitSetList"
   },
@@ -325,6 +326,20 @@
       "desc_cn": "Chinese explanations cannot be empty!",
       "desc_en": "English explanations can't be empty!",
       "component": "The component type cannot be empty!"
+    }
+  },
+  "cultivar": {
+    "AddCultivar": "AddCultivar",
+    "title": "Cultivar Management",
+    "tableTitle": {
+      "index": "Index",
+      "icon": "Icon",
+      "name_en": "English name",
+      "name_cn": "Chinese Name",
+      "desc_en": "English Description",
+      "desc_cn": "Chinese Description",
+      "cycle": "Growth cycle",
+      "action": "action"
     }
   }
 }

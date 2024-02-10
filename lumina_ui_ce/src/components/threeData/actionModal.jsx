@@ -41,6 +41,7 @@ function ActionModal(props) {
   const onOkModal = () => {
     form.validateFields().then(value => {
       value.curve_duration = value.curve_duration.format('HH:mm:ss')
+      form.resetFields()
       onOk(value)
     }).catch(err => {
       console.log(err)

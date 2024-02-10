@@ -37,6 +37,7 @@ function EditPermission(props) {
       if (value.pid_id === undefined) {
         value.pid_id = null
       }
+      form.resetFields()
       onOk(value)
     }).catch(err => {
       console.log(err);

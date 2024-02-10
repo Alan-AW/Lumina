@@ -88,6 +88,7 @@ function TriggersModal(props) {
     form.validateFields().then(value => {
       !!value.timeframe ? (value.timeframe = value.timeframe.format('HH:mm:ss')) : (delete value.timeframe)
       !!value.toi ? (value.toi = value.toi.format('HH:mm:ss')) : (delete value.toi)
+      form.resetFields()
       onOk(value)
     }).catch(err => {
       console.log(err)
