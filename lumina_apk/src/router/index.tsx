@@ -21,6 +21,7 @@ import Bright from 'src/screens/Bright';
 import VideoPrew from 'src/screens/VideoPrew';
 import Setting from 'src/screens/Setting';
 import User from 'src/screens/User';
+import AddPage from 'src/screens/SelectPage';
 
 
 const AppStack = createNativeStackNavigator<AppStackParamList>();
@@ -35,6 +36,11 @@ function AppStackNavigator() {
         contentStyle: {backgroundColor: '#fffcf7'},
       }}>
       <AppStack.Screen
+        name="AddPage"
+        component={AddPage}
+        options={{headerShown: false}}
+      />
+       <AppStack.Screen
         name="Login"
         component={Login}
         options={{headerShown: false}}

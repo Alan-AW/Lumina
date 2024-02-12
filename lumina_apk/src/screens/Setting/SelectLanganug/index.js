@@ -10,6 +10,7 @@ import colors from 'src/constants/colors';
 import ModalSelect from 'src/components/ModalSelect';
 import { IconButton } from 'src/components/Button';
 import { IconJiantouCopy } from 'src/iconfont';
+import { updateRequestLanuage } from 'src/constants/lanaguses';
 
 const WINDOW = Dimensions.get('window');
 
@@ -31,6 +32,7 @@ const DropdownComponent = () => {
           zh: '中文',
           en: 'English',
         }
+        updateRequestLanuage(lng)
         if (lng) {
           setValue(obj[lng])
         }

@@ -9,9 +9,9 @@ import Login from '../Login';
 
 export default function Splash(props: any) {
   useEffect(() => {
-    storage.remove({
-      key: 'userInfo',
-    });
+    // storage.remove({
+    //   key: 'userInfo',
+    // });
     storage
       .load({key: 'userInfo'})
       .then(res => {

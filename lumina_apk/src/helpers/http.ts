@@ -1,6 +1,13 @@
 import axios from "axios";
 import type { AxiosInstance, AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import storage from 'src/helpers/storage';
+import { LANGUAGE } from "src/constants/lanaguses";
+import { baseUrl } from "src/apis/config";
+//获取当前语言环境
+
+const language=`?language=${LANGUAGE}`
+
+
 
 const loadUserInfo = async () => {
   try {
@@ -50,11 +57,15 @@ export class HttpAxios {
   }
 
   public get<R, P = any>(url: string, config?: AxiosRequestConfig<P>): Promise<R> {
-    return this.instance.get(url, config);
+console.log('请求地址',baseUrl+url+language);
+    
+    return this.instance.get(baseUrl+url+language, config);
   }
 
   public post<R, D = any>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R> {
-    return this.instance.post(url, data, config);
+console.log('请求地址',baseUrl+url+language);
+
+    return this.instance.post(baseUrl+url+language, data, config);
   }
 }
 

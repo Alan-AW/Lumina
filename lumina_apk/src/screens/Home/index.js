@@ -151,10 +151,12 @@ const Card = props => {
 const Home = () => {
   const [data, setData] = useState([]);
   const { t } = useTranslation();
+  const navigation = useNavigation();
+
   useEffect(() => {
     getIndexList().then(res => {
 
-      console.log(res.data, 66696);
+      console.log(JSON.stringify(res.data), 66696123);
 
       const _data = res.data.map(item => {
 
@@ -177,17 +179,22 @@ const Home = () => {
       })
       setData(_data);
     }).catch(err => {
-      console.log(err, 66696);
+      console.log(err, '接口执行错误');
     });
   }, []);
   const renderItem = ({ item }) => {
-    if (item.data.length===0) {
+
+    if (item.data.length === 0) {
       return null;
     }
     return (
       <ShadowCard style={styles.scrollItem} hiddenShadow={true}>
         <View style={styles.scrollContainer}>
-          <View style={useInlineStyle({ width: 350, marginRight: 100 })}>
+          <TouchableOpacity activeOpacity={1} onPress={() => {
+            navigation.navigate('AddPage',
+              { roomId: item.id })
+
+          }} style={useInlineStyle({ width: 350, marginRight: 100 })}>
             <Text
               style={useInlineStyle({
                 fontFamily: fontName.medium,
@@ -255,7 +262,7 @@ const Home = () => {
                 </View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
           <ScrollView horizontal style={{ minHeight: 118.25 }} showsHorizontalScrollIndicator={false}>
             {item.data.map((item2, index) => {
               return (

@@ -21,7 +21,7 @@ const WINDOW=Dimensions.get('window')
 
 
 const FormContent=({navigation})=>{
-    const [account,setAccount]=useState('test')
+    const [account,setAccount]=useState('xxj')
     const [password,setPassWord]=useState('123456')
     const { hasPermission, requestPermission } = useCameraPermission();
     const dispatch=useAppDispatch()
@@ -52,7 +52,7 @@ const FormContent=({navigation})=>{
       
            
         }).catch(err=>{
-            console.log(err);
+            console.log(err,'登录失败');
             //Alert.alert(JSON.stringify(err || err.message))
            // ToastService.showToast("登录失败")
         })

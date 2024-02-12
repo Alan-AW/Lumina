@@ -1,6 +1,7 @@
 import storage from 'src/helpers/storage';
 import i18next, {ModuleType} from 'i18next';
 import {initReactI18next} from 'react-i18next';
+import { updateRequestLanuage } from 'src/constants/lanaguses';
 
 export const lngKey = '@lng';
 
@@ -12,6 +13,7 @@ const languageDetector = {
     storage
       .load({key: 'language'})
       .then(lng => {
+        updateRequestLanuage(lng)
         callback(lng);
       })
       .catch(err => {
@@ -22,6 +24,8 @@ const languageDetector = {
           })
           .then(res => {
             callback('en');
+        updateRequestLanuage('en')
+
           });
       });
   },

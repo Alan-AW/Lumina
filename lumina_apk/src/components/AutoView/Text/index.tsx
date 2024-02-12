@@ -24,7 +24,7 @@ const AutoText = (props: TextProps & AutoTextProps) => {
     styles.fontFamily = fontName[props.type];
   }
   return (
-    <Text {...props} style={useInlineStyle({...styles, ...newStyle})}>
+    <Text {...props} allowFontScaling={false} style={useInlineStyle({...styles, ...newStyle})}>
       {props.children}
     </Text>
   );

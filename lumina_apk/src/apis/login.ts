@@ -6,5 +6,5 @@ type LoginInPayload={
     password: string,
 }
 export function requestLogin(payload: LoginInPayload) {
-  return httpAxios.post<any>(`${baseUrl}/auth/login`, payload);
+  return httpAxios.post<any>(`/auth/login`, payload);
 }

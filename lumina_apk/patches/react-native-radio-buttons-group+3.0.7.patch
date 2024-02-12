@@ -1,0 +1,38 @@
+diff --git a/node_modules/react-native-radio-buttons-group/lib/RadioGroup.tsx b/node_modules/react-native-radio-buttons-group/lib/RadioGroup.tsx
+index c2ae1d4..b785273 100644
+--- a/node_modules/react-native-radio-buttons-group/lib/RadioGroup.tsx
++++ b/node_modules/react-native-radio-buttons-group/lib/RadioGroup.tsx
+@@ -15,9 +15,9 @@ export default function RadioGroup({
+   testID
+ }: RadioGroupProps) {
+ 
+-  function handlePress(id: string) {
++  function handlePress(id: string,button:any) {
+     if (id !== selectedId && onPress) {
+-      onPress(id);
++      onPress(id,button);
+     }
+   }
+ 
+@@ -34,7 +34,7 @@ export default function RadioGroup({
+           key={button.id}
+           labelStyle={labelStyle}
+           selected={button.id === selectedId}
+-          onPress={() => handlePress(button.id)}
++          onPress={() => handlePress(button.id,button)}
+         />
+       ))}
+     </View>
+diff --git a/node_modules/react-native-radio-buttons-group/lib/types.ts b/node_modules/react-native-radio-buttons-group/lib/types.ts
+index b287e54..7246e0c 100644
+--- a/node_modules/react-native-radio-buttons-group/lib/types.ts
++++ b/node_modules/react-native-radio-buttons-group/lib/types.ts
+@@ -26,7 +26,7 @@ export type RadioGroupProps = {
+   containerStyle?: StyleProp<ViewStyle>;
+   labelStyle?: StyleProp<TextStyle>;
+   layout?: 'row' | 'column';
+-  onPress?: (selectedId: string) => void;
++  onPress?: (selectedId: string,button:any) => void;
+   radioButtons: RadioButtonProps[];
+   selectedId?: string;
+   testID?: string;

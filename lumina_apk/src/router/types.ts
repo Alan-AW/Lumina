@@ -14,6 +14,7 @@ export type AppStackParamList = {
   VideoPreview: undefined;
   Setting: undefined;
   User: undefined;
+  AddPage:undefined;
   
   
   
