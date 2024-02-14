@@ -21,7 +21,6 @@ import { locales } from "src/helpers/localesText";
 const AddPage = () => {
     const { loading, data, error } = useRequest(() => getChoices());
     const [selectItem, setSelectItem] = useState<any>('')
-    const routes: any = useRoute();
 
 
 
@@ -32,6 +31,8 @@ const AddPage = () => {
     }
 
 
+   
+    
 
     return (
         <AutoView isRow style={{ alignItems: 'flex-start', padding: 30, height: HEIGHT }}>
@@ -91,7 +92,7 @@ const AddPage = () => {
 
 
             </View>
-            {<Details id={selectItem} devicesId={routes.params.devicesId} clearSelectItem={() => setSelectItem('')} />}
+            {<Details id={selectItem} clearSelectItem={() => setSelectItem('')} />}
 
 
 

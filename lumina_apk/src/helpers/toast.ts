@@ -16,7 +16,13 @@ async function showToast(key: string, duration?: number) {
     NativeModules.ToastExample.show(obj[language], duration || 3000)
 }
 
+function showMessage(text: string, duration?: number){
+    NativeModules.ToastExample.show(text, duration || 3000)
+
+}
+
 const ToastService = {
     showToast,
+    showMessage,
 }
 export default ToastService

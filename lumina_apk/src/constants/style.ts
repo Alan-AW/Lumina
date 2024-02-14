@@ -44,3 +44,10 @@ export const ADAPTATION_CONVERT_STYLE_KEYS: Array<keyof (ViewStyle & TextStyle &
   "letterSpacing",
   "lineHeight",
 ];
+
+export const PADDING: Array<keyof (ViewStyle & TextStyle & ImageStyle)> = [
+  "paddingTop",
+  "paddingBottom",
+  "paddingLeft",
+  "paddingRight",
+];

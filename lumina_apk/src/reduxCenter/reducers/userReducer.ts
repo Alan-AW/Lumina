@@ -7,7 +7,7 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-    userInfo:null
+    userInfo:{}
 };
 
 const userReducer = createReducer(initialState, builder => {

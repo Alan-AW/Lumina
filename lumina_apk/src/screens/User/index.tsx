@@ -29,7 +29,7 @@ const User = () => {
                                 borderWidth: 1, borderColor: '#f4f4f4', justifyContent: 'center',
                                 borderRadius: 100, overflow: 'hidden', width: 170, height: 170, marginLeft: 36
                             }}>
-                                <Image source={{ uri: `${baseUrl + state.avatar}` }}
+                                <Image source={{ uri: `${baseUrl + state?.avatar}` }}
                                     style={{ width: 50, height: 50, borderRadius: 100 }} />
                             </AutoView>
 

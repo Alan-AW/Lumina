@@ -78,6 +78,8 @@
     "operationSuccessful":"operation successful",
     "operationFailed":"operation failed",
     "networkError":"network error",
-    "requestError":"request error"
+    "requestError":"request error",
+    "networkSuccess":"network success",
+    "nullData":"loading error"
 
  }

@@ -16,16 +16,19 @@ import { IconButton } from "src/components/Button";
 import ToastService from "src/helpers/toast";
 import LocalesText from "src/components/Text";
 import { locales } from "src/helpers/localesText";
+import { useRoute } from "@react-navigation/native";
 
 interface DetailsProps {
     id: any,
-    devicesId: any,
     clearSelectItem: () => void;
 }
 
 export default function Details(props: DetailsProps) {
 
     const [show, setShow] = useState(false)
+    const routes: any = useRoute();
+
+    console.log('传入的设备id',routes);
 
     useEffect(() => {
         setShow(!!props.id)
@@ -34,7 +37,7 @@ export default function Details(props: DetailsProps) {
     }, [props.id])
 
     const { loading, data, error } = useRequest(() => getChoicesDetails(props.id), !!props.id);
-    console.log('请求的参数id', props.id, props.devicesId, 666);
+    console.log('请求的参数id', props.id, routes.params.devicesId, 666);
 
     const [radioSelected, setRadioSelected] = useState<any>({})
 
@@ -124,7 +127,7 @@ export default function Details(props: DetailsProps) {
         }
         const params = {
             //设备id
-            'unit': props.devicesId,
+            'unit': routes.params.devicesId,
             //蔬菜id
             'cultivar': props.id,
             //指令集
@@ -132,7 +135,7 @@ export default function Details(props: DetailsProps) {
         }
         submitChoices(params).then((res) => {
             props.clearSelectItem();
-            ToastService.showToast(res.errs ? JSON.stringify(res.errs) : res.info);
+            ToastService.showMessage(res.errs ? JSON.stringify(res.errs) : res.info);
 
         })
 
