@@ -34,6 +34,6 @@ export function getChoicesDetails(id:any) {
 }
 //提交种植品类
 export function submitChoices(params:any) {
-  return httpAxios.get<any>(`/android/unit/cultivar/algorithm`, params);
+  return httpAxios.post<any>(`/android/unit/cultivar/algorithm`, params);
 }
 

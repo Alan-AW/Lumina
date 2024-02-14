@@ -14,13 +14,16 @@ import { createStyles } from "src/helpers/style";
 import useRequest from "src/hooks/useRequest";
 import Details from "./details";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import LocalesText from "src/components/Text";
+import { locales } from "src/helpers/localesText";
 
 
 const AddPage = () => {
     const { loading, data, error } = useRequest(() => getChoices());
     const [selectItem, setSelectItem] = useState<any>('')
-    const routes:any = useRoute();
-  
+    const routes: any = useRoute();
+
+
 
     const [isNext, setIsNext] = useState<boolean>(false)
 
@@ -38,13 +41,14 @@ const AddPage = () => {
                 <ShadowCard style={{ padding: 15, marginTop: 30 }}>
                     <AutoView isRow>
                         <RadioIcon size={15} color={colors.checked} />
-                        <AutoText>
-                            Aisle #001
-                        </AutoText>
+                        <LocalesText languageKey={locales.Aisle} right={10} rightText="#001" />
+                       
                     </AutoView>
                     <AutoText>
-                        [zone-A] Room#001
+                        <LocalesText leftText="[" rightText="-A]" languageKey={locales.Zone} />
+                        <LocalesText languageKey={locales.Room} rightText="#001" />
                     </AutoText>
+
 
                 </ShadowCard>
             </AutoView>
@@ -87,7 +91,7 @@ const AddPage = () => {
 
 
             </View>
-            { <Details id={selectItem} roomId={routes.params.roomId} clearSelectItem={() => setSelectItem('')} />}
+            {<Details id={selectItem} devicesId={routes.params.devicesId} clearSelectItem={() => setSelectItem('')} />}
 
 
 

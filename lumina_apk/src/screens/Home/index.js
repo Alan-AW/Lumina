@@ -65,10 +65,11 @@ const Card = props => {
   const { t } = useTranslation();
   const { title1, title2, name, cropItemCycle, serial_number, img, id } = props.item;
   const navigation = useNavigation();
-
+  
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Bright', { id, propsItem: props.propsItem, cardItem: { serial_number, currentDay: title2, max: cropItemCycle } })}
+      //onPress={() => navigation.navigate('Bright', { id, propsItem: props.propsItem, cardItem: { serial_number, currentDay: title2, max: cropItemCycle } })}
+      onPress={() => navigation.navigate('AddPage', { devicesId:id, propsItem: props.propsItem, cardItem: { serial_number, currentDay: title2, max: cropItemCycle } })}
       activeOpacity={1}
       style={useInlineStyle({
         marginRight: 32,
@@ -156,12 +157,12 @@ const Home = () => {
   useEffect(() => {
     getIndexList().then(res => {
 
-      console.log(JSON.stringify(res.data), 66696123);
 
       const _data = res.data.map(item => {
 
-        const { max_current, min_current, serial_number } = item.room_desc;
+        const { max_current, min_current, serial_number,id } = item.room_desc;
         return {
+          id,
           max: max_current,
           low: min_current,
           serial_number: serial_number,

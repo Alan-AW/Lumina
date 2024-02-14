@@ -13,10 +13,13 @@ import CustomRadioGroup from "./radioGroup";
 import colors from "src/constants/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { IconButton } from "src/components/Button";
+import ToastService from "src/helpers/toast";
+import LocalesText from "src/components/Text";
+import { locales } from "src/helpers/localesText";
 
 interface DetailsProps {
     id: any,
-    roomId:any,
+    devicesId: any,
     clearSelectItem: () => void;
 }
 
@@ -31,7 +34,7 @@ export default function Details(props: DetailsProps) {
     }, [props.id])
 
     const { loading, data, error } = useRequest(() => getChoicesDetails(props.id), !!props.id);
-    console.log('请求的id', props.id, data, 666);
+    console.log('请求的参数id', props.id, props.devicesId, 666);
 
     const [radioSelected, setRadioSelected] = useState<any>({})
 
@@ -95,51 +98,55 @@ export default function Details(props: DetailsProps) {
     /**
      * 提交接口
      */
-    function confirm(){
-        const submitData:any=[];
-        for(let key in radioSelected){
-            if(!radioSelected[key]){
-                Alert.alert('指令集不能为空');
-                return;
+    function confirm() {
+        const submitData: any = [];
+        for (let key in radioSelected) {
+            if (!radioSelected[key]) {
+                continue;
+                // Alert.alert('指令集不能为空');
+                // return;
             }
-           
+
             //获取choices_self
             for (let index = 0; index < data.length; index++) {
                 const element = data[index];
-                const isId=element.child.find((i:any)=>{
-                    return i.id==key;
+                const isId = element.child.find((i: any) => {
+                    return i.id == key;
                 })
-                if(isId){
+                if (isId) {
                     submitData.push({
-                        id:key,
-                        value:radioSelected[key],
-                        choices_self:element.choices_self,
+                        id: key,
+                        value: radioSelected[key],
+                        choices_self: element.choices_self,
                     })
                 }
             }
         }
-        const params={
+        const params = {
             //设备id
-            'unit': props.roomId,
+            'unit': props.devicesId,
             //蔬菜id
             'cultivar': props.id,
             //指令集
-            algorithm:submitData,
+            algorithm: submitData,
         }
-        submitChoices(params).then((res)=>{
-            console.log('种植成功',res);
-            
-        }).catch(err=>{
-            console.log('种植失败',err);
+        submitChoices(params).then((res) => {
+            console.log('种植成功', res);
+            props.clearSelectItem();
+            ToastService.showToast(res.errs ? JSON.stringify(res.errs) : res.info);
+
+        }).catch(err => {
+            // console.log('种植失败',err);
+            // props.clearSelectItem();
+            ToastService.showToast('种植失败');
+
 
         })
-        console.log(JSON.stringify(params),'提交的参数');
-        
-            
+
+
 
     }
 
-    console.log(radioSelected, 'radioSelected');
 
 
 
@@ -242,17 +249,15 @@ export default function Details(props: DetailsProps) {
                             }
                         </ScrollView>
                         <AutoView style={{ justifyContent: 'flex-end', height: 100, borderTopWidth: 1, borderColor: '#f8f8f8' }} isRow>
-                            <IconButton  onPress={() => {
-                                console.log('清楚选中的函数', 666);
+                            <IconButton onPress={() => {
 
                                 props.clearSelectItem()
                             }}>
-                                <AutoText style={{ color: '#666', paddingRight: 40 }}>cancel</AutoText>
+                                <LocalesText languageKey={locales.cancel} color="#666" right={20} />
 
                             </IconButton>
                             <IconButton onPress={() => confirm()}>
-                                <AutoText style={{ color: colors.checked }}>conFirm</AutoText>
-
+                                <LocalesText languageKey={locales.confirm} color={colors.checked} />
                             </IconButton>
                         </AutoView>
                     </Loading>

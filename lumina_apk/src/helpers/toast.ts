@@ -1,8 +1,10 @@
 import { NativeModules } from 'react-native';
+import {useTranslation} from 'react-i18next'
 
 
 function showToast(text:string,duration?:number){
-    NativeModules.ToastExample.show(text,duration || 3000)
+    const {t}=useTranslation()
+    NativeModules.ToastExample.show(t(text),duration || 3000)
 }
 
 const ToastService={
