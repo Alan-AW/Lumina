@@ -5,6 +5,7 @@ import AutoView from "src/components/AutoView/View";
 import AutoText from "src/components/AutoView/Text";
 import { submitAdmin } from "src/apis/home";
 import ToastService from "src/helpers/toast";
+import { locales } from "src/helpers/localesText";
 
 
 const AUTO_TYPE = 'AUTO_TYPE'
@@ -32,7 +33,7 @@ const SwitchItem=(props)=>{
             console.log("请求结果", res);
             if (res.code == 200) {
                 if (res.errs) {
-                    ToastService.showToast(res.errs);
+                    ToastService.showToast(locales.operationFailed);
                     return;
                 }
                 if (callback) {
@@ -41,9 +42,6 @@ const SwitchItem=(props)=>{
                 }
             }
 
-        }).catch(err => {
-            ToastService.showToast('请求失败');
-            console.log('请求参数', { data: [item] });
         })
     }
 

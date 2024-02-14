@@ -74,6 +74,10 @@
     "userInfo":"个人信息",
     "loginQRCode":"登录二维码",
     "automatic":"自动",
-    "Manual":"手动"
+    "Manual":"手动",
+    "operationSuccessful":"操作成功",
+    "operationFailed":"操作失败",
+    "networkError":"网络连接错误",
+    "requestError":"请求失败"
 
 }

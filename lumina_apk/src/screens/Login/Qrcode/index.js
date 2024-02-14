@@ -22,6 +22,7 @@ import Animated, {
 import Orientation from 'react-native-orientation-locker';
 import ScanScreen from './ScanScreen';
 import ToastService from 'src/helpers/toast';
+import { locales } from 'src/helpers/localesText';
 
 const QrCode = props => {
   const [isActive, setIsActive] = useState(true);
@@ -52,7 +53,7 @@ const QrCode = props => {
     if (info) {
       requestLogin(info).then(res => {
         if (res && !res.status) {
-          ToastService.showToast(res.errs)
+          ToastService.showToast(locales.operationFailed)
           setInfo(null);
           return;
         }

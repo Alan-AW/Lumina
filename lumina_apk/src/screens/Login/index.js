@@ -16,6 +16,7 @@ import storage from 'src/helpers/storage';
 import DialogServer from 'src/helpers/modal';
 import { useTranslation } from 'react-i18next';
 import { fontName } from 'src/constants/font';
+import { locales } from 'src/helpers/localesText';
 
 const WINDOW=Dimensions.get('window')
 
@@ -33,7 +34,8 @@ const FormContent=({navigation})=>{
         requestLogin({account,password}).then(res=>{
             console.log(res,'登陆');
             if(res && !res.status){
-                ToastService.showToast(res.errs)
+                ToastService.showToast(locales.operationFailed);
+
                 return;
             }
             storage.save({
@@ -43,7 +45,7 @@ const FormContent=({navigation})=>{
                
             })
             dispatch(loginInSuccess(res.data))
-            ToastService.showToast(t("LoginSuccess"))
+            ToastService.showToast(locales.LoginSuccess)
             navigation.reset({
                 index: 1,
                 routes: [{ name: 'Home' }],
@@ -51,10 +53,6 @@ const FormContent=({navigation})=>{
             dispatch(updateMenuStatus(false))
       
            
-        }).catch(err=>{
-            console.log(err,'登录失败');
-            //Alert.alert(JSON.stringify(err || err.message))
-           // ToastService.showToast("登录失败")
         })
     }
     function qrCode(){

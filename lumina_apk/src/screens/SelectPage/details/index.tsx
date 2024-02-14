@@ -131,15 +131,8 @@ export default function Details(props: DetailsProps) {
             algorithm: submitData,
         }
         submitChoices(params).then((res) => {
-            console.log('种植成功', res);
             props.clearSelectItem();
             ToastService.showToast(res.errs ? JSON.stringify(res.errs) : res.info);
-
-        }).catch(err => {
-            // console.log('种植失败',err);
-            // props.clearSelectItem();
-            ToastService.showToast('种植失败');
-
 
         })
 

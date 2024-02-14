@@ -3,6 +3,8 @@ import type { AxiosInstance, AxiosRequestConfig, InternalAxiosRequestConfig, Axi
 import storage from 'src/helpers/storage';
 import { LANGUAGE } from "src/constants/lanaguses";
 import { baseUrl } from "src/apis/config";
+import ToastService from "./toast";
+import { locales } from "./localesText";
 //获取当前语言环境
 
 const language=`?language=${LANGUAGE}`
@@ -39,6 +41,7 @@ export class HttpAxios {
         return req;
       },
       (err: AxiosError) => {
+        ToastService.showToast(locales.requestError)
         return Promise.reject(err);
       },
     );

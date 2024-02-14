@@ -74,6 +74,10 @@
     "userInfo":"Personal Information",
     "loginQRCode":"login QRCode",
     "automatic":"automatic",
-    "Manual":"Manual"
+    "Manual":"Manual",
+    "operationSuccessful":"operation successful",
+    "operationFailed":"operation failed",
+    "networkError":"network error",
+    "requestError":"request error"
 
  }
