@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { getIndexList } from 'src/apis/home';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import {
   createStyles,
 } from 'src/helpers/style';
@@ -14,12 +14,19 @@ import ScreenHeader from 'src/components/ScreenHeader';
 import useRequest from 'src/hooks/useRequest';
 import RenderItem from './Item';
 import CustView from 'src/components/FlexView/CustView';
-import { useAppSelector } from 'src/reduxCenter/hooks';
+import { useAppDispatch, useAppSelector } from 'src/reduxCenter/hooks';
+import Loading from 'src/components/Loading';
+import { registerRefresh } from 'src/reduxCenter/actionCreators/refreshAction';
+import useRegister from 'src/hooks/useRegister';
 
 const Home = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { data, loading, err } = useRequest(getIndexList)
+  const { data, loading, refresh } = useRequest(getIndexList, { run: true })
+  useRegister(() => {
+    refresh()
+  });
+
   const renderData = useMemo(() => {
     if (!loading && Array.isArray(data)) {
       return data.map(item => {
@@ -53,14 +60,17 @@ const Home = () => {
         <ScreenHeader title={t('Dashboard')} subtitle={`[${state.company_name}]`} hiddenBack />
       </CustView>
       <View style={styles.scroll}>
-        <View style={{}}>
-          <FlatList
-            data={renderData} // 您的数据数组
-            renderItem={(abc, dd) => {
-              return <RenderItem item={abc.item} navigation={navigation} />
-            }} // 渲染列表项的函数
-          />
-        </View>
+        <Loading loading={loading}>
+          <View style={{}}>
+            <FlatList
+              data={renderData} // 您的数据数组
+              renderItem={(abc, dd) => {
+                return <RenderItem item={abc.item} navigation={navigation} />
+              }} // 渲染列表项的函数
+            />
+          </View>
+        </Loading>
+
       </View>
     </View>
   );

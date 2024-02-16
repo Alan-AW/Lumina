@@ -17,6 +17,8 @@ import ToastService from "src/helpers/toast";
 import LocalesText from "src/components/Text";
 import { locales } from "src/helpers/localesText";
 import { useRoute } from "@react-navigation/native";
+import { useAppDispatch } from "src/reduxCenter/hooks";
+import { uppdateRefresh } from "src/reduxCenter/actionCreators/refreshAction";
 
 interface DetailsProps {
     id: any,
@@ -28,7 +30,6 @@ export default function Details(props: DetailsProps) {
     const [show, setShow] = useState(false)
     const routes: any = useRoute();
 
-    console.log('传入的设备id',routes);
 
     useEffect(() => {
         setShow(!!props.id)
@@ -36,8 +37,8 @@ export default function Details(props: DetailsProps) {
 
     }, [props.id])
 
-    const { loading, data, error } = useRequest(() => getChoicesDetails(props.id), !!props.id);
-    console.log('请求的参数id', props.id, routes.params.devicesId, 666);
+    const { loading, data, error } = useRequest(() => getChoicesDetails(props.id), {run:!!props.id});
+    const dispatch=useAppDispatch()
 
     const [radioSelected, setRadioSelected] = useState<any>({})
 
@@ -85,7 +86,6 @@ export default function Details(props: DetailsProps) {
     }, [loading, data])
 
 
-    // console.log(JSON.stringify(newData), 999);
 
 
 
@@ -136,6 +136,7 @@ export default function Details(props: DetailsProps) {
         submitChoices(params).then((res) => {
             props.clearSelectItem();
             ToastService.showMessage(res.errs ? JSON.stringify(res.errs) : res.info);
+            dispatch(uppdateRefresh({routeKey:'Home',status:true}))
 
         })
 

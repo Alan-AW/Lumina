@@ -99,13 +99,16 @@ const RenderItem = (props: RenderItemProps) => {
             );
           })}
         </ScrollView>
-        <IconButton onPress={() => {
-          navigation.navigate('AddPage',
-            { roomId: item.id,roomCode: item.serial_number})
+        {
+          Array.isArray(item.data) && item.data.length > 0 && <IconButton onPress={() => {
+            navigation.navigate('AddPage',
+              { devicesId: item.data[0].id, roomCode: item.serial_number })
 
-        }} >
-          <IconTianjia size={24} color={colors.checked} />
-        </IconButton>
+          }} >
+            <IconTianjia size={24} color={colors.checked} />
+          </IconButton>
+        }
+
       </View>
     </ShadowCard>
   )

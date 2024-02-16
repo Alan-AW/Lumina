@@ -8,6 +8,9 @@ import colors from "src/constants/colors";
 import { adaptationConvert, createStyles } from "src/helpers/style";
 import { IconJiantouCopy } from "src/iconfont";
 
+//redux 事件注册中心
+//首页注册刷新事件，监听刷新状态
+//添加页修改刷新状态，执行首页刷新事件
 
 export default function Back() {
     const nav = useNavigation()

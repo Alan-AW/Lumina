@@ -60,7 +60,7 @@ const AddPage = () => {
                     <ScrollView style={{ flex: 1, height: 800 }}>
                         <Wrap isRow horizontal={15}>
                             {
-                                [...data,...data].map((item, index) => {
+                                data.map((item, index) => {
                                     return (
                                         <SpaceBetween width={500} top={40} style={{ alignItems: 'flex-start' }} onPress={() => handleClick(item.value)} key={index}>
                                            <CustView width={200} padding={[12,25,0,25]}>
