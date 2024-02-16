@@ -53,6 +53,8 @@ const FormContent=({navigation})=>{
             dispatch(updateMenuStatus(false))
       
            
+        }).catch(()=>{
+            console.log('登录失败',999);
         })
     }
     function qrCode(){

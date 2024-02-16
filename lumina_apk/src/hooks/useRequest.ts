@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 
 
 const useRequest = <T>(fetch: any,run:boolean=true) => {
     const [data, setData] = useState<Array<any>>([]); // Added type for state
     const [loading, setLoading] = useState(true);
+    const refresh:any=useRef(null);
     const [error, setError] = useState<string>(''); // Added type for state
 
     useEffect(() => {
@@ -24,6 +25,9 @@ const useRequest = <T>(fetch: any,run:boolean=true) => {
                     setLoading(false);
                 }
             };
+            refresh.current=()=>{
+                fetchData();
+            }
             if(run){
                 fetchData();
             }
@@ -37,6 +41,9 @@ const useRequest = <T>(fetch: any,run:boolean=true) => {
         data,
         loading,
         error,
+        refresh:()=>{
+            refresh.current();
+        }
     };
 }
 

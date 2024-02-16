@@ -69,3 +69,12 @@ export function getMonth(){
   return months[new Date().getMonth()+1]
   
 }
+
+export function GetPercent(num:any, total:any) {
+  num = parseFloat(num);
+  total = parseFloat(total);
+  if (isNaN(num) || isNaN(total)) {
+    return "-";
+  }
+  return total <= 0 ? 0 : (Math.round(num / total * 10000) / 100.00);
+}

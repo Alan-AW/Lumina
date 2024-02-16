@@ -7,14 +7,16 @@ import { locales } from "src/helpers/localesText";
 interface ImgProps {
     url?: string;
     style?: ImageStyle;
-    size?: number
+    size?: number,
+    radius?:number
 }
 
 function Img(props: ImgProps) {
-    const { url, style = {}, size = 100 } = props;
+    const { url, style = {}, size = 100,radius=0 } = props;
     const [loadingErr, setLoadingErr] = useState(false);
     const mergeStyle: ImageStyle = {
         width: size, height: size,
+        borderRadius:radius,
         ...style,
     }
     return (

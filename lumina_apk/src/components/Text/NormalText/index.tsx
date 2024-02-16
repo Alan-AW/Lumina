@@ -4,7 +4,7 @@ import { Text, TextProps, TextStyle } from 'react-native';
 import { fontName } from 'src/constants/font';
 import { useInlineStyle } from 'src/helpers/style';
 
-type LocalesTextProps = {
+type NormalTextProps = {
   size?: number;
   color?: string;
   isBold?: boolean;
@@ -14,15 +14,11 @@ type LocalesTextProps = {
   right?: number;
   top?: number;
   bottom?: number;
-  languageKey: string;
-  leftText?: string;
-  rightText?: string;
   children?:any;
 };
 
-const LocalesText = (props: TextProps & LocalesTextProps) => {
-  const { t } = useTranslation();
-  const { vertical, left, top, isBold = false, color, size = 35,children, bottom, horizontal, right, leftText, rightText, languageKey } = props;
+const NormalText = (props: TextProps & NormalTextProps) => {
+  const { vertical, left, top, isBold = false, color, size = 35,children, bottom, horizontal, right } = props;
   let styles: TextStyle = {
     fontSize: size,
     fontFamily: fontName.medium,
@@ -37,12 +33,9 @@ const LocalesText = (props: TextProps & LocalesTextProps) => {
 
   return (
     <Text {...props} allowFontScaling={false} style={useInlineStyle({ ...styles, ...newStyle })}>
-      {leftText}
-      {t(languageKey)}
-      {rightText}
       {children}
     </Text>
   );
 };
 
-export default LocalesText;
+export default NormalText;
