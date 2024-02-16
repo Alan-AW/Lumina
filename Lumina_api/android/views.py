@@ -285,7 +285,7 @@ class SendAlgorithmToMQView(APIView):
                 unit=unit, cultivar=cultivar, algorithm=algorithm
             )
             # 将算法数据推上mq队列
-            # start(message=json.dumps(algorithm), device_id=device_id, queue_name='_command')
+            start(message=json.dumps(algorithm), device_id=device_id, queue_name='command')
             # 返回提示信息
             info = 'The data was saved successfully!' if en else '数据保存成功！'
             response = return_response(info=info)

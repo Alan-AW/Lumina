@@ -2,12 +2,13 @@
  * 品类管理
  */
 import { useState, useEffect, useMemo } from 'react'
-import { Table, notification, Button, message, Image } from 'antd'
-import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined } from '@ant-design/icons'
+import { Table, notification, Button, message, Image, Popconfirm } from 'antd'
+import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined, SettingOutlined } from '@ant-design/icons'
 import { FADEIN, pageSize } from 'contants'
-import { getCultvar, postCultvar, patchCultvar, deleteCultvar } from 'network/api'
+import { getCultvar, postCultvar, patchCultvar, deleteCultvar, postCultvarAlgorithm } from 'network/api'
 import { openNotification } from 'utils'
 import CultivarEditModal from 'components/cultivar'
+import AlgorithmEditModal from 'components/cultivar/algorithm'
 import { useTranslation } from "react-i18next";
 
 function Cultivar(props) {
@@ -16,7 +17,7 @@ function Cultivar(props) {
   const [tableData, settableData] = useState([])
   const [tableDataCount, settableDataCount] = useState(0)
   const [openModal, setopenModal] = useState(false)
-  const [openUploadModal, setOpenUploadModal] = useState(false)
+  const [openAlgorithmModal, setOpenAlgorithmModal] = useState(false)
   const [editSate, seteditSate] = useState(false)
   const [editRow, setEditRow] = useState(null)
   const { t, i18n } = useTranslation()
@@ -56,6 +57,41 @@ function Cultivar(props) {
       title: t("cultivar.tableTitle.cycle"),
       dataIndex: 'cycle',
       align: 'center',
+    },
+    {
+      title: t("cultivar.tableTitle.action"),
+      align: 'center',
+      render: row => (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
+          <Button
+            type='primary'
+            shape='circle'
+            icon={<EditOutlined />}
+            onClick={() => editClick(row)}
+          />
+          <Button
+            type='primary'
+            shape='circle'
+            icon={<SettingOutlined />}
+            onClick={() => editAlgorithmClick(row)}
+          />
+          <Popconfirm
+            title={t("cultivar.DelCultivar")}
+            description={t("cultivar.DelCultivarDES")}
+            okText="Yes"
+            okType='danger'
+            cancelText="No"
+            onConfirm={() => deleteRow(row)}
+            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+          >
+            <Button
+              shape='circle'
+              danger
+              icon={<DeleteOutlined />}
+            />
+          </Popconfirm>
+        </div>
+      )
     }
   ]
 
@@ -76,6 +112,7 @@ function Cultivar(props) {
   // 删除回调
   const deleteRow = row => {
     deleteCultvar(row.id).then(res => {
+      console.log(res)
       if (res.status) {
         settableData(tableData.filter(item => item.id !== res.data))
         settableDataCount(tableDataCount - 1)
@@ -88,9 +125,9 @@ function Cultivar(props) {
 
   // 点击添加
   const addClick = () => {
-    setopenModal(true)
     setEditRow(null)
     seteditSate(false)
+    setopenModal(true)
   }
 
   // 点击编辑
@@ -111,10 +148,9 @@ function Cultivar(props) {
 
   // 添加
   const postData = value => {
-    console.log(value)
     postCultvar(value).then(res => {
       if (res.status) {
-        settableData([...tableData, res.data])
+        settableData([res.data, ...tableData])
         settableDataCount(tableDataCount + 1)
         setopenModal(false)
         message.success(res.info)
@@ -170,11 +206,38 @@ function Cultivar(props) {
     />
   ), [editRow, editSate, openModal])
 
+  const editAlgorithmClick = row => {
+    setEditRow(row)
+    setOpenAlgorithmModal(true)
+  }
+
+  // 算法表单提交
+  const onAlgorithmOk = value => {
+    postCultvarAlgorithm(value).then(res => {
+      if (res.status) {
+        setOpenAlgorithmModal(false)
+        message.success(res.info)
+      } else {
+        openNotification(api, 'error', res.errs)
+      }
+    })
+  }
+
+  // 分配算法弹窗
+  const algorithmModal = useMemo(() => (
+    <AlgorithmEditModal
+      openModal={openAlgorithmModal}
+      closeModal={() => setOpenAlgorithmModal(false)}
+      onOk={onAlgorithmOk}
+      initValue={editRow}
+    />
+  ), [editRow, openAlgorithmModal])
+
   return (
     <>
       {contextHolder}
       <Button
-        callback={addClick}
+        onClick={addClick}
         children={t('cultivar.AddCultivar')}
         style={{ marginBottom: "var(--content-margin)" }}
         type='primary'
@@ -182,6 +245,7 @@ function Cultivar(props) {
       />
       {table}
       {editModal}
+      {algorithmModal}
     </>
   )
 }

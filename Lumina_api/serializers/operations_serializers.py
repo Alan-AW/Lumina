@@ -4,7 +4,7 @@ from django.conf import settings as sys
 from django.forms import model_to_dict
 from rest_framework import serializers
 from operations.models import Company, Room, Unit, Temperature, Lighting, UnitSetting, Species, \
-    Cultivars, Models, Phases, Instruction, Action, Triggers, UnitSettingsList, Cultivar
+    Cultivars, Models, Phases, Instruction, Action, Triggers, UnitSettingsList, Cultivar, Algorithm
 from users.models import Roles
 from utils.methods import computed_sowing_time
 
@@ -216,7 +216,17 @@ class UnitSettingsListSer(serializers.ModelSerializer):
 class CultivarSer(serializers.ModelSerializer):
     class Meta:
         model = Cultivar
-        exclude = ['algorithm']
+        fields = '__all__'
+        extra_kwargs = {
+            'algorithm': {'read_only': True},
+        }
+
+
+# 算法管理序列化
+class AlgorithmSer(serializers.ModelSerializer):
+    class Meta:
+        model = Algorithm
+        fields = '__all__'
 
 
 # 设备设置项序列化

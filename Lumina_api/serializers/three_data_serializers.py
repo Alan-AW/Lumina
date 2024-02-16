@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from operations.models import Species, Cultivars, Models, Phases, Instruction, Action, Triggers, EnvironmentalOptions, \
-    Company, UnitSettingsList
+    Company, UnitSettingsList, Algorithm
 
 
 class SpeciesDataSer(serializers.ModelSerializer):
@@ -76,3 +76,25 @@ class UnitSettingsListChoicesEnSer(serializers.ModelSerializer):
     class Meta:
         model = UnitSettingsList
         fields = ['label', 'value']
+
+
+class ChoicesAlgorithmCnSer(serializers.ModelSerializer):
+    title = serializers.SerializerMethodField()
+
+    def get_title(self, row):
+        return f'{row.subject_cn}-{row.title_cn}'
+
+    class Meta:
+        model = Algorithm
+        fields = ['title', 'id']
+
+
+class ChoicesAlgorithmEnSer(serializers.ModelSerializer):
+    title = serializers.SerializerMethodField()
+
+    def get_title(self, row):
+        return f'{row.subject_en}-{row.title_en}'
+
+    class Meta:
+        model = Algorithm
+        fields = ['title', 'id']

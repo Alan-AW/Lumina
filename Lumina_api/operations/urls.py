@@ -1,9 +1,9 @@
 from django.urls import path, re_path
 from operations.views import RoomView, UnitView, SaveSensorDataView, ExportThree, SpeciesView, CultivarsView, \
     ModelsView, PhasesView, InstructionView, ActionView, TriggersView, CompanyView, CompanyUploadLogo, UnitSettingsListView, \
-    UnitSettingView, GetUnitOnlineView, UnitInfoView, CultivarView
+    UnitSettingView, GetUnitOnlineView, UnitInfoView, CultivarView, CultivarAlgorithmView, AlgorithmView
 from operations.choices_api_view import ChoicesRoomView, ChoicesRoleView, ChoicesCompanyView, \
-    ChoicesEnvironmentalOptions, ChoicesUnitSettings
+    ChoicesEnvironmentalOptions, ChoicesUnitSettings, CultivarChoicesAlgorithmView, GetCultivarAlgorithmView
 
 app_name = 'operations'
 urlpatterns = [
@@ -33,6 +33,12 @@ urlpatterns = [
     re_path(r'get/unit/info/(?P<device_id>\d+)$', UnitInfoView.as_view()),
     # 3.品类管理
     re_path(r'cultivar/(?P<row_id>\d+)?$', CultivarView.as_view()),
+    # 4.品类管理选择算法
+    path('algorithm/choices', CultivarChoicesAlgorithmView.as_view()),
+    # 品类管理-分配算法
+    path('cultivar/algorithm', CultivarAlgorithmView.as_view()),
+    # 5.算法管理
+    re_path(r'algorithm/(?P<row_id>\d+)?$', AlgorithmView.as_view()),
     # ############################## 以下API是否需要：待定 ##############################
     # 传感器请求保存数据
     re_path(r'save/sensor/(?P<types>temperature|lighting)$', SaveSensorDataView.as_view()),

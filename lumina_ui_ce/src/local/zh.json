@@ -177,6 +177,7 @@
     "机器管理": "机器管理",
     "品类管理": "品类管理",
     "操作日志": "操作日志",
+    "算法管理": "算法管理",
     "设备功能列表": "设备功能"
   },
   "Permission": {
@@ -321,6 +322,7 @@
   },
   "cultivar": {
     "AddCultivar": "添加品类",
+    "EditAlgorithm": "配置品类算法",
     "title": "品类管理",
     "tableTitle": {
       "index": "序号",
@@ -329,8 +331,76 @@
       "name_cn": "中文名称",
       "desc_en": "英文描述",
       "desc_cn": "中文描述",
-      "cycle": "生长周期",
+      "cycle": "生长周期（天）",
+      "action": "操作",
+      "algorithm": "种植算法"
+    },
+    "DelCultivar": "删除品类",
+    "DelCultivarDES": "确定删除该品类吗?",
+    "rules": {
+      "icon": "品类图片不可为空！",
+      "name_en": "英文名称不可为空！",
+      "name_cn": "中文名称不可为空！",
+      "desc_en": "英文描述不可为空！",
+      "desc_cn": "中文描述不可为空！",
+      "cycle": "生长周期（天）不可为空！"
+    },
+    "placeholder": {
+      "icon": "请输入品类图片地址！",
+      "name_en": "请输入英文名称！",
+      "name_cn": "请输入中文名称！",
+      "desc_en": "请输入英文描述！",
+      "desc_cn": "请输入中文描述！",
+      "cycle": "请输入生长周期（天）！"
+    }
+  },
+  "algorithm": {
+    "AddAlgorithm": "添加算法",
+    "title": "算法管理",
+    "tableTitle": {
+      "index": "序号",
+      "subject_cn": "中文主题",
+      "subject_en": "英文主题",
+      "title_cn": "中文标题",
+      "title_en": "英文标题",
+      "desc_cn": "中文描述",
+      "desc_en": "英文描述",
+      "choices_cn": "中文选项",
+      "choices_en": "英文选项",
+      "cmd": "指令集",
+      "app_show": "用户可选",
+      "push": "是否推送",
       "action": "操作"
+    },
+    "DelAlgorithm": "删除算法",
+    "DelAlgorithmDES": "确定删除该算法吗?",
+    "rules": {
+      "subject_cn": "中文主题不可为空!",
+      "subject_en": "英文主题不可为空!",
+      "title_cn": "中文标题不可为空!",
+      "title_en": "英文标题不可为空!",
+      "desc_cn": "中文释义不可为空!",
+      "desc_en": "英文释义不可为空!",
+      "choices_cn": "中文选项不可为空!",
+      "choices_en": "英文选项不可为空!",
+      "cmd": "指令集不可为空!",
+      "app_show": "请选择是否在app显示!",
+      "push": "请选择是否推送该指令!"
+    },
+    "placeholder": {
+      "subject_cn": "请输入中文主题",
+      "subject_en": "请输入英文主题",
+      "title_cn": "请输入中文标题",
+      "title_en": "请输入英文标题",
+      "desc_cn": "请输入中文释义",
+      "desc_en": "请输入英文释义",
+      "choices_cn": "请输入中文选项",
+      "choices_en": "请输入英文选项",
+      "cmd": "请输入指令集",
+      "app_show": "请选择是否在app显示",
+      "push": "请选择是否推送该指令",
+      "on": "开启",
+      "off": "关闭"
     }
   }
 }

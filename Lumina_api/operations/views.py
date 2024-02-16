@@ -1,9 +1,9 @@
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from operations.models import Room, Unit, Temperature, Species, RoomDesc, Lighting, Cultivars, Models, Triggers, \
-    Action, Instruction, Phases, Company, UnitSettingsList, UnitSetting, Cultivar
+    Action, Instruction, Phases, Company, UnitSettingsList, UnitSetting, Cultivar, Algorithm
 from serializers.operations_serializers import RoomSer, UnitSer, ExportDataSer, CompanySer, UnitSettingsListSer, \
-    UnitSettingSer, CultivarSer
+    UnitSettingSer, CultivarSer, AlgorithmSer
 from serializers.three_data_serializers import SpeciesDataSer, CultivarsDataSer, ModelsDataSer, PhasesDataSer, \
     InstructionDataSer, ActionDataSer, TriggersDataSer
 from utils.methods import return_response, get_data
@@ -250,6 +250,29 @@ class CultivarView(BaseView):
     permission_classes = [SuperPermission]
     models = Cultivar
     serializer = CultivarSer
+
+
+# 品类管理分配算法
+class CultivarAlgorithmView(APIView):
+    permission_classes = [SuperPermission]
+
+    def post(self, request):
+        cultivar_id = request.data.get('id')
+        algorithm_list = request.data.get('algorithm')
+        cultivar_obj = Cultivar.objects.filter(pk=cultivar_id).first()
+        if not cultivar_obj:
+            response = return_response(status=False, error=f'未找到id为{cultivar_id}的品类!')
+            return JsonResponse(response)
+        cultivar_obj.algorithm.set(algorithm_list)
+        response = return_response(info='操作成功！')
+        return JsonResponse(response)
+
+
+# 算法管理
+class AlgorithmView(BaseView):
+    permission_classes = [SuperPermission]
+    models = Algorithm
+    serializer = AlgorithmSer
 
 
 # 树型结构6张表导出

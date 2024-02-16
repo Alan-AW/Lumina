@@ -74,20 +74,21 @@ class ValidateUnitCultivarAlgorithmToMqSer(serializers.Serializer):
     def validate(self, attrs):
         attrs['device_id'] = attrs.get('unit').deviceId
         algorithm = attrs.get('algorithm')
+        for item in algorithm:
+            del item['choices_self']
         # algorithm目标格式,
-        a = [
-            {"choices_self": True, "id": 8, "value": 1},
-            {"choices_self": True, "id": 8, "value": 1},
-            {"choices_self": True, "id": 8, "value": 1},
-            {"choices_self": True, "id": 8, "value": 1},
-            {"choices_self": True, "id": 8, "value": 1},
-            {"choices_self": True, "id": 8, "value": 1},
-        ]
+        # a = [
+        #     {"choices_self": True, "id": 8, "value": 1},
+        #     {"choices_self": True, "id": 8, "value": 1},
+        #     {"choices_self": True, "id": 8, "value": 1},
+        #     {"choices_self": True, "id": 8, "value": 1},
+        #     {"choices_self": True, "id": 8, "value": 1},
+        #     {"choices_self": True, "id": 8, "value": 1},
+        # ]
         # algorithm序列化之后的格式，也就是要推向mq队列的数据直接拼接好进行返回
         attrs['algorithm'] = {
-            "type": "",
-            "data": {
-                #  内容待定
-            }
+            "type": "test",
+            #  内容待定
+            "data": algorithm
         }
         return attrs

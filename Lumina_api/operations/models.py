@@ -175,6 +175,7 @@ class Algorithm(models.Model):
     choices_self = models.BooleanField(default=False, verbose_name='自定义选项,APP端用于分辨是否有子集的字段')
     cmd = models.JSONField(default=list, verbose_name='算法指令集')
     app_show = models.BooleanField(default=True, verbose_name='是否显示在APP')
+    push = models.BooleanField(default=True, verbose_name='是否推送')
 
     class Meta:
         db_table = 'algorithm'

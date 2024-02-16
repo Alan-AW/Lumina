@@ -1,9 +1,9 @@
 from rest_framework.views import APIView
 from django.http import JsonResponse
-from operations.models import Room, EnvironmentalOptions, Company, UnitSettingsList
+from operations.models import Room, EnvironmentalOptions, Company, UnitSettingsList, Cultivar, Algorithm
 from serializers.operations_serializers import ChoicesRoomSer, ChoicesRoleSer
-from serializers.three_data_serializers import ChoicesCompanySer, EnvironmentalOptionsChoicesSer,\
-    UnitSettingsListChoicesCnSer, UnitSettingsListChoicesEnSer
+from serializers.three_data_serializers import ChoicesCompanySer, EnvironmentalOptionsChoicesSer, \
+    UnitSettingsListChoicesCnSer, UnitSettingsListChoicesEnSer, ChoicesAlgorithmCnSer, ChoicesAlgorithmEnSer
 from users.models import Roles
 from utils.methods import return_response
 from utils.permissions.user_permission import SuperPermission
@@ -58,6 +58,7 @@ class ChoicesCompanyView(APIView):
         return JsonResponse(response)
 
 
+# 废弃接口
 class ChoicesEnvironmentalOptions(APIView):
     def get(self, request):
         queryset = EnvironmentalOptions.objects.all()
@@ -66,6 +67,7 @@ class ChoicesEnvironmentalOptions(APIView):
         return JsonResponse(response)
 
 
+# 选择设备设置项
 class ChoicesUnitSettings(APIView):
     permission_classes = [SuperPermission]
 
@@ -77,4 +79,36 @@ class ChoicesUnitSettings(APIView):
         else:
             ser = UnitSettingsListChoicesEnSer(queryset, many=True)
         response = return_response(data=ser.data)
+        return JsonResponse(response)
+
+
+# 选择品类算法
+class CultivarChoicesAlgorithmView(APIView):
+    permission_classes = [SuperPermission]
+
+    def get(self, request):
+        language = request.query_params.get('language')
+        en = language == 'en'
+        q = Algorithm.objects.all().order_by('id')
+        if en:
+            ser = ChoicesAlgorithmEnSer(q, many=True)
+        else:
+            ser = ChoicesAlgorithmCnSer(q, many=True)
+        data = ser.data
+        response = return_response(data=data)
+        return JsonResponse(response)
+
+
+# 查询品类算法
+class GetCultivarAlgorithmView(APIView):
+    permission_classes = [SuperPermission]
+
+    def get(self, request, row_id):
+        cultivar = Cultivar.objects.filter(pk=row_id).first()
+        if not cultivar:
+            response = return_response(status=False, error=f'未找到id为 {row_id} 的品类')
+            return JsonResponse(response)
+        queryset = cultivar.algorithm.all().order_by('id')
+        data = [item.id for item in queryset]
+        response = return_response(data=data)
         return JsonResponse(response)

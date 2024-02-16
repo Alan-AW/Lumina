@@ -35,7 +35,6 @@ def callback(ch, method, properties, body):
     """
     print('↓' * 50)
     print('收到队列消息：')
-    print(body)
     print('↑' * 50)
     # 将字节串转为字典
     data = eval(body)

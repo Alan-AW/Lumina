@@ -22,6 +22,7 @@ export const choicesEnvironmentalOptions = () => axios.get('/manager/choices/env
 export const choicesCompany = () => axios.get('/manager/company/choices')
 export const choicesUnitSetList = language => axios.get(`/manager/unit/settings/list/choices?language=${language}`)
 export const getNavPermission = () => axios.get('/auth/permission/choices')
+export const choicesAlgorithm = (language = 'cn') => axios.get(`/manager/algorithm/choices?language=${language}`)
 
 // 用户管理页面
 export const getUser = params => axios.get('/auth/user/', { params })
@@ -71,9 +72,15 @@ export const patchSetList = (id, data) => axios.patch(`/manager/unit/settings/li
 export const deleteSetList = id => axios.delete(`/manager/unit/settings/list/${id}`)
 // 品类管理
 export const getCultvar = params => axios.get('/manager/cultivar/', { params })
+export const postCultvarAlgorithm = data => axios.post('/manager/cultivar/algorithm', data)
 export const postCultvar = data => axios.post('/manager/cultivar/', data)
 export const patchCultvar = (id, data) => axios.patch(`/manager/cultivar/${id}`, data)
 export const deleteCultvar = id => axios.delete(`/manager/cultivar/${id}`)
+// 算法管理
+export const getAlgorithm = params => axios.get('/manager/algorithm/', { params })
+export const postAlgorithm = data => axios.post('/manager/algorithm/', data)
+export const patchAlgorithm = (id, data) => axios.patch(`/manager/algorithm/${id}`, data)
+export const deleteAlgorithm = id => axios.delete(`/manager/algorithm/${id}`)
 // 树结构
 export const exportThreeData = () => axios.get('/manager/export/three')
 export const getSpecies = params => axios.get('/manager/species/', { params })

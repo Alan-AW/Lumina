@@ -185,6 +185,7 @@
     "机器管理": "machineManagement",
     "品类管理": "CultivarManagement",
     "操作日志": "operationLogs",
+    "算法管理": "AlgorithmManagement",
     "设备功能列表": "unitSetList"
   },
   "Permission": {
@@ -330,6 +331,7 @@
   },
   "cultivar": {
     "AddCultivar": "AddCultivar",
+    "EditAlgorithm": "Configure the algorithm",
     "title": "Cultivar Management",
     "tableTitle": {
       "index": "Index",
@@ -338,8 +340,77 @@
       "name_cn": "Chinese Name",
       "desc_en": "English Description",
       "desc_cn": "Chinese Description",
-      "cycle": "Growth cycle",
+      "cycle": "Growth cycle(day)",
+      "action": "action",
+      "algorithm": "Planting algorithms"
+    },
+    "DelCultivar": "Delete Cultivar",
+    "DelCultivarDES": "Are you sure you want to delete the Cultivar?",
+    "rules": {
+      "icon": "Icon can not be null!",
+      "name_en": "English Name can not be null!",
+      "name_cn": "Chinese Name can not be null!",
+      "desc_en": "English Description can not be null！",
+      "desc_cn": "Chinese Description can not be null！",
+      "cycle": "Growth cycle(day) can not be null！"
+    },
+    "placeholder": {
+      "icon": "Please enter the image address!",
+      "name_cn": "Please enter the English name！",
+      "name_en": "Please enter the Chinese Name！",
+      "desc_en": "Please enter the English Description！",
+      "desc_cn": "Please enter the Chinese Description！",
+      "cycle": "Please enter the Growth cycle(day)"
+    }
+  },
+  "algorithm": {
+    "AddAlgorithm": "AddAlgorithm",
+    "EditAlgorithm": "EditAlgorithm",
+    "title": "Algorithm management",
+    "tableTitle": {
+      "index": "Index",
+      "subject_cn": "Chinese subject",
+      "subject_en": "English subject",
+      "title_cn": "Chinese title",
+      "title_en": "English title",
+      "desc_cn": "Chinese description",
+      "desc_en": "English description",
+      "choices_cn": "Chinese choices",
+      "choices_en": "English choices",
+      "cmd": "cmd",
+      "app_show": "User selectable",
+      "push": "push cmd",
       "action": "action"
+    },
+    "DelAlgorithm": "Del Algorithm",
+    "DelAlgorithmDES": "Are you sure you want to delete the algorithm?",
+    "rules": {
+      "subject_cn": "Chinese subject can not be null!",
+      "subject_en": "English subject can not be null!",
+      "title_cn": "Chinese title can not be null!",
+      "title_en": "English title can not be null!",
+      "desc_cn": "Chinese description can not be null!",
+      "desc_en": "English description can not be null!",
+      "choices_cn": "Chinese choices can not be null!",
+      "choices_en": "English choices can not be null!",
+      "cmd": "cmd can not be null!",
+      "app_show": "User selectable can not be null!",
+      "push": "push cmd can not be null!"
+    },
+    "placeholder": {
+      "subject_cn": "Enter the Chinese subject",
+      "subject_en": "Enter the English subject",
+      "title_cn": "Enter the Chinese title",
+      "title_en": "Enter the English title",
+      "desc_cn": "Enter the Chinese description",
+      "desc_en": "Enter the English description",
+      "choices_cn": "Enter the Chinese choices",
+      "choices_en": "Enter the English choices",
+      "cmd": "Enter the cmd",
+      "app_show": "Set the User selectable",
+      "push": "Set the push cmd",
+      "on": "on",
+      "off": "off"
     }
   }
 }

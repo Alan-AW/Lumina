@@ -3,7 +3,8 @@
 const BaseUrl = {
   development: 'http://localhost:8000',
   // development: 'http://lumina.toriches.cn',
-  production: 'http://lumina.toriches.cn'
+  production: 'http://47.110.240.100:8001'
+  // production: 'http://lumina.toriches.cn'
 }
 
 export default function getBaseUrl() {
