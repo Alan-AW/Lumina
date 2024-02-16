@@ -31,6 +31,8 @@ const Unit = lazy(() => import('pages/unit'))
 const UnitSetList = lazy(() => import('pages/unitSetList'))
 // 品种管理
 const Cultivar = lazy(() => import('pages/cultivar'))
+// 算法管理
+const Algorithm = lazy(() => import('pages/algorithm'))
 // 三维表格模版
 const ThreeTable = lazy(() => import('pages/threeTable'))
 const Cultivars = lazy(() => import('pages/threeTable/child/cultivars'))
@@ -52,6 +54,7 @@ const LocalRouterMap = {
   '/unit': { icon: <ClusterOutlined />, element: <Unit /> },
   '/unit_set_list': { icon: <ClusterOutlined />, element: <UnitSetList /> },
   '/cultivar': { icon: <ClusterOutlined />, element: <Cultivar /> },
+  '/algorithm': { icon: <ClusterOutlined />, element: <Algorithm /> },
   '/three_table': { icon: <ClusterOutlined />, element: <ThreeTable /> },
   '/cultivars': <Cultivars />,
   '/models': <Models />,

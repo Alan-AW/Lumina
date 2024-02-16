@@ -45,7 +45,7 @@ const TopHeader = props => {
     }
   ]
   // 国际化切换选项
-  const lntlOptions = [{ label: 'zh_CN', value: 'zh_CN' }, { label: 'en_GB', value: 'en_GB' }]
+  const lntlOptions = [{ label: '中文', value: 'zh_CN' }, { label: 'English', value: 'en_GB' }]
   function changeLntlT(val) {
     i18n.changeLanguage(val === 'zh_CN' ? 'zh' : 'en')
     changeLntl(val)
