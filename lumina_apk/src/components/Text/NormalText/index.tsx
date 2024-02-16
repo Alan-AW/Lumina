@@ -15,10 +15,11 @@ type NormalTextProps = {
   top?: number;
   bottom?: number;
   children?:any;
+  text?:string;
 };
 
 const NormalText = (props: TextProps & NormalTextProps) => {
-  const { vertical, left, top, isBold = false, color, size = 35,children, bottom, horizontal, right } = props;
+  const { vertical, left, top, isBold = false, color, size = 30,children, bottom, horizontal, right,text } = props;
   let styles: TextStyle = {
     fontSize: size,
     fontFamily: fontName.medium,
@@ -33,6 +34,7 @@ const NormalText = (props: TextProps & NormalTextProps) => {
 
   return (
     <Text {...props} allowFontScaling={false} style={useInlineStyle({ ...styles, ...newStyle })}>
+        {text}
       {children}
     </Text>
   );

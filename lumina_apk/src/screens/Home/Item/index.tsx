@@ -15,7 +15,9 @@ import LocalesText from 'src/components/Text';
 import { locales } from 'src/helpers/localesText';
 import NormalText from 'src/components/Text/NormalText';
 import CustView from 'src/components/FlexView/CustView';
-import HomeCard from './card';
+import HomeCard from '../card';
+import { IconButton } from 'src/components/Button';
+import { IconTianjia } from 'src/iconfont';
 
 interface RenderItemProps {
   item: any,
@@ -32,11 +34,7 @@ const RenderItem = (props: RenderItemProps) => {
   return (
     <ShadowCard style={styles.scrollItem} hiddenShadow={true}>
       <View style={styles.scrollContainer}>
-        <TouchableOpacity activeOpacity={1} onPress={() => {
-          navigation.navigate('AddPage',
-            { roomId: item.id })
-
-        }} style={useInlineStyle({ width: 350, marginRight: 100 })}>
+        <View style={useInlineStyle({ width: 350, marginRight: 100 })}>
           <LocalesText languageKey={locales.Room} rightText={` #${item.serial_number}`} size={28} color='#000' />
           <CustView
             style={{
@@ -60,7 +58,8 @@ const RenderItem = (props: RenderItemProps) => {
                 <NormalText color='#000' size={27} bottom={5}>
                   {item.max}
                 </NormalText>
-                <LocalesText languageKey={locales.MaxCurrentTemperature} color='#000' size={22} bottom={30} />
+                <LocalesText languageKey={locales.MaxCurrentTemperature} color='#000' size={22} top={0} bottom={30} />
+
 
               </View>
               <CustView top={5}>
@@ -72,8 +71,8 @@ const RenderItem = (props: RenderItemProps) => {
               </CustView>
             </CustView>
           </CustView>
-        </TouchableOpacity>
-        <ScrollView horizontal style={{ minHeight: 118.25 }} showsHorizontalScrollIndicator={false}>
+        </View>
+        <ScrollView horizontal style={{ minHeight: 118.25, paddingTop: 32 }} showsHorizontalScrollIndicator={true}>
           {item.data.map((item2: any, index: number) => {
             const cardItem = {
               id: item2.id,
@@ -86,8 +85,13 @@ const RenderItem = (props: RenderItemProps) => {
             }
             return (
               <HomeCard key={index} item={cardItem} onPress={() => {
+
                 navigation.navigate('Bright', {
-                  id: item2.id, propsItem: item2, cardItem: { serial_number: cardItem.serial_number, currentDay: cardItem.title2, max: cardItem.cropItemCycle }
+                  id: item2.id, propsItem: item2, cardItem: {
+                    serial_number: item2.serial_number,
+                    currentDay: item2.date,
+                    max: item2.cropItemCycle
+                  }
                 })
 
               }} />
@@ -95,6 +99,13 @@ const RenderItem = (props: RenderItemProps) => {
             );
           })}
         </ScrollView>
+        <IconButton onPress={() => {
+          navigation.navigate('AddPage',
+            { roomId: item.id,roomCode: item.serial_number})
+
+        }} >
+          <IconTianjia size={24} color={colors.checked} />
+        </IconButton>
       </View>
     </ShadowCard>
   )
@@ -113,6 +124,7 @@ const styles = createStyles({
     display: 'flex',
     justifyContent: 'flex-start',
     flexDirection: 'row',
+    position: 'relative'
   },
   scroll: {
     paddingLeft: 32,

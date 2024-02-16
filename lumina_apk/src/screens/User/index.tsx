@@ -5,24 +5,30 @@ import AutoView from "src/components/AutoView/View";
 import ScreenHeader from "src/components/ScreenHeader";
 import ShadowCard from "src/components/Shadow";
 import { useAppSelector } from "src/reduxCenter/hooks";
-import { useTranslation } from 'react-i18next';
 import { fontName } from "src/constants/font";
 import { createStyles } from "src/helpers/style";
 import { baseUrl } from "src/apis/config";
+import LocalesText from "src/components/Text";
+import { locales } from "src/helpers/localesText";
+import NormalText from "src/components/Text/NormalText";
+import { useTranslation } from "react-i18next";
 
 
 
 
 const User = () => {
     const state = useAppSelector(state => state.user.userInfo);
-    const { t } = useTranslation()
+    const {t}=useTranslation();
 
     return (
         <AutoView style={{ flex: 1, backgroundColor: '#fff', marginLeft: 16, padding: 32 }}>
             <ScreenHeader title={t('userInfo')} subtitle='' hiddenBack={true} />
+            
             <AutoView style={{ marginTop: 40, justifyContent: 'center', alignItems: 'center' }}>
-                <ShadowCard style={{ width: '40%',
-                 paddingLeft: 20, paddingRight: 20, paddingBottom: 40 }}>
+                <ShadowCard style={{
+                    width: '40%',
+                    paddingLeft: 20, paddingRight: 20, paddingBottom: 40
+                }}>
                     <View style={styles.item}>
                         <AutoView isRow>
                             <AutoView isRow style={{
@@ -35,12 +41,12 @@ const User = () => {
 
                             <AutoView style={{ paddingLeft: 32 }}>
                                 <AutoView isRow>
-                                    <AutoText size={40} >{t('lastName')}:</AutoText>
-                                    <AutoText style={{ fontSize: 40, paddingLeft: 50 }}>{state.last_name}</AutoText>
+                                    <LocalesText languageKey={locales.lastName} />
+                                    <NormalText text={state.last_name} left={50} />
                                 </AutoView>
                                 <AutoView isRow style={{ marginTop: 15 }}>
-                                    <AutoText size={40}  >{t('firstName')}:</AutoText>
-                                    <AutoText style={{ fontSize: 40, paddingLeft: 50 }}>{state.first_name}</AutoText>
+                                    <LocalesText languageKey={locales.firstName} />
+                                    <NormalText text={state.firstName} left={50} />
                                 </AutoView>
                             </AutoView>
 
@@ -51,30 +57,32 @@ const User = () => {
                     </View>
                     <View style={styles.item}>
                         <AutoView isRow style={{ justifyContent: 'space-between', paddingRight: 32, paddingLeft: 32 }}>
-                            <AutoText style={styles.label}>{t('loginQRCode')}</AutoText>
+                            <LocalesText left={64} languageKey={locales.loginQRCode} />
                             <Image source={{ uri: baseUrl + state.qrcode }} style={{ width: 100, height: 100 }} />
 
                         </AutoView>
                     </View>
 
                     <View style={styles.item}>
-                        <AutoView isRow style={{ paddingLeft: 32,alignItems:'center' }}>
-                            <AutoText style={styles.label}>{t('role')}:</AutoText>
-                            <AutoText  style={styles.label}>{state.role}</AutoText>
+                        <AutoView isRow style={{ paddingLeft: 32, alignItems: 'center' }}>
+                            <LocalesText left={64} languageKey={locales.role} />
+                            <NormalText text={state.role} left={64} />
+
                         </AutoView>
 
                     </View>
                     <View style={styles.item}>
                         <AutoView isRow style={{ paddingLeft: 32 }}>
-                            <AutoText style={styles.label}>{t('account')}:</AutoText>
-                            <AutoText style={styles.label}>{state.account}</AutoText>
+                            <LocalesText left={64} languageKey={locales.account} />
+                            <NormalText text={state.account} left={64} />
+
                         </AutoView>
 
                     </View>
-                    <View style={{paddingBottom:50,marginTop:40}}>
-                        <AutoView isRow style={{ paddingLeft: 32,alignItems:'center' }}>
-                            <AutoText style={styles.label}>{t('company')}:</AutoText>
-                            <AutoText style={styles.label}>{state.company_name}</AutoText>
+                    <View style={{ paddingBottom: 50, marginTop: 40 }}>
+                        <AutoView isRow style={{ paddingLeft: 32, alignItems: 'center' }}>
+                            <LocalesText left={64} languageKey={locales.company} />
+                            <NormalText text={state.company_name} left={64} />
                         </AutoView>
 
                     </View>

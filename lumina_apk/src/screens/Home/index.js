@@ -14,6 +14,7 @@ import ScreenHeader from 'src/components/ScreenHeader';
 import useRequest from 'src/hooks/useRequest';
 import RenderItem from './Item';
 import CustView from 'src/components/FlexView/CustView';
+import { useAppSelector } from 'src/reduxCenter/hooks';
 
 const Home = () => {
   const { t } = useTranslation();
@@ -43,11 +44,13 @@ const Home = () => {
     }
 
   }, [loading])
+  const state = useAppSelector(state => state.user.userInfo);
+
 
   return (
     <View style={{ flex: 1 }}>
       <CustView padding={[0, 0, 0, 32]}>
-        <ScreenHeader title={t('Dashboard')} subtitle={`[ ${t("Bright Renaissance")} - ${t("Zone")} A]`} hiddenBack />
+        <ScreenHeader title={t('Dashboard')} subtitle={`[${state.company_name}]`} hiddenBack />
       </CustView>
       <View style={styles.scroll}>
         <View style={{}}>

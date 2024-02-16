@@ -16,16 +16,15 @@ interface FlexProps {
     padding?: number | Array<number>;
     onPress?:()=>void;
     children?:any;
-    width?:any;
+    isRow?:boolean;
 }
 
-const SpaceBetween = (props: FlexProps) => {
-    const { left, top, right, radius, bgColor, vertical, horizontal, bottom, padding,width } = props;
+const Wrap = (props: FlexProps) => {
+    const { left, top, right, radius, bgColor, vertical, horizontal, bottom, padding,isRow } = props;
     let styles: ViewStyle = {
         borderRadius: radius || 0,
-        justifyContent: 'space-between',
-        flexDirection:'row',
-        alignItems:'center',
+        flexWrap:'wrap',
+        flexDirection:isRow?'row':'column',
         marginTop: vertical || top,
         marginBottom: vertical || bottom,
         marginLeft: horizontal || left,
@@ -33,9 +32,6 @@ const SpaceBetween = (props: FlexProps) => {
         backgroundColor: bgColor,
         position:'relative'
     };
-    if(width){
-        styles.width=width;
-    }
     if (padding && typeof padding === 'number') {
         styles.padding = padding
     }
@@ -59,4 +55,4 @@ const SpaceBetween = (props: FlexProps) => {
     )
 }
 
-export default SpaceBetween;
+export default Wrap;

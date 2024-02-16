@@ -4,6 +4,7 @@ import { jsonIsEmpty } from "./utils";
 import { Dimensions } from "react-native";
 import orientation from 'react-native-orientation-locker'
 const { width: VIEWPORT_WIDTH, height: VIEWPORT_HEIGHT } = Dimensions.get("screen");
+
 //是否横屏
 export const isLandscapeScreen=()=>{
   return VIEWPORT_WIDTH>VIEWPORT_HEIGHT
@@ -11,13 +12,14 @@ export const isLandscapeScreen=()=>{
 
 /** 根据设计稿尺寸以及屏幕大小进行适配转换. */
 export function adaptationConvert(size: number): number {
+  //  return size;
 
   // 设备尺寸
 
   // 参考设计尺寸
   const REFERENCE_DESIGN_SIZE = isLandscapeScreen()?575:335;
   // 比例
-  const SIZE_RATIO = REFERENCE_DESIGN_SIZE / VIEWPORT_WIDTH;
+  const SIZE_RATIO = REFERENCE_DESIGN_SIZE / 1152;
  
   return Number((size * SIZE_RATIO).toFixed(1));
 }
@@ -36,9 +38,7 @@ export function createStyles<K extends string>(styles: Record<K, TStyle>): Recor
         // if(key=='fontSize'){
         //   itemStyles[key]=itemStyles[key]+30;
         // }
-        if(key==='fontSize'){
-          styles[key]=styles[key]+0
-        }
+       
         (itemStyles[key] as number) = adaptationConvert(itemStyles[key] as number);
         // TODO 后续可以在这里做
       }

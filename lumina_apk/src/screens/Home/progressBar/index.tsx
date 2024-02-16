@@ -6,6 +6,7 @@ interface BarProps{
 }
 
 const MyCustomProgressBar = (props:BarProps) => {
+    const width:any=props.value+"%";
     return (
       <CustView
         style={{
@@ -17,7 +18,7 @@ const MyCustomProgressBar = (props:BarProps) => {
         }}>
         <CustView
           style={{
-            width: `${props.value}%`,
+            width,
             backgroundColor: '#559e18',
             height: '100%',
             position: 'absolute',

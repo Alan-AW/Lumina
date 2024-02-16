@@ -37,10 +37,7 @@ const Plan = () => {
             <View>
               <Text style={styles.headerText3}>{`[ ${t('Zone')} A ${t('Room')} #1`}</Text>
             </View>
-            <RadioIcon color={colors.checked} size={10} />
-            <View>
-              <Text style={styles.headerText3}>{`${t('Aisle')} #001]`}</Text>
-            </View>
+          
           </View>
         )
       }} />

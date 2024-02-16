@@ -16,10 +16,11 @@ interface FlexProps {
     padding?: number | Array<number>;
     onPress?:()=>void;
     children?:any;
+    width?:any;
 }
 
 const CustView = (props: FlexProps) => {
-    const { left, top, right, radius, bgColor, vertical, horizontal, bottom, padding } = props;
+    const { left, top, right, radius, bgColor, vertical, horizontal, bottom, padding,width } = props;
     let styles: ViewStyle = {
         borderRadius: radius || 0,
         marginTop: vertical || top,
@@ -29,6 +30,9 @@ const CustView = (props: FlexProps) => {
         backgroundColor: bgColor,
         position:'relative'
     };
+    if(width){
+        styles.width=width
+    }
     if (padding && typeof padding === 'number') {
         styles.padding = padding
     }

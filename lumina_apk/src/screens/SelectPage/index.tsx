@@ -16,13 +16,20 @@ import Details from "./details";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import LocalesText from "src/components/Text";
 import { locales } from "src/helpers/localesText";
+import Img from "src/components/Image";
+import SpaceBetween from "src/components/FlexView/SpaceBetween";
+import NormalText from "src/components/Text/NormalText";
+import Center from "src/components/FlexView/Center";
+import Wrap from "src/components/FlexView/Wrap";
+import CustView from "src/components/FlexView/CustView";
 
 
 const AddPage = () => {
     const { loading, data, error } = useRequest(() => getChoices());
     const [selectItem, setSelectItem] = useState<any>('')
 
-
+    const routes: any = useRoute();
+    const roomCode = routes.params.roomCode;
 
     const [isNext, setIsNext] = useState<boolean>(false)
 
@@ -31,8 +38,7 @@ const AddPage = () => {
     }
 
 
-   
-    
+
 
     return (
         <AutoView isRow style={{ alignItems: 'flex-start', padding: 30, height: HEIGHT }}>
@@ -40,14 +46,9 @@ const AddPage = () => {
             <AutoView style={{ width: 500, marginRight: 50, height: '100%' }}>
                 <Back />
                 <ShadowCard style={{ padding: 15, marginTop: 30 }}>
-                    <AutoView isRow>
-                        <RadioIcon size={15} color={colors.checked} />
-                        <LocalesText languageKey={locales.Aisle} right={10} rightText="#001" />
-                       
-                    </AutoView>
+
                     <AutoText>
-                        <LocalesText leftText="[" rightText="-A]" languageKey={locales.Zone} />
-                        <LocalesText languageKey={locales.Room} rightText="#001" />
+                        <LocalesText  languageKey={locales.Room} rightText={`#${roomCode}`} />
                     </AutoText>
 
 
@@ -57,34 +58,24 @@ const AddPage = () => {
 
                 <Loading loading={loading}>
                     <ScrollView style={{ flex: 1, height: 800 }}>
-                        <AutoView isRow style={{ flexWrap: 'wrap', paddingLeft: 15, paddingRight: 16 }}>
+                        <Wrap isRow horizontal={15}>
                             {
-                                data.map((item, index) => {
-                                    return <AutoView isRow onPress={() => handleClick(item.value)} key={index}
-                                        style={
-                                            {
-                                                borderColor: selectItem === item.value ? colors.checked : 'rgba(0,0,0,0.05)',
-                                                marginLeft: 60,
-                                                marginTop: 60,
-                                                width: '30%',
-                                                justifyContent: 'space-between',
-                                                borderRadius: 8,
-                                                borderWidth: 1,
-                                                paddingRight: 2,
-                                                paddingBottom: 2,
-                                            }}>
-                                        <AutoView style={{ padding: 60, paddingTop: 30 }}>
-                                            <AutoText>{item.label}</AutoText>
+                                [...data,...data].map((item, index) => {
+                                    return (
+                                        <SpaceBetween width={500} top={40} style={{ alignItems: 'flex-start' }} onPress={() => handleClick(item.value)} key={index}>
+                                           <CustView width={200} padding={[12,25,0,25]}>
+                                           <NormalText left={15} text={item.label} />
+                                            
+                                           </CustView>
+                                            <Center padding={30} bgColor="#f6f6f6">
+                                                <Img url={item.icon} size={80} />
 
-                                        </AutoView>
-                                        <AutoView style={{ backgroundColor: '#f6f6f6', height: 300, width: 300, justifyContent: 'center' }} isRow>
-                                            <Image source={{ uri: item.icon }} style={{ width: 100, height: 100 }} />
-
-                                        </AutoView>
-                                    </AutoView>
+                                            </Center>
+                                        </SpaceBetween>
+                                    )
                                 })
                             }
-                        </AutoView>
+                        </Wrap>
 
                     </ScrollView>
 

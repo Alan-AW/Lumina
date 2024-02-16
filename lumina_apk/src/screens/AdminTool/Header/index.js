@@ -33,15 +33,9 @@ const AdminToolHeader=()=>{
                   <Text
                     style={
                       styles.headerText3
-                    }>{`[${t('Bright Renaissance')} - ${t("Zone")} A ${t("Room")} #${childData.serial_number} -`}</Text>
+                    }>{`[${t('Bright Renaissance')} ${t("Room")} #${childData.serial_number}]`}</Text>
                 </Text>
-                <RadioIcon color={colors.checked} size={10} style={{ paddingBottom: 0 }} />
-                <View>
-                  <Text
-                    style={
-                      styles.headerText3
-                    }>{`${t('Aisle')} #${cardData.serial_number}]`}</Text>
-                </View>
+               
               </>
             )
           }
