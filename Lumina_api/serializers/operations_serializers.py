@@ -3,6 +3,8 @@ import json
 from django.conf import settings as sys
 from django.forms import model_to_dict
 from rest_framework import serializers
+
+from device.rabbit_mq.consumer_status import get_all_data
 from operations.models import Company, Room, Unit, Temperature, Lighting, UnitSetting, Species, \
     Cultivars, Models, Phases, Instruction, Action, Triggers, UnitSettingsList, Cultivar, Algorithm
 from users.models import Roles
@@ -238,6 +240,28 @@ class UnitSettingSer(serializers.ModelSerializer):
     class Meta:
         model = UnitSetting
         fields = '__all__'
+
+
+# 查询设备在线状态序列化
+class GetUnitsOnlineSerializer(object):
+    def __init__(self, queue_name):
+        self.queue_name = queue_name
+
+    @property
+    def data(self):
+        # 查询数据库中所有设备的device_id列表
+        device_ids = list(Unit.objects.all().values('deviceId'))
+        # 查询mq队列中所有消费者所在的队列名称列表过滤后的device_id列表
+        online_device_ids = get_all_data(self.queue_name)
+        result = {'online': [], 'outline': []}
+        if online_device_ids:
+            # 对比两个列表，返回设备在线状态
+            result['online'] = [device_id for device_id in device_ids if device_id['deviceId'] in online_device_ids]
+            result['outline'] = [device_id for device_id in device_ids if device_id['deviceId'] not in online_device_ids]
+        else:
+            result['online'] = []
+            result['outline'] = [device_id for device_id in device_ids]
+        return result
 
 
 # 数据结构导出序列化程序

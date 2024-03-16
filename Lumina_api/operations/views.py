@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from operations.models import Room, Unit, Temperature, Species, RoomDesc, Lighting, Cultivars, Models, Triggers, \
     Action, Instruction, Phases, Company, UnitSettingsList, UnitSetting, Cultivar, Algorithm
 from serializers.operations_serializers import RoomSer, UnitSer, ExportDataSer, CompanySer, UnitSettingsListSer, \
-    UnitSettingSer, CultivarSer, AlgorithmSer
+    UnitSettingSer, CultivarSer, AlgorithmSer, GetUnitsOnlineSerializer
 from serializers.three_data_serializers import SpeciesDataSer, CultivarsDataSer, ModelsDataSer, PhasesDataSer, \
     InstructionDataSer, ActionDataSer, TriggersDataSer
 from utils.methods import return_response, get_data
@@ -211,21 +211,15 @@ class SaveSensorDataView(APIView):
         return JsonResponse(response)
 
 
-# 查询所有在线设备和不在线设备
+# 查询所有在线设备和不在线设备-2024-3-16
 class GetUnitOnlineView(APIView):
     authentication_classes = []
     permission_classes = []
     throttle_classes = []
 
     def get(self, request):
-        unit_count = Unit.objects.all().count()
-        data = {
-            'online_count': 200,
-            'outline_count': 200,
-            'unit_count': unit_count,
-            'online_list': [0, 0, 0, 0],
-            'outline_list': [0, 0, 0, 1],
-        }
+        ser = GetUnitsOnlineSerializer(queue_name='execution_command_queue')
+        data = ser.data
         return JsonResponse(return_response(data=data))
 
 

@@ -17,6 +17,6 @@ class DeviceConfig(AppConfig):
         # subprocess.Popen(['python', script_path])
         # start()
         # 直接开启一个线程去处理队列即可
-        threading.Thread(target=mq_start).start()
+        # threading.Thread(target=mq_start).start()
         # Process(target=start).start()
         pass
