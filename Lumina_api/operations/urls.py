@@ -32,8 +32,8 @@ urlpatterns = [
     re_path(r'ping/unit/(?P<device_id>\w+)$', PingUnitTimerView.as_view()),
     # 24-3-30:1.2查询设备在线状态接口
     path('get/unit/online', GetUnitOnlineView.as_view()),
-    # 2.开放接口查询指定设备算法信息
-    re_path(r'get/unit/info/(?P<device_id>\w+)$', UnitInfoView.as_view()),
+    # 2.开放接口查询指定设备算法信息-24-3-30改为用种植记录数据库id查询
+    re_path(r'get/unit/info/(?P<row_id>\w+)$', UnitInfoView.as_view()),
     # 3.品类管理
     re_path(r'cultivar/(?P<row_id>\d+)?$', CultivarView.as_view()),
     # 4.品类管理选择算法

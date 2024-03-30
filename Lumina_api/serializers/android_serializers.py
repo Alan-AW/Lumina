@@ -111,13 +111,13 @@ class ValidateUnitCultivarAlgorithmToMqSer(serializers.Serializer):
         data = {
             'device_id': device_id,
             'time': time,
-            'grow_cycle_id': grow_cycle_id,
+            'grow_cycle_id': None,
             'version': '0.5A.0',
             'data': {
                 "type": "instruction_set",
                 "device_id": device_id,
                 'time': time,
-                'grow_cycle_id': grow_cycle_id,
+                'grow_cycle_id': None,
                 'version': '0.5A.0',
                 'tod': tod,
                 'instructions': self.get_instructions(algorithm)

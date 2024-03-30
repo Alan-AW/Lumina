@@ -266,19 +266,18 @@ class GetUnitOnlineView(APIView):
         return {'online': online, 'offline': outline}
 
 
-# 查询指定deviceId设备详情,该接口用于查询脚本监听的mq队列存入的数据，用device_id进行查询值
+# 查询指定设备算法详情,该接口用于查询脚本监听的mq队列存入的数据，用种植记录ID进行查询值
 class UnitInfoView(APIView):
     authentication_classes = []
     permission_classes = []
     throttle_classes = []
 
-    def get(self, request, device_id):
+    def get(self, request, row_id):
         try:
-            unit = Unit.objects.get(deviceId=device_id)
-            queryset = UnitPlantDesc.objects.order_by('-id').filter(unit_id=unit.id).first()
+            queryset = UnitPlantDesc.objects.get(pk=row_id)
             data = queryset.algorithm
             response = return_response(data=data)
-        except Unit.DoesNotExist:
+        except UnitPlantDesc.DoesNotExist:
             response = return_response(status=False, error='deviceId错误！')
         return JsonResponse(response)
 

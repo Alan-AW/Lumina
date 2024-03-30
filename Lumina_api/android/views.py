@@ -285,9 +285,15 @@ class SendAlgorithmToMQView(APIView):
             cultivar = data.get('cultivar')
             algorithm = data.get('algorithm')
             # 添加设备的种植内容
-            UnitPlantDesc.objects.create(
-                unit=unit, cultivar=cultivar, algorithm=algorithm
+            new_record_obj = UnitPlantDesc.objects.create(
+                unit=unit, cultivar=cultivar
             )
+            # 将生成的种植记录ID放入算法中，供后续查询算法使用
+            algorithm['grow_cycle_id'] = new_record_obj.id
+            algorithm['data']['grow_cycle_id'] = new_record_obj.id
+            # 更新记录值
+            new_record_obj.algorithm = algorithm
+            new_record_obj.save()
             # 将算法数据推上mq队列
             start(message=json.dumps(algorithm), device_id=device_id, queue_name='execution_command_queue')
             # 返回提示信息
