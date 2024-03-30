@@ -27,6 +27,7 @@ def get_only_queue_data(queue_name: str) -> list:
 """
 
 
+# 监听队列，获取队列中的所有消费者
 def get_all_data(queue_name: str = None) -> list:
     if not queue_name:
         raise ValueError('queue_name is required')

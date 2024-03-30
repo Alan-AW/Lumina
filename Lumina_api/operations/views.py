@@ -1,12 +1,13 @@
+import time
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from operations.models import Room, Unit, Temperature, Species, RoomDesc, Lighting, Cultivars, Models, Triggers, \
     Action, Instruction, Phases, Company, UnitSettingsList, UnitSetting, Cultivar, Algorithm, UnitPlantDesc
 from serializers.operations_serializers import RoomSer, UnitSer, ExportDataSer, CompanySer, UnitSettingsListSer, \
-    UnitSettingSer, CultivarSer, AlgorithmSer, GetUnitsOnlineSerializer
+    UnitSettingSer, CultivarSer, AlgorithmSer
 from serializers.three_data_serializers import SpeciesDataSer, CultivarsDataSer, ModelsDataSer, PhasesDataSer, \
     InstructionDataSer, ActionDataSer, TriggersDataSer
-from utils.methods import return_response, get_data
+from utils.methods import return_response, get_data, get_now_timer
 from operations.base_view import BaseView
 from utils.permissions.user_permission import SuperPermission
 from utils.create_log import create_logs
@@ -212,15 +213,57 @@ class SaveSensorDataView(APIView):
 
 
 # 查询所有在线设备和不在线设备-2024-3-16
+"""
+24-3-30查询所有在线和不在线设备调整：
+设备表加一个字段，给一个接口给核心ping，
+间隔30s带device_id过来ping，然后将ping的时间记录到这个字段内
+查询在线设备的时候，只需要遍历所有设备的ping时间与当前时间来进行比对，小于60s，即为在线设备
+"""
+
+
+class PingUnitTimerView(APIView):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+
+    def get(self, request, device_id):
+        timer = get_now_timer()
+        unit_obj = Unit.objects.filter(deviceId=device_id).first()
+        if not unit_obj:
+            response = return_response(status=False, error='设备ID错误！')
+        else:
+            unit_obj.ping = timer
+            unit_obj.save()
+            response = return_response(info='ok', data=timer)
+        return JsonResponse(response)
+
+
 class GetUnitOnlineView(APIView):
     authentication_classes = []
     permission_classes = []
     throttle_classes = []
 
     def get(self, request):
-        ser = GetUnitsOnlineSerializer(queue_name='execution_command_queue')
-        data = ser.data
-        return JsonResponse(return_response(data=data))
+        data_list = list(Unit.objects.all().values('ping', 'deviceId'))
+        data = self.filter_online_unit(data_list)
+        response = return_response(data=data)
+        return JsonResponse(response)
+
+    def filter_online_unit(self, data_list: list) -> dict:
+        online = []
+        outline = []
+        now_timer = get_now_timer()
+        for item in data_list:
+            ping, device_id = item.values()
+            if ping:
+                diff = int(now_timer) - int(ping)
+                if diff <= 60:
+                    online.append(device_id)
+                else:
+                    outline.append(device_id)
+            else:
+                outline.append(device_id)
+        return {'online': online, 'offline': outline}
 
 
 # 查询指定deviceId设备详情,该接口用于查询脚本监听的mq队列存入的数据，用device_id进行查询值

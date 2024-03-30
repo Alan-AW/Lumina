@@ -1,3 +1,4 @@
+import time
 from utils.pager.pager import NumberPageFunc
 import datetime
 
@@ -28,6 +29,11 @@ def get_data(model=None, is_query: bool = False, request=None, view=None, ser_cl
         ser = ser_class(instance=page_obj, many=many)
         data = {'results': [ser.data], 'count': 1}
     return data
+
+
+# 获取此刻时间戳字符串
+def get_now_timer() -> str:
+    return str(round(time.time()))
 
 
 # 计算作物播种时间

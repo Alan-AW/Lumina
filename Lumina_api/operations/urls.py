@@ -1,7 +1,7 @@
 from django.urls import path, re_path
 from operations.views import RoomView, UnitView, SaveSensorDataView, ExportThree, SpeciesView, CultivarsView, \
     ModelsView, PhasesView, InstructionView, ActionView, TriggersView, CompanyView, CompanyUploadLogo, UnitSettingsListView, \
-    UnitSettingView, GetUnitOnlineView, UnitInfoView, CultivarView, CultivarAlgorithmView, AlgorithmView
+    UnitSettingView, PingUnitTimerView, GetUnitOnlineView, UnitInfoView, CultivarView, CultivarAlgorithmView, AlgorithmView
 from operations.choices_api_view import ChoicesRoomView, ChoicesRoleView, ChoicesCompanyView, \
     ChoicesEnvironmentalOptions, ChoicesUnitSettings, CultivarChoicesAlgorithmView, GetCultivarAlgorithmView
 
@@ -28,6 +28,9 @@ urlpatterns = [
     re_path(r'unit/settings/list/(?P<row_id>\d+)?', UnitSettingsListView.as_view()),
     # 2024-2-4新增功能接口
     # 1.开放接口查询所有在线和不在线的设备
+    # 24-3-30:1.1间隔30sping一次接口，更新unit ping字段时间戳值
+    re_path(r'ping/unit/(?P<device_id>\w+)$', PingUnitTimerView.as_view()),
+    # 24-3-30:1.2查询设备在线状态接口
     path('get/unit/online', GetUnitOnlineView.as_view()),
     # 2.开放接口查询指定设备算法信息
     re_path(r'get/unit/info/(?P<device_id>\w+)$', UnitInfoView.as_view()),
