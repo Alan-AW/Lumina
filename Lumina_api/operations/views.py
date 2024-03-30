@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from operations.models import Room, Unit, Temperature, Species, RoomDesc, Lighting, Cultivars, Models, Triggers, \
-    Action, Instruction, Phases, Company, UnitSettingsList, UnitSetting, Cultivar, Algorithm
+    Action, Instruction, Phases, Company, UnitSettingsList, UnitSetting, Cultivar, Algorithm, UnitPlantDesc
 from serializers.operations_serializers import RoomSer, UnitSer, ExportDataSer, CompanySer, UnitSettingsListSer, \
     UnitSettingSer, CultivarSer, AlgorithmSer, GetUnitsOnlineSerializer
 from serializers.three_data_serializers import SpeciesDataSer, CultivarsDataSer, ModelsDataSer, PhasesDataSer, \
@@ -232,8 +232,9 @@ class UnitInfoView(APIView):
     def get(self, request, device_id):
         try:
             unit = Unit.objects.get(deviceId=device_id)
-            ser = UnitSer(unit, many=False)
-            response = return_response(data=ser.data)
+            queryset = UnitPlantDesc.objects.order_by('-id').filter(unit_id=unit.id).first()
+            data = queryset.algorithm
+            response = return_response(data=data)
         except Unit.DoesNotExist:
             response = return_response(status=False, error='deviceId错误！')
         return JsonResponse(response)

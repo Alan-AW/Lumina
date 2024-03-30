@@ -1,3 +1,7 @@
+import uuid
+import datetime
+
+import pytz
 from rest_framework import serializers
 from collections import defaultdict
 from android.models import SendMessageToQueue
@@ -86,9 +90,41 @@ class ValidateUnitCultivarAlgorithmToMqSer(serializers.Serializer):
         #     {"choices_self": True, "id": 8, "value": 1},
         # ]
         # algorithm序列化之后的格式，也就是要推向mq队列的数据直接拼接好进行返回
-        attrs['algorithm'] = {
-            "type": "test",
-            #  内容待定
-            "data": algorithm
-        }
+        """
+        2024-3-28确定推送数据格式和内容，但是APP端选择的value值和是否默认推送的内容
+        不在此次修改之内，逻辑核心目前只能识别此次推送的数据，其余逻辑待后续完善。
+        """
+        algorithm_body = self.create_algorithm_body(attrs['device_id'], algorithm)
+        attrs['algorithm'] = algorithm_body
         return attrs
+
+    def create_uuid(self):
+        unique_str = str(uuid.uuid4()).replace('-', '')[:12]
+        return unique_str
+
+    def create_algorithm_body(self, device_id, algorithm):
+        grow_cycle_id = self.create_uuid()
+        now = datetime.datetime.now(pytz.timezone('Asia/Shanghai'))
+        custom_format = now.strftime('%Y-%m-%dT%H:%M:%S%z')
+        time = custom_format[:-2] + ':' + custom_format[-2:]
+        tod = now.strftime('%Y-%m-%d %H:%M:%S').split(' ')[1]
+        data = {
+            'device_id': device_id,
+            'time': time,
+            'grow_cycle_id': grow_cycle_id,
+            'version': '0.5A.0',
+            'data': {
+                "type": "instruction_set",
+                "device_id": device_id,
+                'time': time,
+                'grow_cycle_id': grow_cycle_id,
+                'version': '0.5A.0',
+                'tod': tod,
+                'instructions': self.get_instructions(algorithm)
+            }
+        }
+        return data
+
+    def get_instructions(self, algorithm):
+        data = [Algorithm.objects.filter(id=item['id']).first().cmd for item in algorithm]
+        return data

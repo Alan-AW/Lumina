@@ -29,8 +29,8 @@ urlpatterns = [
     # 2024-2-4新增功能接口
     # 1.开放接口查询所有在线和不在线的设备
     path('get/unit/online', GetUnitOnlineView.as_view()),
-    # 2.开放接口查询指定设备信息
-    re_path(r'get/unit/info/(?P<device_id>\d+)$', UnitInfoView.as_view()),
+    # 2.开放接口查询指定设备算法信息
+    re_path(r'get/unit/info/(?P<device_id>\w+)$', UnitInfoView.as_view()),
     # 3.品类管理
     re_path(r'cultivar/(?P<row_id>\d+)?$', CultivarView.as_view()),
     # 4.品类管理选择算法

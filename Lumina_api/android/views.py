@@ -266,9 +266,13 @@ class CultivarAlgorithmChoicesView(APIView):
 
 # 安卓端选择了算法之后将数据提交到服务器进行处理和推送
 class SendAlgorithmToMQView(APIView):
-    permission_classes = [ExcludeSuperPermission]
+    # permission_classes = [ExcludeSuperPermission]
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
 
     def post(self, request):
+        # 测试数据id：unit = 5, cultivar=1, algorithm = [10, 11]
         language = request.query_params.get('language')
         en = language == 'en'
         #  读取数据
@@ -285,7 +289,7 @@ class SendAlgorithmToMQView(APIView):
                 unit=unit, cultivar=cultivar, algorithm=algorithm
             )
             # 将算法数据推上mq队列
-            start(message=json.dumps(algorithm), device_id=device_id, queue_name='command')
+            start(message=json.dumps(algorithm), device_id=device_id, queue_name='execution_command_queue')
             # 返回提示信息
             info = 'The data was saved successfully!' if en else '数据保存成功！'
             response = return_response(info=info)
