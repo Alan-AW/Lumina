@@ -68,8 +68,8 @@ function AlgorithmEditModal(props) {
     <Modal
       open={openModal}
       title={editSate ? t('algorithm.EditAlgorithm') : t('algorithm.AddAlgorithm')}
-      okText='ok'
-      cancelText='cancel'
+      okText={t("public.button.ok")}
+      cancelText={t("public.button.cancel")}
       onCancel={onCancelModal}
       onOk={onOkModal}
       getContainer={false}

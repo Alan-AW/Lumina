@@ -70,9 +70,9 @@ class Unit(models.Model):
     room = models.ForeignKey(
         to=Room, to_field='id', on_delete=models.CASCADE, related_name='units', verbose_name='所属房间'
     )
-    serial_number = models.CharField(max_length=255, unique=True, verbose_name='机器编号')
-    deviceId = models.CharField(max_length=255, unique=True, verbose_name='设备编号')
-    deviceSecret = models.CharField(max_length=255, unique=True, verbose_name='设备密钥')
+    serial_number = models.CharField(max_length=255, null=True, blank=True, verbose_name='机器昵称')
+    deviceId = models.CharField(max_length=255, unique=True, verbose_name='设备ID')
+    deviceSecret = models.CharField(max_length=255, verbose_name='设备密钥')
     status = models.IntegerField(choices=((0, '禁用'), (1, '正常')), verbose_name='机器状态', default=1)
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')

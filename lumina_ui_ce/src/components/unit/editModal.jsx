@@ -44,9 +44,9 @@ function EditModal(props) {
     return (
         <Modal
             open={openModal}
-            title={editSate ? t('user.EditModalTitle1') : t('user.EditModalTitle2')}
-            okText="确定"
-            cancelText="取消"
+            title={editSate ? t('unit.EditModalTitle1') : t('unit.EditModalTitle2')}
+            okText={t("public.button.ok")}
+            cancelText={t("public.button.cancel")}
             onCancel={onCancelModal}
             onOk={onOkModal}
             getContainer={false}
@@ -72,7 +72,7 @@ function EditModal(props) {
                 </Form.Item>
 
                 <Form.Item name='serial_number' label={t("unit.tableTitle.serial_number") + '：'} rules={[
-                    { required: true, message: t("unit.rules.serial_number") }
+                    { required: false, message: t("unit.rules.serial_number") }
                 ]}>
                     <Input
                         placeholder={t("unit.placeholder.serial_number")}

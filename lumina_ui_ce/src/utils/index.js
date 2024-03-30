@@ -20,9 +20,15 @@ export function getDateTime() {
 
 // 打开提示面板
 export function openNotification(api, type = 'info', content = "") {
+  let showMsg;
+  if (typeof content === 'object') {
+    showMsg = Object.values(content).map((item, index) => <div>{`${index + 1}：${item[0]}`}</div>)
+  } else {
+    showMsg = content
+  }
   api[type]({
     message: MAP_MESSAGE_TITLE[type],
-    description: JSON.stringify(content, null, 2)
+    description: showMsg
   })
 }
 

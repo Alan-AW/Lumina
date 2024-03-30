@@ -1,4 +1,10 @@
 {
+  "public": {
+    "button": {
+      "ok": "确定",
+      "cancel": "取消"
+    }
+  },
   "home": "站点首页",
   "login": {
     "title": "登录",
@@ -103,8 +109,8 @@
     "tableTitle": {
       "index": "序号",
       "id": "ID",
-      "serial_number": "机器编号",
-      "deviceId": "设备编号",
+      "serial_number": "机器昵称",
+      "deviceId": "设备ID",
       "deviceSecret": "设备密钥",
       "room_number": "房间编号",
       "status_label": "机器状态",
@@ -129,16 +135,16 @@
     },
     "rules": {
       "status_label": "机器状态必须选择！",
-      "serial_number": "机器编号不可为空！",
-      "deviceId": "设备编号不可为空！",
+      "serial_number": "机器昵称不可为空！",
+      "deviceId": "设备ID不可为空！",
       "deviceSecret": "设备密钥不可为空！",
       "components": "组件列表不可为空！",
       "room": "机器所属房间不可为空！"
     },
     "placeholder": {
       "status_label": "请选择机器状态",
-      "serial_number": "请输入机器编号",
-      "deviceId": "请输入设备编号",
+      "serial_number": "请输入机器昵称",
+      "deviceId": "请输入设备ID",
       "deviceSecret": "请输入设备密钥",
       "components": "请输入组件列表，多个组件用 , 隔开",
       "room": "请选择机器所属房间"

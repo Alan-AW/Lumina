@@ -1,9 +1,6 @@
-import json
-
 from django.conf import settings as sys
-from django.forms import model_to_dict
 from rest_framework import serializers
-
+from rest_framework.validators import UniqueValidator
 from device.rabbit_mq.consumer_status import get_all_data
 from operations.models import Company, Room, Unit, Temperature, Lighting, UnitSetting, Species, \
     Cultivars, Models, Phases, Instruction, Action, Triggers, UnitSettingsList, Cultivar, Algorithm
@@ -26,7 +23,9 @@ class RoomSer(serializers.ModelSerializer):
 
 # 设备管理序列化
 class UnitSer(serializers.ModelSerializer):
-    serial_number = serializers.CharField(max_length=512)
+    serial_number = serializers.CharField(max_length=512, allow_null=True, allow_blank=True, required=False)
+    deviceId = serializers.CharField(validators=[UniqueValidator(queryset=Unit.objects.all(), message='设备ID重复！')])
+    deviceSecret = serializers.CharField()
     room = serializers.SlugRelatedField(slug_field='id', queryset=Room.objects)
     room_number = serializers.CharField(source='room.serial_number', read_only=True)
     status = serializers.IntegerField()
@@ -41,8 +40,11 @@ class UnitSer(serializers.ModelSerializer):
 
 # web端选择房间
 class ChoicesRoomSer(serializers.ModelSerializer):
-    label = serializers.CharField(source='serial_number', read_only=True)
+    label = serializers.SerializerMethodField()
     value = serializers.IntegerField(source='id', read_only=True)
+
+    def get_label(self, row):
+        return f'{row.company.name}-{row.serial_number}'
 
     class Meta:
         model = Room
@@ -257,7 +259,8 @@ class GetUnitsOnlineSerializer(object):
         if online_device_ids:
             # 对比两个列表，返回设备在线状态
             result['online'] = [device_id for device_id in device_ids if device_id['deviceId'] in online_device_ids]
-            result['outline'] = [device_id for device_id in device_ids if device_id['deviceId'] not in online_device_ids]
+            result['outline'] = [device_id for device_id in device_ids if
+                                 device_id['deviceId'] not in online_device_ids]
         else:
             result['online'] = []
             result['outline'] = [device_id for device_id in device_ids]

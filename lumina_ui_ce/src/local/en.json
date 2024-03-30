@@ -1,4 +1,10 @@
 {
+  "public": {
+    "button": {
+      "ok": "OK",
+      "cancel": "Cancel"
+    }
+  },
   "home": "home",
   "login": {
     "title": "Login",
@@ -112,7 +118,7 @@
     "tableTitle": {
       "index": "Index",
       "id": "ID",
-      "serial_number": "Unit Number",
+      "serial_number": "Device nickname",
       "deviceId": "Device ID",
       "deviceSecret": "Device Secret",
       "room_number": "Room Number",
@@ -129,7 +135,7 @@
     "EditModalbtnConfirm": "Confirm",
     "rules": {
       "status_label": "The unit status must be selected!",
-      "serial_number": " The unit number cannot be empty!",
+      "serial_number": " The Device nickname cannot be empty!",
       "deviceId": "The device ID cannot be empty!",
       "deviceSecret": " The device secret cannot be empty!",
       "components": "The component list cannot be empty!",
@@ -137,7 +143,7 @@
     },
     "placeholder": {
       "status_label": "Please select the status of the unit",
-      "serial_number": "Please enter the unit number",
+      "serial_number": "Please enter the Device nickname",
       "deviceId": "Please enter the device ID",
       "deviceSecret": " Please enter the device secret",
       "components": "Please enter a list of components, separated by , ",
