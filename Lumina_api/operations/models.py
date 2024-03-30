@@ -4,10 +4,10 @@ from django.db import models
 # 企业表
 class Company(models.Model):
     name = models.CharField(max_length=64, unique=True, verbose_name='企业名称')
-    address = models.CharField(max_length=255, unique=True, verbose_name='企业地址')
-    legal_rep = models.CharField(max_length=8, verbose_name='企业法人')
-    tel = models.CharField(max_length=14, verbose_name='联系电话')
-    email = models.CharField(max_length=64, verbose_name='企业邮箱')
+    address = models.CharField(max_length=255, null=True, blank=True, verbose_name='企业地址')
+    legal_rep = models.CharField(max_length=8, null=True, blank=True, verbose_name='企业法人')
+    tel = models.CharField(max_length=14, null=True, blank=True, verbose_name='联系电话')
+    email = models.CharField(max_length=64, null=True, blank=True, verbose_name='企业邮箱')
 
     def logo_upload_path(self, instance):
         return f'companyLogo/{self.name}/{instance}'
@@ -53,7 +53,7 @@ class Room(models.Model):
         to=Company, to_field='id', on_delete=models.CASCADE, null=True, blank=True,
         related_name='rooms', verbose_name='所属公司'
     )
-    serial_number = models.CharField(max_length=255, unique=True, verbose_name='房间编号')
+    serial_number = models.CharField(max_length=255, verbose_name='房间编号')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 
