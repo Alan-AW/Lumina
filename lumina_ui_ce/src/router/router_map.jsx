@@ -7,7 +7,6 @@ import {
   ClusterOutlined, HomeOutlined,
   LockOutlined, UsergroupAddOutlined
 } from '@ant-design/icons'
-import { Trans } from "react-i18next";
 
 // 后台框架模版
 const AdminLayout = lazy(() => import('components/adminLayout'))
