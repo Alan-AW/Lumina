@@ -272,12 +272,16 @@ class UnitInfoView(APIView):
     permission_classes = []
     throttle_classes = []
 
-    def get(self, request, row_id):
+    def get(self, request, device_id):
         try:
-            queryset = UnitPlantDesc.objects.get(pk=row_id)
-            data = queryset.algorithm
+            unit_obj = Unit.objects.get(deviceId=device_id)
+            queryset = UnitPlantDesc.objects.filter(unit=unit_obj).order_by('-id').first()
+            if queryset:
+                data = queryset.algorithm
+            else:
+                data = []
             response = return_response(data=data)
-        except UnitPlantDesc.DoesNotExist:
+        except Unit.DoesNotExist:
             response = return_response(status=False, error='deviceId错误！')
         return JsonResponse(response)
 

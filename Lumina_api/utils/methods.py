@@ -1,4 +1,5 @@
 import time
+from datetime import timedelta
 from utils.pager.pager import NumberPageFunc
 import datetime
 
@@ -34,6 +35,17 @@ def get_data(model=None, is_query: bool = False, request=None, view=None, ser_cl
 # 获取此刻时间戳字符串
 def get_now_timer() -> str:
     return str(round(time.time()))
+
+
+# 判断当前时间是否在种植周期内
+def is_within_date_range(start_date: str, days: int) -> bool:
+    # 将日期字符串转为日期对象
+    start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S")
+    # 当前日期时间
+    current_date = datetime.datetime.now()
+    # 计算周期结束时间
+    end_date = start_date + timedelta(days=days)
+    return start_date <= current_date <= end_date
 
 
 # 计算作物播种时间

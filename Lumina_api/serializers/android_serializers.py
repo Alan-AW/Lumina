@@ -5,7 +5,8 @@ import pytz
 from rest_framework import serializers
 from collections import defaultdict
 from android.models import SendMessageToQueue
-from operations.models import Cultivar, Algorithm, Unit
+from operations.models import Cultivar, Algorithm, Unit, UnitPlantDesc
+from utils.methods import is_within_date_range
 
 
 class SendMessageToQueueSer(serializers.ModelSerializer):
@@ -76,6 +77,21 @@ class ValidateUnitCultivarAlgorithmToMqSer(serializers.Serializer):
     algorithm = serializers.JSONField(error_messages={'invalid': '算法格式错误！'})
 
     def validate(self, attrs):
+        # 获取要种植的设备对象
+        unit = attrs.get('unit')
+        # 查询设备是否还存在种植周期
+        cycle_record = UnitPlantDesc.objects.filter(unit=unit).first()
+        if cycle_record:
+            # 读取种植周期
+            cycle = cycle_record.cultivar.cycle
+            # 读取种植日期
+            create_time = cycle_record.create_time.strftime("%Y-%m-%d %H:%M:%S")
+            # 计算当前种植周期是否结束
+            is_in_range = is_within_date_range(create_time, cycle)
+            # 已结束->继续
+            # 否则->不允许种植品类
+            if is_in_range:
+                raise serializers.ValidationError('当前种植周期未结束！')
         attrs['device_id'] = attrs.get('unit').deviceId
         algorithm = attrs.get('algorithm')
         for item in algorithm:
