@@ -33,6 +33,7 @@ urlpatterns = [
     # 24-3-30:1.2查询设备在线状态接口
     path('get/unit/online', GetUnitOnlineView.as_view()),
     # 2.开放接口查询指定设备算法信息-24-3-30改为用种植记录数据库id查询-24-3-31改回用设备ID查询
+    # 24-4-1,该接口同时供安卓端使用
     re_path(r'get/unit/info/(?P<device_id>\w+)$', UnitInfoView.as_view()),
     # 3.品类管理
     re_path(r'cultivar/(?P<row_id>\d+)?$', CultivarView.as_view()),

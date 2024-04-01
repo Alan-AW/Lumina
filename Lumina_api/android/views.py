@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from device.rabbit_mq.producer import start
 from operations.models import Unit, Temperature, Lighting, UnitSetting, UnitSettingsList, Cultivar, UnitPlantDesc
 from serializers.android_serializers import SendMessageToQueueSer, CultivarCnChoicesSer, CultivarEnChoicesSer, \
-    algorithm_choices_inal_ser, ValidateUnitCultivarAlgorithmToMqSer
+    algorithm_choices_inal_ser, ValidateUnitCultivarAlgorithmToMqSer, ValidateUnitAlgorithm
 from serializers.operations_serializers import android_home_data, TemperatureSer, LightingSer
 from utils.methods import return_response, get_temperature_dict, get_temperature_days_list, \
     get_max_center_min_temperature
@@ -295,10 +295,32 @@ class SendAlgorithmToMQView(APIView):
             new_record_obj.algorithm = algorithm
             new_record_obj.save()
             # 将算法数据推上mq队列
-            # start(message=json.dumps(algorithm), device_id=device_id, queue_name='execution_command_queue')
+            start(message=json.dumps(algorithm), device_id=device_id, queue_name='execution_command_queue')
             # 返回提示信息
             info = 'The data was saved successfully!' if en else '数据保存成功！'
             response = return_response(info=info)
+        else:
+            response = return_response(status=False, error=ser.errors)
+        return JsonResponse(response)
+
+
+# 安卓端更新设备算法接口
+class UpdateUnitInfoView(APIView):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+
+    def post(self, request):
+        ser = ValidateUnitAlgorithm(data=request.data)
+        if ser.is_valid():
+            data = ser.validated_data
+            device_id = data.get('device_id')
+            algorithm = request.data.get('algorithm')
+            record = data.get('record')
+            record.algorithm = algorithm
+            record.save()
+            start(message=json.dumps(algorithm), device_id=device_id, queue_name='execution_command_queue')
+            response = return_response(info='数据更新成功！')
         else:
             response = return_response(status=False, error=ser.errors)
         return JsonResponse(response)

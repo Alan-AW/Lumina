@@ -144,3 +144,24 @@ class ValidateUnitCultivarAlgorithmToMqSer(serializers.Serializer):
     def get_instructions(self, algorithm):
         data = [Algorithm.objects.filter(id=item['id']).first().cmd for item in algorithm]
         return data
+
+
+# 安卓端更新种植记录算法json数据
+class ValidateUnitAlgorithm(serializers.Serializer):
+    unit_device_id = serializers.SlugRelatedField(
+        required=True, slug_field='deviceId', queryset=Unit.objects.all(),
+        error_messages={'required': 'deviceId参数缺失!'}
+    )
+    algorithm = serializers.JSONField(
+        required=True, error_messages={'required': 'algorithm参数缺失!'}
+    )
+
+    def validate(self, attrs):
+        unit_obj = attrs.get('unit_device_id')
+        attrs['device_id'] = unit_obj.deviceId
+        record = UnitPlantDesc.objects.filter(unit=unit_obj).order_by('-id').first()
+        if not record:
+            raise serializers.ValidationError('该设备无种植周期记录！')
+        else:
+            attrs['record'] = record
+        return attrs
