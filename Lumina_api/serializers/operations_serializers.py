@@ -144,6 +144,7 @@ def unitsDescSer(units, en=False):
                 # 收集数据
                 item = {
                     "id": unit.id,  # 设备唯一id
+                    "device_id": unit.deviceId,
                     "serial_number": unit.serial_number,  # 设备名称
                     "cropItemDay": computed_sowing_time(plant_desc['create_time']),  # 已种植时间
                     "cropItemCycle": plant_desc['cultivar__cycle'],  # 作物周期
