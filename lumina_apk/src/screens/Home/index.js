@@ -27,6 +27,8 @@ const Home = () => {
     refresh()
   });
 
+  console.log(data,'home 请求的data');
+
   const renderData = useMemo(() => {
     if (!loading && Array.isArray(data)) {
       return data.map(item => {

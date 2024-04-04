@@ -36,4 +36,9 @@ export function getChoicesDetails(id:any) {
 export function submitChoices(params:any) {
   return httpAxios.post<any>(`/android/unit/cultivar/algorithm`, params);
 }
+//获取信息
+export function getUpdates() {
+  return httpAxios.get<any>(`/android/manager/get/unit/info/8RC4KBZ7`, {});
+}
+
 

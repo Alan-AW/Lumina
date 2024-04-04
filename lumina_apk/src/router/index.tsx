@@ -27,6 +27,7 @@ import storage from 'src/helpers/storage';
 import internet from '@react-native-community/netinfo'
 import { locales } from 'src/helpers/localesText';
 import ToastService from 'src/helpers/toast';
+import Update from 'src/screens/Update';
 const AppStack = createNativeStackNavigator<AppStackParamList>();
 function AppStackNavigator() {
 
@@ -91,6 +92,11 @@ function AppStackNavigator() {
       <AppStack.Screen
         name="Setting"
         component={Setting}
+        options={{ headerShown: false }}
+      />
+      <AppStack.Screen
+        name="Update"
+        component={Update}
         options={{ headerShown: false }}
       />
     </AppStack.Navigator>

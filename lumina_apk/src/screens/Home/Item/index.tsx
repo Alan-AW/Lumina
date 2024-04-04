@@ -85,14 +85,14 @@ const RenderItem = (props: RenderItemProps) => {
             }
             return (
               <HomeCard key={index} item={cardItem} onPress={() => {
-
-                navigation.navigate('Bright', {
-                  id: item2.id, propsItem: item2, cardItem: {
-                    serial_number: item2.serial_number,
-                    currentDay: item2.date,
-                    max: item2.cropItemCycle
-                  }
-                })
+                navigation.navigate('Update')
+                // navigation.navigate('Bright', {
+                //   id: item2.id, propsItem: item2, cardItem: {
+                //     serial_number: item2.serial_number,
+                //     currentDay: item2.date,
+                //     max: item2.cropItemCycle
+                //   }
+                // })
 
               }} />
 
