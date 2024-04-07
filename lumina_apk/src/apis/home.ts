@@ -37,8 +37,9 @@ export function submitChoices(params:any) {
   return httpAxios.post<any>(`/android/unit/cultivar/algorithm`, params);
 }
 //获取信息
-export function getUpdates() {
-  return httpAxios.get<any>(`/android/manager/get/unit/info/8RC4KBZ7`, {});
+export function getUpdates(id:any) {
+  return httpAxios.get<any>(`/manager/get/unit/info/${id}`, {});
 }
 
+//修改  /android/update/unit/algorithm
 

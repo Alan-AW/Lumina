@@ -28,6 +28,9 @@ const AddPage = () => {
     const { loading, data, error } = useRequest(() => getChoices());
     const [selectItem, setSelectItem] = useState<any>('')
 
+    console.log('选择页data',data);
+    
+
     const routes: any = useRoute();
     const roomCode = routes.params.roomCode;
 

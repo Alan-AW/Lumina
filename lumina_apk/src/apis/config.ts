@@ -1,1 +1,1 @@
-export const baseUrl='http://lumina.toriches.cn'
+export const baseUrl='http://47.110.240.100:8001'

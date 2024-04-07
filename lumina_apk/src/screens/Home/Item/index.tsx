@@ -18,6 +18,7 @@ import CustView from 'src/components/FlexView/CustView';
 import HomeCard from '../card';
 import { IconButton } from 'src/components/Button';
 import { IconTianjia } from 'src/iconfont';
+import AutoText from 'src/components/AutoView/Text';
 
 interface RenderItemProps {
   item: any,
@@ -28,9 +29,9 @@ interface RenderItemProps {
 const RenderItem = (props: RenderItemProps) => {
   const { item, navigation } = props;
 
-  if (item.data.length === 0) {
-    return null;
-  }
+  // if (item.data.length === 0) {
+  //   return null;
+  // }
   return (
     <ShadowCard style={styles.scrollItem} hiddenShadow={true}>
       <View style={styles.scrollContainer}>
@@ -85,14 +86,14 @@ const RenderItem = (props: RenderItemProps) => {
             }
             return (
               <HomeCard key={index} item={cardItem} onPress={() => {
-                navigation.navigate('Update')
-                // navigation.navigate('Bright', {
-                //   id: item2.id, propsItem: item2, cardItem: {
-                //     serial_number: item2.serial_number,
-                //     currentDay: item2.date,
-                //     max: item2.cropItemCycle
-                //   }
-                // })
+                // navigation.navigate('Update')
+                navigation.navigate('Bright', {
+                  id: item2.id, propsItem: item2, cardItem: {
+                    serial_number: item2.serial_number,
+                    currentDay: item2.date,
+                    max: item2.cropItemCycle
+                  }
+                })
 
               }} />
 
@@ -100,7 +101,16 @@ const RenderItem = (props: RenderItemProps) => {
           })}
         </ScrollView>
         {
-          Array.isArray(item.data) && item.data.length > 0 && <IconButton onPress={() => {
+          Array.isArray(item.data)  && <IconButton onPress={() => {
+            navigation.navigate('Update',
+              { device_id: item.data[0].device_id })
+
+          }} >
+           <AutoText>设置json</AutoText>
+          </IconButton>
+        }
+        {
+          Array.isArray(item.data)  && <IconButton onPress={() => {
             navigation.navigate('AddPage',
               { devicesId: item.data[0].id, roomCode: item.serial_number })
 

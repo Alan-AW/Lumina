@@ -17,10 +17,11 @@ interface FlexProps {
     onPress?:()=>void;
     children?:any;
     width?:any;
+    disabled?:boolean;
 }
 
 const SpaceBetween = (props: FlexProps) => {
-    const { left, top, right, radius, bgColor, vertical, horizontal, bottom, padding,width } = props;
+    const { left, top, right, radius, bgColor, vertical, horizontal, bottom, padding,width,disabled } = props;
     let styles: ViewStyle = {
         borderRadius: radius || 0,
         justifyContent: 'space-between',
@@ -51,7 +52,7 @@ const SpaceBetween = (props: FlexProps) => {
     const newStyle: any = props.style || {};
     if(props.onPress){
         return (
-            <TouchableOpacity {...props} style={useInlineStyle({...styles,...newStyle})}>{props.children}</TouchableOpacity>
+            <TouchableOpacity {...props} disabled={disabled} style={useInlineStyle({...styles,...newStyle})}>{props.children}</TouchableOpacity>
         )
     }
     return (

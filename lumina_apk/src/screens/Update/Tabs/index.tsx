@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { View, useWindowDimensions } from "react-native";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
-import { store } from "../data";
+import { update_store } from "../data";
 import TabScreen from "../TabScreen";
 import AutoText from "src/components/AutoView/Text";
 
@@ -10,7 +10,7 @@ import AutoText from "src/components/AutoView/Text";
 
 export default function UpdateTabs() {
 
-    const instructions = store.data.instructions;
+    const instructions:any = update_store.instructions;
 
     const tabData = useMemo(() => {
         const element: any = {}
@@ -53,6 +53,11 @@ export default function UpdateTabs() {
     const [tabIndex, setTabIndex] = useState<number>(0);
     const layout = useWindowDimensions();
 
+    useEffect(()=>{
+        update_store.tabIndex=tabIndex
+
+    },[tabIndex])
+
 
     return (
         <TabView
@@ -67,15 +72,16 @@ export default function UpdateTabs() {
                     {...props}
                     pressColor="transparent"
                     style={{
-                        backgroundColor: '#ddd',
+                        backgroundColor: '#f6f6f6',
                         shadowOpacity: 0,
                         elevation: 0,
                     }}
-                    indicatorStyle={{ backgroundColor: '#ccc' }}
+                    inactiveColor="#fff"
+                    indicatorStyle={{ backgroundColor: '#f6f6f6' }}
 
 
                     renderLabel={({ route, focused }) => (
-                        <AutoText
+                        <AutoText style={{fontWeight:focused?'700':'400'}}
                         >
                             {route.title}
                         </AutoText>

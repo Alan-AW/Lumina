@@ -1,5 +1,5 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
-import React from "react";
+import React, { useRef } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import AutoText from "src/components/AutoView/Text";
 import Center from "src/components/FlexView/Center";
@@ -8,6 +8,11 @@ import Start from "src/components/FlexView/Start";
 import ShadowCard from "src/components/Shadow";
 import { useInlineStyle } from "src/helpers/style";
 import { numberToFixed } from "src/utils";
+import { settings, updateArr } from "../data";
+import PickModal from "src/components/PickModal";
+import Slider from "@react-native-community/slider";
+import PickTime from "src/components/PickTime";
+import colors from "src/constants/colors";
 
 interface TabScreenProps {
     data: any;
@@ -40,22 +45,41 @@ function insertArr(obj: any) {
         }
     }
     //组装成一个数组
-    const newArr = [];
+    const returnData = [];
     for (let i = 0; i < minArr.length; i++) {
         const key = minArr[i].name.split('min');
         const findMax = maxArr.find(item => item.name === key.join('max'));
         if (findMax) {
-            newArr.push({
-                name: key.join(''),
-                value: [minArr[i].value, findMax.value],
-                max: findMax.maxValue,
-                step: findMax.step,
-                min: minArr[i].minValue,
-            })
+            for (let setKey in settings) {
+                const newArr = JSON.parse(JSON.stringify(key))
+                const value = newArr[0].substring(0, newArr[0].length - 1)
+                const setMax = [value, newArr[1]];
+                let str = setMax.join("");
+                const selectKey = setKey.substring(0, setKey.lastIndexOf('_'));
+                if (str.includes(selectKey)) {
+                    returnData.push({
+                        name: key.join(''),
+                        value: [minArr[i].value, findMax.value],
+                        max: settings[setKey].max,
+                        step: settings[setKey].step,
+                        min: settings[setKey].min,
+                        maxName: findMax.name,
+                        minName: minArr[i].name,
+                    })
+
+                    break;
+                }
+                // str=str.substring(0,str.lastIndexOf('_'))
+
+            }
+
+
             continue;
         }
     }
-    return newArr;
+    console.log(returnData, 99);
+
+    return returnData;
 }
 
 function objToArr(obj: any) {
@@ -114,6 +138,12 @@ const renderLabel = (v: any) => {
 export default function TabScreen(props: TabScreenProps) {
 
     const { actions, days_max, days_min, duration } = props.data;
+    const pick1: any = useRef(null);
+    const pick2: any = useRef(null);
+    const pick3: any = useRef(null);
+
+    const select: any = useRef(null)
+    const currentOpenNumber: any = useRef(null);
 
 
     const actions0 = actions[0] || {};
@@ -123,12 +153,38 @@ export default function TabScreen(props: TabScreenProps) {
     const form0 = insertArr(actions0);
     const form1 = insertArr(actions1);
 
+    //打开选择器
+    function openPick1(key: string, number: number) {
+        //设置需要设置的字段
+        select.current = key;
+        currentOpenNumber.current = number
+        if (number == 1) {
+            pick1.current.open()
+        }
+        if (number == 2) {
+            pick2.current.open()
+        }
+        if (number == 3) {
+            pick3.current.open()
+        }
+    }
+
+    function handleCallback(item: any) {
+        console.log('选择的选项', item);
+        updateArr({
+            [select.current]: item,
+        })
+
+    }
+
+
+
 
 
 
     return (
         <ScrollView style={useInlineStyle({ flex: 1, backgroundColor: '#fff', marginRight: 32 })}>
-            <Start style={{ padding: 32 }}>
+            <Start style={{ padding: 32, paddingVertical: 48 }}>
                 <Start style={{ marginRight: 32 }}>
                     <AutoText style={{ paddingRight: 24 }}>days_max</AutoText>
                     <AutoText>{days_max}</AutoText>
@@ -145,17 +201,18 @@ export default function TabScreen(props: TabScreenProps) {
             <Start style={{ flex: 1, padding: 0, alignItems: 'flex-start' }}>
                 <ShadowCard style={{ borderWidth: 1, borderColor: '#ddd', width: '30%', paddingHorizontal: 24, paddingVertical: 16 }}>
                     <View>
-                        <SpaceBetween style={{ paddingVertical: 8 }}>
+                        <SpaceBetween style={{ paddingVertical: 16 }}>
                             <AutoText>hardware</AutoText>
                             <AutoText>{actions0.hardware}</AutoText>
                         </SpaceBetween>
-                        <SpaceBetween style={{ paddingVertical: 8 }}>
+                        <SpaceBetween style={{ paddingVertical: 16 }} onPress={() => openPick1('vpd_priority_day', 1)}>
                             <AutoText>vpd_priority_day</AutoText>
-                            <AutoText>{actions0.vpd_priority_day}</AutoText>
+
+                            <AutoText style={{ color: colors.checked }}>{actions0.vpd_priority_day}</AutoText>
                         </SpaceBetween>
-                        <SpaceBetween style={{ paddingVertical: 8 }}>
-                            <AutoText>vpd_priority_night</AutoText>
-                            <AutoText>{actions0.vpd_priority_night}</AutoText>
+                        <SpaceBetween style={{ paddingVertical: 16 }} onPress={() => openPick1('vpd_priority_night', 1)}>
+                            <AutoText>vpd_priority_night</AutoText >
+                            <AutoText style={{ color: colors.checked }}>{actions0.vpd_priority_night}</AutoText>
                         </SpaceBetween>
 
                     </View>
@@ -166,7 +223,14 @@ export default function TabScreen(props: TabScreenProps) {
                                     <SpaceBetween key={index} style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
                                         <AutoText>{formItem.name}</AutoText>
                                         <Center style={{ width: '100%', marginTop: 50 }}>
-                                            <MultiSlider values={formItem.value} min={formItem.min} max={formItem.max} step={formItem.step} enableLabel customLabel={renderLabel} />
+                                            <MultiSlider values={formItem.value} onValuesChangeFinish={(v) => {
+                                                updateArr({
+                                                    [formItem.minName]: v[0],
+                                                    [formItem.maxName]: v[1],
+                                                })
+
+                                            }} selectedStyle={{ backgroundColor: colors.checked }}
+                                                markerStyle={{ backgroundColor: colors.checked }} min={formItem.min} max={formItem.max} step={formItem.step} enableLabel customLabel={renderLabel} />
                                         </Center>
                                     </SpaceBetween>
                                 )
@@ -176,13 +240,10 @@ export default function TabScreen(props: TabScreenProps) {
 
                 </ShadowCard>
                 <ShadowCard style={{ borderWidth: 1, borderColor: '#ddd', width: '30%', paddingHorizontal: 24, marginLeft: '3%', paddingVertical: 16 }}>
-                    <View>
-                        <Start>
-                            <AutoText>hardware</AutoText>
-                            <AutoText>{actions1.hardware}</AutoText>
-                        </Start>
-
-                    </View>
+                    <SpaceBetween style={{ paddingVertical: 16 }}>
+                        <AutoText>hardware</AutoText>
+                        <AutoText>{actions1.hardware}</AutoText>
+                    </SpaceBetween>
                     <View style={{ marginTop: 8 }}>
                         {
                             form1.map((formItem: any, index: number) => {
@@ -190,7 +251,16 @@ export default function TabScreen(props: TabScreenProps) {
                                     <SpaceBetween key={index} style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
                                         <AutoText>{formItem.name}</AutoText>
                                         <Center style={{ width: '100%', marginTop: 50 }}>
-                                            <MultiSlider values={formItem.value} min={formItem.min} max={formItem.max} step={formItem.step} enableLabel customLabel={renderLabel} />
+                                            <MultiSlider values={formItem.value} min={formItem.min}
+                                                selectedStyle={{ backgroundColor: colors.checked }}
+                                                markerStyle={{ backgroundColor: colors.checked }}
+                                                onValuesChangeFinish={(v) => {
+                                                    updateArr({
+                                                        [formItem.minName]: v[0],
+                                                        [formItem.maxName]: v[1],
+                                                    })
+                                                }}
+                                                max={formItem.max} step={formItem.step} enableLabel customLabel={renderLabel} />
                                         </Center>
                                     </SpaceBetween>
                                 )
@@ -199,20 +269,39 @@ export default function TabScreen(props: TabScreenProps) {
                     </View>
                 </ShadowCard>
                 <ShadowCard style={{ borderWidth: 1, borderColor: '#ddd', width: '30%', paddingHorizontal: 24, marginLeft: '3%', paddingVertical: 16 }}>
-                    {
-                        objToArr(actions2).map((item: any, index: number) => {
-                            return (
-                                <SpaceBetween key={index} style={{ width: '100%',marginBottom:32 }}>
-                                    <AutoText>{item.name}</AutoText>
-                                    <AutoText>{item.value}</AutoText>
-                                </SpaceBetween>
-                            )
-                        })
-                    }
-                </ShadowCard>
-             
-            </Start>
+                    <SpaceBetween style={{ width: '100%', paddingVertical: 16 }}>
+                        <AutoText>hardware</AutoText>
+                        <AutoText>{actions2.hardware}</AutoText>
+                    </SpaceBetween>
+                    <SpaceBetween style={{ width: '100%', paddingVertical: 16 }} onPress={() => openPick1('fade_curve_type', 2)}>
+                        <AutoText>fade_curve_type</AutoText>
+                        <AutoText style={{ color: colors.checked }}>{actions2.fade_curve_type}</AutoText>
+                    </SpaceBetween>
+                    <SpaceBetween style={{ width: '100%', paddingVertical: 16 }} onPress={() => openPick1('fade_curve_duration', 3)} disabled={actions2.fade_curve_type === 'none'}>
+                        <AutoText>fade_curve_duration</AutoText>
+                        <AutoText style={{ color: colors.checked }}>{actions2.fade_curve_duration}</AutoText>
+                    </SpaceBetween>
+                    <Start style={{ width: '100%', paddingVertical: 16 }}>
+                        <AutoText>spectra_450_led</AutoText>
+                    </Start>
+                    <Slider maximumValue={255} minimumValue={0} value={actions2.spectra_450_led} step={1} thumbTintColor={colors.checked} minimumTrackTintColor={colors.checked} />
+                    <SpaceBetween style={{ width: '100%', marginBottom: 32 }}>
+                        <AutoText>spectra_660_led</AutoText>
+                    </SpaceBetween>
+                    <Slider maximumValue={255} minimumValue={0} value={actions2.spectra_660_led} step={1} thumbTintColor={colors.checked} minimumTrackTintColor={colors.checked} />
 
+                    <SpaceBetween style={{ width: '100%', marginBottom: 32 }}>
+                        <AutoText>spectra_main_led</AutoText>
+                    </SpaceBetween>
+                    <Slider maximumValue={255} minimumValue={0} value={actions2.spectra_main_led} step={1} thumbTintColor={colors.checked} minimumTrackTintColor={colors.checked} />
+
+
+                </ShadowCard>
+
+            </Start>
+            <PickModal ref={pick1} data={['temp', 'rh']} onChange={handleCallback} />
+            <PickTime ref={pick3} data={actions2.fade_curve_duration} onChange={handleCallback} />
+            <PickModal ref={pick2} data={['linear', 'exponential', 'none']} onChange={handleCallback} />
 
 
         </ScrollView>

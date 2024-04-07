@@ -21,6 +21,8 @@ const useRequest = <T>(fetch: any,config:configProps={}) => {
             const fetchData = async () => {
                 try {
                     const result = await fetch();
+                    console.log('请求结果',result);
+                    
                     if (result.errs) {
                         setError(result.errs);
                     }

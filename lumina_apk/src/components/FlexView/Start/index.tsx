@@ -47,7 +47,7 @@ const Start = (props: FlexProps) => {
     const newStyle: any = props.style || {};
     if(props.onPress){
         return (
-            <TouchableOpacity {...props} style={useInlineStyle({...styles,...newStyle})}>{props.children}</TouchableOpacity>
+            <TouchableOpacity {...props} activeOpacity={1} style={useInlineStyle({...styles,...newStyle})}>{props.children}</TouchableOpacity>
         )
     }
     return (

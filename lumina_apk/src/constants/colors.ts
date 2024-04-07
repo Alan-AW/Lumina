@@ -14,6 +14,8 @@ const colors = {
   mid_primary: "#FEDE00",
   modal: "rgba(0,0,0,0.7)",
   borderColor:'rgba(5,5,5,0.06)',
+  btn_primary:'#1e80ff',
+  
 };
 
 export default colors;
