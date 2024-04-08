@@ -11,6 +11,20 @@ export const updateArr = (obj: any) => {
     const arr = JSON.parse(JSON.stringify(update_store.instructions))
 
     for (let objKey in obj) {
+
+        if(objKey==='days_min'){
+            arr[update_store.tabIndex].days_min=obj[objKey];
+            break;
+        }
+        if(objKey==='days_max'){
+            arr[update_store.tabIndex].days_max=obj[objKey];
+            break;
+        }
+        if(objKey==='duration'){
+            arr[update_store.tabIndex].duration=obj[objKey];
+            break;
+        }
+
         const actions = arr[update_store.tabIndex].actions;
         for (let index = 0; index < actions.length; index++) {
             const element = actions[index];
