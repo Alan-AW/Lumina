@@ -42,4 +42,8 @@ export function getUpdates(id:any) {
 }
 
 //修改  /android/update/unit/algorithm
+export function submitUpdateJsonInfo(params:any) {
+  return httpAxios.post<any>(`/android/update/unit/algorithm`, params);
+}
+
 

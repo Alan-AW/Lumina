@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { getUpdates } from "src/apis/home";
+import { ScrollView, Text, ToastAndroid, TouchableOpacity, View } from "react-native";
+import { getUpdates, submitUpdateJsonInfo } from "src/apis/home";
 import Center from "src/components/FlexView/Center";
 import Loading from "src/components/Loading";
 import useRequest from "src/hooks/useRequest";
@@ -15,6 +15,8 @@ import { useInlineStyle } from "src/helpers/style";
 import { useRoute } from "@react-navigation/native";
 import End from "src/components/FlexView/End";
 import colors from "src/constants/colors";
+import ToastService from "src/helpers/toast";
+import { deepData } from "src/utils";
 
 
 
@@ -29,7 +31,16 @@ export default function Update() {
         getUpdates('8RC4KBZ7').then(res => {
             if (res.code === 200 && res.status) {
                 setInfo(res.data.data)
-                update_store.instructions = res.data.data.instructions;
+                const resData = res.data.data.instructions;
+                //复制data属性用于提交  数组用于修改
+                const copyData = JSON.parse(JSON.stringify(res.data));
+                delete copyData.data.instructions;
+                //存入仓库
+                update_store({
+                    instructions: resData,
+                    update_instructions: resData,
+                    postParams: copyData
+                })
             }
             console.log('update 请求的结果', res);
 
@@ -41,11 +52,43 @@ export default function Update() {
         })
     }, [])
 
-    console.log(info, 'info');
+
 
     function submit() {
-        console.log('提交代码', info);
-        console.log('提交代码', update_store.instructions);
+        const postParams = deepData(update_store.postParams)
+        const update_instructions = deepData(update_store.update_instructions)
+        const params = {
+            algorithm: {
+                ...postParams,
+                data: {
+                    ...postParams.data,
+                    instructions: update_instructions
+
+                }
+            },
+            unit_device_id: '8RC4KBZ7',
+
+        }
+
+        console.log('请求参数', params);
+
+        submitUpdateJsonInfo(params).then(res => {
+            console.log('提交请求结果', res);
+            if (typeof res.errs === 'object') {
+                ToastAndroid.show('数据更新失败', 3000)
+                // ToastService.showToast('数据更新失败')
+            } else {
+                ToastAndroid.show('数据更新成功', 3000)
+
+                // ToastService.showToast('数据更新成功')
+            }
+
+
+        }).catch(err => {
+            console.log('提交请求结果失败', err);
+
+            // ToastService.showToast('请求出错')
+        })
 
     }
 
@@ -54,9 +97,12 @@ export default function Update() {
 
     return (
         <View style={useInlineStyle({ flex: 1, backgroundColor: '#fff', padding: 32, position: 'relative' })}>
-            <Start>
+            <SpaceBetween>
                 <Back />
-            </Start>
+                <TouchableOpacity style={useInlineStyle({ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: colors.btn_primary })} onPress={submit}>
+                    <AutoText style={{ color: '#fff' }}>提交</AutoText>
+                </TouchableOpacity>
+            </SpaceBetween>
             <Center style={{ flex: 1, marginRight: 32, padding: 16 }}>
                 <Loading loading={loading}>
                     <SpaceBetween style={{ paddingVertical: 32 }}>
@@ -71,11 +117,7 @@ export default function Update() {
                     </View>
                 </Loading>
             </Center>
-            <End style={{ position: 'absolute', left: 0, width: '100%', bottom: 100, paddingRight: '3%' }}>
-                <TouchableOpacity style={useInlineStyle({ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: colors.btn_primary })} onPress={submit}>
-                    <AutoText style={{ color: '#fff' }}>提交</AutoText>
-                </TouchableOpacity>
-            </End>
+
         </View>
 
 

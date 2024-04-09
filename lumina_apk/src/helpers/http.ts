@@ -41,7 +41,7 @@ export class HttpAxios {
         return req;
       },
       (err: AxiosError) => {
-        ToastService.showToast(locales.requestError)
+        // ToastService.showToast(locales.requestError)
         return Promise.reject(err);
       },
     );

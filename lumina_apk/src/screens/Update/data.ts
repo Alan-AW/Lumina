@@ -1,14 +1,26 @@
 import resso from "resso" //import resso
 
-export const update_store = resso({
+type storeType={
+    instructions: any[];
+    update_instructions: any[];
+    tabIndex: number;
+    postParams: any;
+}
+
+export const update_store = resso<storeType>({
+    //只作用全局变量渲染
     instructions: [],
+    //存放用户修改的数据，到时候覆盖
+    update_instructions:[],
     tabIndex: 0,
+    //提交传输的参数
+    postParams:{},
 })
 
 
 //数组循环判断更新数据
 export const updateArr = (obj: any) => {
-    const arr = JSON.parse(JSON.stringify(update_store.instructions))
+    const arr = JSON.parse(JSON.stringify(update_store.update_instructions))
 
     for (let objKey in obj) {
 
@@ -38,10 +50,9 @@ export const updateArr = (obj: any) => {
         }
         
     }
-    console.log('更新的arr',arr);
+    console.log('更新数组',arr);
     
-
-    update_store.instructions = arr;
+    update_store.update_instructions = arr;
 
 }
 
