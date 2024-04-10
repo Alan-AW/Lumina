@@ -61,8 +61,6 @@ const FormContent = ({ navigation }) => {
             })
             return;
         }
-        const isHermes = () => !!global.HermesInternal;
-        Alert.alert(`是否启用${isHermes()}`)
         //  navigation.navigate('QrCode')
 
     }

@@ -125,5 +125,7 @@
     "seedling":"seedling",
     "Submit":"Submit",
     "Version":"Version",
-    "Time":"Time"
+    "Time":"Time",
+    "nullDevices":"No equipment available at the moment"
+
 }

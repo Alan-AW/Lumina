@@ -125,15 +125,18 @@ const RenderItem = (props: RenderItemProps) => {
           </IconButton>
         } */}
         {
-          Array.isArray(item.data) && <IconButton onPress={() => {
-            if (item.data.length > 0) {
+          Array.isArray(item.data) && <IconButton disabled={ item.data.length===0} onPress={() => {
+            if (item.data.length > 0 && item.data[0].device_id) {
               navigation.navigate('AddPage',
                 { devicesId: item.data[0].id, roomCode: item.serial_number })
             }
 
 
           }} >
-            <IconTianjia size={24} color={colors.checked} />
+            {
+              item.data.length===0 ?<LocalesText languageKey={locales.nullDevices} />: <IconTianjia size={24} color={colors.checked} />
+            }
+           
           </IconButton>
         }
 
