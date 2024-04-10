@@ -116,7 +116,7 @@ function Room() {
   // 提交
   const onOk = value => {
     if (editSate) {
-      const id = sessionStorage.getItem('editRowId')
+      const { id } = editRow
       patchRooms(id, value).then(res => {
         if (res.status) {
           settableData(tableData.map(item => {

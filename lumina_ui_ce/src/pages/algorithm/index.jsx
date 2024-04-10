@@ -68,12 +68,12 @@ function Algorithm() {
       align: 'center',
       render: value => <>{JSON.stringify(value)}</>
     },
-    {
-      title: t("algorithm.tableTitle.cmd"),
-      dataIndex: 'cmd',
-      align: 'center',
-      render: value => <>{JSON.stringify(value)}</>
-    },
+    // {
+    //   title: t("algorithm.tableTitle.cmd"),
+    //   dataIndex: 'cmd',
+    //   align: 'center',
+    //   render: value => <>{JSON.stringify(value)}</>
+    // },
     {
       title: t("algorithm.tableTitle.app_show"),
       dataIndex: 'app_show',

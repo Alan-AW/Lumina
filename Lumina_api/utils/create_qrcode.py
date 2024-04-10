@@ -13,7 +13,7 @@ def create_qr_code(data: str, file_name: str):
         raise ValueError(str(e))
     os.makedirs(f'{sys.MEDIA_ROOT}/users/qrcode/', exist_ok=True)  # 自动创建dir
     media_dir = '/media'
-    save_path = f'/users/qrcode/{file_name}_{time.time()}.png'.replace('/', '\\')
-    paths = f'{sys.BASE_DIR}{media_dir}{save_path}'.replace('/', '\\')
+    save_path = f'/users/qrcode/{file_name}_{str(time.time()).split(".")[0]}.png'
+    paths = f'{sys.BASE_DIR}{media_dir}{save_path}'
     image.save(paths)
     return save_path

@@ -86,7 +86,7 @@ def android_zones_deep_data(rooms):
     for room in rooms:
         # 收集机器信息
         units = room.units.all()
-        units_data = {unit.id: unit.serial_number for unit in units}
+        units_data = { unit.id: unit.serial_number for unit in units }
         units_names = list(units_data.values())
         units_ids = list(units_data.keys())
         # 收集机器下的作物信息
@@ -133,26 +133,46 @@ class RoomDescSer(serializers.ModelSerializer):
 def unitsDescSer(units, en=False):
     result = []
     # 循环房间内所有机器设备
-    for unit in units:
-        # 循环每台设备中种植的作物详情信息（有多少作物）
-        data_list = unit.plant_desc.all().values(
-            'id', 'cultivar__icon', 'cultivar__cycle', 'cultivar__name_cn', 'cultivar__name_en', 'create_time'
-        )
-        for plant_desc in data_list:
-            # 如果当前作物在种植周期内
-            if plant_desc['cultivar__cycle'] > computed_sowing_time(plant_desc['create_time']):
-                # 收集数据
+    if units:
+        for unit in units:
+            # 循环每台设备中种植的作物详情信息（有多少作物）
+            data_list = unit.plant_desc.all().values(
+                'id', 'cultivar__icon', 'cultivar__cycle', 'cultivar__name_cn', 'cultivar__name_en', 'create_time'
+            )
+            if data_list:
+                for plant_desc in data_list:
+                    # 如果当前作物在种植周期内
+                    if plant_desc['cultivar__cycle'] > computed_sowing_time(plant_desc['create_time']):
+                        # 收集数据
+                        item = {
+                            "id": unit.id,  # 设备唯一id
+                            "device_id": unit.deviceId,
+                            "serial_number": unit.serial_number,  # 设备名称
+                            "cropItemDay": computed_sowing_time(plant_desc['create_time']),  # 已种植时间
+                            "cropItemCycle": plant_desc['cultivar__cycle'],  # 作物周期
+                            "cropItemName": plant_desc['cultivar__name_en'] if en else plant_desc['cultivar__name_cn'],
+                            # 作物名称
+                            "url": plant_desc['cultivar__icon']  # 作物图片
+                        }
+                    else:
+                        item = {
+                            "id": unit.id,  # 设备唯一id
+                            "device_id": unit.deviceId,
+                            "serial_number": unit.serial_number,  # 设备名称
+                        }
+            else:
                 item = {
                     "id": unit.id,  # 设备唯一id
                     "device_id": unit.deviceId,
                     "serial_number": unit.serial_number,  # 设备名称
-                    "cropItemDay": computed_sowing_time(plant_desc['create_time']),  # 已种植时间
-                    "cropItemCycle": plant_desc['cultivar__cycle'],  # 作物周期
-                    "cropItemName": plant_desc['cultivar__name_en'] if en else plant_desc['cultivar__name_cn'],  # 作物名称
-                    "url": plant_desc['cultivar__icon']  # 作物图片
                 }
-                result.append(item)
+            result.append(item)
+    else:
+        return result
     return result
+
+
+data = []
 
 
 # 第三期正式版，安卓首页接口主序列化程序-使用中(2024-1-13)
@@ -161,10 +181,12 @@ def android_home_data(rooms, en=False):
     data_list = []
     for room in rooms:
         # 为每一个房间生成一个详情数据
-        data_list.append({
-            "room_desc": RoomDescSer(room, many=False).data,
-            "units_desc_list": unitsDescSer(room.units.all(), en)
-        })
+        data_list.append(
+            {
+                "room_desc": RoomDescSer(room, many=False).data,
+                "units_desc": unitsDescSer(room.units.all(), en)
+            }
+        )
     return data_list
 
 
@@ -223,7 +245,7 @@ class CultivarSer(serializers.ModelSerializer):
         model = Cultivar
         fields = '__all__'
         extra_kwargs = {
-            'algorithm': {'read_only': True},
+            'algorithm': { 'read_only': True },
         }
 
 
