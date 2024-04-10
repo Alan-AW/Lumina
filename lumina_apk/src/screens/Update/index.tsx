@@ -28,9 +28,9 @@ export default function Update() {
     const routes: any = useRoute();
     const [info, setInfo] = useState<any>({});
     const [loading, setLoading] = useState(true);
-    const device_id = '8RC4KBZ7' || routes.params.device_id;
+    const device_id = routes.params.device_id;
     useEffect(() => {
-        getUpdates('8RC4KBZ7').then(res => {
+        getUpdates(device_id).then(res => {
             if (res.code === 200 && res.status) {
                 setInfo(res.data.data)
                 const resData = res.data.data.instructions;

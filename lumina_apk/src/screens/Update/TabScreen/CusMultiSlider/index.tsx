@@ -8,6 +8,7 @@ import colors from "src/constants/colors"
 import { View } from "react-native"
 import LocalesText from "src/components/Text"
 import { locales } from "src/helpers/localesText"
+import { numberToFixed } from "src/utils"
 
 interface CusMultiSliderProps {
     value: any;
@@ -59,14 +60,27 @@ export default function CusMultiSlider(props: CusMultiSliderProps) {
 
     function change(v: number[]) {
         propsChange(v)
-        setSliderValue(v)
+        // setSliderValue(v)
     }
 
     function propsChange(v: number[]) {
+
+        let _step=0;
+        if(step){
+            const arr=step.toString().split('.');
+            if(arr.length>1){
+                _step=arr[1].length;
+            }
+        }
+        const _value=[
+            numberToFixed(v[0],_step),
+            numberToFixed(v[1],_step),
+        ]
         onChange({
-            [valueKey[0]]: v[0],
-            [valueKey[1]]: v[1],
+            [valueKey[0]]: _value[0],
+            [valueKey[1]]: _value[1]
         })
+        setSliderValue(_value)
     }
 
 
@@ -87,7 +101,7 @@ export default function CusMultiSlider(props: CusMultiSliderProps) {
                         markerStyle={{ backgroundColor: colors.checked }} min={currentMin} max={currentMax} step={step} />
                 </Center>
             </SpaceBetween>
-            {children && React.cloneElement(children, { min: sliderValue[0], max: sliderValue[1], newValue: sliderValue, step, })}
+            {children && React.cloneElement(children, { min: sliderValue[0], max: sliderValue[1], newValue: sliderValue, step:step, })}
         </View>
 
     )

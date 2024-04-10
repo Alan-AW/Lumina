@@ -35,9 +35,13 @@ const RenderItem = (props: RenderItemProps) => {
   //   return null;
   // }
 
+  const isShowAdd = Array.isArray(item.data) && item.data.length > 0 && item.data[0].device_id;
+
+  const device_id = isShowAdd ? item.data[0].device_id : '';
+
   function goJson() {
     navigation.navigate('Update',
-      { device_id: 'test' })
+      { device_id: device_id })
   }
   return (
     <ShadowCard style={styles.scrollItem} hiddenShadow={true}>
@@ -107,11 +111,14 @@ const RenderItem = (props: RenderItemProps) => {
             );
           })}
         </ScrollView>
-        <Center style={{ height: '80%', zIndex: 9999, position: 'absolute', right: 0, bottom: 0, width: 100 }} onPress={goJson}>
-          <IconButton>
+        {
+          isShowAdd && <Center style={{ height: '80%', zIndex: 9999, position: 'absolute', right: 0, bottom: 0, width: 100 }} >
+          <IconButton onPress={goJson} style={{ height: '100%', width: '100%',alignItems:'center',justifyContent:'center' }}>
             <IconJinrujiantouxiao size={adaptationConvert(35)} />
           </IconButton>
         </Center>
+        }
+        
         {/* {
           Array.isArray(item.data) && <IconButton onPress={() => {
             if (item.data.length > 0 && item.data[0].device_id) {
@@ -125,7 +132,7 @@ const RenderItem = (props: RenderItemProps) => {
           </IconButton>
         } */}
         {
-          Array.isArray(item.data) && <IconButton disabled={ item.data.length===0} onPress={() => {
+          Array.isArray(item.data) && <IconButton disabled={!isShowAdd} onPress={() => {
             if (item.data.length > 0 && item.data[0].device_id) {
               navigation.navigate('AddPage',
                 { devicesId: item.data[0].id, roomCode: item.serial_number })
@@ -134,9 +141,9 @@ const RenderItem = (props: RenderItemProps) => {
 
           }} >
             {
-              item.data.length===0 ?<LocalesText languageKey={locales.nullDevices} />: <IconTianjia size={24} color={colors.checked} />
+              !isShowAdd ? <LocalesText languageKey={locales.nullDevices} /> : <IconTianjia size={24} color={colors.checked} />
             }
-           
+
           </IconButton>
         }
 
