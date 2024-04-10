@@ -5,6 +5,8 @@ from django.views.static import serve
 from django.conf import settings as d_sys
 from django.http import HttpResponse
 
+from users.views import UploadView
+
 urlpatterns = [
     path('', lambda request: HttpResponse('hello world')),
     path('admin/', admin.site.urls),
@@ -19,4 +21,6 @@ urlpatterns = [
     path('android/', include(('android.urls', 'android'), namespace='android')),
     # 设备上传json文件
     path('device/', include(('device.urls', 'device'), namespace='device')),
+    # 全局文件上传接口
+    re_path(r'upload/file/(?P<dir_name>\w+)$', UploadView.as_view())
 ]

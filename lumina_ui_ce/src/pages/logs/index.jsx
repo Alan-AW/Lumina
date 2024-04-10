@@ -2,12 +2,12 @@ import { useState, useEffect, useMemo } from 'react'
 import { Table, Tag } from 'antd'
 import { getLogs } from 'network/api'
 import { FADEIN, pageSize } from 'contants'
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 function Logs(props) {
   const [params, setparams] = useState({ page: 1 })
   const [tableData, settableData] = useState([])
-  const {t, i18n} = useTranslation()
+  const { t, i18n } = useTranslation()
   const [tableDataCount, settableDataCount] = useState(0)
   const textareaStyle = {
     outline: 'none',
@@ -32,11 +32,11 @@ function Logs(props) {
       align: 'center',
       dataIndex: 'role'
     },
-    {
-      title: t('logs.tableTitle.table_name'),
-      align: 'center',
-      dataIndex: 'table_name'
-    },
+    // {
+    //   title: t('logs.tableTitle.table_name'),
+    //   align: 'center',
+    //   dataIndex: 'table_name'
+    // },
     {
       title: t('logs.tableTitle.command_label'),
       align: 'center',
@@ -63,7 +63,7 @@ function Logs(props) {
 
   useEffect(() => {
     getData()
-  }, [])
+  }, [params])
 
   const getData = () => {
     getLogs(params).then(res => {
@@ -83,7 +83,7 @@ function Logs(props) {
 
   const table = useMemo(() => (
     <Table
-      title={() => '操作日志'}
+      title={() => t('logs.table.title')}
       className={FADEIN}
       dataSource={tableData}
       columns={tableTitle}
@@ -92,7 +92,7 @@ function Logs(props) {
       bordered={true}
       rowKey={item => item.id}
     />
-  ), [tableData,i18n.language])
+  ), [tableData, i18n.language])
 
   return (
     <>{table}</>

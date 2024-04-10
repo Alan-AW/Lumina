@@ -4,6 +4,7 @@ import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined } fr
 import { getUser, postUser, patchUser, deleteUser } from 'network/api'
 import baseUrl from 'network/baseUrl'
 import EditModalForm from 'components/users/editModal'
+import HiddenPwd from 'components/users/hiddPwd'
 import { FADEIN, pageSize } from 'contants'
 import { openNotification } from 'utils'
 import { useTranslation } from "react-i18next";
@@ -31,13 +32,14 @@ function UserInfo() {
     {
       title: t("user.tableTitle.password"),
       align: 'center',
-      dataIndex: 'password'
+      dataIndex: 'password',
+      render: pwd => <HiddenPwd text={pwd} />
     },
-    {
-      title: t("user.tableTitle.company_label"),
-      align: 'center',
-      dataIndex: 'company_label'
-    },
+    // {
+    //   title: t("user.tableTitle.company_label"),
+    //   align: 'center',
+    //   dataIndex: 'company_label'
+    // },
     {
       title: t("user.tableTitle.first_name"),
       align: 'center',
@@ -58,16 +60,17 @@ function UserInfo() {
       align: 'center',
       dataIndex: 'status_label'
     },
-    {
-      title: t("user.tableTitle.chinese_label"),
-      align: 'center',
-      dataIndex: 'language_label',
-    },
+    // {
+    //   title: t("user.tableTitle.chinese_label"),
+    //   align: 'center',
+    //   dataIndex: 'language_label',
+    // },
     {
       title: t("user.tableTitle.qrcode_url"),
       align: 'center',
+      width: 300,
       dataIndex: 'qrcode_url',
-      render: qrcode_url => <Image src={`${baseUrl()}${qrcode_url}`} height={50} />
+      render: qrcode_url => <Image src={`${baseUrl()}${qrcode_url}`} width={250} />
     },
     {
       title: t("user.tableTitle.create_time"),

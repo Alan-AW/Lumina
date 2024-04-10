@@ -6,6 +6,7 @@ import { Table, notification, Button, message, Image, Popconfirm } from 'antd'
 import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined, SettingOutlined } from '@ant-design/icons'
 import { FADEIN, pageSize } from 'contants'
 import { getCultvar, postCultvar, patchCultvar, deleteCultvar, postCultvarAlgorithm } from 'network/api'
+import getBaseUrl from 'network/baseUrl'
 import { openNotification } from 'utils'
 import CultivarEditModal from 'components/cultivar'
 import AlgorithmEditModal from 'components/cultivar/algorithm'
@@ -31,7 +32,8 @@ function Cultivar(props) {
       title: t("cultivar.tableTitle.icon"),
       dataIndex: 'icon',
       align: 'center',
-      render: icon => <Image src={icon} height={50} />
+      width: 300,
+      render: icon => <Image src={`${getBaseUrl()}${icon}`} width={250} />
     },
     {
       title: t("cultivar.tableTitle.name_cn"),

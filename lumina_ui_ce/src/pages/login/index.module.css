@@ -4,16 +4,76 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background: radial-gradient(ellipse at center,
+      rgba(255, 254, 234, 1) 0%,
+      rgba(255, 254, 234, 1) 35%,
+      #b7e8eb 100%);
   overflow: hidden;
-  background: url(/public/img/login-bg.jpg) no-repeat center center;
-  background-size: cover;
+}
+
+/* 背景 */
+.ocean {
+  height: 30vh;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: rgba(1, 88, 113, 1);
+  opacity: 0.3;
+}
+
+.wave {
+  background: url(/public/img/login-bg.png) repeat-x;
+  position: absolute;
+  top: -198px;
+  width: 6400px;
+  height: 198px;
+  animation: wave 60s linear infinite, swell 10s linear infinite;
+}
+
+.wave:nth-of-type(2) {
+  top: -198px;
+  animation: wave 42s linear infinite, swell 10s linear infinite;
+}
+
+.wave:nth-of-type(3) {
+  top: -198px;
+  animation: wave 25s linear infinite, swell 10s linear infinite;
+}
+
+@keyframes wave {
+  0% {
+    margin-left: 0;
+  }
+
+  100% {
+    margin-left: -1600px;
+  }
+}
+
+@keyframes swell {
+
+  0%,
+  100% {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1, 1.1);
+    opacity: 0.5;
+  }
 }
 
 /* 登陆框 */
 .loginBox {
-  width: 400px;
-  height: 324px;
-  backdrop-filter: saturate(180%) blur(20px);
+  width: 280px;
+  height: 468px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  /* backdrop-filter: saturate(180%) blur(20px); */
+  background-color: rgba(250, 250, 250, .9);
   -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, .4);
   padding: 40px 60px;
   border-radius: 12px;
@@ -21,11 +81,11 @@
 
 .h2 {
   text-align: center;
-  color: #fff;
-  margin-bottom: 30px;
+  color: #1BC468;
+  /* margin-bottom: 30px; */
 }
 
 .btnBox {
   text-align: center;
-  margin-top: 12%;
+  /* margin-top: 12%; */
 }

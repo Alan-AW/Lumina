@@ -10,6 +10,9 @@ export const login = data => axios.post('/auth/login', data)
 // 全局上传接口
 export const uploadFile = data => axios.post('/upload/img', data, uploadHeaders)
 
+// 新的全局上传接口
+export const uploadFileApi = (dirName, file) => axios.post(`/upload/file/${dirName}`, file, uploadHeaders)
+
 // 上传头像图片接口
 export const uploadImg = data => axios.post('/auth/update', data, uploadHeaders)
 // 修改个人信息

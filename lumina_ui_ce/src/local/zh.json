@@ -277,6 +277,9 @@
     }
   },
   "logs": {
+    "table": {
+      "title": "操作日志"
+    },
     "tableTitle": {
       "index": "序号",
       "username": "用户名",

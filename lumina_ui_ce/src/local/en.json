@@ -285,6 +285,9 @@
     }
   },
   "logs": {
+    "table": {
+      "title": "Operation logs"
+    },
     "tableTitle": {
       "index": "Index",
       "username": "Username",

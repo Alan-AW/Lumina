@@ -9,7 +9,7 @@ import Logo from '../logo'
 import { FADEINLEFT } from 'contants'
 import st from './index.module.css'
 import createMenu from 'common/menuMap'
-import { useTranslation ,Trans } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 
 const { Sider } = Layout;
 
@@ -18,7 +18,7 @@ const NavBar = props => {
     const [menu, setMenu] = useState([])
     const location = useLocation()
     const navigate = useNavigate()
-    const { i18n,t } = useTranslation();
+    const { i18n, t } = useTranslation();
     // 设置展开项
     const [openKeys, setOpenKeys] = useState([location.pathname.split('/').slice(0, -1).join('/')])
     // 高亮菜单
@@ -50,10 +50,10 @@ const NavBar = props => {
 
     useEffect(() => {
         const menu = createMenu(userPermissions.filter(item => item.isNaviLink === true))
-        setMenu(menu.map(obj=>{
+        setMenu(menu.map(obj => {
             return {
                 ...obj,
-                label:<Trans i18nKey={'Menu.'+obj.label}></Trans>
+                label: <Trans i18nKey={'Menu.' + obj.label}></Trans>
             }
         }))
     }, [userPermissions])
@@ -70,19 +70,31 @@ const NavBar = props => {
             collapsed={!isOpen}
             className={st.sider + FADEINLEFT}
         >
-            <Logo title="植物自动化设备后台" />
+            <Logo title="MARY墨泉管理后台" />
             <Menu
                 key={i18n.language}
                 mode="inline"
                 theme='dark'
-                // style={{ backgroundColor: '#000000' }}
                 className={st.stickPosition}
                 openKeys={openKeys}
                 onOpenChange={onOpenChange}
                 onClick={itemClick}
                 defaultSelectedKeys={lightPath}
-                items={menu}
-            />
+            // items={menu}
+            >
+                {
+                    menu.map((item, index) => (
+                        <Menu.Item
+                            key={item.key}
+                            icon={item.icon}
+                            label={<Trans i18nKey={'Menu.' + item.label} />}
+                            className={(index === 3 || index === 5 || index === 6) ? st.needLines : ''}
+                        >
+                            {item.label}
+                        </Menu.Item>
+                    ))
+                }
+            </Menu>
         </Sider>
     );
 };

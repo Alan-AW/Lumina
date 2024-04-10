@@ -3,6 +3,7 @@ from rest_framework.validators import UniqueValidator
 
 from operations.models import Company
 from users.models import UserInfo, Roles, Permission, Logs
+from utils.validator.public_validate import password_validate
 
 
 # 用户登陆
@@ -48,7 +49,9 @@ class PermissionSerializers(serializers.ModelSerializer):
         required=True, min_length=1, max_length=128,
         validators=[UniqueValidator(Permission.objects.all(), message='该权限路径已存在!')]
     )
-    isNaviLink = serializers.BooleanField(required=True, error_messages={'required': 'isNaviLink为是否是菜单项，必填！'})
+    isNaviLink = serializers.BooleanField(
+        required=True, error_messages={ 'required': 'isNaviLink为是否是菜单项，必填！' }
+    )
     pid_id = serializers.IntegerField(allow_null=True, required=False)
     create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
     update_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
@@ -84,7 +87,7 @@ def build_tree(permission_dict, pid=None):
 
 # 菜单与权限合并生成
 def permission_and_menu_ser(queryset):
-    permission_dict = {i.id: i for i in queryset}
+    permission_dict = { i.id: i for i in queryset }
     data = build_tree(permission_dict)
     return data
 
@@ -113,6 +116,21 @@ class UserInfoSer(serializers.ModelSerializer):
     class Meta:
         model = UserInfo
         fields = '__all__'
+
+
+# 修改用户密码
+class UserPwdSer(serializers.Serializer):
+    password = serializers.CharField(
+        required=True, validators=[password_validate], error_messages={ 'required': '必须输入两次相同的密码！' }
+    )
+    password_confirm = serializers.CharField(required=True, error_messages={ 'required': '必须输入两次相同的密码！' })
+
+    def validate(self, attrs):
+        pwd = attrs.get('password')
+        new_pwd = attrs.get('password_confirm')
+        if pwd != new_pwd:
+            raise serializers.ValidationError('两次输入密码不一致!')
+        return attrs
 
 
 # 角色管理

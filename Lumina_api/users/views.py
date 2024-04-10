@@ -1,12 +1,15 @@
+import os
+import time
 from rest_framework.views import APIView
 from django.http import JsonResponse
+from django.conf import settings as sys
 
 from operations.base_view import BaseView
 from users.models import UserInfo, Permission, Roles, Logs
 from utils.authentication.jwt_auth import create_jwt_token
 from utils.methods import return_response, get_data
 from serializers.user_serializers import UserLoginSerializer, UserInfoSer, RolesSer, PermissionSerializers, \
-    permission_and_menu_ser, LogsSer
+    permission_and_menu_ser, LogsSer, UserPwdSer
 from utils.permissions.user_permission import SuperPermission
 from utils.create_log import create_logs
 
@@ -28,7 +31,7 @@ class LoginView(APIView):
         else:
             ser = UserLoginSerializer(user_obj, many=False)
             data = ser.data
-            data['token'] = create_jwt_token({'id': user_obj.id})
+            data['token'] = create_jwt_token({ 'id': user_obj.id })
             create_logs(user_obj, UserInfo, 1, None)
             response = return_response(status=True, data=data, info='登陆成功！')
         return JsonResponse(response)
@@ -76,13 +79,15 @@ class UserInfoView(APIView):
         return JsonResponse(response)
 
 
-# 修改个人信息-暂时不用
+# 修改个人信息-暂时不用-24-4-10开放
 class UpdateUserInfo(APIView):
 
     def post(self, request):
-        ser = UserInfoSer(instance=request.user, data=request.data)
+        ser = UserPwdSer(data=request.data)
         if ser.is_valid():
-            ser.save()
+            password = ser.validated_data.get('password')
+            request.user.password = password
+            request.user.save()
             response = return_response(data=ser.data, info='操作成功!')
         else:
             response = return_response(status=False, error=ser.errors)
@@ -157,4 +162,33 @@ class LogsView(APIView):
             queryset = Logs.objects.filter(username__in=username)
         data = get_data(queryset, True, request, self, LogsSer)
         response = return_response(data=data)
+        return JsonResponse(response)
+
+
+# 上传文件
+class UploadView(APIView):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+
+    def post(self, request, dir_name):
+        file = request.FILES.get('file')  # 获取文件
+        if not file:
+            response = return_response(status=False, error='请选择要上传的文件！')
+            return JsonResponse(response)
+        file_name = str(file.name)  # 获取文件名称
+        name, types = file_name.split('.')
+        file_size = file.size  # 获取文件大小
+        file_name = f'{name}{str(time.time()).split(".")[0]}.{types}'
+        # 文件不得超过10M
+        if file_size > 10485760:
+            response = return_response(status=False, error='文件大小不能超过10M')
+            return JsonResponse(response)
+        os.makedirs(sys.MEDIA_ROOT + f'/{dir_name}/', exist_ok=True)  # 先创建文件夹,如果已存在则不会被创建
+        files_path = os.path.join(sys.MEDIA_ROOT, f'{dir_name}', file_name)  # 开放系统端口,拼接出路径
+        with open(files_path, 'wb') as f:  # 写入文件
+            for line in file:
+                f.write(line)
+        response = return_response(data={ "url": f'/media/{dir_name}/{file_name}', }, info='上传成功')
+        # response = return_response(info='上传成功')
         return JsonResponse(response)

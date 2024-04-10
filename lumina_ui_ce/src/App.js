@@ -10,7 +10,10 @@ import en from 'antd/locale/en_GB'
 import { useTranslation } from "react-i18next";
 
 function App(props) {
-    const { color, mode, lntl, userPermissions } = props
+    // 可以让用户选择的主题颜色配置
+    // const { color, mode, lntl, userPermissions } = props
+    // 24-4-9修改为默认主题颜色
+    const { mode, lntl, userPermissions } = props
     const { i18n } = useTranslation()
     const [router, setRouter] = useState([])
     useEffect(() => {
@@ -23,7 +26,7 @@ function App(props) {
     }, [userPermissions])
     // 主题
     const themeMode = mode ? theme.defaultAlgorithm : theme.darkAlgorithm
-    const themeConfig = { token: { colorPrimary: color }, algorithm: themeMode }
+    const themeConfig = { token: { colorPrimary: '#1bc468' }, algorithm: themeMode }
     // 路由
     let element = useRoutes(router)
     // 国际化语言

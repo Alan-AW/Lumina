@@ -14,7 +14,7 @@ import { UserOutlined } from '@ant-design/icons'
 import { Avatar } from 'antd'
 import { USER_TOKEN, FADEINDOWN } from 'contants'
 import { CHANGE_LNTL, CHANGE_SIDER_MENU, CHECK_THEME_COLOR_DRAWER, USER_INFO, USER_PERMISSIONS } from 'contants/reduxContants'
-import Weather from './weather'
+// import Weather from './weather'
 import Timer from './timer'
 import { useTranslation } from "react-i18next";
 import baseUrl from 'network/baseUrl';
@@ -32,16 +32,15 @@ const TopHeader = props => {
   const navigate = useNavigate()
   // 读取用户数据
   const { account, avatar } = userInfo
-  console.log(avatar)
   // 用户信息下拉菜单
   const items = [
-    {
-      key: '1',
-      label: (<Button type='link' onClick={() => isOpenDrawer()}>主题颜色</Button>),
-    },
+    // {
+    //   key: '1',
+    //   label: (<Button type='link' onClick={() => isOpenDrawer()}>主题颜色</Button>),
+    // },
     {
       key: '2',
-      label: (<Button type="link" onClick={() => clickLogout()}>退出登陆</Button>)
+      label: (<Button type="link" onClick={() => clickLogout()}>退出登录</Button>)
     }
   ]
   // 国际化切换选项
@@ -55,7 +54,7 @@ const TopHeader = props => {
     confirm({
       title: 'Logout',
       icon: <ExclamationCircleFilled />,
-      content: '是否确定退出登陆？',
+      content: '是否确定退出登录？',
       okText: 'Yes',
       cancelText: 'No',
       onOk() {
@@ -107,7 +106,7 @@ const TopHeader = props => {
         className="user-msg"
       >
         {/* 天气 */}
-        <Weather />
+        {/* <Weather /> */}
         {/* 实时时间 */}
         <Timer />
         {/* 国际化 */}
@@ -125,11 +124,11 @@ const TopHeader = props => {
         >
           <span style={{ color: '#87ceeb' }}>
             <span style={{ marginRight: '10px' }}>
-              {account}
+              <Button type='link' children={account} onClick={() => navigate('/')} />
             </span>
             <Avatar
               src={avatar.length ? `${baseUrl()}${avatar}` : './img/logo.png'}
-              style={{ backgroundColor: '#87d068' }}
+              style={{ backgroundColor: '#fff' }}
               icon={<UserOutlined />}
             />
           </span>

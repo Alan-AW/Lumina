@@ -60,7 +60,8 @@ function Company(props) {
             title: t("company.tableTitle.logo"),
             align: 'center',
             dataIndex: 'logo',
-            render: logo => <Image src={`${baseUrl()}${logo}`} height={50} />
+            width: 300,
+            render: logo => <Image src={`${baseUrl()}${logo}`} width={250} />
         },
         {
             title: t("company.tableTitle.create_time"),

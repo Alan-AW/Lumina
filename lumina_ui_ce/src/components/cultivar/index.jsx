@@ -1,9 +1,13 @@
 /**
  * 编辑品类弹窗
  */
-import { useEffect } from 'react'
-import { Form, Input, Modal, InputNumber } from 'antd'
+import { useEffect, useState } from 'react'
+import { Form, Input, Modal, InputNumber, message, Image } from 'antd'
 import { useTranslation } from "react-i18next";
+import { uploadFileApi } from 'network/api'
+import UploadImg from 'components/upload'
+import getBaseUrl from 'network/baseUrl'
+
 
 function CultivarEditModal(props) {
   const {
@@ -11,6 +15,8 @@ function CultivarEditModal(props) {
   } = props
   const { t } = useTranslation()
   const [form] = Form.useForm()
+
+  const [imgUrl, setimgUrl] = useState('')
 
   useEffect(() => {
     openModal && initValue && form.setFieldsValue(initValue)
@@ -31,6 +37,27 @@ function CultivarEditModal(props) {
       console.log(err);
     })
   }
+
+  // 上传组件回调上传方法
+  const uploadCompanyLogo = fileData => {
+    const { data } = fileData
+    uploadFileApi('cultivar', { file: data }).then(res => {
+      if (res.status) {
+        // 上传成功
+        const { data: { url } } = res
+        form.setFieldsValue({ icon: url })
+        setimgUrl(`${getBaseUrl()}${url}`)
+        message.success(res.info)
+      } else {
+        message.error(res.errs)
+      }
+      return true
+    }).catch(err => {
+      console.log(err)
+      return false
+    })
+  }
+
   return (
     <Modal
       open={openModal}
@@ -53,10 +80,15 @@ function CultivarEditModal(props) {
         <Form.Item name='icon' label={t('cultivar.tableTitle.icon')}
           rules={[{ required: true, message: t('cultivar.rules.icon') }]}
         >
-          <Input
-            placeholder={t('cultivar.placeholder.icon')}
-            style={{ width: '100%' }}
+          <UploadImg
+            api={uploadCompanyLogo}
+            maxFile={1}
+            disabled={false}
+            useCrop={false}
           />
+          {
+            imgUrl && <Image src={imgUrl} width={250} />
+          }
         </Form.Item>
 
         <Form.Item name='name_cn' label={t('cultivar.tableTitle.name_cn')}

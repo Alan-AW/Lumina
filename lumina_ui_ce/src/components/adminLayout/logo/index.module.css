@@ -11,7 +11,7 @@
   height: 50px;
   border-radius: 8px;
   object-fit: contain;
-  box-shadow: 0 0 10px rgb(10, 10, 10, .3);
+  /* box-shadow: 0 0 10px rgb(10, 10, 10, .3); */
 }
 
 .title {

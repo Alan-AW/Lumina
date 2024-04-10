@@ -1,6 +1,7 @@
 /**
  * 登陆页面
  */
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Form, Input, message } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
@@ -15,10 +16,18 @@ import { useTranslation } from "react-i18next";
 
 const Login = props => {
   const { setUserInfo, setUserPermissions } = props
-  const initValue = { account: 'admin', password: 'admin123' }
+  const initValue = { account: 'admin', password: 'Aa110120130.' }
   // 接收params参数
   const navigate = useNavigate()
   const { t } = useTranslation();
+
+  // 修改body样式
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [])
 
   // 登陆成功的处理
   const sign = data => {
@@ -46,7 +55,7 @@ const Login = props => {
       if (res.status) {
         sign(res.data)
         // 跳转页面
-        navigate('/')
+        navigate('/logs')
       } else {
         message.destroy("loginLoading")
         message.error(res.errs)
@@ -56,6 +65,12 @@ const Login = props => {
 
   return (
     <div className={st.loginBody}>
+      {/* 背景 */}
+      <div className={st.ocean}>
+        <div className={st.wave}></div>
+        <div className={st.wave}></div>
+        <div className={st.wave}></div>
+      </div>
       <Form
         name="normal_login"
         className={`${st.loginBox} login-form`}
