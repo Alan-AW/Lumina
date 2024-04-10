@@ -6,6 +6,8 @@ import colors from "src/constants/colors";
 import { adaptationConvert } from "src/helpers/style";
 import { updateArr } from "../../data";
 import AutoText from "src/components/AutoView/Text";
+import LocalesText from "src/components/Text";
+import { locales } from "src/helpers/localesText";
 
 
 
@@ -70,11 +72,11 @@ export default function CusInputNumber(props: CusInputNumberProps) {
     return (
         <Start>
             <Start style={{ marginRight: 32 }}>
-                <AutoText style={{ paddingRight: 32 }}>days_min</AutoText>
+                <LocalesText languageKey={locales.days_min} style={{ paddingRight: 32 }} />
                 <InputNumber value={minValue} min={1} max={maxValue} change={setMinValue} updateKey="days_min" />
             </Start>
             <Start style={{ marginRight: 32 }}>
-                <AutoText style={{ paddingRight: 32 }}>days_max</AutoText>
+                <LocalesText languageKey={locales.days_max} style={{ paddingRight: 32 }} />
                 <InputNumber value={maxValue} min={minValue} max={30} change={setMaxValue} updateKey="days_max" />
             </Start>
         </Start>

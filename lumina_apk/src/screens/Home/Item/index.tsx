@@ -101,18 +101,24 @@ const RenderItem = (props: RenderItemProps) => {
           })}
         </ScrollView>
         {
-          Array.isArray(item.data)  && <IconButton onPress={() => {
-            navigation.navigate('Update',
-              { device_id: item.data[0].device_id })
+          Array.isArray(item.data) && <IconButton onPress={() => {
+            if (item.data.length > 0 && item.data[0].device_id) {
+              navigation.navigate('Update',
+                { device_id: item.data[0].device_id })
+            }
+
 
           }} >
-           <AutoText>设置json</AutoText>
+            <AutoText>设置json</AutoText>
           </IconButton>
         }
         {
-          Array.isArray(item.data)  && <IconButton onPress={() => {
-            navigation.navigate('AddPage',
-              { devicesId: item.data[0].id, roomCode: item.serial_number })
+          Array.isArray(item.data) && <IconButton onPress={() => {
+            if (item.data.length > 0) {
+              navigation.navigate('AddPage',
+                { devicesId: item.data[0].id, roomCode: item.serial_number })
+            }
+
 
           }} >
             <IconTianjia size={24} color={colors.checked} />

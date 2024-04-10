@@ -12,6 +12,8 @@ import CusTime from "./CusTime";
 import CusInputNumber from "./CusInputNumber";
 import CusOption from "./CusOption";
 import CusTimeAndType from "./CusTimeAndType";
+import LocalesText from "src/components/Text";
+import { locales } from "src/helpers/localesText";
 
 interface TabScreenProps {
     data: any;
@@ -37,7 +39,7 @@ export default function TabScreen(props: TabScreenProps) {
                 <ShadowCard style={{ borderWidth: 1, borderColor: '#ddd', width: '30%', paddingHorizontal: 24, paddingVertical: 16 }}>
                     <View>
                         <SpaceBetween style={{ paddingVertical: 16 }}>
-                            <AutoText>hardware</AutoText>
+                            <LocalesText languageKey={locales.hardware} />
                             <AutoText>{actions0.hardware}</AutoText>
                         </SpaceBetween>
                         <CusOption label="vpd_priority_day" value={actions0.vpd_priority_day} data={['temp', 'rh']} updateKey={'vpd_priority_day'} />
@@ -72,7 +74,8 @@ export default function TabScreen(props: TabScreenProps) {
                 </ShadowCard>
                 <ShadowCard style={{ borderWidth: 1, borderColor: '#ddd', width: '30%', paddingHorizontal: 24, marginLeft: '3%', paddingVertical: 16 }}>
                     <SpaceBetween style={{ paddingVertical: 16 }}>
-                        <AutoText>hardware</AutoText>
+                    <LocalesText languageKey={locales.hardware} />
+
                         <AutoText>{actions1.hardware}</AutoText>
                     </SpaceBetween>
                     <View style={{ marginTop: 8 }}>
@@ -89,7 +92,8 @@ export default function TabScreen(props: TabScreenProps) {
                 </ShadowCard>
                 <ShadowCard style={{ borderWidth: 1, borderColor: '#ddd', width: '30%', paddingHorizontal: 24, marginLeft: '3%', paddingVertical: 16 }}>
                     <SpaceBetween style={{ width: '100%', paddingVertical: 16 }}>
-                        <AutoText>hardware</AutoText>
+                    <LocalesText languageKey={locales.hardware} />
+
                         <AutoText>{actions2.hardware}</AutoText>
                     </SpaceBetween>
                     <CusTimeAndType optionKey="fade_curve_type" timeKey="fade_curve_duration" actions={actions2} />

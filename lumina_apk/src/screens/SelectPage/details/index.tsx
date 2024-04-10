@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Alert, Modal, ScrollView, View } from "react-native";
+import { Alert, Modal, ScrollView, ToastAndroid, View } from "react-native";
 import { getChoicesDetails, submitChoices } from "src/apis/home";
 import AutoText from "src/components/AutoView/Text";
 import AutoView from "src/components/AutoView/View";
@@ -19,6 +19,7 @@ import { locales } from "src/helpers/localesText";
 import { useRoute } from "@react-navigation/native";
 import { useAppDispatch } from "src/reduxCenter/hooks";
 import { uppdateRefresh } from "src/reduxCenter/actionCreators/refreshAction";
+import Center from "src/components/FlexView/Center";
 
 interface DetailsProps {
     id: any,
@@ -27,18 +28,29 @@ interface DetailsProps {
 
 export default function Details(props: DetailsProps) {
 
+    const [data, setData] = useState<any>([])
+    const [loading, setLoading] = useState<any>(true)
     const [show, setShow] = useState(false)
     const routes: any = useRoute();
 
 
     useEffect(() => {
         setShow(!!props.id)
+        getChoicesDetails(props.id).then(res => {
+            console.log('请求结果666', res.data);
+            setData(res.data)
+
+        }).catch(()=>{
+            // ToastAndroid.show('')
+        }).finally(() => {
+            setLoading(false)
+        })
 
 
     }, [props.id])
 
-    const { loading, data, error } = useRequest(() => getChoicesDetails(props.id), {run:!!props.id});
-    const dispatch=useAppDispatch()
+
+    const dispatch = useAppDispatch()
 
     const [radioSelected, setRadioSelected] = useState<any>({})
 
@@ -136,7 +148,10 @@ export default function Details(props: DetailsProps) {
         submitChoices(params).then((res) => {
             props.clearSelectItem();
             ToastService.showMessage(res.errs ? JSON.stringify(res.errs) : res.info);
-            dispatch(uppdateRefresh({routeKey:'Home',status:true}))
+            dispatch(uppdateRefresh({ routeKey: 'Home', status: true }))
+
+        }).catch(Err => {
+            console.log(Err);
 
         })
 
@@ -157,94 +172,100 @@ export default function Details(props: DetailsProps) {
 
                 <AutoView style={{ backgroundColor: '#fff', width: '40%', height: '60%', padding: 60, borderRadius: 8, marginLeft: '0%' }}>
                     <Loading loading={loading}>
-                        <ScrollView style={{ flex: 1 }}>
-                            {
-                                newData.map((item: any, index: number) => {
+                        {
+                            !loading && data.length === 0 ? <Center style={{flex:1}}>
+                                <LocalesText languageKey={locales.nullData} />
+                            </Center> :
+                                <ScrollView style={{ flex: 1 }}>
+                                    {
+                                        newData.map((item: any, index: number) => {
 
-                                    let selectData: any = [];
-                                    let moreData: any = [];
-                                    if (item.choices_self) {
-                                        selectData = item.raidoList.map((i: any, key: number) => {
-                                            return {
-                                                id: key + 'chose',
-                                                value: i.id,
-                                                label: i.title,
-                                                size: 20,
+                                            let selectData: any = [];
+                                            let moreData: any = [];
+                                            if (item.choices_self) {
+                                                selectData = item.raidoList.map((i: any, key: number) => {
+                                                    return {
+                                                        id: key + 'chose',
+                                                        value: i.id,
+                                                        label: i.title,
+                                                        size: 20,
+
+                                                    }
+
+                                                })
+                                            } else {
+                                                item.raidoList.forEach((_item: any) => {
+                                                    const formatData = _item.choices.map((cho: any, _key: number) => {
+                                                        return {
+                                                            id: _key + 'child',
+                                                            value: cho.value,
+                                                            label: cho.label,
+                                                            size: 20,
+
+                                                        }
+                                                    })
+                                                    moreData.push({
+                                                        title: _item.title,
+                                                        id: _item.id,
+                                                        formatData,
+                                                    })
+                                                });
 
                                             }
 
-                                        })
-                                    } else {
-                                        item.raidoList.forEach((_item: any) => {
-                                            const formatData = _item.choices.map((cho: any, _key: number) => {
-                                                return {
-                                                    id: _key + 'child',
-                                                    value: cho.value,
-                                                    label: cho.label,
-                                                    size: 20,
-
-                                                }
-                                            })
-                                            moreData.push({
-                                                title: _item.title,
-                                                id: _item.id,
-                                                formatData,
-                                            })
-                                        });
-
-                                    }
 
 
+                                            return (
+                                                <View key={index} style={{ marginTop: index === 0 ? 0 : 20, marginBottom: index === newData.length - 1 ? 30 : 0 }}>
+                                                    <View>
+                                                        <AutoText style={{ fontSize: 40, color: '#333', fontWeight: '600' }}>{item.subject}</AutoText>
+                                                    </View>
+                                                    <AutoView style={{ flexWrap: 'wrap' }}>
+                                                        {
+                                                            item.choices_self ?
+                                                                <CustomRadioGroup
+                                                                    data={selectData}
+                                                                    onChange={(v: any, row: any) => {
+                                                                        setRadioSelected({
+                                                                            ...radioSelected,
+                                                                            v: row.value
+                                                                        })
 
-                                    return (
-                                        <View key={index} style={{ marginTop: index === 0 ? 0 : 20, marginBottom: index === newData.length - 1 ? 30 : 0 }}>
-                                            <View>
-                                                <AutoText style={{ fontSize: 40, color: '#333', fontWeight: '600' }}>{item.subject}</AutoText>
-                                            </View>
-                                            <AutoView style={{ flexWrap: 'wrap' }}>
-                                                {
-                                                    item.choices_self ?
-                                                        <CustomRadioGroup
-                                                            data={selectData}
-                                                            onChange={(v: any, row: any) => {
-                                                                setRadioSelected({
-                                                                    ...radioSelected,
-                                                                    v: row.value
+                                                                    }}
+                                                                /> :
+                                                                moreData.map((data: any, j: number) => {
+                                                                    return (
+                                                                        <AutoView key={j} style={{ marginTop: 20, marginBottom: 10 }}>
+                                                                            <View>
+                                                                                <AutoText style={{ fontSize: 30, color: '#666' }}>{data.title}</AutoText>
+                                                                            </View>
+                                                                            <CustomRadioGroup
+                                                                                data={data.formatData}
+                                                                                onChange={(v: any, row: any) => {
+
+                                                                                    setRadioSelected({
+                                                                                        ...radioSelected,
+                                                                                        [data['id']]: row.value
+                                                                                    })
+
+                                                                                }}
+                                                                            />
+                                                                        </AutoView>
+
+                                                                    )
                                                                 })
 
-                                                            }}
-                                                        /> :
-                                                        moreData.map((data: any, j: number) => {
-                                                            return (
-                                                                <AutoView key={j} style={{ marginTop: 20, marginBottom: 10 }}>
-                                                                    <View>
-                                                                        <AutoText style={{ fontSize: 30, color: '#666' }}>{data.title}</AutoText>
-                                                                    </View>
-                                                                    <CustomRadioGroup
-                                                                        data={data.formatData}
-                                                                        onChange={(v: any, row: any) => {
+                                                        }
 
-                                                                            setRadioSelected({
-                                                                                ...radioSelected,
-                                                                                [data['id']]: row.value
-                                                                            })
+                                                    </AutoView>
 
-                                                                        }}
-                                                                    />
-                                                                </AutoView>
+                                                </View>
+                                            )
+                                        })
+                                    }
+                                </ScrollView>
+                        }
 
-                                                            )
-                                                        })
-
-                                                }
-
-                                            </AutoView>
-
-                                        </View>
-                                    )
-                                })
-                            }
-                        </ScrollView>
                         <AutoView style={{ justifyContent: 'flex-end', height: 100, borderTopWidth: 1, borderColor: '#f8f8f8' }} isRow>
                             <IconButton onPress={() => {
 

@@ -6,6 +6,8 @@ import SpaceBetween from "src/components/FlexView/SpaceBetween"
 import { updateArr } from "../../data"
 import colors from "src/constants/colors"
 import { View } from "react-native"
+import LocalesText from "src/components/Text"
+import { locales } from "src/helpers/localesText"
 
 interface CusMultiSliderProps {
     value: any;
@@ -75,17 +77,17 @@ export default function CusMultiSlider(props: CusMultiSliderProps) {
     return (
         <View>
             <SpaceBetween style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
-                <AutoText>{title}</AutoText>
+                <LocalesText languageKey={locales[title] || title} />
                 <SpaceBetween style={{ width: '100%', paddingTop: 32 }}>
-                    <AutoText>min:{sliderValue[0]}     </AutoText>
-                    <AutoText>max:{sliderValue[1]}     </AutoText>
+                    <LocalesText languageKey={locales.min} rightText={`：${sliderValue[0]}`} />
+                    <LocalesText languageKey={locales.max} rightText={`：${sliderValue[1]}`} />
                 </SpaceBetween>
                 <Center style={{ width: '100%', marginTop: 0 }}>
                     <MultiSlider values={sliderValue} onValuesChangeFinish={change} selectedStyle={{ backgroundColor: colors.checked }}
                         markerStyle={{ backgroundColor: colors.checked }} min={currentMin} max={currentMax} step={step} />
                 </Center>
             </SpaceBetween>
-            {children && React.cloneElement(children, { min: sliderValue[0], max: sliderValue[1], newValue: sliderValue, step,  })}
+            {children && React.cloneElement(children, { min: sliderValue[0], max: sliderValue[1], newValue: sliderValue, step, })}
         </View>
 
     )

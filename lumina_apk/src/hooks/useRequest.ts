@@ -29,6 +29,8 @@ const useRequest = <T>(fetch: any,config:configProps={}) => {
                     
                     setData(result.data);
                 } catch (error: any) {
+                console.log('请求出错啦');
+
                     setError(error.message || 'An error occurred');
                 } finally {
                     setLoading(false);
@@ -40,7 +42,11 @@ const useRequest = <T>(fetch: any,config:configProps={}) => {
 
                 fetchData();
             }
+            console.log('开始请求',run);
+
             if(run){
+                console.log('开始请求');
+                
                 fetchData();
             }
 

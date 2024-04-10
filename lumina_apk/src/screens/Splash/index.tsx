@@ -2,19 +2,23 @@ import React from 'react';
 import {useRef, useEffect} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {createStyles} from 'src/helpers/style';
-import {useAppSelector} from 'src/reduxCenter/hooks';
+import {useAppDispatch, useAppSelector} from 'src/reduxCenter/hooks';
 import DialogServer from 'src/helpers/modal';
 import storage from 'src/helpers/storage';
 import Login from '../Login';
+import { loginInSuccess } from 'src/reduxCenter/actionCreators';
 
 export default function Splash(props: any) {
+  const dispatch = useAppDispatch()
+
   useEffect(() => {
     // storage.remove({
     //   key: 'userInfo',
     // });
     storage
       .load({key: 'userInfo'})
-      .then(res => {
+      .then((res:any) => {
+        dispatch(loginInSuccess(res))
         props.navigation.navigate('Home');
       })
       .catch(err => {

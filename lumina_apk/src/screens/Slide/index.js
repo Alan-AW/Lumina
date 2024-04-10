@@ -67,6 +67,7 @@ const VerticalTabMenu = (props) => {
     }
   };
 
+  console.log(state,'用户信息');
 
 
 

@@ -3,6 +3,8 @@ import { Modal, TouchableOpacity } from "react-native";
 import Center from "../FlexView/Center";
 import Start from "../FlexView/Start";
 import AutoText from "../AutoView/Text";
+import LocalesText from "../Text";
+import { locales } from "src/helpers/localesText";
 
 
 interface PickModalProps {
@@ -43,7 +45,7 @@ function PickModal(props: PickModalProps, ref: any) {
                     data.map((item: any, index: number) => {
                         return (
                             <Start key={index} onPress={() => change(item)} style={{ paddingHorizontal: 32, paddingVertical: 32,backgroundColor:'#fff',width:'50%',borderBottomWidth:1,borderColor:'#ddd' }}>
-                                <AutoText>{item}</AutoText>
+                                <LocalesText languageKey={locales[item] || item} />
                             </Start>
                         )
                     })

@@ -4,13 +4,15 @@ import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import { update_store } from "../data";
 import TabScreen from "../TabScreen";
 import AutoText from "src/components/AutoView/Text";
+import LocalesText from "src/components/Text";
+import { locales } from "src/helpers/localesText";
 
 
 
 
 export default function UpdateTabs() {
 
-    const instructions:any = update_store.instructions;
+    const instructions: any = update_store.instructions;
 
     const tabData = useMemo(() => {
         const element: any = {}
@@ -53,10 +55,10 @@ export default function UpdateTabs() {
     const [tabIndex, setTabIndex] = useState<number>(0);
     const layout = useWindowDimensions();
 
-    useEffect(()=>{
-        update_store.tabIndex=tabIndex
+    useEffect(() => {
+        update_store.tabIndex = tabIndex
 
-    },[tabIndex])
+    }, [tabIndex])
 
 
     return (
@@ -81,10 +83,8 @@ export default function UpdateTabs() {
 
 
                     renderLabel={({ route, focused }) => (
-                        <AutoText style={{fontWeight:focused?'700':'400'}}
-                        >
-                            {route.title}
-                        </AutoText>
+                        <LocalesText languageKey={locales[route.title] || route.title} style={{ fontWeight: focused ? '700' : '400' }}
+                        />
                     )}
                 />
             )}

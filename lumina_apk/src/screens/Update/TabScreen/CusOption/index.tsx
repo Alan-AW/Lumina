@@ -5,6 +5,8 @@ import SpaceBetween from 'src/components/FlexView/SpaceBetween';
 import PickModal from 'src/components/PickModal';
 import colors from 'src/constants/colors';
 import { updateArr } from '../../data';
+import LocalesText from 'src/components/Text';
+import { locales } from 'src/helpers/localesText';
 
 interface CusOptionProps {
     label: string;
@@ -31,8 +33,8 @@ export default function CusOption(props: CusOptionProps) {
     return (
         <>
             <SpaceBetween style={{ width: '100%', paddingVertical: 32 }} onPress={() => openSelectRef.current.open()}>
-                <AutoText>{label}</AutoText>
-                <AutoText style={{ color: colors.checked }}>{currentType}</AutoText>
+                <LocalesText languageKey={locales[label] || label} />
+                <LocalesText  style={{ color: colors.checked }} languageKey={locales[currentType] || currentType} />
             </SpaceBetween>
             <PickModal ref={openSelectRef} data={data} onChange={handleCallback} />
 

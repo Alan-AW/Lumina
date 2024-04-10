@@ -14,15 +14,16 @@ type LocalesTextProps = {
   right?: number;
   top?: number;
   bottom?: number;
-  languageKey: string;
+  languageKey: string | any;
   leftText?: string;
   rightText?: string;
-  children?:any;
+  children?: any;
+  rightStyle?: TextStyle;
 };
 
 const LocalesText = (props: TextProps & LocalesTextProps) => {
   const { t } = useTranslation();
-  const { vertical, left, top, isBold = false, color, size = 30,children, bottom, horizontal, right, leftText, rightText, languageKey } = props;
+  const { vertical, left, top, isBold = false, color, size = 30, children, bottom, horizontal, right, leftText, rightText, languageKey, rightStyle } = props;
   let styles: TextStyle = {
     fontSize: size,
     fontFamily: fontName.medium,
@@ -38,8 +39,8 @@ const LocalesText = (props: TextProps & LocalesTextProps) => {
   return (
     <Text {...props} allowFontScaling={false} style={useInlineStyle({ ...styles, ...newStyle })}>
       {leftText}
-      {t(languageKey)}
-      {rightText}
+      <Text>{t(languageKey)}</Text>
+      <Text style={useInlineStyle(rightStyle ? rightStyle : {})}>{rightText}</Text>
       {children}
     </Text>
   );

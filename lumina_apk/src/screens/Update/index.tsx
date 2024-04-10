@@ -17,6 +17,8 @@ import End from "src/components/FlexView/End";
 import colors from "src/constants/colors";
 import ToastService from "src/helpers/toast";
 import { deepData } from "src/utils";
+import LocalesText from "src/components/Text";
+import { locales } from "src/helpers/localesText";
 
 
 
@@ -100,16 +102,16 @@ export default function Update() {
             <SpaceBetween>
                 <Back />
                 <TouchableOpacity style={useInlineStyle({ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: colors.btn_primary })} onPress={submit}>
-                    <AutoText style={{ color: '#fff' }}>提交</AutoText>
+                    <LocalesText languageKey={locales.Submit} style={{ color: '#fff' }} />
                 </TouchableOpacity>
             </SpaceBetween>
             <Center style={{ flex: 1, marginRight: 32, padding: 16 }}>
                 <Loading loading={loading}>
                     <SpaceBetween style={{ paddingVertical: 32 }}>
-                        <AutoText>设备ID: <AutoText>{info.device_id}</AutoText></AutoText>
-                        <AutoText>类型:<AutoText>{info.type}</AutoText></AutoText>
-                        <AutoText>版本:<AutoText>{info.version}</AutoText></AutoText>
-                        <AutoText>时间:<AutoText>{info.time}</AutoText></AutoText>
+                        <LocalesText languageKey={locales.device_id} rightText={`：${info.device_id}`} />
+                        <LocalesText languageKey={locales.type} rightText={`：${info.type}`} />
+                        <LocalesText languageKey={locales.Version} rightText={`：${info.version}`} />
+                        <LocalesText languageKey={locales.Time} rightText={`：${info.time}`} />
                     </SpaceBetween>
                     <View style={useInlineStyle({ flex: 1, paddingLeft: 0, marginTop: 32 })}>
                         <UpdateTabs />

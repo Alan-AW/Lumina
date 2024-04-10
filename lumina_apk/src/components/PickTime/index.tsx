@@ -7,6 +7,8 @@ import DynamicallySelectedPicker from 'react-native-dynamically-selected-picker'
 import End from "../FlexView/End";
 import colors from "src/constants/colors";
 import { adaptationConvert } from "src/helpers/style";
+import LocalesText from "../Text";
+import { locales } from "src/helpers/localesText";
 
 interface PickModalProps {
     data: string;
@@ -156,10 +158,10 @@ function PickTime(props: PickModalProps, ref: any) {
                             />
                             <End style={{ width: '100%', position: 'absolute', bottom: -32, left: 0 }}>
                                 <TouchableOpacity onPress={close}>
-                                    <AutoText>取消</AutoText>
+                                    <LocalesText languageKey={locales.cancel} />
                                 </TouchableOpacity>
                                 <TouchableOpacity style={{ marginHorizontal: 32 }} onPress={change}>
-                                    <AutoText style={{ color: colors.checked }}>确定</AutoText>
+                                <LocalesText languageKey={locales.confirm} style={{ color: colors.checked }} />
                                 </TouchableOpacity>
                             </End>
                         </View>

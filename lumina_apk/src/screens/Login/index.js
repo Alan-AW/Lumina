@@ -38,6 +38,7 @@ const FormContent = ({ navigation }) => {
                 key: 'userInfo',
                 data: res.data
             }).then(() => {
+                console.log('登录信息',res.data);
                 dispatch(loginInSuccess(res.data))
                 ToastService.showToast(locales.LoginSuccess)
                 navigation.reset({

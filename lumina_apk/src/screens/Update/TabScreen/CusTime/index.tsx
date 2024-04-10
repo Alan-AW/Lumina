@@ -7,6 +7,8 @@ import { updateArr } from "../../data";
 import AutoText from "src/components/AutoView/Text";
 import colors from "src/constants/colors";
 import SpaceBetween from "src/components/FlexView/SpaceBetween";
+import LocalesText from "src/components/Text";
+import { locales } from "src/helpers/localesText";
 
 
 interface CusTimeProps {
@@ -44,7 +46,7 @@ export default function CusTime(props: CusTimeProps) {
             <>
 
                 <SpaceBetween disabled={disabled} style={{ paddingVertical: 32, width: '100%' }} onPress={() => openRef.current.open()}>
-                    <AutoText>{label}</AutoText>
+                    <LocalesText languageKey={locales[label] || label} />
                     <AutoText style={{ color: colors.checked }}>{time}</AutoText>
 
                 </SpaceBetween>

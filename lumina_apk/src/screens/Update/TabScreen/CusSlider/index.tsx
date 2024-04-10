@@ -6,6 +6,8 @@ import SpaceBetween from "src/components/FlexView/SpaceBetween";
 import { useInlineStyle } from "src/helpers/style";
 import { updateArr } from "../../data";
 import colors from "src/constants/colors";
+import LocalesText from "src/components/Text";
+import { locales } from "src/helpers/localesText";
 
 
 interface CusSliderProps {
@@ -26,7 +28,7 @@ export default function CusSlider(props: CusSliderProps) {
     return (
         <>
             <SpaceBetween style={{ width: '100%', marginBottom: 32 }}>
-                <AutoText>{title}</AutoText>
+                <LocalesText languageKey={locales[title] || title} />
                 <AutoText>{sliderValue}</AutoText>
             </SpaceBetween>
             <View style={useInlineStyle({ marginBottom: 32 })}>

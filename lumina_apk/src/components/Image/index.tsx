@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Image, View, ImageStyle } from "react-native";
 import LocalesText from "../Text";
 import { locales } from "src/helpers/localesText";
+import { baseUrl } from "src/apis/config";
 
 interface ImgProps {
     url?: string;
@@ -19,11 +20,12 @@ function Img(props: ImgProps) {
         borderRadius:radius,
         ...style,
     }
+    
     return (
         <>
             {
-                loadingErr ? <LocalesText languageKey={locales.nullData} /> :
-                    <Image source={{ uri: url }} style={mergeStyle} onError={() => {
+                loadingErr ? <LocalesText languageKey={locales.nullData} style={mergeStyle} /> :
+                    <Image source={{ uri: baseUrl+url }} style={mergeStyle} onError={() => {
                         setLoadingErr(true)
                     }} />
             }
