@@ -35,9 +35,11 @@ const RenderItem = (props: RenderItemProps) => {
   //   return null;
   // }
 
-  const isShowAdd = Array.isArray(item.data) && item.data.length > 0 && item.data[0].device_id;
+  
+  
+  const isShowAdd = !!item.device_id;
 
-  const device_id = isShowAdd ? item.data[0].device_id : '';
+  const device_id = isShowAdd ? item.device_id : '';
 
   function goJson() {
     navigation.navigate('Update',
@@ -133,9 +135,9 @@ const RenderItem = (props: RenderItemProps) => {
         } */}
         {
           Array.isArray(item.data) && <IconButton disabled={!isShowAdd} onPress={() => {
-            if (item.data.length > 0 && item.data[0].device_id) {
+            if (device_id) {
               navigation.navigate('AddPage',
-                { devicesId: item.data[0].id, roomCode: item.serial_number })
+                { devicesId: item.addId, roomCode: item.serial_number })
             }
 
 

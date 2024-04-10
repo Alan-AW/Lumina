@@ -27,22 +27,29 @@ const Home = () => {
     refresh()
   });
 
-  console.log(data,'home 请求的data');
+  console.log(data, 'home 请求的data');
 
   const renderData = useMemo(() => {
     if (!loading && Array.isArray(data)) {
       return data.map(item => {
         const { max_current, min_current, serial_number, id } = item.room_desc;
+        const findItem=item.units_desc_list.find(i=>i.device_id || i.id)
+        let newList = item.units_desc_list.filter((i) => {
+          return i.url && i.cropItemName && i.serial_number
+        })
         return {
           id,
           max: max_current,
           low: min_current,
           serial_number: serial_number,
-          data: item.units_desc_list.map(_item => {
+          addId:findItem?findItem.id:'',
+          device_id:findItem?findItem.device_id:'',
+          data: newList.map(_item => {
             return {
               ..._item,
               name2: _item.cropItemName,
               date: _item.cropItemDay,
+            
               serial_number: _item.serial_number,
               img: _item.url,
               cropItemCycle: _item.cropItemCycle,
