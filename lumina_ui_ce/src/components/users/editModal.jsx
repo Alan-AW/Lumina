@@ -127,12 +127,12 @@ function EditModal(props) {
           />
         </Form.Item>
 
-        <Form.Item name='language' label={t("user.tableTitle.language_label") + '：'} rules={[
-          { required: true, message: t("user.rules.language_label") }
+        <Form.Item name='language' label={t("user.tableTitle.chinese_label") + '：'} rules={[
+          { required: true, message: t("user.rules.chinese_label") }
         ]}>
           <Select
             allowClear
-            placeholder={t("user.placeholder.language_label")}
+            placeholder={t("user.placeholder.chinese_label")}
             style={{ minWidth: '150px' }}
             options={[{ label: '中文', value: 1 }, { label: 'english', value: 0 }]}
           />
