@@ -268,7 +268,7 @@ const Bright = () => {
         })}
       </AutoView>
       <AutoView isRow style={{ marginTop: 22, alignItems: 'center', position: 'absolute', left: 32, bottom: 32 }}>
-        <ShadowCard
+        {/* <ShadowCard
           isBtn
           onPress={() => navigation.navigate('AdminTools', { ...routes.params })}
           style={useInlineStyle({
@@ -288,7 +288,7 @@ const Bright = () => {
               {t("AdminTools")}
             </AutoText>
           </AutoView>
-        </ShadowCard>
+        </ShadowCard> */}
         <ShadowCard
           style={useInlineStyle({
             borderRadius: 10,

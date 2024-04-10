@@ -8,6 +8,7 @@ import ShadowCard from 'src/components/Shadow';
 
 import colors from 'src/constants/colors';
 import {
+  adaptationConvert,
   createStyles,
   useInlineStyle,
 } from 'src/helpers/style';
@@ -17,8 +18,9 @@ import NormalText from 'src/components/Text/NormalText';
 import CustView from 'src/components/FlexView/CustView';
 import HomeCard from '../card';
 import { IconButton } from 'src/components/Button';
-import { IconTianjia } from 'src/iconfont';
+import { IconJinrujiantouxiao, IconTianjia } from 'src/iconfont';
 import AutoText from 'src/components/AutoView/Text';
+import Center from 'src/components/FlexView/Center';
 
 interface RenderItemProps {
   item: any,
@@ -32,6 +34,11 @@ const RenderItem = (props: RenderItemProps) => {
   // if (item.data.length === 0) {
   //   return null;
   // }
+
+  function goJson() {
+    navigation.navigate('Update',
+      { device_id: 'test' })
+  }
   return (
     <ShadowCard style={styles.scrollItem} hiddenShadow={true}>
       <View style={styles.scrollContainer}>
@@ -73,7 +80,7 @@ const RenderItem = (props: RenderItemProps) => {
             </CustView>
           </CustView>
         </View>
-        <ScrollView horizontal style={{ minHeight: 118.25, paddingTop: 32 }} showsHorizontalScrollIndicator={true}>
+        <ScrollView horizontal style={{ minHeight: 118.25, paddingTop: 32, flex: 1, marginRight: 100 }} showsHorizontalScrollIndicator={true}>
           {item.data.map((item2: any, index: number) => {
             const cardItem = {
               id: item2.id,
@@ -100,7 +107,12 @@ const RenderItem = (props: RenderItemProps) => {
             );
           })}
         </ScrollView>
-        {
+        <Center style={{ height: '80%', zIndex: 9999, position: 'absolute', right: 0, bottom: 0, width: 100 }} onPress={goJson}>
+          <IconButton>
+            <IconJinrujiantouxiao size={adaptationConvert(35)} />
+          </IconButton>
+        </Center>
+        {/* {
           Array.isArray(item.data) && <IconButton onPress={() => {
             if (item.data.length > 0 && item.data[0].device_id) {
               navigation.navigate('Update',
@@ -111,7 +123,7 @@ const RenderItem = (props: RenderItemProps) => {
           }} >
             <AutoText>设置json</AutoText>
           </IconButton>
-        }
+        } */}
         {
           Array.isArray(item.data) && <IconButton onPress={() => {
             if (item.data.length > 0) {
