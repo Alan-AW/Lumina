@@ -37,7 +37,9 @@ def callback(ch, method, properties, body):
     print('收到队列消息：')
     print('↑' * 50)
     # 将字节串转为字典
-    data = eval(body)
+    str_body = body.decode('utf-8')
+    replace_body = str_body.replace('false', 'False')
+    data = eval(replace_body)
     device_id = data.get('deviceId') or 'error:can_not_find_device_id'
     from device.models import MessageQueueModel
     MessageQueueModel.objects.create(device_id=device_id, content=data)
