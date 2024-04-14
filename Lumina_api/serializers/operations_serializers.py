@@ -30,7 +30,7 @@ class UnitSer(serializers.ModelSerializer):
     room_number = serializers.CharField(source='room.serial_number', read_only=True)
     status = serializers.IntegerField()
     status_label = serializers.CharField(source='get_status_display', read_only=True)
-    create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+    create_time = serializers.DateTimeField(format='%Y-%m-%d', read_only=True)
     update_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
 
     class Meta:

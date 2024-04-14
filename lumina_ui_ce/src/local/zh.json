@@ -34,7 +34,7 @@
       "account": "用户账号",
       "password": "用户密码",
       "company_label": "公司名称",
-      "first_name": "姓",
+      "first_name": "姓名",
       "last_name": "名",
       "role_label": "用户角色",
       "status_label": "用户状态",
@@ -92,12 +92,12 @@
     "EditModalbtnConfirm": "确定",
     "rules": {
       "zone": "区域必须选择！",
-      "serial_number": "区域时区不可为空！",
+      "serial_number": "房间编号不可为空！",
       "company": "公司不可为空!"
     },
     "placeholder": {
       "zone": "请选择区域",
-      "serial_number": "请输入区域时区",
+      "serial_number": "请输入房间编号",
       "company": "请选择公司"
     }
   },
@@ -227,7 +227,7 @@
       "index": "序号",
       "name": "企业名称",
       "address": "企业地址",
-      "legal_rep": "企业法人",
+      "legal_rep": "联系人",
       "tel": "联系电话",
       "email": "企业邮箱",
       "logo": "企业logo",
@@ -331,6 +331,7 @@
   },
   "cultivar": {
     "AddCultivar": "添加品类",
+    "EditCultivar": "编辑品类",
     "EditAlgorithm": "配置品类算法",
     "title": "品类管理",
     "tableTitle": {

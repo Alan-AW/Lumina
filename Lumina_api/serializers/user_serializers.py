@@ -107,8 +107,8 @@ class UserInfoSer(serializers.ModelSerializer):
     language_label = serializers.CharField(source='get_language_display', read_only=True)
     company = serializers.SlugRelatedField(slug_field='id', queryset=Company.objects)
     company_label = serializers.CharField(source='company.name', read_only=True)
-    create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
-    update_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+    create_time = serializers.DateTimeField(format='%Y-%m-%d', read_only=True)
+    update_time = serializers.DateTimeField(format='%Y-%m-%d', read_only=True)
 
     def get_qrcode_url(self, row):
         return row.qr.qrcode.url

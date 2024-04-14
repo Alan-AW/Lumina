@@ -170,8 +170,8 @@ class CompanyUploadLogo(APIView):
             company = Company.objects.get(id=row_id)
             company.logo = request.FILES.get('data')
             company.save()
-            create_logs(request.user, Company, 3, {'logo_changed': company.logo.url})
-            response = return_response(data={"id": company.pk, "logo": company.logo.url}, info='上传成功！')
+            create_logs(request.user, Company, 3, { 'logo_changed': company.logo.url })
+            response = return_response(data={ "id": company.pk, "logo": company.logo.url }, info='上传成功！')
         except Company.DoesNotExist as e:
             response = return_response(status=False, error=f'{e}')
         return JsonResponse(response)
@@ -263,7 +263,7 @@ class GetUnitOnlineView(APIView):
                     outline.append(device_id)
             else:
                 outline.append(device_id)
-        return {'online': online, 'offline': outline}
+        return { 'online': online, 'offline': outline }
 
 
 # 查询指定设备算法详情,该接口用于查询脚本监听的mq队列存入的数据，用种植记录ID进行查询值
@@ -314,6 +314,14 @@ class AlgorithmView(BaseView):
     permission_classes = [SuperPermission]
     models = Algorithm
     serializer = AlgorithmSer
+
+    def get(self, request, row_id=None):
+        if 'get' not in self.allowed_methods:
+            return JsonResponse(return_response(status=False, info='请求方法错误！'))
+        queryset = Algorithm.objects.all()
+        ser = AlgorithmSer(queryset, many=True)
+        response = return_response(data=ser.data)
+        return JsonResponse(response)
 
 
 # 树型结构6张表导出

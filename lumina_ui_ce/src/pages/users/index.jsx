@@ -22,6 +22,7 @@ function UserInfo() {
     {
       title: t("user.tableTitle.index"),
       align: 'center',
+      width: 100,
       render: (row, value, index) => <b>{index + 1}</b>
     },
     {
@@ -43,13 +44,14 @@ function UserInfo() {
     {
       title: t("user.tableTitle.first_name"),
       align: 'center',
-      dataIndex: 'first_name'
+      // dataIndex: 'first_name',
+      render: (row, value, index) => `${row.first_name}${row.last_name}`
     },
-    {
-      title: t("user.tableTitle.last_name"),
-      align: 'center',
-      dataIndex: 'last_name'
-    },
+    // {
+    //   title: t("user.tableTitle.last_name"),
+    //   align: 'center',
+    //   dataIndex: 'last_name'
+    // },
     {
       title: t("user.tableTitle.role_label"),
       align: 'center',
@@ -70,7 +72,7 @@ function UserInfo() {
       align: 'center',
       width: 300,
       dataIndex: 'qrcode_url',
-      render: qrcode_url => <Image src={`${baseUrl()}${qrcode_url}`} width={250} />
+      render: qrcode_url => <Image src={`${baseUrl()}${qrcode_url}`} width={200} />
     },
     {
       title: t("user.tableTitle.create_time"),

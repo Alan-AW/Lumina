@@ -34,7 +34,7 @@
       "account": "Account",
       "password": "Password",
       "company_label": "Company",
-      "first_name": "First Name",
+      "first_name": "Name",
       "last_name": "Last Name",
       "role_label": "Role",
       "status_label": "Status",
@@ -340,6 +340,7 @@
   },
   "cultivar": {
     "AddCultivar": "AddCultivar",
+    "EditCultivar": "EditCultivar",
     "EditAlgorithm": "Configure the algorithm",
     "title": "Cultivar Management",
     "tableTitle": {

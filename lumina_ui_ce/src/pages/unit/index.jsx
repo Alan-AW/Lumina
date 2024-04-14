@@ -7,6 +7,7 @@ import SettingModal from 'components/unit/settingModal'
 import { FADEIN, pageSize } from 'contants'
 import { openNotification } from 'utils'
 import { useTranslation } from "react-i18next";
+import HiddenPwd from 'components/users/hiddPwd'
 
 
 function Unit() {
@@ -41,7 +42,9 @@ function Unit() {
         {
             title: t("unit.tableTitle.deviceSecret"),
             align: 'center',
-            dataIndex: 'deviceSecret'
+            dataIndex: 'deviceSecret',
+            width: 300,
+            render: value => <HiddenPwd text={value} />
         },
         {
             title: t("unit.tableTitle.room_number"),
@@ -58,11 +61,11 @@ function Unit() {
             align: 'center',
             dataIndex: 'create_time'
         },
-        {
-            title: t("unit.tableTitle.update_time"),
-            align: 'center',
-            dataIndex: 'update_time'
-        },
+        // {
+        //     title: t("unit.tableTitle.update_time"),
+        //     align: 'center',
+        //     dataIndex: 'update_time'
+        // },
         {
             title: t("unit.tableTitle.action"),
             align: 'center',

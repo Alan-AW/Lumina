@@ -124,7 +124,7 @@ const TopHeader = props => {
         >
           <span style={{ color: '#87ceeb' }}>
             <span style={{ marginRight: '10px' }}>
-              <Button type='link' children={account} onClick={() => navigate('/')} />
+              <Button type='link' style={{ color: '#29C970' }} children={account} onClick={() => navigate('/')} />
             </span>
             <Avatar
               src={avatar.length ? `${baseUrl()}${avatar}` : './img/logo.png'}

@@ -5,16 +5,14 @@ import { useState, useEffect, useMemo } from 'react'
 import { Table, notification, Button, message, Popconfirm } from 'antd'
 import { useTranslation } from "react-i18next";
 import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined, SettingOutlined } from '@ant-design/icons'
-import { FADEIN, pageSize } from 'contants'
+import { FADEIN } from 'contants'
 import { openNotification } from 'utils'
 import AlgorithmEditModal from 'components/algorithm'
 import { getAlgorithm, postAlgorithm, patchAlgorithm, deleteAlgorithm } from 'network/api'
 
 function Algorithm() {
   const [api, contextHolder] = notification.useNotification()
-  const [params, setparams] = useState({ page: 1 })
   const [tableData, settableData] = useState([])
-  const [tableDataCount, settableDataCount] = useState(0)
   const [openModal, setopenModal] = useState(false)
   const [editSate, seteditSate] = useState(false)
   const [editRow, setEditRow] = useState(null)
@@ -119,14 +117,13 @@ function Algorithm() {
 
   useEffect(() => {
     getData()
-  }, [params])
+  }, [])
 
   // 查询数据
   const getData = () => {
-    getAlgorithm(params).then(res => {
+    getAlgorithm().then(res => {
       if (res.status) {
-        settableData(res.data.results)
-        settableDataCount(res.data.count)
+        settableData(res.data)
       }
     })
   }
@@ -136,7 +133,6 @@ function Algorithm() {
     deleteAlgorithm(row.id).then(res => {
       if (res.status) {
         settableData(tableData.filter(item => item.id !== res.data))
-        settableDataCount(tableDataCount - 1)
         message.success(res.info)
       } else {
         message.error(res.errs)
@@ -172,7 +168,6 @@ function Algorithm() {
     postAlgorithm(value).then(res => {
       if (res.status) {
         settableData([res.data, ...tableData])
-        settableDataCount(tableDataCount + 1)
         setopenModal(false)
         message.success(res.info)
       } else {
@@ -194,13 +189,6 @@ function Algorithm() {
     })
   }
 
-  // 分页
-  const paginationProps = {
-    total: tableDataCount,
-    pageSize,
-    onChange: page => setparams({ page })
-  }
-
   // 表格
   const table = useMemo(() => (
     <Table
@@ -208,10 +196,10 @@ function Algorithm() {
       className={FADEIN}
       dataSource={tableData}
       columns={tableTitle}
-      pagination={paginationProps}
-      loading={tableDataCount === 0}
+      loading={tableData.length === 0}
       bordered={true}
       rowKey={item => item.id}
+      pagination={false}
     />
   ), [tableData, i18n.language])
 

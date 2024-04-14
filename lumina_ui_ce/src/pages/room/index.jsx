@@ -23,14 +23,14 @@ function Room() {
       render: (row, value, index) => <b>{index + 1}</b>
     },
     {
-      title: t("room.tableTitle.serial_number"),
-      align: 'center',
-      dataIndex: 'serial_number'
-    },
-    {
       title: t("room.tableTitle.company_name"),
       align: 'center',
       dataIndex: 'company_name'
+    },
+    {
+      title: t("room.tableTitle.serial_number"),
+      align: 'center',
+      dataIndex: 'serial_number'
     },
     {
       title: t("room.tableTitle.create_time"),

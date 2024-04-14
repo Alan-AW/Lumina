@@ -61,18 +61,18 @@ function Company(props) {
             align: 'center',
             dataIndex: 'logo',
             width: 300,
-            render: logo => <Image src={`${baseUrl()}${logo}`} width={250} />
+            render: logo => <Image src={`${baseUrl()}${logo}`} width={200} />
         },
-        {
-            title: t("company.tableTitle.create_time"),
-            align: 'center',
-            dataIndex: 'create_time'
-        },
-        {
-            title: t("company.tableTitle.update_time"),
-            align: 'center',
-            dataIndex: 'update_time'
-        },
+        // {
+        //     title: t("company.tableTitle.create_time"),
+        //     align: 'center',
+        //     dataIndex: 'create_time'
+        // },
+        // {
+        //     title: t("company.tableTitle.update_time"),
+        //     align: 'center',
+        //     dataIndex: 'update_time'
+        // },
         {
             title: t("company.tableTitle.action"),
             align: 'center',
