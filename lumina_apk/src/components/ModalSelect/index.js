@@ -20,7 +20,7 @@ class ModalSelect extends PureComponent {
   }
 
   handleChange = (index, item) => {
-    this.props.change(index, item);
+    this.props.change(item);
     this.openModal();
   };
 
@@ -37,17 +37,6 @@ class ModalSelect extends PureComponent {
       <Modal visible={show} animationType="fade" transparent onRequestClose={this.openModal}>
         <TouchableOpacity style={styles.mask} onPress={this.openModal} activeOpacity={1} />
         <View style={styles.contentBox}>
-          {/* <View style={{ height: 30 }}>
-            <Text
-              style={{
-                fontSize: 24,
-                fontWeight: "500",
-                color: "#000",
-              }}
-            >
-              {title}
-            </Text>
-          </View> */}
 
           {data.map((item, index) => {
             return (
@@ -57,7 +46,7 @@ class ModalSelect extends PureComponent {
                 onPress={() => this.handleChange(index, item)}
               >
                 <Text style={useInlineStyle({ paddingTop: 16, color: '#000', fontSize:36 })}>
-                  {item}
+                  {item.name}
                 </Text>
               </TouchableOpacity>
             );

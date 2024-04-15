@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 
 const Container=(props:ViewProps)=>{
     return (
-        <View {...props} style={[props.style,{backgroundColor:'#fffcf7'}]}>
+        <View {...props} style={[{backgroundColor:'#fffcf7'},props.style]}>
             {props.children}
         </View>
     )

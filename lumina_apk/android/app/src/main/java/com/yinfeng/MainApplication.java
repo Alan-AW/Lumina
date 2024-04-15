@@ -1,4 +1,4 @@
-package com.Lumina;
+package com.LuminaOS;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
@@ -9,7 +9,7 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
 import java.util.List;
-import com.Lumina.CustomToastPackage;
+import com.LuminaOS.CustomToastPackage;
 import org.wonday.orientation.OrientationActivityLifecycle;
 
 public class MainApplication extends Application implements ReactApplication {

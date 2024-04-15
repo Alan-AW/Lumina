@@ -1,4 +1,4 @@
-package com.Lumina;
+package com.LuminaOS;
 
 import android.widget.Toast;
 

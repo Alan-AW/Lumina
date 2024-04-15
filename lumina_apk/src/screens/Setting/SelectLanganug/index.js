@@ -11,6 +11,7 @@ import ModalSelect from 'src/components/ModalSelect';
 import { IconButton } from 'src/components/Button';
 import { IconJiantouCopy } from 'src/iconfont';
 import { updateRequestLanuage } from 'src/constants/lanaguses';
+import { LANGUAGE_CN, LANGUAGE_EN, auth_store } from 'src/store/authStore';
 
 const WINDOW = Dimensions.get('window');
 
@@ -24,20 +25,8 @@ const DropdownComponent = () => {
   const selectRef = useRef(null)
 
   const [value, setValue] = useState('');
-  const [isFocus, setIsFocus] = useState(false);
   useEffect(() => {
-    storage
-      .load({ key: 'language' }).then(lng => {
-        const obj = {
-          zh: '中文',
-          en: 'English',
-        }
-        updateRequestLanuage(lng)
-        if (lng) {
-          setValue(obj[lng])
-        }
-
-      })
+   
   }, [])
   return (
     <View
@@ -52,17 +41,19 @@ const DropdownComponent = () => {
           {t('SelectLanguage')}:
         </AutoText>
         <IconButton style={useInlineStyle({display: 'flex', flexDirection: 'row',alignItems:'center' })} onPress={() => selectRef.current.openModal()}>
-          <AutoText size={28} style={{paddingTop:10}}>{value}</AutoText>
+          <AutoText size={28} style={{paddingTop:10}}>{auth_store.language==='zh'?'中文':'English'}</AutoText>
           <IconJiantouCopy size={14} color={'#666'} style={{ transform: [{ rotate: '270deg' }],marginLeft:16 }} />
         </IconButton>
-        <ModalSelect ref={selectRef} data={['中文', 'English']} change={(index) => {
-          const language = index === 0 ? 'zh' : 'en';
-          i18n.changeLanguage(language);
+        <ModalSelect ref={selectRef} data={[{name:'中文',value:LANGUAGE_CN},{name:'English',value:LANGUAGE_EN}]} change={({value,name}) => {
+          auth_store({
+            language:value
+          })
+          i18n.changeLanguage(value);
           storage.save({
             key: 'language',
-            data: language,
+            data: value,
           });
-          setValue(index === 0 ? '中文' : 'English');
+          setValue(name);
         }} />
       </AutoView>
     </View>

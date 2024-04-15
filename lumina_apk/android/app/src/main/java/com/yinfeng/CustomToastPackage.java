@@ -1,5 +1,5 @@
 
-package com.Lumina;
+package com.LuminaOS;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;

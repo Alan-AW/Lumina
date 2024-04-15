@@ -5,9 +5,10 @@ import { LANGUAGE } from "src/constants/lanaguses";
 import { baseUrl } from "src/apis/config";
 import ToastService from "./toast";
 import { locales } from "./localesText";
+import { auth_store } from "src/store/authStore";
 //获取当前语言环境
 
-const language=`?language=${LANGUAGE}`
+const language=`?language=${auth_store.language}`
 
 
 
@@ -33,11 +34,10 @@ export class HttpAxios {
 
     this.instance.interceptors.request.use(
       async (req: InternalAxiosRequestConfig) => {
-        const token:any = await loadUserInfo();
+        // const token:any = await loadUserInfo();
         
-        if (token) {
-          req.headers.Authorization = token || "";
-        }
+        req.headers.Authorization = auth_store.token || "";
+
         return req;
       },
       (err: AxiosError) => {

@@ -73,14 +73,14 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.Lumina"
+    namespace "com.LuminaOS"
     defaultConfig {
-        applicationId "com.Lumina"
+        applicationId "com.LuminaOS"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        resValue "string", "build_config_package", "com.Lumina"
+        resValue "string", "build_config_package", "com.LuminaOS"
          multiDexEnabled true
     }
     splits {

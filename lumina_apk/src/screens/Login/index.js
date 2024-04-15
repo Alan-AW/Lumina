@@ -14,45 +14,36 @@ import storage from 'src/helpers/storage';
 import { useTranslation } from 'react-i18next';
 import { fontName } from 'src/constants/font';
 import { locales } from 'src/helpers/localesText';
+import WebView from 'react-native-webview';
+import { useFetch } from 'src/hooks/useFetch';
+import { auth_store } from 'src/store/authStore';
 
 
 
 const FormContent = ({ navigation }) => {
+    const [passwordType, setPasswordType] = useState('password');
     const [account, setAccount] = useState('xxj')
     const [password, setPassWord] = useState('123456')
+    const { run } = useFetch(() => requestLogin({ account, password }))
 
     const { hasPermission, requestPermission } = useCameraPermission();
     const dispatch = useAppDispatch()
     const { t } = useTranslation();
     function login() {
-
-
-
-        requestLogin({ account, password }).then(res => {
-            if (res && !res.status) {
-                ToastService.showToast(locales.operationFailed);
-
-                return;
-            }
-            storage.save({
-                key: 'userInfo',
-                data: res.data
-            }).then(() => {
-                console.log('登录信息',res.data);
-                dispatch(loginInSuccess(res.data))
-                ToastService.showToast(locales.LoginSuccess)
-                navigation.reset({
-                    index: 1,
-                    routes: [{ name: 'Home' }],
-                });
-                dispatch(updateMenuStatus(false))
+        run((data) => {
+            ToastService.showToast(locales.LoginSuccess)
+            auth_store({
+                token: data.token,
             })
+            dispatch(loginInSuccess(data))
+            navigation.reset({
+                index: 1,
+                routes: [{ name: 'Home' }],
+            });
+            dispatch(updateMenuStatus(false))
+        });
 
 
-
-        }).catch(() => {
-            console.log('登录失败', 999);
-        })
     }
     function qrCode() {
         if (!hasPermission) {
@@ -79,7 +70,7 @@ const FormContent = ({ navigation }) => {
             <View style={styles.content}>
                 <Text style={useInlineStyle({ textAlign: 'center', fontSize: 40, fontFamily: fontName.bold, lineHeight: 50, })} >{t('Login')}</Text>
                 <TextInput style={styles.item} value={account} onChangeText={text => setAccount(text)} placeholder={t('account')} />
-                <TextInput style={styles.item} value={password} onChangeText={text => setPassWord(text)} secureTextEntry={true} placeholder={t('password')} />
+                <TextInput style={styles.item} value={password} textContentType='password' onChangeText={text => setPassWord(text)} secureTextEntry={true} placeholder={t('password')} />
                 <View style={styles.qrcode}>
                     <IconButton onPress={() => qrCode()}>
                         <IconSaoma size={26} />
@@ -101,11 +92,18 @@ const Login = (props) => {
 
 
     }, [])
+    const bj = require('./background/index.html')
     return (
-        <Container style={styles.container}>
-            <FormContent navigation={props.navigation} />
+        <View style={{ flex: 1 }}>
+            <WebView
+                source={bj}
+                style={{ position: 'absolute', zIndex: 6, top: 0, left: 0, width: '100%', height: '100%', }} />
+            <Container style={styles.container}>
+                <FormContent navigation={props.navigation} />
 
-        </Container>
+            </Container>
+        </View>
+
     )
 }
 
@@ -119,7 +117,7 @@ const styles = createStyles({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#fffcf7'
+        backgroundColor: '#rgba(0,0,0,0)'
     },
     content: {
         backgroundColor: '#fff',
