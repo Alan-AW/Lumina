@@ -45,7 +45,8 @@ function UserInfo() {
       title: t("user.tableTitle.first_name"),
       align: 'center',
       // dataIndex: 'first_name',
-      render: (row, value, index) => `${row.first_name}${row.last_name}`
+      // 如果是全英文名字，将顺序调换
+      render: (row, value, index) => `${row.last_name}${row.first_name}`
     },
     // {
     //   title: t("user.tableTitle.last_name"),

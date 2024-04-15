@@ -36,11 +36,11 @@ function Company(props) {
             align: 'center',
             dataIndex: 'name'
         },
-        {
-            title: t("company.tableTitle.address"),
-            align: 'center',
-            dataIndex: 'address'
-        },
+        // {
+        //     title: t("company.tableTitle.address"),
+        //     align: 'center',
+        //     dataIndex: 'address'
+        // },
         {
             title: t("company.tableTitle.legal_rep"),
             align: 'center',
@@ -60,8 +60,8 @@ function Company(props) {
             title: t("company.tableTitle.logo"),
             align: 'center',
             dataIndex: 'logo',
-            width: 300,
-            render: logo => <Image src={`${baseUrl()}${logo}`} width={200} />
+            width: 200,
+            render: logo => <Image src={`${baseUrl()}${logo}`} height={100} />
         },
         // {
         //     title: t("company.tableTitle.create_time"),
@@ -276,7 +276,7 @@ function Company(props) {
             {contextHolder}
             <PermissionBtn
                 callback={addClick}
-                allowRoles={['Administrator']}
+                allowRoles={['超级管理员']}
                 children={t('company.AddCompany')}
                 style={{ marginBottom: "var(--content-margin)" }}
                 type='primary'

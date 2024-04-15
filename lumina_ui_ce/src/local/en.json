@@ -65,7 +65,8 @@
       "last_name": "Please enter user last name",
       "role_label": "Please select user role",
       "status_label": "Please select user status",
-      "language_label": "Please select user language"
+      "language_label": "Please select user language",
+      "company": "Please select a company"
     }
   },
   "room": {

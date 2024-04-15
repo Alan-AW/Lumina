@@ -65,7 +65,8 @@
       "last_name": "请输入用户名",
       "role_label": "请选择用户角色",
       "status_label": "请选择用户状态",
-      "chinese_label": "请选择用户语言"
+      "chinese_label": "请选择用户语言",
+      "company": "请选择公司"
     }
   },
   "room": {
