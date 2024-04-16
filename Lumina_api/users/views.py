@@ -150,7 +150,7 @@ class PermissionView(BaseView):
 
 # 日志查看
 class LogsView(APIView):
-    permission_classes = [SuperPermission]
+    # permission_classes = [SuperPermission]
 
     def get(self, request):
         if request.user.is_super:

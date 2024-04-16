@@ -14,7 +14,7 @@ class SuperPermission(BasePermission):
     # 超级OR管理 权限
     def has_permission(self, request, view):
         message = '无权访问！'
-        return request.user.is_super or request.user.role.title == 'Manager'
+        return request.user.is_super or request.user.role.title == '超级管理员'
 
 
 class ExcludeSuperPermission(BasePermission):
