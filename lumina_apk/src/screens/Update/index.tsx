@@ -39,8 +39,8 @@ export default function Update() {
                 delete copyData.data.instructions;
                 //存入仓库
                 update_store({
-                    instructions: resData,
-                    update_instructions: resData,
+                    instructions: deepData(resData),
+                    update_instructions: JSON.parse(JSON.stringify(resData)),
                     postParams: copyData
                 })
             }
@@ -98,21 +98,21 @@ export default function Update() {
 
 
     return (
-        <View style={useInlineStyle({ flex: 1, backgroundColor: '#fff', padding: 32, position: 'relative' })}>
+        <View style={useInlineStyle({ flex: 1, backgroundColor: colors.themeBgColor, padding: 32, position: 'relative' })}>
             <SpaceBetween>
-                <Back />
+                <Back noneText={true} />
                 <TouchableOpacity style={useInlineStyle({ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: colors.btn_primary })} onPress={submit}>
                     <LocalesText languageKey={locales.Submit} style={{ color: '#fff' }} />
                 </TouchableOpacity>
             </SpaceBetween>
             <Center style={{ flex: 1, marginRight: 32, padding: 16 }}>
                 <Loading loading={loading}>
-                    <SpaceBetween style={{ paddingVertical: 32 }}>
+                    <Start style={{ paddingVertical: 32 }}>
                         <LocalesText languageKey={locales.device_id} rightText={`：${info.device_id}`} />
-                        <LocalesText languageKey={locales.type} rightText={`：${info.type}`} />
-                        <LocalesText languageKey={locales.Version} rightText={`：${info.version}`} />
-                        <LocalesText languageKey={locales.Time} rightText={`：${info.time}`} />
-                    </SpaceBetween>
+                        {/* <LocalesText languageKey={locales.type} rightText={`：${info.type}`} /> */}
+                        <LocalesText languageKey={locales.SystemVersion} rightText={`：${info.version}`} left={32} />
+                        <LocalesText languageKey={locales.Time} rightText={`：${info.time}`} left={48} />
+                    </Start>
                     <View style={useInlineStyle({ flex: 1, paddingLeft: 0, marginTop: 32 })}>
                         <UpdateTabs />
 

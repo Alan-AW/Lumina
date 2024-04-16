@@ -46,50 +46,52 @@ const Bright = () => {
   const [liveData, setLiveData] = useState([]);
   const [echartsData, setEchartsData] = useState(false);
   const [tempData, setTempData] = useState([]);
+  const {device_id,roomName,devicesName,cropNams}=routes.params;
+ 
 
 
   useEffect(() => {
     console.log(routes, 'routes');
     if (routes && routes.params.id) {
-      getLiveList(routes.params.id).then(res => {
-        setLiveData(res.data.temperature.flat());
-        const data1 = [];
-        const data2 = [];
-        const data3 = [];
-        res.data.echarts.value.forEach(element => {
-          data1.push(element.high);
-          data2.push(element.midd);
-          data3.push(element.low);
-        });
-        const _data = [];
-        for (let key in res.data.unit_status) {
-          const item = res.data.unit_status[key];
-          _data.push({
-            name: key,
-            ...item,
-          });
-        }
-        setTempData(_data);
-        setEchartsData({
-          data1,
-          data2,
-          data3,
-          label: res.data.echarts.x_label,
-        });
-      });
+      // getLiveList(routes.params.id).then(res => {
+      //   setLiveData(res.data.temperature.flat());
+      //   const data1 = [];
+      //   const data2 = [];
+      //   const data3 = [];
+      //   res.data.echarts.value.forEach(element => {
+      //     data1.push(element.high);
+      //     data2.push(element.midd);
+      //     data3.push(element.low);
+      //   });
+      //   const _data = [];
+      //   for (let key in res.data.unit_status) {
+      //     const item = res.data.unit_status[key];
+      //     _data.push({
+      //       name: key,
+      //       ...item,
+      //     });
+      //   }
+      //   setTempData(_data);
+      //   setEchartsData({
+      //     data1,
+      //     data2,
+      //     data3,
+      //     label: res.data.echarts.x_label,
+      //   });
+      // });
     }
   }, [routes.params]);
   return (
     <View style={styles.container}>
-      <ScreenHeader title={t("Bright Renaissance")} otherNode={() => {
+      <ScreenHeader title={`${roomName} | ${devicesName}`} otherNode={() => {
         return (
           <>
-            <Text style={styles.headerText2}>
+            {/* <Text style={styles.headerText2}>
               <Text
                 style={
                   styles.headerText3
                 }>{`[${t("Room")} #${childData?.serial_number}]`}</Text>
-            </Text>
+            </Text> */}
            
           </>
         )
@@ -100,7 +102,7 @@ const Bright = () => {
             return (
 
               <AutoView style={{ width: 250 }}>
-                <AutoView
+                {/* <AutoView
                   isRow
                   style={{ paddingBottom: 10, justifyContent: 'flex-end' }}>
                   <AutoText size={20} style={{ color: '#000', fontWeight: '600' }} type="bold">
@@ -113,7 +115,7 @@ const Bright = () => {
 
                 <ProgressBarIcon
                   value={GetPercent(cardData.currentDay, cardData.max)}
-                />
+                /> */}
               </AutoView>
             )
           }
@@ -268,9 +270,10 @@ const Bright = () => {
         })}
       </AutoView>
       <AutoView isRow style={{ marginTop: 22, alignItems: 'center', position: 'absolute', left: 32, bottom: 32 }}>
-        {/* <ShadowCard
+
+        <ShadowCard
           isBtn
-          onPress={() => navigation.navigate('AdminTools', { ...routes.params })}
+          onPress={() => navigation.navigate('Update', { device_id:device_id })}
           style={useInlineStyle({
             borderRadius: 10,
             width: 350,
@@ -288,7 +291,7 @@ const Bright = () => {
               {t("AdminTools")}
             </AutoText>
           </AutoView>
-        </ShadowCard> */}
+        </ShadowCard>
         <ShadowCard
           style={useInlineStyle({
             borderRadius: 10,
@@ -314,7 +317,8 @@ const Bright = () => {
               <AutoText size={24}>{t('Cultivars')}</AutoText>
             </AutoView>
             <AutoText style={{ paddingLeft: 15, color: '#000' }}>
-              {t('ButterheadLettuce')}, {t("Leaf")}/{t("BataviaLettuce")}
+              {cropNams}
+              {/* {t('ButterheadLettuce')}, {t("Leaf")}/{t("BataviaLettuce")} */}
             </AutoText>
           </AutoView>
         </ShadowCard>

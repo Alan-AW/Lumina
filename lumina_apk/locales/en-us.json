@@ -82,8 +82,6 @@
     "requestError": "request error",
     "networkSuccess": "network success",
     "nullData": "data null",
-
-
     "type": "type",
     "climate": "climate",
     "vpd_priority_day": "vpd_priority_day",
@@ -117,15 +115,23 @@
     "min": "min",
     "max": "max",
     "hardware": "hardware",
-    "fade_curve_type":"fade_curve_type",
-    "fade_curve_duration":"fade_curve_duration",
-    "linear":"linear",
-    "exponential":"exponential",
-    "none":"none",
-    "seedling":"seedling",
-    "Submit":"Submit",
-    "Version":"Version",
-    "Time":"Time",
-    "nullDevices":"No equipment available at the moment"
+    "fade_curve_type": "fade_curve_type",
+    "fade_curve_duration": "fade_curve_duration",
+    "linear": "linear",
+    "exponential": "exponential",
+    "none": "none",
+    "seedling": "seedling",
+    "Submit": "Submit",
+    "SystemVersion": "System Version",
+    "Time": "Time",
+    "nullDevices": "No equipment available at the moment",
+
+    "SerialNumber": "Serial Number",
+    "Username": "User Name",
+    "UserRole": "Role",
+    "OperationCommand": "Operation Command",
+    "ModifiedContent": "Modified Content",
+    "CreationTime": "Creation Time",
+    "OperationLog":"Operation Log"
 
 }

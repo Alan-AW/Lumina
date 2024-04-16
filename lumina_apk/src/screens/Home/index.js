@@ -18,6 +18,27 @@ import { useAppDispatch, useAppSelector } from 'src/reduxCenter/hooks';
 import Loading from 'src/components/Loading';
 import { registerRefresh } from 'src/reduxCenter/actionCreators/refreshAction';
 import useRegister from 'src/hooks/useRegister';
+import useInterval from 'src/hooks/useInterVal';
+import AutoText from 'src/components/AutoView/Text';
+
+function getCurrentDateTime() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, '0');
+  const day = now.getDate().toString().padStart(2, '0');
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const seconds = now.getSeconds().toString().padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+function SubTitle(){
+  const [currentTime,setCurrentTime]=useState('')
+  useInterval(()=>{
+    setCurrentTime(getCurrentDateTime())
+  },1000)
+  return <AutoText>{currentTime}</AutoText>
+}
 
 const Home = () => {
   const { t } = useTranslation();
@@ -44,12 +65,14 @@ const Home = () => {
           serial_number: serial_number,
           addId:findItem?findItem.id:'',
           device_id:findItem?findItem.device_id:'',
+          cropNams: newList.map((i) => {
+            return i.cropItemName;
+          }).join(','),
           data: newList.map(_item => {
             return {
               ..._item,
               name2: _item.cropItemName,
               date: _item.cropItemDay,
-            
               serial_number: _item.serial_number,
               img: _item.url,
               cropItemCycle: _item.cropItemCycle,
@@ -63,10 +86,14 @@ const Home = () => {
   const state = useAppSelector(state => state.user.userInfo);
 
 
+
+
+
+
   return (
     <View style={{ flex: 1 }}>
       <CustView padding={[0, 0, 0, 32]}>
-        <ScreenHeader title={t('Dashboard')} subtitle={`[${state.company_name}]`} hiddenBack />
+        <ScreenHeader title={state.company_name} subtitle={<SubTitle />} hiddenBack />
       </CustView>
       <View style={styles.scroll}>
         <Loading loading={loading}>

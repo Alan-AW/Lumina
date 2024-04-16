@@ -4,6 +4,8 @@
 import React, { FunctionComponent } from 'react';
 import { ViewProps } from 'react-native';
 import { GProps } from 'react-native-svg';
+import IconEye from './IconEye';
+import IconEyeNone from './IconEyeNone';
 import IconTianjia from './IconTianjia';
 import IconSaoma from './IconSaoma';
 import IconShuaxin from './IconShuaxin';
@@ -23,6 +25,8 @@ import IconBaogao from './IconBaogao';
 import IconXiangji from './IconXiangji';
 import Icon4Guanbi2 from './Icon4Guanbi2';
 import IconWeixinsaoma from './IconWeixinsaoma';
+export { default as IconEye } from './IconEye';
+export { default as IconEyeNone } from './IconEyeNone';
 export { default as IconTianjia } from './IconTianjia';
 export { default as IconSaoma } from './IconSaoma';
 export { default as IconShuaxin } from './IconShuaxin';
@@ -43,7 +47,7 @@ export { default as IconXiangji } from './IconXiangji';
 export { default as Icon4Guanbi2 } from './Icon4Guanbi2';
 export { default as IconWeixinsaoma } from './IconWeixinsaoma';
 
-export type IconNames = 'tianjia' | 'saoma' | 'shuaxin' | 'iconchengzhang' | 'taiyangtianqi' | 'ziyuan' | 'yun' | 'richu' | 'jiantou-copy' | 'zhexiantu' | 'jinrujiantouxiao' | 'shezhi' | 'shizhong' | 'zidingyicaidan' | 'kongxinwenhao' | 'baogao' | 'xiangji' | '4guanbi-2' | 'weixinsaoma';
+export type IconNames = 'eye' | 'eye-none' | 'tianjia' | 'saoma' | 'shuaxin' | 'iconchengzhang' | 'taiyangtianqi' | 'ziyuan' | 'yun' | 'richu' | 'jiantou-copy' | 'zhexiantu' | 'jinrujiantouxiao' | 'shezhi' | 'shizhong' | 'zidingyicaidan' | 'kongxinwenhao' | 'baogao' | 'xiangji' | '4guanbi-2' | 'weixinsaoma';
 
 interface Props extends GProps, ViewProps {
   name: IconNames;
@@ -53,44 +57,48 @@ interface Props extends GProps, ViewProps {
 
 let IconFont: FunctionComponent<Props> = ({ name, ...rest }) => {
   switch (name) {
+    case 'eye':
+      return <IconEye key="1" {...rest} />;
+    case 'eye-none':
+      return <IconEyeNone key="2" {...rest} />;
     case 'tianjia':
-      return <IconTianjia key="1" {...rest} />;
+      return <IconTianjia key="3" {...rest} />;
     case 'saoma':
-      return <IconSaoma key="2" {...rest} />;
+      return <IconSaoma key="4" {...rest} />;
     case 'shuaxin':
-      return <IconShuaxin key="3" {...rest} />;
+      return <IconShuaxin key="5" {...rest} />;
     case 'iconchengzhang':
-      return <IconIconchengzhang key="4" {...rest} />;
+      return <IconIconchengzhang key="6" {...rest} />;
     case 'taiyangtianqi':
-      return <IconTaiyangtianqi key="5" {...rest} />;
+      return <IconTaiyangtianqi key="7" {...rest} />;
     case 'ziyuan':
-      return <IconZiyuan key="6" {...rest} />;
+      return <IconZiyuan key="8" {...rest} />;
     case 'yun':
-      return <IconYun key="7" {...rest} />;
+      return <IconYun key="9" {...rest} />;
     case 'richu':
-      return <IconRichu key="8" {...rest} />;
+      return <IconRichu key="10" {...rest} />;
     case 'jiantou-copy':
-      return <IconJiantouCopy key="9" {...rest} />;
+      return <IconJiantouCopy key="11" {...rest} />;
     case 'zhexiantu':
-      return <IconZhexiantu key="10" {...rest} />;
+      return <IconZhexiantu key="12" {...rest} />;
     case 'jinrujiantouxiao':
-      return <IconJinrujiantouxiao key="11" {...rest} />;
+      return <IconJinrujiantouxiao key="13" {...rest} />;
     case 'shezhi':
-      return <IconShezhi key="12" {...rest} />;
+      return <IconShezhi key="14" {...rest} />;
     case 'shizhong':
-      return <IconShizhong key="13" {...rest} />;
+      return <IconShizhong key="15" {...rest} />;
     case 'zidingyicaidan':
-      return <IconZidingyicaidan key="14" {...rest} />;
+      return <IconZidingyicaidan key="16" {...rest} />;
     case 'kongxinwenhao':
-      return <IconKongxinwenhao key="15" {...rest} />;
+      return <IconKongxinwenhao key="17" {...rest} />;
     case 'baogao':
-      return <IconBaogao key="16" {...rest} />;
+      return <IconBaogao key="18" {...rest} />;
     case 'xiangji':
-      return <IconXiangji key="17" {...rest} />;
+      return <IconXiangji key="19" {...rest} />;
     case '4guanbi-2':
-      return <Icon4Guanbi2 key="18" {...rest} />;
+      return <Icon4Guanbi2 key="20" {...rest} />;
     case 'weixinsaoma':
-      return <IconWeixinsaoma key="19" {...rest} />;
+      return <IconWeixinsaoma key="21" {...rest} />;
   }
 
   return null;

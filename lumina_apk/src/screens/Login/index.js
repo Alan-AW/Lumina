@@ -1,10 +1,10 @@
-import { View, Text, TextInput, Dimensions, Modal, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, Dimensions, Modal, TouchableOpacity, Keyboard  } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Container from 'src/components/Container';
 import { IconButton, TextButton } from 'src/components/Button';
-import { createStyles, useInlineStyle } from 'src/helpers/style';
+import { adaptationConvert, createStyles, useInlineStyle } from 'src/helpers/style';
 import ShadowCard from 'src/components/Shadow';
-import { IconSaoma, IconWeixinsaoma } from 'src/iconfont';
+import { IconEye, IconEyeNone, IconSaoma, IconWeixinsaoma } from 'src/iconfont';
 import { useAppDispatch } from 'src/reduxCenter/hooks';
 import { loginIn, loginInSuccess, updateMenuStatus } from 'src/reduxCenter/actionCreators';
 import { requestLogin } from 'src/apis/login';
@@ -17,11 +17,13 @@ import { locales } from 'src/helpers/localesText';
 import WebView from 'react-native-webview';
 import { useFetch } from 'src/hooks/useFetch';
 import { auth_store } from 'src/store/authStore';
+import SpaceBetween from 'src/components/FlexView/SpaceBetween';
+import Center from 'src/components/FlexView/Center';
 
 
 
 const FormContent = ({ navigation }) => {
-    const [passwordType, setPasswordType] = useState('password');
+    const [passwordType, setPasswordType] = useState(true);
     const [account, setAccount] = useState('xxj')
     const [password, setPassWord] = useState('123456')
     const { run } = useFetch(() => requestLogin({ account, password }))
@@ -30,6 +32,7 @@ const FormContent = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const { t } = useTranslation();
     function login() {
+        Keyboard.dismiss();
         run((data) => {
             ToastService.showToast(locales.LoginSuccess)
             auth_store({
@@ -53,8 +56,8 @@ const FormContent = ({ navigation }) => {
             return;
         }
         //  navigation.navigate('QrCode')
-
     }
+
     return (
         <ShadowCard style={{
             margin: 0,
@@ -68,9 +71,21 @@ const FormContent = ({ navigation }) => {
             shadowColor: 'black',
         }}>
             <View style={styles.content}>
-                <Text style={useInlineStyle({ textAlign: 'center', fontSize: 40, fontFamily: fontName.bold, lineHeight: 50, })} >{t('Login')}</Text>
-                <TextInput style={styles.item} value={account} onChangeText={text => setAccount(text)} placeholder={t('account')} />
-                <TextInput style={styles.item} value={password} textContentType='password' onChangeText={text => setPassWord(text)} secureTextEntry={true} placeholder={t('password')} />
+                <Center style={{marginBottom:30}}>
+                    <Text style={useInlineStyle({ textAlign: 'center', fontSize: 40, fontFamily: fontName.bold, lineHeight: 50, })} >{t('Login')}</Text>
+                </Center>
+                <TextInput style={[styles.item]} value={account} onChangeText={text => setAccount(text)} placeholder={t('account')} />
+                <SpaceBetween>
+                    <TextInput style={styles.item} value={password} onChangeText={text => setPassWord(text)}
+                        secureTextEntry={passwordType} placeholder={t('password')} />
+
+                    <IconButton onPress={() => setPasswordType(!passwordType)} style={{ position: 'absolute', right: 20,height:'100%',justifyContent:'center' }}>
+                        {
+                            passwordType?<IconEyeNone size={adaptationConvert(45)} />:<IconEye size={adaptationConvert(45)} />
+                        }
+                       
+                    </IconButton>
+                </SpaceBetween>
                 <View style={styles.qrcode}>
                     <IconButton onPress={() => qrCode()}>
                         <IconSaoma size={26} />
@@ -129,13 +144,14 @@ const styles = createStyles({
         borderWidth: 1,
         borderRadius: 3,
         padding: 20,
+        height: 150,
         paddingBottom: 5,
         width: '90%',
         marginLeft: '5%',
         borderWidth: 0,
         borderBottomWidth: 1,
         borderBottomColor: '#e8e8e8',
-        fontSize: 48,
+        fontSize: 52,
     },
     loginBtn: {
         backgroundColor: '#2a2a2a',

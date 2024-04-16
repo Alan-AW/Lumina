@@ -16,6 +16,7 @@ export type AppStackParamList = {
   User: undefined;
   AddPage:undefined;
   Update:undefined;
+  Log:undefined;
   
   
 };

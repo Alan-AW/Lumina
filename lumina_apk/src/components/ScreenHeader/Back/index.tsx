@@ -12,7 +12,8 @@ import { IconJiantouCopy } from "src/iconfont";
 //首页注册刷新事件，监听刷新状态
 //添加页修改刷新状态，执行首页刷新事件
 
-export default function Back() {
+export default function Back(props:{noneText?:boolean}) {
+    const {noneText} = props;
     const nav = useNavigation()
 
     return (
@@ -24,7 +25,10 @@ export default function Back() {
                 </IconButton>
 
             </ShadowCard>
-            <AutoText>Back</AutoText>
+            {
+                !noneText &&   <AutoText>Back</AutoText>
+            }
+          
 
         </AutoView>
 

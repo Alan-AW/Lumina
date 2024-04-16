@@ -123,7 +123,15 @@
     "none":"无",
     "seedling":"幼苗",
     "Submit":"提交",
-    "Version":"版本",
+    "SystemVersion":"系统版本",
     "Time":"时间",
-    "nullDevices":"暂无设备"
+    "nullDevices":"暂无设备",
+
+    "SerialNumber": "序号",
+    "Username": "用户名",
+    "UserRole": "用户角色",
+    "OperationCommand": "操作指令",
+    "ModifiedContent": "修改内容",
+    "CreationTime": "创建时间",
+    "OperationLog":"操作日志"
 }

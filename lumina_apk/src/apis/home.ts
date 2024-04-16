@@ -46,4 +46,9 @@ export function submitUpdateJsonInfo(params:any) {
   return httpAxios.post<any>(`/android/update/unit/algorithm`, params);
 }
 
+//获取操作日志
+export function getLog(params:any){
+  return httpAxios.get<any>(`/auth/logs?page=${params.page}&size=${params.size}`, {});
+}
+
 

@@ -17,15 +17,7 @@ import { LANGUAGE_EN } from './store/authStore';
 
 
 export default function App() {
-  const { t, i18n } = useTranslation();
 
-  useEffect(() => {
-    //Orientation.lockToLandscapeLeft()
-    storage
-      .load({ key: 'language' }).then(lng => {
-        i18n.changeLanguage(lng || LANGUAGE_EN);
-      })
-  }, [])
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Provider store={store}>

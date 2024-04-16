@@ -13,6 +13,8 @@ import { locales } from "src/helpers/localesText";
 export default function UpdateTabs() {
 
     const instructions: any = update_store.instructions;
+    console.log(instructions.length,'tab数量');
+    
 
     const tabData = useMemo(() => {
         const element: any = {}
@@ -20,8 +22,9 @@ export default function UpdateTabs() {
         if (Array.isArray(instructions) && instructions.length > 0) {
             for (let i = 0; i < instructions.length; i++) {
                 const item = instructions[i];
+                const eleKey=( item.phase+i).toString()
                 routeObj.push({
-                    key: item.phase,
+                    key: eleKey,
                     title: item.phase
                 })
                 const data: any = {
@@ -32,7 +35,7 @@ export default function UpdateTabs() {
                 }
 
                 // element[item.phase] =
-                element[item.phase] = () => <TabScreen data={data} />;
+                element[eleKey] = () => <TabScreen data={data} />;
             }
             return {
                 element,
@@ -72,18 +75,18 @@ export default function UpdateTabs() {
             renderTabBar={(props: any) => (
                 <TabBar
                     {...props}
-                    pressColor="transparent"
+                    pressColor="#f8f8f8"
                     style={{
-                        backgroundColor: '#f6f6f6',
+                        backgroundColor: '#fff',
                         shadowOpacity: 0,
                         elevation: 0,
                     }}
                     inactiveColor="#fff"
-                    indicatorStyle={{ backgroundColor: '#f6f6f6' }}
-
-
+                    indicatorStyle={{ backgroundColor: '#fff' }}
                     renderLabel={({ route, focused }) => (
-                        <LocalesText languageKey={locales[route.title] || route.title} style={{ fontWeight: focused ? '700' : '400' }}
+                        <LocalesText languageKey={locales[route.title] || route.title} 
+                        style={{ fontWeight: focused ? '700' : '400',color:focused?'#40848b':'#666',
+                         }}
                         />
                     )}
                 />

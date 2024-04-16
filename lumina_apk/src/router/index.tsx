@@ -28,6 +28,7 @@ import internet from '@react-native-community/netinfo'
 import { locales } from 'src/helpers/localesText';
 import ToastService from 'src/helpers/toast';
 import Update from 'src/screens/Update';
+import Log from 'src/screens/Log';
 const AppStack = createNativeStackNavigator<AppStackParamList>();
 function AppStackNavigator() {
 
@@ -84,16 +85,21 @@ function AppStackNavigator() {
         component={AdminTool}
         options={{ headerShown: false }}
       />
-      <AppStack.Screen
+        <AppStack.Screen
+        name="Log"
+        component={Log}
+        options={{ headerShown: false }}
+      />
+      {/* <AppStack.Screen
         name="VideoPreview"
         component={VideoPrew}
         options={{ headerShown: false }}
-      />
-      <AppStack.Screen
+      /> */}
+      {/* <AppStack.Screen
         name="Setting"
         component={Setting}
         options={{ headerShown: false }}
-      />
+      /> */}
       <AppStack.Screen
         name="Update"
         component={Update}

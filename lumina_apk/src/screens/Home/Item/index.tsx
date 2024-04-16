@@ -41,15 +41,12 @@ const RenderItem = (props: RenderItemProps) => {
 
   const device_id = isShowAdd ? item.device_id : '';
 
-  function goJson() {
-    navigation.navigate('Update',
-      { device_id: device_id })
-  }
+
   return (
     <ShadowCard style={styles.scrollItem} hiddenShadow={true}>
       <View style={styles.scrollContainer}>
         <View style={useInlineStyle({ width: 350, marginRight: 100 })}>
-          <LocalesText languageKey={locales.Room} rightText={` #${item.serial_number}`} size={28} color='#000' />
+          <LocalesText languageKey={locales.Room} rightText={` ${item.serial_number}`} size={28} color='#000' />
           <CustView
             style={{
               position: 'absolute',
@@ -101,25 +98,23 @@ const RenderItem = (props: RenderItemProps) => {
               <HomeCard key={index} item={cardItem} onPress={() => {
                 // navigation.navigate('Update')
                 navigation.navigate('Bright', {
-                  id: item2.id, propsItem: item2, cardItem: {
-                    serial_number: item2.serial_number,
-                    currentDay: item2.date,
-                    max: item2.cropItemCycle
-                  }
+                  roomName:item.serial_number,
+                  devicesName:cardItem.serial_number,
+                  cropNams:item.cropNams,
+                  device_id:device_id
                 })
-
               }} />
 
             );
           })}
         </ScrollView>
-        {
+        {/* {
           isShowAdd && <Center style={{ height: '80%', zIndex: 9999, position: 'absolute', right: 0, bottom: 0, width: 100 }} >
           <IconButton onPress={goJson} style={{ height: '100%', width: '100%',alignItems:'center',justifyContent:'center' }}>
             <IconJinrujiantouxiao size={adaptationConvert(35)} />
           </IconButton>
         </Center>
-        }
+        } */}
         
         {/* {
           Array.isArray(item.data) && <IconButton onPress={() => {

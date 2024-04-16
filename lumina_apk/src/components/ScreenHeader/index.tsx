@@ -13,8 +13,8 @@ import colors from "src/constants/colors";
 
 type ScreenHeaderProps = {
     right?: () => ReactNode | null,
-    title: string,
-    subtitle: string,
+    title: string | ReactNode,
+    subtitle: string | ReactNode,
     hiddenBack?: boolean,
     otherNode?: () => ReactNode,
 }
@@ -39,7 +39,7 @@ const ScreenHeader = (props: ScreenHeaderProps) => {
                     </Text>
                     <AutoView style={{ alignItems: 'center',position:'relative' }} isRow>
                         <Text style={styles.headerText2}>
-                            {t(getMonth())} {new Date().getDate()},{new Date().getFullYear()}
+                            {/* {t(getMonth())} {new Date().getDate()},{new Date().getFullYear()} */}
                         </Text>
                         {
                                 props.otherNode ? props.otherNode() : <Text style={styles.headerText3}>{props.subtitle}</Text>
@@ -73,7 +73,6 @@ const styles = createStyles({
         fontFamily: 'pingfanghk-light',
         fontWeight: '500',
         fontSize: 26,
-        lineHeight:30,
         paddingTop: 0,
         paddingRight:12,
         alignItems: 'center',
@@ -82,7 +81,6 @@ const styles = createStyles({
         color: '#000',
         fontFamily: fontName.regular,
         fontSize: 26,
-        lineHeight:30,
     },
     backBtn: {
         backgroundColor: '#fff',

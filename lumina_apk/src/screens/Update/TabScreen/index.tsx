@@ -14,6 +14,7 @@ import CusOption from "./CusOption";
 import CusTimeAndType from "./CusTimeAndType";
 import LocalesText from "src/components/Text";
 import { locales } from "src/helpers/localesText";
+import colors from "src/constants/colors";
 
 interface TabScreenProps {
     data: any;
@@ -30,18 +31,17 @@ export default function TabScreen(props: TabScreenProps) {
 
 
     return (
-        <ScrollView style={useInlineStyle({ flex: 1, backgroundColor: '#fff', marginRight: 32 })}>
+        <ScrollView style={useInlineStyle({ flex: 1, backgroundColor: colors.themeBgColor, marginRight: 32 })}>
             <Start style={{ padding: 32, paddingVertical: 48 }}>
                 <CusInputNumber defaultMinValue={days_min} defaultMaxValue={days_max} />
                 <CusTime updateKey="duration" label="duration" value={duration} maxHour={24} />
             </Start>
             <Start style={{ flex: 1, padding: 0, alignItems: 'flex-start' }}>
-                <ShadowCard style={{ borderWidth: 1, borderColor: '#ddd', width: '30%', paddingHorizontal: 24, paddingVertical: 16 }}>
+                <ShadowCard style={{ width: '30%', paddingHorizontal: 24, paddingVertical: 16 }}>
                     <View>
-                        <SpaceBetween style={{ paddingVertical: 16 }}>
-                            <LocalesText languageKey={locales.hardware} />
+                        <Start style={{ paddingVertical: 16 }}>
                             <AutoText>{actions0.hardware}</AutoText>
-                        </SpaceBetween>
+                        </Start>
                         <CusOption label="vpd_priority_day" value={actions0.vpd_priority_day} data={['temp', 'rh']} updateKey={'vpd_priority_day'} />
                         <CusOption label="vpd_priority_night" value={actions0.vpd_priority_night} data={['temp', 'rh']} updateKey={'vpd_priority_night'} />
 
@@ -72,12 +72,10 @@ export default function TabScreen(props: TabScreenProps) {
                         </CusMultiSlider>
                     </View>
                 </ShadowCard>
-                <ShadowCard style={{ borderWidth: 1, borderColor: '#ddd', width: '30%', paddingHorizontal: 24, marginLeft: '3%', paddingVertical: 16 }}>
-                    <SpaceBetween style={{ paddingVertical: 16 }}>
-                    <LocalesText languageKey={locales.hardware} />
-
+                <ShadowCard style={{ width: '30%', paddingHorizontal: 24, marginLeft: '3%', paddingVertical: 16 }}>
+                    <Start style={{ paddingVertical: 16 }}>
                         <AutoText>{actions1.hardware}</AutoText>
-                    </SpaceBetween>
+                    </Start>
                     <View style={{ marginTop: 8 }}>
                         <CusMultiSlider title="target_ec" min={8} max={35} value={actions1} valueKey={['target_ec_min', 'target_ec_max']} step={1} onChange={updateArr}>
                             <CusMultiSlider title="target_ec_deadband" value={actions1} valueKey={['target_ec_deadband_min', 'target_ec_deadband_max']} onChange={updateArr} />
@@ -90,12 +88,11 @@ export default function TabScreen(props: TabScreenProps) {
                         </CusMultiSlider>
                     </View>
                 </ShadowCard>
-                <ShadowCard style={{ borderWidth: 1, borderColor: '#ddd', width: '30%', paddingHorizontal: 24, marginLeft: '3%', paddingVertical: 16 }}>
-                    <SpaceBetween style={{ width: '100%', paddingVertical: 16 }}>
-                    <LocalesText languageKey={locales.hardware} />
+                <ShadowCard style={{ width: '30%', paddingHorizontal: 24, marginLeft: '3%', paddingVertical: 16 }}>
+                    <Start style={{ width: '100%', paddingVertical: 16 }}>
 
                         <AutoText>{actions2.hardware}</AutoText>
-                    </SpaceBetween>
+                    </Start>
                     <CusTimeAndType optionKey="fade_curve_type" timeKey="fade_curve_duration" actions={actions2} />
                     <View style={useInlineStyle({ paddingTop: 16 })}>
                         <CusSlider title="spectra_450_led" updateKey="spectra_450_led" defaultValue={actions2} />

@@ -26,37 +26,28 @@ const DropdownComponent = () => {
 
   const [value, setValue] = useState('');
   useEffect(() => {
-   
+
   }, [])
   return (
-    <View
-      style={useInlineStyle({
-        flex: 1,
-        marginLeft: 15,
-        borderRadius: 5,
-        marginRight: 15,
-      })}>
-      <AutoView isRow style={{ paddingLeft: 15, paddingTop: 15 }}>
-        <AutoText size={28} style={{ color: '#666', paddingRight: 20, paddingTop: 10 }}>
-          {t('SelectLanguage')}:
-        </AutoText>
-        <IconButton style={useInlineStyle({display: 'flex', flexDirection: 'row',alignItems:'center' })} onPress={() => selectRef.current.openModal()}>
-          <AutoText size={28} style={{paddingTop:10}}>{auth_store.language==='zh'?'中文':'English'}</AutoText>
-          <IconJiantouCopy size={14} color={'#666'} style={{ transform: [{ rotate: '270deg' }],marginLeft:16 }} />
-        </IconButton>
-        <ModalSelect ref={selectRef} data={[{name:'中文',value:LANGUAGE_CN},{name:'English',value:LANGUAGE_EN}]} change={({value,name}) => {
-          auth_store({
-            language:value
-          })
-          i18n.changeLanguage(value);
-          storage.save({
-            key: 'language',
-            data: value,
-          });
-          setValue(name);
-        }} />
-      </AutoView>
-    </View>
+    <>
+      <AutoText size={28} style={{ paddingRight: 20, paddingTop: 10 }}>
+        {t('SelectLanguage')}
+      </AutoText>
+      <IconButton style={useInlineStyle({ display: 'flex', flexDirection: 'row', alignItems: 'center' })} onPress={() => selectRef.current.openModal()}>
+        <AutoText size={28} style={{ paddingTop: 10, color: colors.checked }} >{auth_store.language === 'zh' ? '中文' : 'English'}</AutoText>
+      </IconButton>
+      <ModalSelect ref={selectRef} data={[{ name: '中文', value: LANGUAGE_CN }, { name: 'English', value: LANGUAGE_EN }]} change={({ value, name }) => {
+        auth_store({
+          language: value
+        })
+        i18n.changeLanguage(value);
+        storage.save({
+          key: 'language',
+          data: value,
+        });
+        setValue(name);
+      }} />
+    </>
   );
 };
 

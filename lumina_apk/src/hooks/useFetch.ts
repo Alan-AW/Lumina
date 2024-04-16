@@ -20,13 +20,17 @@ export const useFetch = (fetch: Function, config?: useFetchConfigProps) => {
     //声明loading
     const [loading, setLoading] = React.useState<boolean>(false);
 
-    async function cacheFetch(callback:Function) {
+    async function cacheFetch(callback?:Function) {
         try {
-            setLoading(true)
+            console.log('开始请求数据');
+
+            // setLoading(true)
             const res = await fetch();
+            console.log('请求数据',res);
+            
             if (res.code === 200 && !res.errs) {
                 setData(res.data)
-                callback(res.data)
+                callback?.(res.data)
             } else {
                 ToastAndroid.show(res.errs, ToastAndroid.SHORT)
             }
@@ -34,6 +38,8 @@ export const useFetch = (fetch: Function, config?: useFetchConfigProps) => {
             //内部处理错误
 
         } catch (error) {
+            console.log(error,'请求错误');
+            
             setLoading(false)
 
         }
