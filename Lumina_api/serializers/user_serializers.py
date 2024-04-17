@@ -13,6 +13,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
     role = serializers.CharField(source='role.title')
     company_name = serializers.SerializerMethodField()
     permissions = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField()
 
     def get_avatar(self, row):
         try:
@@ -34,9 +35,16 @@ class UserLoginSerializer(serializers.ModelSerializer):
         permission_list = permission_and_menu_ser(queryset)
         return permission_list
 
+    def get_name(self, row):
+        name_str = f'{row.first_name}{row.last_name}'
+        if name_str.isascii():
+            return f'{row.last_name}{row.first_name}'
+        else:
+            return name_str
+
     class Meta:
         model = UserInfo
-        fields = ['account', 'first_name', 'last_name', 'role', 'avatar', 'qrcode', 'company_name', 'permissions']
+        fields = ['account', 'name', 'role', 'avatar', 'qrcode', 'company_name', 'permissions']
 
 
 class PermissionSerializers(serializers.ModelSerializer):
@@ -109,6 +117,14 @@ class UserInfoSer(serializers.ModelSerializer):
     company_label = serializers.CharField(source='company.name', read_only=True)
     create_time = serializers.DateTimeField(format='%Y-%m-%d', read_only=True)
     update_time = serializers.DateTimeField(format='%Y-%m-%d', read_only=True)
+    name = serializers.SerializerMethodField()
+
+    def get_name(self, row):
+        name_str = f'{row.first_name}{row.last_name}'
+        if name_str.isascii():
+            return f'{row.last_name}{row.first_name}'
+        else:
+            return name_str
 
     def get_qrcode_url(self, row):
         return row.qr.qrcode.url
