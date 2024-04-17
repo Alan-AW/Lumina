@@ -112,3 +112,19 @@ class GetCultivarAlgorithmView(APIView):
         data = [item.id for item in queryset]
         response = return_response(data=data)
         return JsonResponse(response)
+
+
+# 控制台为公司分配品类的品类下拉列表-支持国际化
+class ChoicesCultivarsView(APIView):
+    permission_classes = [SuperPermission]
+
+    def get(self, request):
+        query = request.query_params.dict().get('language')
+        if query == 'en':
+            queryset = Cultivar.objects.all().values('id', 'name_en')
+            data = [{ "id": item['id'], 'title': item['name_en'] } for item in queryset]
+        else:
+            queryset = Cultivar.objects.all().values('id', 'name_cn')
+            data = [{ "id": item['id'], 'title': item['name_cn'] } for item in queryset]
+        response = return_response(data=data)
+        return JsonResponse(response)

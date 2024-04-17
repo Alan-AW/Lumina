@@ -15,6 +15,7 @@ class Company(models.Model):
     logo = models.ImageField(
         upload_to=logo_upload_path, null=True, blank=True, verbose_name='企业logo'
     )
+    allow_cultivars = models.ManyToManyField(to='Cultivar', verbose_name='允许种植的品类')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 

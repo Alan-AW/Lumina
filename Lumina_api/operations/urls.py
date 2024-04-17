@@ -1,9 +1,10 @@
 from django.urls import path, re_path
 from operations.views import RoomView, UnitView, SaveSensorDataView, ExportThree, SpeciesView, CultivarsView, \
-    ModelsView, PhasesView, InstructionView, ActionView, TriggersView, CompanyView, CompanyUploadLogo, UnitSettingsListView, \
-    UnitSettingView, PingUnitTimerView, GetUnitOnlineView, UnitInfoView, CultivarView, CultivarAlgorithmView, AlgorithmView
+    ModelsView, PhasesView, InstructionView, ActionView, TriggersView, CompanyView, CompanyCultivarsView, \
+    CompanyUploadLogo, UnitSettingsListView, UnitSettingView, PingUnitTimerView, GetUnitOnlineView, UnitInfoView, \
+    CultivarView, CultivarAlgorithmView, AlgorithmView
 from operations.choices_api_view import ChoicesRoomView, ChoicesRoleView, ChoicesCompanyView, \
-    ChoicesEnvironmentalOptions, ChoicesUnitSettings, CultivarChoicesAlgorithmView, GetCultivarAlgorithmView
+    ChoicesEnvironmentalOptions, ChoicesUnitSettings, CultivarChoicesAlgorithmView, ChoicesCultivarsView
 
 app_name = 'operations'
 urlpatterns = [
@@ -23,9 +24,9 @@ urlpatterns = [
     # 上传公司logo
     re_path(r'company/uploadlogo/(?P<row_id>\d+)$', CompanyUploadLogo.as_view()),
     # 公司管理
-    re_path(r'company/(?P<row_id>\d+)?', CompanyView.as_view()),
+    re_path(r'company/(?P<row_id>\d+)?$', CompanyView.as_view()),
     # 设备可用设置项管理
-    re_path(r'unit/settings/list/(?P<row_id>\d+)?', UnitSettingsListView.as_view()),
+    re_path(r'unit/settings/list/(?P<row_id>\d+)?$', UnitSettingsListView.as_view()),
     # 2024-2-4新增功能接口
     # 1.开放接口查询所有在线和不在线的设备
     # 24-3-30:1.1间隔30sping一次接口，更新unit ping字段时间戳值
@@ -45,6 +46,9 @@ urlpatterns = [
     path('cultivar/algorithm', CultivarAlgorithmView.as_view()),
     # 5.算法管理
     re_path(r'algorithm/(?P<row_id>\d+)?$', AlgorithmView.as_view()),
+    # 24-4-17新增功能：公司品类权限管理，（超管用户权限）
+    re_path(r'company/cultivars/(?P<company_id>\d+)$', CompanyCultivarsView.as_view()),
+    path('choices/cultivars', ChoicesCultivarsView.as_view()),
     # ############################## 以下API是否需要：待定 ##############################
     # 传感器请求保存数据
     re_path(r'save/sensor/(?P<types>temperature|lighting)$', SaveSensorDataView.as_view()),

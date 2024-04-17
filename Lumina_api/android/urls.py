@@ -1,6 +1,6 @@
 from django.urls import path, re_path
 from android.views import CompanyRoomDeepDataView, UnitDescView, AndroidSettingsView, SendCmdToMQView, SendDataToMQView, \
-    CultivarChoicesView, CultivarAlgorithmChoicesView, SendAlgorithmToMQView, UpdateUnitInfoView
+    CultivarChoicesView, CultivarAlgorithmChoicesView, SendAlgorithmToMQView, UpdateUnitInfoView, AppOtaApkView
 
 app_name = 'android'
 urlpatterns = [
@@ -22,4 +22,6 @@ urlpatterns = [
     path('unit/cultivar/algorithm', SendAlgorithmToMQView.as_view()),
     # 安卓端更新设备算法,入库更新+重新推送
     path('update/unit/algorithm', UpdateUnitInfoView.as_view()),
+    # 安卓端APP的OTA升级
+    path('app/ota/apk', AppOtaApkView.as_view())
 ]

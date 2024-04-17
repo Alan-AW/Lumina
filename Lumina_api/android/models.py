@@ -18,3 +18,14 @@ class SendMessageToQueue(models.Model):
 
     def __str__(self):
         return self.device_id
+
+
+class AppOtaModel(models.Model):
+    version = models.CharField(max_length=64, verbose_name='版本号')
+    apk = models.FileField(upload_to='android/app', verbose_name='APP安装包')
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='发布时间')
+
+    class Meta:
+        db_table = 'android_app_ota'
+        ordering = ['-id']
+        verbose_name = 'APP版本控制'

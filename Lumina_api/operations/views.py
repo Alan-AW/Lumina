@@ -161,6 +161,25 @@ class CompanyView(BaseView):
         return JsonResponse(response)
 
 
+# 公司可种植品类管理
+class CompanyCultivarsView(APIView):
+    permission_classes = [SuperPermission]
+
+    # 修改指定公司允许种植的品类id列表
+    def post(self, request, company_id):
+        data = request.data.get('id_list')
+        if not data:
+            response = return_response(status=False, error=f'请至少选择一个品类！')
+            return JsonResponse(response)
+        queryset = Company.objects.filter(pk=company_id).first()
+        if not queryset:
+            response = return_response(status=False, error=f'未找到ID为{company_id}的公司！')
+            return JsonResponse(response)
+        queryset.allow_cultivars.set(data)
+        response = return_response(info='更新成功！')
+        return JsonResponse(response)
+
+
 # 更换公司logo
 class CompanyUploadLogo(APIView):
     permission_classes = [SuperPermission]

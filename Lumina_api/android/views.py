@@ -4,6 +4,7 @@ import json
 from django.db.transaction import atomic
 from rest_framework.views import APIView
 from django.http import JsonResponse
+from android.models import AppOtaModel
 from device.rabbit_mq.producer import start
 from operations.models import Unit, Temperature, Lighting, UnitSetting, UnitSettingsList, Cultivar, UnitPlantDesc
 from serializers.android_serializers import SendMessageToQueueSer, CultivarCnChoicesSer, CultivarEnChoicesSer, \
@@ -138,23 +139,23 @@ class AndroidSettingsView(APIView):
         language = request.query_params.get('language')
         unit_device_id = unit_obj.deviceId
         default_value = [
-            {'cmd': 'target_ec', 'value': '2.3'},
-            {'cmd': 'target_ph', 'value': '4.5'},
-            {'cmd': 'target_water_level', 'value': '40'},
-            {'cmd': 'target_h2o2_concentration', 'value': '5'},
-            {'cmd': 'reservoir_uv', 'value': '2'},
-            {'cmd': 'day_night_cycle_hours', 'value': '20'},
-            {'cmd': 'spectra_450_laser', 'value': ''},
-            {'cmd': 'spectra_660_laser', 'value': ''},
-            {'cmd': 'looper_motor', 'value': '2'},
-            {'cmd': 'air_curtain', 'value': '20'},
-            {'cmd': 'spectra', 'value': ''},
-            {'cmd': 'spectra_main_led', 'value': '1000'},
-            {'cmd': 'spectra_450_led', 'value': '200'},
-            {'cmd': 'target_amb_temp', 'value': '30'},
-            {'cmd': 'target_amb_rh', 'value': '20%'},
+            { 'cmd': 'target_ec', 'value': '2.3' },
+            { 'cmd': 'target_ph', 'value': '4.5' },
+            { 'cmd': 'target_water_level', 'value': '40' },
+            { 'cmd': 'target_h2o2_concentration', 'value': '5' },
+            { 'cmd': 'reservoir_uv', 'value': '2' },
+            { 'cmd': 'day_night_cycle_hours', 'value': '20' },
+            { 'cmd': 'spectra_450_laser', 'value': '' },
+            { 'cmd': 'spectra_660_laser', 'value': '' },
+            { 'cmd': 'looper_motor', 'value': '2' },
+            { 'cmd': 'air_curtain', 'value': '20' },
+            { 'cmd': 'spectra', 'value': '' },
+            { 'cmd': 'spectra_main_led', 'value': '1000' },
+            { 'cmd': 'spectra_450_led', 'value': '200' },
+            { 'cmd': 'target_amb_temp', 'value': '30' },
+            { 'cmd': 'target_amb_rh', 'value': '20%' },
         ]
-        result = {}
+        result = { }
         # 不管数据库有没有数据，都直接更新一下 value 值
         for index, item in enumerate(default_value):
             # 搜索当前设备的当前设置的值
@@ -218,12 +219,12 @@ class SendCmdToMQView(APIView):
             with atomic():
                 # 更新数据库中对应设备的记录值
                 for item in data:
-                    update_data = {'auto': item['auto'], 'value': item['value']}
+                    update_data = { 'auto': item['auto'], 'value': item['value'] }
                     UnitSetting.objects.filter(unit=unit_obj, cmd__cmd=item['cmd']).update(**update_data)
                 # 记录日志
                 create_logs(request.user, UnitSetting, 5, data)
                 # 推入队列
-                mq_data = list(map(lambda item: {**item, 'decideId': unit_obj.deviceId}, data))
+                mq_data = list(map(lambda item: { **item, 'decideId': unit_obj.deviceId }, data))
                 start(message=json.dumps(mq_data), device_id=unit_obj.deviceId, queue_name='manual_command_queue')
                 response = return_response(info='设置成功!')
         except Exception as e:
@@ -323,4 +324,15 @@ class UpdateUnitInfoView(APIView):
             response = return_response(info='数据更新成功！')
         else:
             response = return_response(status=False, error=ser.errors)
+        return JsonResponse(response)
+
+
+# 安卓端APP的OTA升级
+class AppOtaApkView(APIView):
+    permission_classes = [ExcludeSuperPermission]
+
+    def get(self, request):
+        queryset = AppOtaModel.objects.first()
+        data = { 'version': queryset.version, 'apk': queryset.apk.url, 'size': queryset.apk.size } if queryset else {}
+        response = return_response(data=data)
         return JsonResponse(response)

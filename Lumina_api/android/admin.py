@@ -1,3 +1,8 @@
 from django.contrib import admin
+from android.models import AppOtaModel
 
-# Register your models here.
+
+@admin.register(AppOtaModel)
+class AppOtaModalAdmin(admin.ModelAdmin):
+    list_display = ['id', 'version', 'apk', 'create_time']
+    search_fields = ['version']
