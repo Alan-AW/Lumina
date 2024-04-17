@@ -26,6 +26,7 @@ export const choicesCompany = () => axios.get('/manager/company/choices')
 export const choicesUnitSetList = language => axios.get(`/manager/unit/settings/list/choices?language=${language}`)
 export const getNavPermission = () => axios.get('/auth/permission/choices')
 export const choicesAlgorithm = (language = 'cn') => axios.get(`/manager/algorithm/choices?language=${language}`)
+export const choicesCultivars = (language = 'cn') => axios.get(`/manager/choices/cultivars?language=${language}`)
 
 // 用户管理页面
 export const getUser = params => axios.get('/auth/user/', { params })
@@ -55,6 +56,7 @@ export const postCompany = data => axios.post('/manager/company/', data)
 export const patchCompany = (id, data) => axios.patch(`/manager/company/${id}`, data)
 export const deleteCompany = id => axios.delete(`/manager/company/${id}`)
 export const uploadCompanyLogoApi = (id, data) => axios.post(`/manager/company/uploadlogo/${id}`, data, uploadHeaders)
+export const postCompanyCultivars = (id, data) => axios.post(`/manager/company/cultivars/${id}`, data)
 // 房间管理页面
 export const getRooms = params => axios.get('/manager/room/', { params })
 export const postRooms = data => axios.post('/manager/room/', data)

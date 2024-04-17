@@ -224,6 +224,7 @@
     }
   },
   "company": {
+    "EditCompanyCultivarModalTitle": "Crop management",
     "title": "Company Management",
     "uploadModalTitle": "Upload Logo",
     "OK": "Open",
@@ -249,7 +250,8 @@
       "address": "Company address cannot be empty!",
       "legal_rep": "Legal representative cannot be empty!",
       "tel": "Company phone cannot be empty!",
-      "email": "Company email cannot be empty!"
+      "email": "Company email cannot be empty!",
+      "editCultivars": "Please select at least one category!"
     },
     "placeholder": {
       "name": "Enter company name!",

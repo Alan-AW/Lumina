@@ -216,6 +216,7 @@
     }
   },
   "company": {
+    "EditCompanyCultivarModalTitle": "种植品类管理",
     "title": "公司管理",
     "uploadModalTitle": "上传logo",
     "OK": "开启",
@@ -241,7 +242,8 @@
       "address": "企业地址不可为空！",
       "legal_rep": "企业法人不可为空!",
       "tel": "企业电话不可为空!",
-      "email": "企业邮箱不可为空!"
+      "email": "企业邮箱不可为空!",
+      "editCultivars": "请至少选择一个品类！"
     },
     "placeholder": {
       "name": "请输入企业名称！",

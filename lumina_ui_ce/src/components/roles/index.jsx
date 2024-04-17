@@ -13,7 +13,7 @@ function RolesEditModal(props) {
 
   const [allPermissions, setAllPermissions] = useState([])
   const [form] = Form.useForm()
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   useEffect(() => {
     // 开窗时当树allPermissions 为空时，获取所有权限树
     openModal && !allPermissions.length && getData()

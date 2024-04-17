@@ -1,7 +1,7 @@
 // 所有select下拉组件数据
 
 import {
-  SET_ROOMS_CHOICES, SET_ROLES_CHOICSE, SET_COMPANY_CHOICSE, SET_UNIT_SETTING_CHOICSE
+  SET_ROOMS_CHOICES, SET_ROLES_CHOICSE, SET_COMPANY_CHOICSE, SET_UNIT_SETTING_CHOICSE, SET_CULTIVARS_CHOICSE
 } from 'contants/reduxContants'
 
 
@@ -66,4 +66,18 @@ const unitSetList = (prevState = unitSetListInitState, action) => {
   }
 }
 
-export { roomList, roleList, companyList, unitSetList }
+// 品类列表
+const cultivarsListInitState = []
+const cultivarsList = (prevState = cultivarsListInitState, action) => {
+  let newState = [...prevState]
+  const { type, value } = action
+  switch (type) {
+    case SET_CULTIVARS_CHOICSE:
+      newState = value
+      return newState
+    default:
+      return prevState
+  }
+}
+
+export { roomList, roleList, companyList, unitSetList, cultivarsList }

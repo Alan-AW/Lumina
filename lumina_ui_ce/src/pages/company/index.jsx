@@ -3,12 +3,17 @@
  */
 import { useState, useEffect, useMemo } from 'react'
 import { Modal, Table, notification, Button, message, Image } from 'antd'
-import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined, UploadOutlined } from '@ant-design/icons'
+import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined, UploadOutlined, SettingOutlined } from '@ant-design/icons'
 import baseUrl from 'network/baseUrl'
-import { getCompany, postCompany, patchCompany, deleteCompany, uploadCompanyLogoApi } from 'network/api'
+import {
+    getCompany, postCompany, patchCompany,
+    deleteCompany, uploadCompanyLogoApi,
+    postCompanyCultivars
+} from 'network/api'
 import { FADEIN, pageSize } from 'contants'
 import { openNotification } from 'utils'
 import CompanyEditModal from 'components/company'
+import EditCultivars from 'components/company/cultivars'
 import UploadImg from 'components/upload'
 import PermissionBtn from 'components/permissionButton/permissionBtn'
 import PermissionPopconfirm from 'components/permissionButton/permissionPopconfirm'
@@ -84,6 +89,12 @@ function Company(props) {
                         icon={<EditOutlined />}
                         onClick={() => editClick(row)}
                     />
+                    <PermissionBtn
+                        callback={() => editCultivarClick(row)}
+                        allowRoles={['超级管理员']}
+                        type='primary'
+                        icon={<SettingOutlined />}
+                    />
                     <Button
                         type='primary'
                         shape='circle'
@@ -96,7 +107,7 @@ function Company(props) {
                         okText="Yes"
                         okType='danger'
                         cancelText="No"
-                        allowRoles={['Administrator']}
+                        allowRoles={['超级管理员']}
                         callback={() => deleteRow(row)}
                         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
                     >
@@ -223,6 +234,29 @@ function Company(props) {
         />
     ), [editRow, editSate, openModal])
 
+    const [editCultivarModalOpen, setEditCultivarModalOpen] = useState(false)
+
+    // 点击编辑品类
+    const editCultivarClick = row => {
+        setEditRow(row)
+        setEditCultivarModalOpen(true)
+    }
+
+    // 编辑品类确认回调
+    const onCultivarOk = value => {
+        if (Object.values(value)?.length) {
+            postCompanyCultivars(editRow.id, value).then(res => {
+                if (res.status) {
+                    message.success(res.info)
+                    getData()
+                    setEditCultivarModalOpen(false)
+                }
+            }).catch(err => console.log(err))
+        } else {
+            message.error('请至少选择一项！')
+        }
+    }
+
     // 点击上传logo
     const uploadLogo = row => {
         setEditRow(row)
@@ -285,6 +319,13 @@ function Company(props) {
             {table}
             {uploadModal}
             {editModal}
+            {/* {editCultivarsModal} */}
+            <EditCultivars
+                initValue={editRow}
+                openModal={editCultivarModalOpen}
+                closeModal={() => setEditCultivarModalOpen(false)}
+                onOk={onCultivarOk}
+            />
         </>
     )
 }
