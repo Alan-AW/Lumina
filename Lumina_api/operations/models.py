@@ -196,6 +196,7 @@ class UnitPlantDesc(models.Model):
     cultivar = models.ForeignKey(to=Cultivar, on_delete=models.CASCADE, verbose_name='种植品类')
     algorithm = models.JSONField(default=list, blank=True, verbose_name='算法指令集')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='种植时间')
+    status = models.BooleanField(default=True, verbose_name='周期状态')
 
     class Meta:
         db_table = 'unit_plant_desc'

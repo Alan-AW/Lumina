@@ -18,7 +18,7 @@ urlpatterns = [
     path('cultivar/choices', CultivarChoicesView.as_view()),
     #  2024-2-5安卓端添加算法,回显算法列表供安卓端选择
     re_path(r'algorithm/choices/(?P<cultivar_id>\d+)$', CultivarAlgorithmChoicesView.as_view()),
-    # 2024-2-5安卓端选择了算法之后将数据提交到服务器进行处理和推送
+    # 2024-2-5安卓端选择了算法之后将数据提交到服务器进行处理和推送(新增种植品类)
     path('unit/cultivar/algorithm', SendAlgorithmToMQView.as_view()),
     # 安卓端更新设备算法,入库更新+重新推送
     path('update/unit/algorithm', UpdateUnitInfoView.as_view()),

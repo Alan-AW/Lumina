@@ -73,8 +73,8 @@ class AlgorithmAdmin(admin.ModelAdmin):
 # 设备种植的品类详情
 @admin.register(UnitPlantDesc)
 class UnitPlantDescAdmin(admin.ModelAdmin):
-    list_display = ['id', 'unit', 'cultivar', 'algorithm', 'create_time']
-    list_editable = ['unit', 'cultivar', 'algorithm']
+    list_display = ['id', 'unit', 'cultivar', 'algorithm', 'status', 'create_time']
+    list_editable = ['unit', 'cultivar', 'algorithm', 'status']
 
 
 # 温度传感器

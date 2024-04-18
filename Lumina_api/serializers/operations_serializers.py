@@ -136,7 +136,7 @@ def unitsDescSer(units, en=False):
     if units:
         for unit in units:
             # 循环每台设备中种植的作物详情信息（有多少作物）
-            data_list = unit.plant_desc.all().values(
+            data_list = unit.plant_desc.all().filter(status=True).values(
                 'id', 'cultivar__icon', 'cultivar__cycle', 'cultivar__name_cn', 'cultivar__name_en', 'create_time'
             )
             if data_list:

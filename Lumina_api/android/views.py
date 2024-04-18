@@ -242,7 +242,9 @@ class CultivarChoicesView(APIView):
             ser = CultivarEnChoicesSer
         else:
             ser = CultivarCnChoicesSer
-        queryset = Cultivar.objects.all()
+        # 可选品类控制，只能选择当前公司拥有的种植品类
+        allow_cultivars_list = [item.id for item in request.user.company.allow_cultivars.all()]
+        queryset = Cultivar.objects.filter(id__in=allow_cultivars_list).all()
         data = ser(queryset, many=True).data
         response = return_response(data=data)
         return JsonResponse(response)

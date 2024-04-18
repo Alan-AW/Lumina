@@ -48,24 +48,28 @@ def algorithm_choices_inal_ser(queryset, language):
 
     for algorithm in data_list:
         subject = algorithm['subject_en'] if en else algorithm['subject_cn']
-        subject_dict[subject].append({
-            'id': algorithm['id'],
-            'title': algorithm['title_en'] if en else algorithm['title_cn'],
-            'desc': algorithm['desc_en'] if en else algorithm['desc_cn'],
-            'choices': [
-                {'label': choice, 'value': index} for index, choice in enumerate(algorithm['choices_en'])
-            ] if en else [
-                {'label': choice, 'value': index} for index, choice in enumerate(algorithm['choices_cn'])
-            ],
-            'choices_self': algorithm['choices_self']
-        })
+        subject_dict[subject].append(
+            {
+                'id': algorithm['id'],
+                'title': algorithm['title_en'] if en else algorithm['title_cn'],
+                'desc': algorithm['desc_en'] if en else algorithm['desc_cn'],
+                'choices': [
+                    { 'label': choice, 'value': index } for index, choice in enumerate(algorithm['choices_en'])
+                ] if en else [
+                    { 'label': choice, 'value': index } for index, choice in enumerate(algorithm['choices_cn'])
+                ],
+                'choices_self': algorithm['choices_self']
+            }
+        )
 
     for subject, children in subject_dict.items():
-        serialized_data.append({
-            'subject': subject,
-            'choices_self': children[0].pop('choices_self'),
-            'child': children
-        })
+        serialized_data.append(
+            {
+                'subject': subject,
+                'choices_self': children[0].pop('choices_self'),
+                'child': children
+            }
+        )
 
     return serialized_data
 
@@ -74,24 +78,29 @@ def algorithm_choices_inal_ser(queryset, language):
 class ValidateUnitCultivarAlgorithmToMqSer(serializers.Serializer):
     unit = serializers.SlugRelatedField(slug_field='id', queryset=Unit.objects.all())
     cultivar = serializers.SlugRelatedField(slug_field='id', queryset=Cultivar.objects.all())
-    algorithm = serializers.JSONField(error_messages={'invalid': '算法格式错误！'})
+    algorithm = serializers.JSONField(error_messages={ 'invalid': '算法格式错误！' })
 
     def validate(self, attrs):
         # 获取要种植的设备对象
         unit = attrs.get('unit')
         # 查询设备是否还存在种植周期
-        cycle_record = UnitPlantDesc.objects.filter(unit=unit).first()
+        cycle_record = UnitPlantDesc.objects.filter(unit=unit, status=True).first()
+        # 如果存在种植周期
         if cycle_record:
-            # 读取种植周期
-            cycle = cycle_record.cultivar.cycle
+            # 读取种植周期时长
+            # cycle = cycle_record.cultivar.cycle
             # 读取种植日期
-            create_time = cycle_record.create_time.strftime("%Y-%m-%d %H:%M:%S")
+            # create_time = cycle_record.create_time.strftime("%Y-%m-%d %H:%M:%S")
             # 计算当前种植周期是否结束
-            is_in_range = is_within_date_range(create_time, cycle)
+            # is_in_range = is_within_date_range(create_time, cycle)
             # 已结束->继续
             # 否则->不允许种植品类
-            if is_in_range:
-                raise serializers.ValidationError('当前种植周期未结束！')
+            # if is_in_range:
+            #     raise serializers.ValidationError('当前种植周期未结束！')
+
+            # 24-4-18逻辑修改为，结束当前生效的种植周期，添加新的种植周期
+            cycle_record.status = False
+            cycle_record.save()
         attrs['device_id'] = attrs.get('unit').deviceId
         algorithm = attrs.get('algorithm')
         for item in algorithm:
@@ -150,10 +159,10 @@ class ValidateUnitCultivarAlgorithmToMqSer(serializers.Serializer):
 class ValidateUnitAlgorithm(serializers.Serializer):
     unit_device_id = serializers.SlugRelatedField(
         required=True, slug_field='deviceId', queryset=Unit.objects.all(),
-        error_messages={'required': 'deviceId参数缺失!'}
+        error_messages={ 'required': 'deviceId参数缺失!' }
     )
     algorithm = serializers.JSONField(
-        required=True, error_messages={'required': 'algorithm参数缺失!'}
+        required=True, error_messages={ 'required': 'algorithm参数缺失!' }
     )
 
     def validate(self, attrs):
