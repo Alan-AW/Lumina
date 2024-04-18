@@ -12,23 +12,29 @@ import { IconJiantouCopy } from "src/iconfont";
 //首页注册刷新事件，监听刷新状态
 //添加页修改刷新状态，执行首页刷新事件
 
-export default function Back(props:{noneText?:boolean}) {
-    const {noneText} = props;
+export default function Back(props: { noneText?: boolean, customPress?: Function }) {
+    const { noneText, customPress } = props;
     const nav = useNavigation()
 
     return (
         <AutoView isRow>
             <ShadowCard style={styles.backBtn}>
 
-                <IconButton onPress={() => nav.goBack()}>
+                <IconButton onPress={() => {
+                    if (customPress) {
+                        customPress(nav);
+                        return
+                    }
+                    nav.goBack()
+                }}>
                     <IconJiantouCopy size={adaptationConvert(30)} />
                 </IconButton>
 
             </ShadowCard>
             {
-                !noneText &&   <AutoText>Back</AutoText>
+                !noneText && <AutoText>Back</AutoText>
             }
-          
+
 
         </AutoView>
 

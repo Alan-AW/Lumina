@@ -51,4 +51,9 @@ export function getLog(params:any){
   return httpAxios.get<any>(`/auth/logs?page=${params.page}&size=${params.size}`, {});
 }
 
+//获取app版本
+export function getAppVersion(){
+  return httpAxios.get<any>(`/android/app/ota/apk`, {});
+}
+
 

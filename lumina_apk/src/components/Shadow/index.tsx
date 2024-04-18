@@ -35,7 +35,7 @@ ShadowCard.prototype = {
 };
 
 ShadowCard.defaultProps = {
-  backgroundColor: '#ffffff',
+  backgroundColor: '#f4f4f4',
   elevation: 3,
   cornerRadius: 5,
   opacity: 0.5,
@@ -50,7 +50,7 @@ const styles = createStyles({
       width: 0,
       height: 8,
     },
-    shadowColor: 'black',
+    shadowColor: '#f4f4f4',
   },
 });
 

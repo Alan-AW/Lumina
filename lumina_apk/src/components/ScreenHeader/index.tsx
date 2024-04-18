@@ -10,6 +10,7 @@ import { IconButton } from "../Button";
 import { IconJiantouCopy } from "src/iconfont";
 import { useNavigation } from '@react-navigation/native'
 import colors from "src/constants/colors";
+import AutoText from "../AutoView/Text";
 
 type ScreenHeaderProps = {
     right?: () => ReactNode | null,
@@ -64,7 +65,7 @@ const styles = createStyles({
     headerText1: {
         color: '#2a2a2a',
         fontWeight: '700',
-        fontSize: 40,
+        fontSize: 43,
         // paddingBottom:5,
         fontFamily:fontName.bold,
     },
@@ -74,7 +75,7 @@ const styles = createStyles({
         fontWeight: '500',
         fontSize: 26,
         paddingTop: 0,
-        paddingRight:12,
+        // paddingRight:12,
         alignItems: 'center',
     },
     headerText3: {

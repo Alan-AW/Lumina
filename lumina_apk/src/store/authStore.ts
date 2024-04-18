@@ -8,10 +8,14 @@ type authStoreType = {
     //当前选择的语言
     language: string
     token: string,
+    checkedVersion:number,
+    isUpdate:boolean,
 }
 
 
 export const auth_store = resso<authStoreType>({
     language: LANGUAGE_EN,
     token: '',
+    checkedVersion:0,
+    isUpdate:true,
 })

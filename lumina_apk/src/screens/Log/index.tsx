@@ -15,90 +15,105 @@ import { useFetch } from "src/hooks/useFetch";
 import useRequest from "src/hooks/useRequest";
 import { deepData } from "src/utils";
 
+const ceilWidth = 470;
+
 const columns = [
     {
         key: 'index',
         width: 100,
         languageKey: locales.SerialNumber,
-        sort:1,
+        sort: 1,
     },
     {
         key: 'username',
         width: 100,
         languageKey: locales.Username,
-        sort:2,
+        sort: 2,
 
     },
     {
         key: 'role',
         width: 100,
         languageKey: locales.UserRole,
-        sort:3,
+        sort: 3,
 
     },
     {
         key: 'command_label',
         width: 100,
         languageKey: locales.OperationCommand,
-        sort:4,
+        sort: 4,
     },
     {
         key: 'content',
         width: 100,
         languageKey: locales.ModifiedContent,
-        sort:5,
+        sort: 5,
     },
     {
         key: 'create_time',
         width: 100,
         languageKey: locales.CreationTime,
-        sort:6,
+        sort: 6,
     },
 ].map(item => {
     return {
         ...item,
-        width: 700,
+        width: ceilWidth,
     }
 });
 
 
-const pageSize = 10;
+const pageSize = 20;
 
 export default function Log() {
 
     const [page, setPage] = useState(1)
     const [maxPage, setMaxPage] = useState(0)
-    const { data, loading, run } = useFetch(() => getLog({ page, size: pageSize }))
+    const [data, setData] = useState([])
+    const [count, setCount] = useState(0)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        if (data) {
-            setMaxPage(Math.ceil(data.count / pageSize))
+        if (count > 0) {
+            setMaxPage(Math.ceil(count / pageSize))
         }
 
-    }, [data])
-
+    }, [count])
     useEffect(() => {
-        run()
-    }, [])
+        setLoading(true)
+        getLog({ page: page, size: pageSize }).then((res: any) => {
+            console.log('当前请求的data', res.data.results);
+
+            setData(data.concat(res.data.results))
+            setCount(res.data.count)
+
+        }).finally(() => {
+            setLoading(false)
+        })
+
+    }, [page])
+
+
     // console.log('获取的日志data', data);
 
     const tableData = useMemo(() => {
 
-        if (data && Array.isArray(data.results)) {
+        if (data && Array.isArray(data)) {
 
-            return data.results.map((item: any, index: number) => {
+            return data.map((item: any, index: number) => {
                 // const { username, role, command_label, content, create_time } = item;
                 const arr = [{
-                    width: 700,
-                    text:index+1,
-                    sort:1,
+                    width: ceilWidth,
+                    text: index + 1,
+                    sort: 1,
                 }];
                 for (let key in item) {
                     const findKey = columns.find(i => i.key === key);
                     if (findKey) {
                         arr.push({
                             width: findKey.width,
-                            text: item[key] || 'null',
+                            text: typeof item[key] === 'object' ? JSON.stringify(item[key]) : (item[key] || 'null'),
                             sort: findKey.sort,
                         })
                     }
@@ -106,9 +121,9 @@ export default function Log() {
                 return arr.map(item => {
                     return {
                         ...item,
-                        width: 700,
+                        width: ceilWidth,
                     }
-                }).sort((a,b)=>{
+                }).sort((a, b) => {
                     return a.sort - b.sort
                 });
             })
@@ -118,52 +133,70 @@ export default function Log() {
     }, [data])
 
 
-    console.log(tableData, 'tableData');
+
 
     return (
         <View style={{ flex: 1 }}>
-
-            <AutoView style={{ paddingLeft: 32 }}>
-                <ScreenHeader title={<LocalesText languageKey={locales.OperationLog} />} subtitle="" hiddenBack />
-            </AutoView>
-            <Loading loading={loading}>
-                <Start style={{ flexWrap: 'wrap', paddingLeft: 32 }}>
-                    {
-                        columns.map(item => {
-                            return (
-                                <Center style={{ width: item.width, backgroundColor: '#f8f8f8', paddingVertical: 32 }}>
-                                    <LocalesText languageKey={item.languageKey} color='#444' />
-                                </Center>
-                            )
-                        })
-                    }
-                </Start>
-                <FlatList data={tableData} style={{ flex: 1 }} keyExtractor={(i, index) => index + ''} onEndReached={() => {
-                    if (page < maxPage) {
-                        setPage(page + 1)
-                        run();
-                    }
-                }} renderItem={({ item, index }) => {
-                    const newItem = deepData(item);
-                    newItem.push({
-                        width: 700,
-                        text: index + 1
+            {/* <AutoView style={{ paddingLeft: 32 }}>
+                <ScreenHeader title={<LocalesText size={42} languageKey={locales.OperationLog} />} subtitle="" hiddenBack />
+            </AutoView> */}
+            <Start style={{ flexWrap: 'wrap', paddingLeft: 32 }}>
+                {
+                    columns.map((item, index) => {
+                        return (
+                            <Center key={index} style={{ width: item.width, backgroundColor: '#f8f8f8', paddingVertical: 32 }}>
+                                <LocalesText languageKey={item.languageKey} color='#444' />
+                            </Center>
+                        )
                     })
+                }
+            </Start>
+            <FlatList data={tableData} style={{ flex: 1 }} keyExtractor={(i, index) => index + ''} onEndReached={() => {
+                if (page < maxPage) {
+                    setPage(page + 1)
+                }
+            }} renderItem={({ item, index }) => {
+                const newItem = deepData(item);
+                newItem.push({
+                    width: ceilWidth,
+                    text: index + 1
+                })
+                if (index === data.length - 1) {
                     return (
-                        <Start style={{ paddingLeft: 32 }} key={index}>
+                        <>
+                            <Start style={{ paddingLeft: 32 }} key={index}>
+                                {
+                                    item.map((item: any, index: number) => {
+
+                                        return <Center style={{ width: item.width, paddingVertical: 64 }} key={index}>
+                                            <AutoText style={{ fontSize: 30 }}>{item.text}</AutoText>
+                                        </Center>
+                                    })
+                                }
+                            </Start>
                             {
-                                item.map((item: any, index: number) => {
-
-                                    return <Center style={{ width: item.width,paddingVertical:64 }} key={index}>
-                                        <AutoText>{item.text}</AutoText>
-                                    </Center>
-                                })
+                                page > maxPage ? <Center style={{ height: 100 }}>
+                                    <LocalesText languageKey={locales.nullData} />
+                                </Center> : <Loading loading={loading} style={{ height: 100 }} />
                             }
-                        </Start>
-                    )
-                }} />
 
-            </Loading>
+
+                        </>
+                    )
+                }
+                return (
+                    <Start style={{ paddingLeft: 32 }} key={index}>
+                        {
+                            item.map((item: any, index: number) => {
+
+                                return <Center style={{ width: item.width, paddingVertical: 64 }} key={index}>
+                                    <AutoText style={{ fontSize: 30 }}>{item.text}</AutoText>
+                                </Center>
+                            })
+                        }
+                    </Start>
+                )
+            }} />
 
         </View>
 

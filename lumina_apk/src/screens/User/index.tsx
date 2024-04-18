@@ -18,6 +18,7 @@ import { IconButton } from "src/components/Button";
 import { useNavigation } from "@react-navigation/native";
 import storage from "src/helpers/storage";
 import DropdownComponent from "../Setting/SelectLanganug";
+import Start from "src/components/FlexView/Start";
 
 
 
@@ -74,14 +75,10 @@ const User = () => {
                             </AutoView>
 
                             <AutoView style={{ paddingLeft: 32 }}>
-                                <AutoView isRow>
-                                    <LocalesText languageKey={locales.lastName} />
-                                    <NormalText text={state.last_name} left={50} />
-                                </AutoView>
-                                <AutoView isRow style={{ marginTop: 15 }}>
-                                    <LocalesText languageKey={locales.firstName} />
-                                    <NormalText text={state.firstName} left={50} />
-                                </AutoView>
+                            <Start>
+                                    <AutoText style={{color:'#444'}}>{state.name}</AutoText>
+                                </Start>
+                              
                             </AutoView>
                         </AutoView>
                     </View>
@@ -92,15 +89,15 @@ const User = () => {
                     </SpaceBetween>
                     <SpaceBetween style={{ paddingVertical: 50 }}>
                         <LocalesText left={0} languageKey={locales.role} />
-                        <NormalText text={state.role} left={0} />
+                        <NormalText text={state.role} left={0} color="#444" />
                     </SpaceBetween>
                     <SpaceBetween style={{ paddingVertical: 50 }}>
                         <LocalesText left={0} languageKey={locales.account} />
-                        <NormalText text={state.account} left={0} />
+                        <NormalText text={state.account} left={0} color="#444" />
                     </SpaceBetween>
                     <SpaceBetween style={{ paddingVertical: 50 }}>
                         <LocalesText left={0} languageKey={locales.company} />
-                        <NormalText text={state.company} left={0} color="#444" />
+                        <NormalText text={state.company_name} left={0} color="#444" />
                     </SpaceBetween>
                     <SpaceBetween style={{ paddingVertical: 50 }}>
                         <DropdownComponent />

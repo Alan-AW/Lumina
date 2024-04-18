@@ -29,6 +29,8 @@ import { locales } from 'src/helpers/localesText';
 import ToastService from 'src/helpers/toast';
 import Update from 'src/screens/Update';
 import Log from 'src/screens/Log';
+import UpdateApp from 'src/screens/UpdateApp/inde';
+import ShadowCard from 'src/components/Shadow';
 const AppStack = createNativeStackNavigator<AppStackParamList>();
 function AppStackNavigator() {
 
@@ -90,6 +92,12 @@ function AppStackNavigator() {
         component={Log}
         options={{ headerShown: false }}
       />
+       <AppStack.Screen
+        name="UpdateApp"
+        component={UpdateApp}
+        options={{ headerShown: false }}
+      />
+      
       {/* <AppStack.Screen
         name="VideoPreview"
         component={VideoPrew}
@@ -170,6 +178,5 @@ export default function Router() {
 
 const styles = createStyles({
   sidle: {
-    backgroundColor: '#fff',
   },
 });

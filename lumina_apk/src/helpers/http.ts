@@ -48,6 +48,8 @@ export class HttpAxios {
 
     this.instance.interceptors.response.use(
       (res: AxiosResponse) => {
+        console.log('请求结果',res.data);
+        
         return res.data;
       },
       (err: AxiosError) => {

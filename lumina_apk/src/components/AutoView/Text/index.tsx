@@ -10,7 +10,7 @@ type AutoTextProps = {
 
 const AutoText = (props: TextProps & AutoTextProps) => {
   let styles: TextStyle | any = {
-    fontSize: 35,
+    fontSize: 45,
     fontFamily: fontName.medium,
     // lineHeight:40,
     

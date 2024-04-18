@@ -32,12 +32,12 @@ function getCurrentDateTime() {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-function SubTitle(){
-  const [currentTime,setCurrentTime]=useState('')
-  useInterval(()=>{
+function SubTitle() {
+  const [currentTime, setCurrentTime] = useState('')
+  useInterval(() => {
     setCurrentTime(getCurrentDateTime())
-  },1000)
-  return <AutoText>{currentTime}</AutoText>
+  }, 1000)
+  return <AutoText size={30}>{currentTime}</AutoText>
 }
 
 const Home = () => {
@@ -54,8 +54,9 @@ const Home = () => {
     if (!loading && Array.isArray(data)) {
       return data.map(item => {
         const { max_current, min_current, serial_number, id } = item.room_desc;
-        const findItem=item.units_desc_list.find(i=>i.device_id || i.id)
-        let newList = item.units_desc_list.filter((i) => {
+        const units_desc_list = item.units_desc_list || []
+        const findItem = units_desc_list.find(i => i.device_id || i.id)
+        let newList = units_desc_list.filter((i) => {
           return i.url && i.cropItemName && i.serial_number
         })
         return {
@@ -63,8 +64,8 @@ const Home = () => {
           max: max_current,
           low: min_current,
           serial_number: serial_number,
-          addId:findItem?findItem.id:'',
-          device_id:findItem?findItem.device_id:'',
+          addId: findItem ? findItem.id : '',
+          device_id: findItem ? findItem.device_id : '',
           cropNams: newList.map((i) => {
             return i.cropItemName;
           }).join(','),
@@ -114,7 +115,7 @@ const Home = () => {
 
 const styles = createStyles({
   scroll: {
-    paddingLeft: 32,
+    paddingLeft: 0,
     paddingRight: 32,
     marginTop: 15,
     width: '100%',

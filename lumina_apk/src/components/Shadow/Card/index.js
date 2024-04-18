@@ -70,7 +70,7 @@ const styles = createStyles({
       width: 32,
       height: 66,
     },
-    shadowColor: '#999',
+    shadowColor: '#ddd',
   },
 });
 

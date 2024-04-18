@@ -16,13 +16,14 @@ import { adaptationConvert, createStyles, useInlineStyle } from 'src/helpers/sty
 import Badge from 'src/components/Badge';
 import { useAppSelector } from 'src/reduxCenter/hooks';
 import { baseUrl } from 'src/apis/config';
+import ShadowCard from 'src/components/Shadow';
 
 const checkedColor = '#2a2a2a';
 
 const defaultColor = '#fff';
 
-const iconContainerSize=65;
-const iconSize=42;
+const iconContainerSize = 68;
+const iconSize = 47;
 const TabItem = ({ isActive, onPress, children }) => {
   const translateY = new Animated.Value(0);
   const interpolatedColor = translateY.interpolate({
@@ -51,7 +52,7 @@ const VerticalTabMenu = (props) => {
   const [activeTab, setActiveTab] = useState(props.currentRoute);
 
   const navigation = useNavigation();
-  const state=useAppSelector((state)=>state.user.userInfo)
+  const state = useAppSelector((state) => state.user.userInfo)
 
 
   const handleTabPress = index => {
@@ -67,118 +68,116 @@ const VerticalTabMenu = (props) => {
     }
   };
 
-  console.log(state,'用户信息');
 
 
 
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          position: 'relative',
-          zIndex: 6,
-          alignItems: 'center',
-          height: '100%',
+    <View
+      style={{
+        position: 'relative',
+        zIndex: 6,
+        alignItems: 'center',
+        height: '100%',
+      }}>
+      <View>
+        <IconButton style={styles.logoBtn} disabled={true}>
+          <Image
+            style={styles.logo}
+            source={require('../../asset/img/logo.png')}
+          />
+        </IconButton>
+      </View>
+
+      <View style={useInlineStyle({ marginTop: 40 })}>
+        <TabItem isActive={props.currentRoute === 'Home'} onPress={() => {
+          navigation.reset({
+            index: 1,
+            routes: [{ name: 'Home' }],
+          });
         }}>
-        <View>
-          <IconButton style={styles.logoBtn} disabled={true}>
-            <Image
-              style={styles.logo}
-              source={require('../../asset/img/logo.png')}
-            />
-          </IconButton>
-        </View>
+          <IconZidingyicaidan
+            size={adaptationConvert(iconSize - 13)}
+            color={props.currentRoute === 'Home' ? defaultColor : checkedColor}
+          />
+        </TabItem>
+        {/* <TabItem isActive={props.currentRoute === 'VideoPreview'} onPress={() => {
+        navigation.reset({
+          index: 1,
+          routes: [{ name: 'VideoPreview' }],
+        });
+      }}>
+        <IconXiangji
+          size={adaptationConvert(iconSize)}
+          color={props.currentRoute === 'VideoPreview' ? defaultColor : checkedColor}
+        />
+      </TabItem> */}
+        {/* <TabItem isActive={props.currentRoute === 'baogao'} onPress={() => { }}>
+        <IconBaogao
+          size={adaptationConvert(itemSize)}
+          color={props.currentRoute === 'baogao' ? defaultColor : checkedColor}
+        />
+        <Badge count={2} style={{ position: 'absolute', top: 10, right: 10 }} />
+      </TabItem>
+        <Badge count={2} style={{ position: 'absolute', top: -5, left: 30 }} />
+      </TabItem> */}
+        <TabItem isActive={props.currentRoute === 'Log'} onPress={() => {
+          navigation.reset({
+            index: 1,
+            routes: [{ name: 'Log' }],
+          });
+        }}>
+          <IconShizhong
+            size={adaptationConvert(iconSize)}
+            color={props.currentRoute === 'Log' ? defaultColor : checkedColor}
+          />
+        </TabItem>
+        {/* <TabItem isActive={props.currentRoute === 'Setting'} onPress={() => {
+        navigation.reset({
+          index: 1,
+          routes: [{ name: 'Setting' }],
+        });
+      }}>
+        <IconShezhi
+          size={adaptationConvert(iconSize)}
+          color={props.currentRoute === 'Setting' ? defaultColor : checkedColor}
+        />
+      </TabItem> */}
+      </View>
 
-        <View style={useInlineStyle({ marginTop: 40 })}>
-          <TabItem isActive={props.currentRoute === 'Home'} onPress={() => {
-            navigation.reset({
-              index: 1,
-              routes: [{ name: 'Home' }],
-            });
-          }}>
-            <IconZidingyicaidan
-              size={adaptationConvert(iconSize-13)}
-              color={props.currentRoute === 'Home' ? defaultColor : checkedColor}
-            />
-          </TabItem>
-          {/* <TabItem isActive={props.currentRoute === 'VideoPreview'} onPress={() => {
-            navigation.reset({
-              index: 1,
-              routes: [{ name: 'VideoPreview' }],
-            });
-          }}>
-            <IconXiangji
-              size={adaptationConvert(iconSize)}
-              color={props.currentRoute === 'VideoPreview' ? defaultColor : checkedColor}
-            />
-          </TabItem> */}
-          {/* <TabItem isActive={props.currentRoute === 'baogao'} onPress={() => { }}>
-            <IconBaogao
-              size={adaptationConvert(itemSize)}
-              color={props.currentRoute === 'baogao' ? defaultColor : checkedColor}
-            />
-            <Badge count={2} style={{ position: 'absolute', top: 10, right: 10 }} />
-          </TabItem>
-            <Badge count={2} style={{ position: 'absolute', top: -5, left: 30 }} />
-          </TabItem> */}
-          <TabItem isActive={props.currentRoute === 'Log'} onPress={() => { 
-            navigation.reset({
-              index: 1,
-              routes: [{ name: 'Log' }],
-            });
-          }}>
-            <IconShizhong
-              size={adaptationConvert(iconSize)}
-              color={props.currentRoute === 'Log' ? defaultColor : checkedColor}
-            />
-          </TabItem>
-          {/* <TabItem isActive={props.currentRoute === 'Setting'} onPress={() => {
-            navigation.reset({
-              index: 1,
-              routes: [{ name: 'Setting' }],
-            });
-          }}>
-            <IconShezhi
-              size={adaptationConvert(iconSize)}
-              color={props.currentRoute === 'Setting' ? defaultColor : checkedColor}
-            />
-          </TabItem> */}
-        </View>
+      <View style={useInlineStyle({ position: 'absolute', bottom: 60 })}>
+        <IconButton style={styles.logo2} onPress={() => {
+          navigation.reset({
+            index: 1,
+            routes: [{ name: 'User' }],
+          });
+        }}>
+          {
+            state && state.avatar && <Image source={{ uri: `${baseUrl + state.avatar}` }} style={{ width: '100%', height: '100%' }} />
+          }
 
-        <View style={useInlineStyle({ position: 'absolute', bottom: 60 })}>
-          <IconButton style={styles.logo2} onPress={() => {
-            navigation.reset({
-              index: 1,
-              routes: [{ name: 'User' }],
-            });
-          }}>
-            {
-              state && state.avatar && <Image source={{uri:`${baseUrl+state.avatar}`}} style={{ width: '100%', height: '100%' }} />
-            }
-            
-          </IconButton>
-          {/* <IconButton style={styles.helpBtn}>
-            <IconKongxinwenhao size={adaptationConvert(iconSize-10)} />
-          </IconButton> */}
-        </View>
+        </IconButton>
+        {/* <IconButton style={styles.helpBtn}>
+        <IconKongxinwenhao size={adaptationConvert(iconSize-10)} />
+      </IconButton> */}
       </View>
     </View>
+  </View>
+
   );
 };
 
 const styles = createStyles({
   container: {
     backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: 'lightgray',
     flex: 1,
     padding: 20,
-    paddingBottom:0,
+    paddingBottom: 0,
     position: 'relative',
     borderRadius: 20,
     justifyContent: 'flex-start',
-    borderWidth: 1,
-    borderColor: colors.borderColor,
+    borderRightWidth: 1,
+    borderColor: '#f4f4f4',
   },
   tabItem: {
     alignItems: 'center',
@@ -194,8 +193,8 @@ const styles = createStyles({
   logo: {
     width: iconContainerSize,
     height: iconContainerSize,
-    alignItems:'center',
-    justifyContent:'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   logoBtn: {
     width: iconContainerSize,
@@ -213,7 +212,7 @@ const styles = createStyles({
     borderColor: colors.borderColor,
     borderRadius: 10,
     overflow: 'hidden',
-    marginBottom:50,
+    marginBottom: 50,
   },
   text1: {
     fontSize: 26,

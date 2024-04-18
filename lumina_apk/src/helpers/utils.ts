@@ -7,6 +7,11 @@
 //   return array;
 // }
 
+import { Alert } from "react-native";
+import RNFetchBlob from "rn-fetch-blob";
+import { baseUrl } from "src/apis/config";
+import RNFS from 'react-native-fs'
+
 // export function deepClone(target: any, map = new WeakMap()) {
 //   if (typeof target === "object") {
 //     const isArray = Array.isArray(target);
@@ -51,8 +56,8 @@ export function jsonSerialize(json: Record<string, string | number | null>): str
 // 深度合并
 // export function deepMerge(...json: Record<string, any>[]) {}
 
-export function getMonth(){
-  const months:any = {
+export function getMonth() {
+  const months: any = {
     1: 'January',
     2: 'February',
     3: 'March',
@@ -66,11 +71,11 @@ export function getMonth(){
     11: 'November',
     12: 'December',
   };
-  return months[new Date().getMonth()+1]
-  
+  return months[new Date().getMonth() + 1]
+
 }
 
-export function GetPercent(num:any, total:any) {
+export function GetPercent(num: any, total: any) {
   num = parseFloat(num);
   total = parseFloat(total);
   if (isNaN(num) || isNaN(total)) {
@@ -78,3 +83,35 @@ export function GetPercent(num:any, total:any) {
   }
   return total <= 0 ? 0 : (Math.round(num / total * 10000) / 100.00);
 }
+
+export const updateApp = (url: any, version: string) => {
+  let dirs = RNFetchBlob.fs.dirs;
+  const appVersion = `LuminaOS_${version}.apk`
+  const path = `${RNFS.ExternalStorageDirectoryPath}/Download/${appVersion}`;
+  RNFetchBlob.config({
+    fileCache: true,
+    path,
+    addAndroidDownloads: {
+      useDownloadManager: true,
+      path,
+      title: appVersion,
+      description: "An APK that will be installed",
+      mime: "/",
+      mediaScannable: true,
+      notification: true,
+    },
+  })
+    .fetch("GET", `${baseUrl}${url}`)
+    .then((res) => {
+      console.log('下载完成的路径', res.path());
+      
+      RNFetchBlob.android.actionViewIntent(
+        res.path(),
+        "/"
+      );
+    }).catch(err=>{
+      Alert.alert('提示', '下载失败')
+    });
+}
+
+

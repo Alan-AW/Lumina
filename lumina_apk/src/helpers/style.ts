@@ -17,9 +17,10 @@ export function adaptationConvert(size: number): number {
   // 设备尺寸
 
   // 参考设计尺寸
-  const REFERENCE_DESIGN_SIZE = isLandscapeScreen()?575:335;
+  // const REFERENCE_DESIGN_SIZE = isLandscapeScreen()?575:275;
+  const REFERENCE_DESIGN_SIZE = 265;
   // 比例
-  const SIZE_RATIO = REFERENCE_DESIGN_SIZE / 1152;
+  const SIZE_RATIO = REFERENCE_DESIGN_SIZE / VIEWPORT_WIDTH;
  
   return Number((size * SIZE_RATIO).toFixed(1));
 }

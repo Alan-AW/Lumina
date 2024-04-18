@@ -16,6 +16,7 @@ const colors = {
   borderColor:'rgba(5,5,5,0.06)',
   btn_primary:'#1e80ff',
   themeBgColor:'#fffcf7',
+  btnRedColor:'#e47177'
   
 };
 

@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Dimensions, Modal, TouchableOpacity, Keyboard  } from 'react-native';
+import { View, Text, TextInput, Dimensions, Modal, TouchableOpacity, Keyboard } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Container from 'src/components/Container';
 import { IconButton, TextButton } from 'src/components/Button';
@@ -19,13 +19,14 @@ import { useFetch } from 'src/hooks/useFetch';
 import { auth_store } from 'src/store/authStore';
 import SpaceBetween from 'src/components/FlexView/SpaceBetween';
 import Center from 'src/components/FlexView/Center';
+import { checkUpdate } from 'src/utils';
 
 
 
 const FormContent = ({ navigation }) => {
     const [passwordType, setPasswordType] = useState(true);
-    const [account, setAccount] = useState('xxj')
-    const [password, setPassWord] = useState('123456')
+    const [account, setAccount] = useState('')
+    const [password, setPassWord] = useState('')
     const { run } = useFetch(() => requestLogin({ account, password }))
 
     const { hasPermission, requestPermission } = useCameraPermission();
@@ -34,16 +35,28 @@ const FormContent = ({ navigation }) => {
     function login() {
         Keyboard.dismiss();
         run((data) => {
-            ToastService.showToast(locales.LoginSuccess)
-            auth_store({
-                token: data.token,
-            })
-            dispatch(loginInSuccess(data))
-            navigation.reset({
-                index: 1,
-                routes: [{ name: 'Home' }],
-            });
-            dispatch(updateMenuStatus(false))
+            storage.save({
+                key: 'userInfo',
+                data: data
+            }).then(
+                () => {
+                    ToastService.showToast(locales.LoginSuccess)
+                    auth_store({
+                        token: data.token,
+                    })
+                    checkUpdate((data) => {
+                        props.navigation.navigate('Home', { ...data, });
+                    }, () => {
+                        dispatch(loginInSuccess(data))
+                        navigation.reset({
+                            index: 1,
+                            routes: [{ name: 'Home' }],
+                        });
+                        dispatch(updateMenuStatus(false))
+                    })
+
+                })
+
         });
 
 
@@ -71,19 +84,19 @@ const FormContent = ({ navigation }) => {
             shadowColor: 'black',
         }}>
             <View style={styles.content}>
-                <Center style={{marginBottom:30}}>
-                    <Text style={useInlineStyle({ textAlign: 'center', fontSize: 40, fontFamily: fontName.bold, lineHeight: 50, })} >{t('Login')}</Text>
-                </Center>
+                {/* <Center style={{ marginBottom: 30 }}>
+                    <Text style={useInlineStyle({ textAlign: 'center', fontSize: 40, fontFamily: fontName.bold, lineHeight: 40, })} >{t('Login')}</Text>
+                </Center> */}
                 <TextInput style={[styles.item]} value={account} onChangeText={text => setAccount(text)} placeholder={t('account')} />
                 <SpaceBetween>
                     <TextInput style={styles.item} value={password} onChangeText={text => setPassWord(text)}
                         secureTextEntry={passwordType} placeholder={t('password')} />
 
-                    <IconButton onPress={() => setPasswordType(!passwordType)} style={{ position: 'absolute', right: 20,height:'100%',justifyContent:'center' }}>
+                    <IconButton onPress={() => setPasswordType(!passwordType)} style={{ position: 'absolute', right: 20, height: '100%', justifyContent: 'center' }}>
                         {
-                            passwordType?<IconEyeNone size={adaptationConvert(45)} />:<IconEye size={adaptationConvert(45)} />
+                            passwordType ? <IconEyeNone size={adaptationConvert(45)} /> : <IconEye size={adaptationConvert(45)} />
                         }
-                       
+
                     </IconButton>
                 </SpaceBetween>
                 <View style={styles.qrcode}>
@@ -92,7 +105,7 @@ const FormContent = ({ navigation }) => {
                     </IconButton>
 
                 </View>
-                <TextButton style={styles.loginBtn} testStyle={useInlineStyle({ color: '#fff', fontSize: 40 })} onPress={() => login()}>{t('Login')}</TextButton>
+                <TextButton style={styles.loginBtn} testStyle={useInlineStyle({ color: '#fff', fontSize: 45, paddingVertical: 10, fontWeight: '600' })} onPress={() => login()}>{t('Login')}</TextButton>
             </View>
         </ShadowCard>
     )
@@ -138,20 +151,23 @@ const styles = createStyles({
         backgroundColor: '#fff',
         padding: 24,
         borderRadius: 5,
+        paddingBottom: 70,
+        paddingTop:40,
     },
     item: {
         marginTop: 14,
         borderWidth: 1,
         borderRadius: 3,
         padding: 20,
-        height: 150,
+        height: 140,
         paddingBottom: 5,
         width: '90%',
         marginLeft: '5%',
         borderWidth: 0,
         borderBottomWidth: 1,
         borderBottomColor: '#e8e8e8',
-        fontSize: 52,
+        fontSize: 62,
+        fontWeight: '500'
     },
     loginBtn: {
         backgroundColor: '#2a2a2a',
