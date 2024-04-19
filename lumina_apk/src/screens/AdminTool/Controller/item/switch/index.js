@@ -6,6 +6,7 @@ import AutoText from "src/components/AutoView/Text";
 import { submitAdmin } from "src/apis/home";
 import ToastService from "src/helpers/toast";
 import { locales } from "src/helpers/localesText";
+import { FONT_SIZE } from "src/constants/style";
 
 
 const AUTO_TYPE = 'AUTO_TYPE'
@@ -29,32 +30,21 @@ const SwitchItem=(props)=>{
     const [value, setValue] = useState(!!item.value);
 
     function submit(item, callback) {
-        submitAdmin({ id: 1, data: [item] }).then(res => {
-            console.log("请求结果", res);
-            if (res.code == 200) {
-                if (res.errs) {
-                    ToastService.showToast(locales.operationFailed);
-                    return;
-                }
-                if (callback) {
-                    callback()
-
-                }
-            }
-
-        })
+        console.log('请求参数',item);
+        onChange(item,callback)
+       
     }
 
     return (
         <AutoView style={{ height: 150, paddingLeft: 16, paddingRight: 32, marginBottom: 20 }}>
             <AutoView isRow style={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                <AutoText>{item.desc}</AutoText>
+                <AutoText style={{fontSize:FONT_SIZE.desc}}>{item.desc}</AutoText>
                 <AutoView>
-                    <Switch thumbColor={auto ? '#fff' : '#757575'}
+                    <Switch  thumbColor={auto ? '#fff' : '#757575'}
                         trackColor={{ false: '#e1e1e1', true: '#a5ce77' }} onChange={(value) => {
                             submit({
                                 auto: !auto,
-                                cmd: item.cmd,
+                                cmd__cmd: item.cmd__cmd,
                                 value,
                             }, () => {
                                 setAuto(!auto)
@@ -70,7 +60,7 @@ const SwitchItem=(props)=>{
                         trackColor={{ false: '#e1e1e1', true: '#a5ce77' }} onChange={(value) => {
                             submit({
                                 auto,
-                                cmd: item.cmd,
+                                cmd__cmd: item.cmd__cmd,
                                 value:  !value?'1':'0',
                             }, () => {
                                 console.log('设置子组件值',123);

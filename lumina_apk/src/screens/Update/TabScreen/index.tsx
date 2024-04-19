@@ -34,7 +34,8 @@ export default function TabScreen(props: TabScreenProps) {
         <ScrollView style={useInlineStyle({ flex: 1, backgroundColor: colors.themeBgColor, marginRight: 32 })}>
             <Start style={{ padding: 32, paddingVertical: 48 }}>
                 <CusInputNumber defaultMinValue={days_min} defaultMaxValue={days_max} />
-                <CusTime updateKey="duration" label="duration" value={duration} maxHour={24} />
+                <LocalesText languageKey={locales.DaytimeDuration} rightText={duration} />
+               
             </Start>
             <Start style={{ flex: 1, padding: 0, alignItems: 'flex-start' }}>
                 <ShadowCard style={{ width: '30%', paddingHorizontal: 24, paddingVertical: 16 }}>

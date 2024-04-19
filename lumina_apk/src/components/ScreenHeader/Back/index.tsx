@@ -19,7 +19,6 @@ export default function Back(props: { noneText?: boolean, customPress?: Function
     return (
         <AutoView isRow>
             <ShadowCard style={styles.backBtn}>
-
                 <IconButton onPress={() => {
                     if (customPress) {
                         customPress(nav);
@@ -47,7 +46,7 @@ const styles = createStyles({
         backgroundColor: '#fff',
         width: 70,
         height: 70,
-        borderColor: colors.borderColor,
+        borderColor: '#f8f8f8',
         borderWidth: 1,
         borderRadius: 10,
         justifyContent: 'center',

@@ -54,7 +54,7 @@ const Home = () => {
     if (!loading && Array.isArray(data)) {
       return data.map(item => {
         const { max_current, min_current, serial_number, id } = item.room_desc;
-        const units_desc_list = item.units_desc_list || []
+        const units_desc_list = item.units_desc || []
         const findItem = units_desc_list.find(i => i.device_id || i.id)
         let newList = units_desc_list.filter((i) => {
           return i.url && i.cropItemName && i.serial_number

@@ -174,10 +174,10 @@ const styles = createStyles({
     padding: 20,
     paddingBottom: 0,
     position: 'relative',
-    borderRadius: 20,
+    borderRadius: 10,
     justifyContent: 'flex-start',
-    borderRightWidth: 1,
-    borderColor: '#f4f4f4',
+    // borderRightWidth: 1,
+    // borderColor: '#f4f4f4',
   },
   tabItem: {
     alignItems: 'center',

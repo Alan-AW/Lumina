@@ -42,28 +42,29 @@ const AdminToolHeader=()=>{
           }
             right={
               () => {
-                return (
+                return null;
+                // return (
     
-                  <ShadowCard
-                    style={{
-                      backgroundColor: '#fff',
-                      borderWidth: 1,
-                      borderRadius: 10,
-                      borderColor: colors.borderColor,
-                      padding:10,
-                    }}
-                    isRow>
-                    <AutoView isRow>
-                      <IconButton>
-                        <IconShuaxin size={adaptationConvert(30)} color="#000" />
-                      </IconButton>
-                      <AutoText size={25} style={{ color: '#2a2a2a', paddingLeft: 16 }}>
-                        {t('RestoreToDefaults')}
-                      </AutoText>
-                    </AutoView>
+                //   // <ShadowCard
+                //   //   style={{
+                //   //     backgroundColor: '#fff',
+                //   //     borderWidth: 1,
+                //   //     borderRadius: 10,
+                //   //     borderColor: colors.borderColor,
+                //   //     padding:10,
+                //   //   }}
+                //   //   isRow>
+                //   //   <AutoView isRow>
+                //   //     <IconButton>
+                //   //       <IconShuaxin size={adaptationConvert(30)} color="#000" />
+                //   //     </IconButton>
+                //   //     <AutoText size={25} style={{ color: '#2a2a2a', paddingLeft: 16 }}>
+                //   //       {t('RestoreToDefaults')}
+                //   //     </AutoText>
+                //   //   </AutoView>
     
-                  </ShadowCard>
-                )
+                //   // </ShadowCard>
+                // )
               }
             } />
     )

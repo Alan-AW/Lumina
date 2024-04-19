@@ -178,5 +178,6 @@ export default function Router() {
 
 const styles = createStyles({
   sidle: {
+    paddingRight:8,
   },
 });

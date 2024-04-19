@@ -17,6 +17,8 @@ import Center from 'src/components/FlexView/Center';
 import Img from 'src/components/Image';
 import MyCustomProgressBar from '../progressBar';
 import Start from 'src/components/FlexView/Start';
+import AutoText from 'src/components/AutoView/Text';
+import { FONT_SIZE } from 'src/constants/style';
 
 interface CardProps {
     onPress: () => void;
@@ -41,9 +43,14 @@ const HomeCard = (props: CardProps) => {
                 />
                 <LocalesText languageKey={locales.Aisle} size={27} color='#000' top={0} left={0} rightText={` #${serial_number}`} />
             </Start> */}
-            <LocalesText languageKey={locales.Day} rightText={title2} vertical={15} color='#000' size={23}>
-                <LocalesText size={23} color='#000' leftText={`- ${cropItemCycle} `} languageKey={locales['Day Cycle']} />
-            </LocalesText>
+            <AutoText>
+                <LocalesText languageKey={locales.PlantingCycleProgress}  style={{fontSize:FONT_SIZE.desc}} />
+            </AutoText>
+            <AutoText style={{paddingVertical:8}}>
+                <LocalesText languageKey={locales.PlantStart} rightText={` ${title2}/${cropItemCycle} `}  style={{fontSize:FONT_SIZE.desc}}/>
+                <LocalesText languageKey={locales.Day} style={{fontSize:FONT_SIZE.desc}} />
+            </AutoText>
+
             <CustView >
                 <MyCustomProgressBar value={GetPercent(title2, cropItemCycle)} />
             </CustView>

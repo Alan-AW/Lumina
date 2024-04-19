@@ -27,16 +27,12 @@ const AdminTool = (props) => {
         isRow
         style={{
           flex: 1,
-          backgroundColor: '#fff',
-          padding: 32,
+          // backgroundColor: '#fff',
           alignItems: 'flex-start',
-          paddingTop: 32,
-          paddingLeft:48,
-          paddingRight:48,
-          marginTop: 30,
+          paddingHorizontal:32
         }}>
-        <AutoView style={{ width: '30%' }}>
-          <AutoView>
+        {/* <AutoView style={{ width: '30%' }}> */}
+          {/* <AutoView>
             <AutoText size={28} style={{ color: '#000', paddingTop: 5, }}>
               {t('PhaseControl')}
             </AutoText>
@@ -74,8 +70,8 @@ const AdminTool = (props) => {
             <AutoText style={{ paddingTop: 20 }} numberOfLines={2} size={22}>
               {t('PhaseControlTips')}
             </AutoText>
-          </AutoView>
-          <AutoView style={{ marginTop: 48 }}>
+          </AutoView> */}
+          {/* <AutoView style={{ marginTop: 48 }}>
             <AutoText size={26} style={{ color: '#000',paddingTop:5 }}>
               {t('Days')}/{t('NightChamberTemperature')}
             </AutoText>
@@ -128,8 +124,8 @@ const AdminTool = (props) => {
             <AutoText style={{ paddingTop: 20 }} size={22}>
               {t('temperatureTips')}
             </AutoText>
-          </AutoView>
-          <AutoView style={{ marginTop: 48 }}>
+          </AutoView> */}
+          {/* <AutoView style={{ marginTop: 48 }}>
             <AutoText size={26} style={{ color: '#000' }}>
               {t('Flowering')}
             </AutoText>
@@ -182,10 +178,10 @@ const AdminTool = (props) => {
             <AutoText style={{ paddingTop: 20 }} size={22}>
               {t('floweringTips')}
             </AutoText>
-          </AutoView>
-        </AutoView>
+          </AutoView> */}
+        {/* </AutoView> */}
 
-        <AutoView
+        {/* <AutoView
           style={{
             width: '30%',
             marginLeft: 20,
@@ -250,7 +246,7 @@ const AdminTool = (props) => {
           <AutoText size={22} style={{ paddingTop: 20 }}>
             {t('systemTips')}
           </AutoText>
-        </AutoView>
+        </AutoView> */}
         <Controller />
       </AutoView>
     </View>

@@ -31,7 +31,7 @@ const AutoView=(props:ViewProps & AutoViewProps)=>{
         )
     }
     return (
-        <View {...props} style={useInlineStyle({...styles,...newStyle})}>{props.children}</View>
+        <View {...props} style={useInlineStyle({...styles,...newStyle})} onLayout={props.onLayout}>{props.children}</View>
     )
 }
 

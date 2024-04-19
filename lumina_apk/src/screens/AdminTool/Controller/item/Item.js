@@ -14,10 +14,10 @@ const SLIDER_TYPE = 'slide';
 const ControllerItem = (props) => {
     const { item = {}, onChange } = props;
     if (item.component === SWITCH_TYPE) {
-        return <SwitchItem item={item} />
+        return <SwitchItem item={item} onChange={onChange} />
     }
     if (item.component === SLIDER_TYPE) {
-        return <SliderItem item={item} />
+        return <SliderItem item={item} onChange={onChange} />
     }
     return null;
 

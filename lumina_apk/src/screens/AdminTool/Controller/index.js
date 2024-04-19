@@ -11,6 +11,12 @@ import useRequest from "src/hooks/useRequest";
 import ControllerItem from "./item/Item";
 import ShadowCard from "src/components/Shadow";
 import { useTranslation } from "react-i18next";
+import { useRoute } from "@react-navigation/native";
+import { FONT_SIZE } from "src/constants/style";
+import Start from "src/components/FlexView/Start";
+import { useFetch } from "src/hooks/useFetch";
+import ToastService from "src/helpers/toast";
+import { locales } from "src/helpers/localesText";
 
 // import { useTranslation } from 'react-i18next';
 
@@ -33,22 +39,64 @@ function getMaxHeight(height1, height2) {
 
 const Controller = () => {
     // const { t,i18n } = useTranslation();
-    
-    const { loading, data, error } = useRequest(() => getSetting({ id: 1, language: i18n.language }));
-    const { t,i18n } = useTranslation();
+    const route = useRoute();
+    // const { loading, data, error } = useRequest(() => getSetting({ id: route.params.id, language: i18n.language }));
+    const {run,loading,data}=useFetch(() => getSetting({ id: route.params.id, language: i18n.language }));
+    const { t, i18n } = useTranslation();
+    const paramsList=useRef([])
 
     const [container, setContainer] = useState({
 
     })
 
+    useEffect(()=>{
+        run()
+    },[])
+
+    function updateData(item,callback){
+        const findIndex=paramsList.current.findIndex(i=>i.cmd===item.cmd__cmd)
+        console.log(item,'item',);
+        paramsList.current[findIndex]={
+            cmd:item.cmd__cmd,
+            value:item.value,
+            auto:item.auto
+        };
+        //在这里发起保存，执行回调
+        submitAdmin({ id: route.params.id, data: paramsList.current }).then(res => {
+            console.log("请求结果", res,paramsList);
+            if (res.code == 200) {
+                if (res.errs) {
+                    ToastService.showToast(locales.operationFailed);
+                    return;
+                }
+                if (callback) {
+                    callback()
+                }
+            }
+
+        })
+
+    }
+
     const dataMap = useMemo(() => {
         const _value = [];
+        const info=[];
         if (data) {
+            console.log(JSON.stringify(data),'这是请求数据');
             for (let key in data) {
                 _value.push({
                     title: key,
                     clildren: data[key]
                 })
+                data[key].forEach(item => {
+                    info.push({
+                        cmd:item.cmd__cmd,
+                        value:item.value,
+                        auto:item.auto
+                    })
+                });
+                paramsList.current=info
+                
             }
             return _value;
         }
@@ -62,43 +110,42 @@ const Controller = () => {
         <ScrollView style={{ flex: 1 }}>
             <Loading loading={loading}>
                 <AutoView isRow style={{ alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 0, borderRadius: 5 }}>
-                    <AutoView isRow style={{ marginRight: 30 }}>
+                    <Start>
                         <AutoView style={{ width: 50, height: 30, backgroundColor: '#a5ce77' }} />
-                        <AutoText style={{ paddingLeft: 10 }}>{t('automatic')}</AutoText>
-                    </AutoView>
-                    <AutoView isRow>
+                        <AutoText style={{ paddingHorizontal:32,fontSize: 30, fontWeight: '700',paddingBottom:5 }}>{t('automatic')}</AutoText>
+                    </Start>
+                    <Start>
                         <AutoView style={{ width: 50, height: 30, backgroundColor: '#e1e1e1', borderRadius: 5 }} />
-                        <AutoText style={{ paddingLeft: 10 }}>{t('Manual')}</AutoText>
-                    </AutoView>
-
+                        <AutoText style={{  paddingHorizontal:32,fontSize: 30, fontWeight: '700',paddingBottom:5 }}>{t('Manual')}</AutoText>
+                    </Start>
                 </AutoView>
                 <AutoView style={{ alignItems: 'flex-start', justifyContent: 'space-between', width: '100%', flexWrap: 'wrap' }} isRow>
                     {
                         dataMap.map((item, index) => {
                             return (
-                                <AutoView key={index} 
-                                // onLayout={(event) => {
-                                //     const { height } = event.nativeEvent.layout;
-                                //     console.log('容器高度' + index, height);
-                                //     if (!container[index]) {
-                                //         setContainer({
-                                //             ...container,
-                                //             [index]: height,
-                                //         })
-                                //     }
+                                <AutoView key={index}
+                                    // onLayout={(event) => {
+                                    //     const { height } = event.nativeEvent.layout;
+                                    //     console.log('容器高度' + index, height);
+                                    //     if (!container[index]) {
+                                    //         setContainer({
+                                    //             ...container,
+                                    //             [index]: height,
+                                    //         })
+                                    //     }
 
 
-                                // }} 
-                                style={{ width: '48%', margin: 10, padding: 20 }}>
-                                    <ShadowCard style={{ height: getMaxHeight(container[index], container[index + 1]),padding:16,minHeight:500 }}>
+                                    // }} 
+                                    style={{ width: '48%', margin: 10, padding: 32 }}>
+                                    <ShadowCard style={{ height: getMaxHeight(container[index], container[index + 1]), padding: 32, minHeight: 500 }}>
                                         <AutoView style={{ paddingLeft: 0, paddingRight: 32, marginBottom: 20 }}>
-                                            <AutoText style={{ fontWeight: '700', }}>{item.title}</AutoText>
+                                            <AutoText style={{ fontWeight: '700', fontSize: FONT_SIZE.title }}>{item.title}</AutoText>
                                         </AutoView>
                                         <AutoView>
                                             {
                                                 item.clildren.map((_value, _index) => {
                                                     return (
-                                                        <ControllerItem key={_index} item={_value} />
+                                                        <ControllerItem key={_index} item={_value} onChange={updateData} />
                                                     )
                                                 })
                                             }

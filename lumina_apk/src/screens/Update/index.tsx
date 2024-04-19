@@ -19,6 +19,9 @@ import ToastService from "src/helpers/toast";
 import { deepData } from "src/utils";
 import LocalesText from "src/components/Text";
 import { locales } from "src/helpers/localesText";
+import { FONT_SIZE } from "src/constants/style";
+import CusTime from "./TabScreen/CusTime";
+import AutoView from "src/components/AutoView/View";
 
 
 
@@ -27,12 +30,14 @@ import { locales } from "src/helpers/localesText";
 export default function Update() {
     const routes: any = useRoute();
     const [info, setInfo] = useState<any>({});
+    const [tod, setTod] = useState<any>('00:00:00');
     const [loading, setLoading] = useState(true);
     const device_id = routes.params.device_id;
     useEffect(() => {
         getUpdates(device_id).then(res => {
             if (res.code === 200 && res.status) {
                 setInfo(res.data.data)
+                setTod(res.data.data.tod)
                 const resData = res.data.data.instructions;
                 //复制data属性用于提交  数组用于修改
                 const copyData = JSON.parse(JSON.stringify(res.data));
@@ -64,6 +69,7 @@ export default function Update() {
                 ...postParams,
                 data: {
                     ...postParams.data,
+                    tod,
                     instructions: update_instructions
 
                 }
@@ -77,6 +83,12 @@ export default function Update() {
         submitUpdateJsonInfo(params).then(res => {
             console.log('提交请求结果', res);
             if (typeof res.errs === 'object') {
+                const errMessage = res.errs.non_field_errors;
+                if (errMessage) {
+                    ToastAndroid.show(errMessage.join(""), 3000)
+                    return;
+
+                }
                 ToastAndroid.show('数据更新失败', 3000)
                 // ToastService.showToast('数据更新失败')
             } else {
@@ -99,26 +111,33 @@ export default function Update() {
 
     return (
         <View style={useInlineStyle({ flex: 1, backgroundColor: colors.themeBgColor, padding: 32, position: 'relative' })}>
-            <SpaceBetween>
-                <Back noneText={true} />
-                <TouchableOpacity style={useInlineStyle({ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: colors.btn_primary })} onPress={submit}>
-                    <LocalesText languageKey={locales.Submit} style={{ color: '#fff' }} />
-                </TouchableOpacity>
-            </SpaceBetween>
-            <Center style={{ flex: 1, marginRight: 32, padding: 16 }}>
-                <Loading loading={loading}>
-                    <Start style={{ paddingVertical: 32 }}>
-                        <LocalesText languageKey={locales.device_id} rightText={`：${info.device_id}`} />
-                        {/* <LocalesText languageKey={locales.type} rightText={`：${info.type}`} /> */}
-                        <LocalesText languageKey={locales.SystemVersion} rightText={`：${info.version}`} left={32} />
-                        <LocalesText languageKey={locales.Time} rightText={`：${info.time}`} left={48} />
-                    </Start>
-                    <View style={useInlineStyle({ flex: 1, paddingLeft: 0, marginTop: 32 })}>
-                        <UpdateTabs />
+            <View style={{  flex: 1 }}>
+                <SpaceBetween>
+                    <Back noneText={true} />
+                    <TouchableOpacity style={useInlineStyle({ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: colors.btn_primary })} onPress={submit}>
+                        <LocalesText languageKey={locales.Submit} style={{ color: '#fff' }} />
+                    </TouchableOpacity>
+                </SpaceBetween>
+                <Center style={{ flex: 1, marginRight: 32, padding: 16 }}>
+                    <Loading loading={loading}>
+                        <Start style={{ paddingVertical: 32 }}>
+                            <LocalesText languageKey={locales.device_id} rightText={`：${info.device_id}`} style={{ fontSize: FONT_SIZE.subTitle }} />
+                            {/* <LocalesText languageKey={locales.type} rightText={`：${info.type}`} /> */}
+                            <LocalesText languageKey={locales.SystemVersion} rightText={`：${info.version}`} left={32} style={{ fontSize: FONT_SIZE.subTitle }} />
+                            <LocalesText languageKey={locales.PlantingCycleStartTime} rightText={`：${info.time}`} left={48} style={{ fontSize: FONT_SIZE.subTitle }} />
+                            <AutoView style={{ marginLeft: 208 }}>
+                                <CusTime updateKey="duration" label={<LocalesText languageKey={locales.DaytimeStartTime} />} value={info.tod} maxHour={24} isSpan={false} onChangeSelect={(v) => setTod(v)} />
 
-                    </View>
-                </Loading>
-            </Center>
+                            </AutoView>
+                        </Start>
+                        <View style={useInlineStyle({ flex: 1, paddingLeft: 0, marginTop: 32 })}>
+                            <UpdateTabs />
+
+                        </View>
+                    </Loading>
+                </Center>
+            </View>
+
 
         </View>
 

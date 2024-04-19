@@ -103,7 +103,9 @@ const RenderItem = (props: RenderItemProps) => {
                     roomName: item.serial_number,
                     devicesName: cardItem.serial_number,
                     cropNams: item.cropNams,
-                    device_id: device_id
+                    device_id: device_id,
+                    //主键id
+                    id:item.addId,
                   })
                 }} />
 
@@ -154,9 +156,9 @@ const RenderItem = (props: RenderItemProps) => {
 
 const styles = createStyles({
   scrollItem: {
-    padding: 24,
+    padding: 32,
     backgroundColor: '#fff',
-    borderRadius: 20,
+    borderRadius: 10,
     // borderColor: colors.borderColor,
     // borderWidth: 1,
     marginBottom: 15,

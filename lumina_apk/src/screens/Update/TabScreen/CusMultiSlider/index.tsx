@@ -98,7 +98,7 @@ export default function CusMultiSlider(props: CusMultiSliderProps) {
                 </SpaceBetween>
                 <Center style={{ width: '100%', marginTop: 0 }}>
                     <MultiSlider values={sliderValue} onValuesChangeFinish={change} selectedStyle={{ backgroundColor: colors.checked }}
-                        markerStyle={{ backgroundColor: colors.checked }} min={currentMin} max={currentMax} step={step} />
+                        markerStyle={{ backgroundColor: colors.checked }} min={currentMin} max={currentMax} step={step} trackStyle={{backgroundColor:'#eee'}} />
                 </Center>
             </SpaceBetween>
             {children && React.cloneElement(children, { min: sliderValue[0], max: sliderValue[1], newValue: sliderValue, step:step, })}

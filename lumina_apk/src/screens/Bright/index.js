@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { IconButton } from 'src/components/Button';
 import RadioIcon from 'src/components/RadioIcon';
@@ -27,6 +27,15 @@ import { getLiveList } from 'src/apis/home';
 import { useTranslation } from 'react-i18next';
 import { getMonth } from 'src/helpers/utils';
 import ScreenHeader from 'src/components/ScreenHeader';
+import Start from 'src/components/FlexView/Start';
+import Back from 'src/components/ScreenHeader/Back';
+import { FONT_SIZE } from 'src/constants/style';
+import SpaceBetween from 'src/components/FlexView/SpaceBetween';
+import EchartsCotainer from 'src/components/EchartsCotainer';
+import Center from 'src/components/FlexView/Center';
+import LocalesText from 'src/components/Text';
+import { getLineOptaion, lineOption } from 'src/components/EchartsCotainer/option';
+import { WIDTH } from 'src/constants/global';
 
 function GetPercent(num, total) {
   num = parseFloat(num);
@@ -37,6 +46,8 @@ function GetPercent(num, total) {
   return total <= 0 ? 0 : Math.round((num / total) * 10000) / 100.0;
 }
 
+
+
 const Bright = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -46,13 +57,24 @@ const Bright = () => {
   const [liveData, setLiveData] = useState([]);
   const [echartsData, setEchartsData] = useState(false);
   const [tempData, setTempData] = useState([]);
-  const {device_id,roomName,devicesName,cropNams}=routes.params;
- 
+  const [echartsObj, setEchartsObj] = useState(null)
+  const { device_id, roomName, devicesName, cropNams } = routes.params;
+
 
 
   useEffect(() => {
     console.log(routes, 'routes');
     if (routes && routes.params.id) {
+      getLiveList(routes.params.id).then(res => {
+        const { vpd, temperature_humidity, lighting, fertigation } = res.data;
+        setEchartsObj({
+          vpd,
+          temperature_humidity,
+          lighting,
+          fertigation,
+        })
+        console.log(res.data);
+      })
       // getLiveList(routes.params.id).then(res => {
       //   setLiveData(res.data.temperature.flat());
       //   const data1 = [];
@@ -81,47 +103,81 @@ const Bright = () => {
       // });
     }
   }, [routes.params]);
+
+  function goSet() {
+    navigation.navigate('AdminTools', {
+      id: routes.params.id,
+    });
+  }
+
+  const EchatsOption = useMemo(() => {
+    const obj = {}
+    if (echartsObj) {
+      for (let key in echartsObj) {
+        obj[key] = getLineOptaion(echartsObj[key])
+      }
+    }
+    return obj;
+
+  }, [echartsObj])
+
+
+
   return (
     <View style={styles.container}>
-      <ScreenHeader title={`${roomName} | ${devicesName}`} otherNode={() => {
-        return (
-          <>
-            {/* <Text style={styles.headerText2}>
-              <Text
-                style={
-                  styles.headerText3
-                }>{`[${t("Room")} #${childData?.serial_number}]`}</Text>
-            </Text> */}
-           
-          </>
-        )
-      }
-      }
-        right={
-          () => {
-            return (
+      <SpaceBetween>
+        <Start>
+          <Back noneText={true} />
+          <AutoText style={{ fontWeight: '700', fontSize: FONT_SIZE.title, color: '#4a4a4a' }}>{`${roomName} | ${devicesName}`}</AutoText>
+        </Start>
+        <IconButton onPress={goSet}>
+          <IconShezhi />
+        </IconButton>
 
-              <AutoView style={{ width: 250 }}>
-                {/* <AutoView
-                  isRow
-                  style={{ paddingBottom: 10, justifyContent: 'flex-end' }}>
-                  <AutoText size={20} style={{ color: '#000', fontWeight: '600' }} type="bold">
-                    {t("Day")} {cardData.currentDay}
-                  </AutoText>
-                  <AutoText size={20} style={{ color: '#2a2a2a' }}>
-                    - {cardData.max} {t('Day Cycle')}
-                  </AutoText>
-                </AutoView>
+      </SpaceBetween>
 
-                <ProgressBarIcon
-                  value={GetPercent(cardData.currentDay, cardData.max)}
-                /> */}
-              </AutoView>
-            )
-          }
-        } />
+      <SpaceBetween>
+        <EchartsCotainer options={EchatsOption.vpd} echartWidth={adaptationConvert(WIDTH / 0.9)} echartHeight={adaptationConvert(600)}>
+          <Start style={{ paddingVertical: 32, paddingHorizontal: 32 }}>
+            <Center style={{ padding: 26, backgroundColor: colors.cardIconBgColor }}>
+              <IconZhexiantu size={adaptationConvert(FONT_SIZE.icon)} />
+            </Center>
+            <LocalesText left={8} languageKey={'测试'} size={FONT_SIZE.subTitle} />
+          </Start>
+        </EchartsCotainer>
+        <EchartsCotainer options={EchatsOption.temperature_humidity} echartWidth={adaptationConvert(WIDTH / 0.8)} echartHeight={adaptationConvert(600)}>
+          <Start style={{ paddingVertical: 32, paddingHorizontal: 32 }}>
+            <Center style={{ padding: 26, backgroundColor: colors.cardIconBgColor }}>
+              <IconZhexiantu size={adaptationConvert(FONT_SIZE.icon)} />
+            </Center>
+            <LocalesText left={8} languageKey={'测试'} size={FONT_SIZE.subTitle} />
+          </Start>
+        </EchartsCotainer>
+      </SpaceBetween>
+      <SpaceBetween>
+        <EchartsCotainer options={EchatsOption.lighting} echartWidth={adaptationConvert(WIDTH / 0.9)} echartHeight={adaptationConvert(600)}>
+          <Start style={{ paddingVertical: 32, paddingHorizontal: 32 }}>
+            <Center style={{ padding: 26, backgroundColor: colors.cardIconBgColor }}>
+              <IconZhexiantu size={adaptationConvert(FONT_SIZE.icon)} />
+            </Center>
+            <LocalesText left={8} languageKey={'测试'} size={FONT_SIZE.subTitle} />
+          </Start>
+        </EchartsCotainer>
+        <EchartsCotainer options={EchatsOption.fertigation} echartWidth={adaptationConvert(WIDTH / 0.8)} echartHeight={adaptationConvert(600)}>
+          <Start style={{ paddingVertical: 32, paddingHorizontal: 32 }}>
+            <Center style={{ padding: 26, backgroundColor: colors.cardIconBgColor }}>
+              <IconZhexiantu size={adaptationConvert(FONT_SIZE.icon)} />
+            </Center>
+            <LocalesText left={8} languageKey={'测试'} size={FONT_SIZE.subTitle} />
+          </Start>
+        </EchartsCotainer>
+      </SpaceBetween>
 
-      <AutoView isRow style={{ marginTop: 32 }}>
+
+
+
+
+      {/* <AutoView isRow style={{ marginTop: 32 }}>
         <ShadowCard
           style={useInlineStyle({
             width: 737,
@@ -261,7 +317,7 @@ const Bright = () => {
             </AutoView>
           </View>
         </ShadowCard>
-      </AutoView>
+      </AutoView> */}
       <AutoView isRow style={{ marginTop: 38, position: 'relative' }}>
         {tempData.map((item, index) => {
           return (
@@ -269,11 +325,11 @@ const Bright = () => {
           );
         })}
       </AutoView>
-      <AutoView isRow style={{ marginTop: 22, alignItems: 'center', position: 'absolute', left: 32, bottom: 32 }}>
+      <AutoView isRow style={{ marginTop: 22, alignItems: 'center', position: 'absolute', left: 64, bottom: 32 }}>
 
         <ShadowCard
           isBtn
-          onPress={() => navigation.navigate('Update', { device_id:device_id })}
+          onPress={() => navigation.navigate('Update', { device_id: device_id })}
           style={useInlineStyle({
             borderRadius: 10,
             width: 350,
@@ -281,47 +337,49 @@ const Bright = () => {
             justifyContent: 'flex-start',
             alignItems: 'center',
             flexDirection: 'row',
-            paddingLeft: 15,
+            paddingLeft: 48,
           })}>
           <AutoView isRow >
             <IconButton style={{ paddingTop: 0 }}>
               <IconShezhi size={adaptationConvert(38)} />
             </IconButton>
-            <AutoText style={{ paddingLeft: 15, color: '#000', alignItems: 'center' }} >
+            <AutoText style={{ paddingLeft: 15, color: '#000', alignItems: 'center', fontSize: FONT_SIZE.subTitle }}>
               {t("AdminTools")}
             </AutoText>
           </AutoView>
         </ShadowCard>
-        <ShadowCard
-          style={useInlineStyle({
-            borderRadius: 10,
-            marginLeft: 37,
-            flex: 1,
-            height: 88,
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            flexDirection: 'row',
-            paddingLeft: 32,
-          })}>
-          <AutoView isRow>
-            <AutoView
-              style={{
-                backgroundColor: '#cbfaff',
-                paddingVertical: 7,
-                paddingHorizontal: 14,
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'row',
-                borderRadius: 10,
-              }}>
-              <AutoText size={24}>{t('Cultivars')}</AutoText>
+        <View style={{ flex: 1 }}>
+          <ShadowCard
+            style={useInlineStyle({
+              borderRadius: 10,
+              marginLeft: 37,
+              flex: 1,
+              height: 88,
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              flexDirection: 'row',
+              paddingLeft: 32,
+            })}>
+            <AutoView isRow style={{ width: '100%', height: 88 }}>
+              <AutoView
+                style={{
+                  backgroundColor: '#cbfaff',
+                  paddingVertical: 7,
+                  paddingHorizontal: 14,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  borderRadius: 10,
+                }}>
+                <AutoText style={{ fontSize: FONT_SIZE.title, fontWeight: '600' }}>{t('Cultivars')}</AutoText>
+              </AutoView>
+              <AutoText style={{ paddingLeft: 15, fontSize: FONT_SIZE.subTitle, fontWeight: '600' }}>
+                {cropNams}
+              </AutoText>
             </AutoView>
-            <AutoText style={{ paddingLeft: 15, color: '#000' }}>
-              {cropNams}
-              {/* {t('ButterheadLettuce')}, {t("Leaf")}/{t("BataviaLettuce")} */}
-            </AutoText>
-          </AutoView>
-        </ShadowCard>
+          </ShadowCard>
+        </View>
+
       </AutoView>
     </View>
   );

@@ -9,22 +9,24 @@ import colors from "src/constants/colors";
 import SpaceBetween from "src/components/FlexView/SpaceBetween";
 import LocalesText from "src/components/Text";
 import { locales } from "src/helpers/localesText";
+import { FONT_SIZE } from "src/constants/style";
 
 
 interface CusTimeProps {
 
-    label: string;
+    label: any;
     value: string;
     maxHour: number;
     updateKey: string;
     isSpan?: boolean;
-    disabled?: boolean
+    disabled?: boolean;
+    onChangeSelect?:(value:string)=>void;
 
 }
 
 
 export default function CusTime(props: CusTimeProps) {
-    const { label, value, maxHour, updateKey, isSpan = false, disabled = false } = props;
+    const { label, value, maxHour, updateKey, isSpan = false, disabled = false,onChangeSelect } = props;
     const [time, setTime] = useState(value);
     const openRef = useRef<any>(null);
     console.log('接收到的value', value);
@@ -37,8 +39,14 @@ export default function CusTime(props: CusTimeProps) {
 
 
     function onChange(changeValue: string) {
+        if(onChangeSelect){
+            onChangeSelect(changeValue)
+        }else{
+            updateArr({ [updateKey]: changeValue })
+        }
         setTime(changeValue)
-        updateArr({ [updateKey]: changeValue })
+
+       
     }
 
     if (isSpan) {
@@ -47,7 +55,7 @@ export default function CusTime(props: CusTimeProps) {
 
                 <SpaceBetween disabled={disabled} style={{ paddingVertical: 32, width: '100%' }} onPress={() => openRef.current.open()}>
                     <LocalesText languageKey={locales[label] || label} />
-                    <AutoText style={{ color: colors.checked }}>{time}</AutoText>
+                    <AutoText style={{ color: colors.checked,fontSize:FONT_SIZE.subTitle }}>{time}</AutoText>
 
                 </SpaceBetween>
                 <PickTime ref={openRef} maxHour={maxHour} data={time} onChange={onChange} />
@@ -60,7 +68,7 @@ export default function CusTime(props: CusTimeProps) {
         <>
 
             <Start onPress={() => openRef.current.open()}>
-                <AutoText>{label}：<AutoText style={{ color: colors.checked }}>{time}</AutoText></AutoText>
+                <AutoText style={{fontSize:FONT_SIZE.subTitle}}>{label}：<AutoText style={{ color: colors.checked,fontSize:FONT_SIZE.subTitle }}>{time}</AutoText></AutoText>
 
             </Start>
             <PickTime ref={openRef} maxHour={maxHour} data={time} onChange={onChange} />

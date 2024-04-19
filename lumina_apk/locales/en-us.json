@@ -132,6 +132,11 @@
     "OperationCommand": "Operation Command",
     "ModifiedContent": "Modified Content",
     "CreationTime": "Creation Time",
-    "OperationLog":"Operation Log"
+    "OperationLog":"Operation Log",
+    "PlantingCycleStartTime":"Planting cycle start time",
+    "DaytimeDuration":"Duration",
+    "DaytimeStartTime":"Daytime start time",
+    "PlantingCycleProgress": "Planting cycle progress",
+    "PlantStart":"on"
 
 }
