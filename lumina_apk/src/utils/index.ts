@@ -24,18 +24,19 @@ export function checkUpdate(callback:Function,noUpdate:Function) {
     const { version, apk } = res.data;
     if (isUpgradeRequired(version)) {
       ToastAndroid.show('版本需要更新...', ToastAndroid.SHORT);
-      Alert.alert('提示', '版本需要更新',
-        [
-          { text: '取消',onPress:()=>{
-            noUpdate()
-          } },
-          {
-            text: '更新', onPress: () => {
-              callback({update_version:version,url:apk})
-            }
-          }
-        ]
-      )
+      callback({update_version:version,url:apk})
+      // Alert.alert('提示', '版本需要更新',
+      //   [
+      //     { text: '取消',onPress:()=>{
+      //       noUpdate()
+      //     } },
+      //     {
+      //       text: '更新', onPress: () => {
+      //         callback({update_version:version,url:apk})
+      //       }
+      //     }
+      //   ]
+      // )
       return;
     }
     noUpdate();
