@@ -8,6 +8,7 @@ import SpaceBetween from "src/components/FlexView/SpaceBetween";
 import Start from "src/components/FlexView/Start";
 import Loading from "src/components/Loading";
 import ScreenHeader from "src/components/ScreenHeader";
+import ShadowCard from "src/components/Shadow";
 import LocalesText from "src/components/Text";
 import { WIDTH } from "src/constants/global";
 import { locales } from "src/helpers/localesText";
@@ -15,7 +16,7 @@ import { useFetch } from "src/hooks/useFetch";
 import useRequest from "src/hooks/useRequest";
 import { deepData } from "src/utils";
 
-const ceilWidth = 470;
+const ceilWidth = 550;
 
 const columns = [
     {
@@ -140,18 +141,18 @@ export default function Log() {
             {/* <AutoView style={{ paddingLeft: 32 }}>
                 <ScreenHeader title={<LocalesText size={42} languageKey={locales.OperationLog} />} subtitle="" hiddenBack />
             </AutoView> */}
-            <Start style={{ flexWrap: 'wrap', paddingLeft: 32 }}>
+            <Start style={{ flexWrap: 'wrap', paddingLeft: 0,borderBottomWidth:1,borderColor:'#f4f4f4' }}>
                 {
                     columns.map((item, index) => {
                         return (
-                            <Center key={index} style={{ width: item.width, backgroundColor: '#f8f8f8', paddingVertical: 32 }}>
+                            <Center key={index} style={{ width: item.width, backgroundColor: '#f9f9f9', paddingVertical: 32 }}>
                                 <LocalesText languageKey={item.languageKey} color='#444' />
                             </Center>
                         )
                     })
                 }
             </Start>
-            <FlatList data={tableData} style={{ flex: 1 }} keyExtractor={(i, index) => index + ''} onEndReached={() => {
+            <FlatList data={tableData} style={{ width:columns.length*ceilWidth,backgroundColor:'#fff'}} keyExtractor={(i, index) => index + ''} onEndReached={() => {
                 if (page < maxPage) {
                     setPage(page + 1)
                 }

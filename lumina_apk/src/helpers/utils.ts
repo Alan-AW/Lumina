@@ -7,9 +7,10 @@
 //   return array;
 // }
 
-import { Alert } from "react-native";
+import { Alert, ToastAndroid } from "react-native";
 import RNFetchBlob from "rn-fetch-blob";
 import { baseUrl } from "src/apis/config";
+import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions'
 import RNFS from 'react-native-fs'
 
 // export function deepClone(target: any, map = new WeakMap()) {
@@ -87,31 +88,67 @@ export function GetPercent(num: any, total: any) {
 export const updateApp = (url: any, version: string) => {
   let dirs = RNFetchBlob.fs.dirs;
   const appVersion = `LuminaOS_${version}.apk`
-  const path = `${RNFS.ExternalStorageDirectoryPath}/Download/${appVersion}`;
+  const path = `${RNFS.ExternalStorageDirectoryPath}/Download/DLManager`;
+
+  RNFS.readDir(path).then(res => {
+    if (res && Array.isArray(res)) {
+      const fileList = res.filter(i => i.isFile() && i.name === appVersion)
+      console.log(res,fileList, '获取的路径');
+
+      if (fileList.length > 0) {
+        const installPath = fileList[0].path;
+        console.log('已找到下载的版本，进行安装' + fileList[0].path);
+        console.log('直接安装');
+        RNFetchBlob.android.actionViewIntent(
+          installPath,
+          'application/vnd.android.package-archive'
+        );
+
+
+      } else {
+        console.log('开始下载');
+        
+        downLoadApp(appVersion, url)
+      }
+
+    }
+  }).catch(err =>{
+    ToastAndroid.show('检查更新失败',ToastAndroid.SHORT)
+
+  })
+}
+
+
+export function downLoadApp(appVersion: string, url: string) {
+  const path = `${RNFS.ExternalStorageDirectoryPath}/Download/DLManager/${appVersion}`;
+  ToastAndroid.show('正在下载...', ToastAndroid.SHORT)
   RNFetchBlob.config({
     fileCache: true,
     path,
     addAndroidDownloads: {
       useDownloadManager: true,
-      path,
       title: appVersion,
       description: "An APK that will be installed",
-      mime: "/",
+      mime: 'application/vnd.android.package-archive',
       mediaScannable: true,
+      path,
       notification: true,
     },
   })
     .fetch("GET", `${baseUrl}${url}`)
     .then((res) => {
-      console.log('下载完成的路径', res.path());
-      
+      console.log('下载完成的路径1', res, res.path());
+      ///storage/emulated/0/Download/LuminaOS_1.0.1.apk
       RNFetchBlob.android.actionViewIntent(
         res.path(),
-        "/"
+        'application/vnd.android.package-archive'
       );
-    }).catch(err=>{
+
+
+    }).catch(err => {
+      console.log(err,'下载失败');
+      
       Alert.alert('提示', '下载失败')
     });
 }
-
 

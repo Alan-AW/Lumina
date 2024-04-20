@@ -8,7 +8,6 @@ import { locales } from "./localesText";
 import { auth_store } from "src/store/authStore";
 //获取当前语言环境
 
-const language=`?language=${auth_store.language}`
 
 
 
@@ -62,12 +61,16 @@ export class HttpAxios {
   }
 
   public get<R, P = any>(url: string, config?: AxiosRequestConfig<P>): Promise<R> {
+const language=`?language=${auth_store.language}`
+
 console.log('请求地址',baseUrl+url+language);
     
     return this.instance.get(baseUrl+url+language, config);
   }
 
   public post<R, D = any>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R> {
+const language=`?language=${auth_store.language}`
+
 console.log('请求地址',baseUrl+url+language);
 
     return this.instance.post(baseUrl+url+language, data, config);

@@ -143,6 +143,10 @@
     "DaytimeDuration":"白天时长",
     "DaytimeStartTime":"白天开始时间",
     "PlantingCycleProgress": "种植周期进度",
-    "PlantStart":"第"
+    "PlantStart":"第",
+    "NewVersion":"新版本",
+    "CurrentVersion":"当前版本",
+    "Install":"安装",
+    "downLoadApp":"下载App"
 
 }

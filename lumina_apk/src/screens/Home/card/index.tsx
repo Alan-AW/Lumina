@@ -55,7 +55,7 @@ const HomeCard = (props: CardProps) => {
                 <MyCustomProgressBar value={GetPercent(title2, cropItemCycle)} />
             </CustView>
 
-            <NormalText size={28} vertical={10} color='#000'>
+            <NormalText size={28} vertical={10}>
                 {name}
             </NormalText>
             <CustView bgColor='#f6f6f6'>

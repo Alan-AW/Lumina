@@ -23,7 +23,9 @@ export function checkUpdate(callback:Function,noUpdate:Function) {
     console.log(res, '获取的更新数据');
     const { version, apk } = res.data;
     if (isUpgradeRequired(version)) {
-      ToastAndroid.show('版本需要更新...', ToastAndroid.SHORT);
+      // ToastAndroid.show('版本需要更新...', ToastAndroid.SHORT);
+      console.log(res.data,'数据');
+      
       callback({update_version:version,url:apk})
       // Alert.alert('提示', '版本需要更新',
       //   [
@@ -42,7 +44,7 @@ export function checkUpdate(callback:Function,noUpdate:Function) {
     noUpdate();
   }).catch(err => {
     console.log(err, '错误信息');
-    noUpdate();
+    // noUpdate();
     ToastAndroid.show('检查版本更新失败', ToastAndroid.SHORT);
   })
 }

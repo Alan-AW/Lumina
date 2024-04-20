@@ -220,7 +220,7 @@ export default function Details(props: DetailsProps) {
                                                     <View>
                                                         <AutoText style={{ fontSize: 40, color: '#333', fontWeight: '600' }}>{item.subject}</AutoText>
                                                     </View>
-                                                    <AutoView style={{ flexWrap: 'wrap' }}>
+                                                    <AutoView style={{ flexWrap: 'wrap',marginTop:12 }}>
                                                         {
                                                             item.choices_self ?
                                                                 <CustomRadioGroup

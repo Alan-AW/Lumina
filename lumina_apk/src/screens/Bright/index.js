@@ -36,6 +36,7 @@ import Center from 'src/components/FlexView/Center';
 import LocalesText from 'src/components/Text';
 import { getLineOptaion, lineOption } from 'src/components/EchartsCotainer/option';
 import { WIDTH } from 'src/constants/global';
+import { locales } from 'src/helpers/localesText';
 
 function GetPercent(num, total) {
   num = parseFloat(num);
@@ -46,7 +47,7 @@ function GetPercent(num, total) {
   return total <= 0 ? 0 : Math.round((num / total) * 10000) / 100.0;
 }
 
-
+const lineSize=0.8;
 
 const Bright = () => {
   const { t } = useTranslation();
@@ -137,38 +138,38 @@ const Bright = () => {
       </SpaceBetween>
 
       <SpaceBetween>
-        <EchartsCotainer options={EchatsOption.vpd} echartWidth={adaptationConvert(WIDTH / 0.9)} echartHeight={adaptationConvert(600)}>
+        <EchartsCotainer options={EchatsOption.vpd} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={adaptationConvert(600)}>
           <Start style={{ paddingVertical: 32, paddingHorizontal: 32 }}>
             <Center style={{ padding: 26, backgroundColor: colors.cardIconBgColor }}>
               <IconZhexiantu size={adaptationConvert(FONT_SIZE.icon)} />
             </Center>
-            <LocalesText left={8} languageKey={'测试'} size={FONT_SIZE.subTitle} />
+            <LocalesText left={8} languageKey={locales.vpd} size={FONT_SIZE.subTitle} />
           </Start>
         </EchartsCotainer>
-        <EchartsCotainer options={EchatsOption.temperature_humidity} echartWidth={adaptationConvert(WIDTH / 0.8)} echartHeight={adaptationConvert(600)}>
+        <EchartsCotainer options={EchatsOption.temperature_humidity} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={adaptationConvert(600)}>
           <Start style={{ paddingVertical: 32, paddingHorizontal: 32 }}>
             <Center style={{ padding: 26, backgroundColor: colors.cardIconBgColor }}>
               <IconZhexiantu size={adaptationConvert(FONT_SIZE.icon)} />
             </Center>
-            <LocalesText left={8} languageKey={'测试'} size={FONT_SIZE.subTitle} />
+            <LocalesText left={8} languageKey={locales.temperature_humidity} size={FONT_SIZE.subTitle} />
           </Start>
         </EchartsCotainer>
       </SpaceBetween>
       <SpaceBetween>
-        <EchartsCotainer options={EchatsOption.lighting} echartWidth={adaptationConvert(WIDTH / 0.9)} echartHeight={adaptationConvert(600)}>
+        <EchartsCotainer options={EchatsOption.lighting} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={adaptationConvert(600)}>
           <Start style={{ paddingVertical: 32, paddingHorizontal: 32 }}>
             <Center style={{ padding: 26, backgroundColor: colors.cardIconBgColor }}>
               <IconZhexiantu size={adaptationConvert(FONT_SIZE.icon)} />
             </Center>
-            <LocalesText left={8} languageKey={'测试'} size={FONT_SIZE.subTitle} />
+            <LocalesText left={8} languageKey={locales.lighting} size={FONT_SIZE.subTitle} />
           </Start>
         </EchartsCotainer>
-        <EchartsCotainer options={EchatsOption.fertigation} echartWidth={adaptationConvert(WIDTH / 0.8)} echartHeight={adaptationConvert(600)}>
+        <EchartsCotainer options={EchatsOption.fertigation} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={adaptationConvert(600)}>
           <Start style={{ paddingVertical: 32, paddingHorizontal: 32 }}>
             <Center style={{ padding: 26, backgroundColor: colors.cardIconBgColor }}>
               <IconZhexiantu size={adaptationConvert(FONT_SIZE.icon)} />
             </Center>
-            <LocalesText left={8} languageKey={'测试'} size={FONT_SIZE.subTitle} />
+            <LocalesText left={8} languageKey={locales.fertigation} size={FONT_SIZE.subTitle} />
           </Start>
         </EchartsCotainer>
       </SpaceBetween>

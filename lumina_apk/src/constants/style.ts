@@ -57,7 +57,7 @@ export const FONT_SIZE={
   subTitle:30,
   desc:26,
   content:24,
-  button:30,
+  button:20,
   icon:28
 
 }

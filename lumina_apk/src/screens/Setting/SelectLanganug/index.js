@@ -28,6 +28,18 @@ const DropdownComponent = () => {
   useEffect(() => {
 
   }, [])
+  function change({value,name}){
+    auth_store.language=value;
+    // auth_store({
+    //   language: value
+    // })
+    i18n.changeLanguage(value);
+    storage.save({
+      key: 'language',
+      data: value,
+    });
+    setValue(name);
+  }
   return (
     <>
       <AutoText size={28} style={{ paddingRight: 20, paddingTop: 10 }}>
@@ -36,18 +48,7 @@ const DropdownComponent = () => {
       <IconButton style={useInlineStyle({ display: 'flex', flexDirection: 'row', alignItems: 'center' })} onPress={() => selectRef.current.openModal()}>
         <AutoText size={28} style={{ paddingTop: 10, color: colors.checked }} >{auth_store.language === 'zh' ? '中文' : 'English'}</AutoText>
       </IconButton>
-      <ModalSelect ref={selectRef} data={[{ name: '中文', value: LANGUAGE_CN }, { name: 'English', value: LANGUAGE_EN }]} change={({ value, name }) => {
-        auth_store.language=value;
-        // auth_store({
-        //   language: value
-        // })
-        i18n.changeLanguage(value);
-        storage.save({
-          key: 'language',
-          data: value,
-        });
-        setValue(name);
-      }} />
+      <ModalSelect ref={selectRef} data={[{ name: '中文', value: LANGUAGE_CN }, { name: 'English', value: LANGUAGE_EN }]} change={change} />
     </>
   );
 };

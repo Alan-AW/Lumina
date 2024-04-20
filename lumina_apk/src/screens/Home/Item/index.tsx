@@ -22,6 +22,7 @@ import { IconJinrujiantouxiao, IconTianjia } from 'src/iconfont';
 import AutoText from 'src/components/AutoView/Text';
 import Center from 'src/components/FlexView/Center';
 import AutoView from 'src/components/AutoView/View';
+import { FONT_SIZE } from 'src/constants/style';
 
 interface RenderItemProps {
   item: any,
@@ -85,7 +86,7 @@ const RenderItem = (props: RenderItemProps) => {
               </CustView>
             </CustView>
           </View>
-          <ScrollView horizontal style={{ minHeight: 150.25, paddingTop: 32, flex: 1, marginRight: 100 }} showsHorizontalScrollIndicator={true}>
+          <ScrollView horizontal style={{ minHeight: 140.25, paddingTop: 16, flex: 1, marginRight: 100 }} showsHorizontalScrollIndicator={true}>
             {item.data.map((item2: any, index: number) => {
               const cardItem = {
                 id: item2.id,
@@ -142,7 +143,7 @@ const RenderItem = (props: RenderItemProps) => {
 
             }} >
               {
-                !isShowAdd ? <LocalesText languageKey={locales.nullDevices} style={{ paddingRight: 16, fontSize: 28 }} /> : <IconTianjia size={24} color={colors.checked} />
+                !isShowAdd ? <LocalesText languageKey={locales.nullDevices} style={{ paddingRight: 16, fontSize: 28 }} /> : <IconTianjia size={FONT_SIZE.button} color={colors.checked} />
               }
 
             </IconButton>

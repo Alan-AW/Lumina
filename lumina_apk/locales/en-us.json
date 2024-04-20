@@ -137,6 +137,10 @@
     "DaytimeDuration":"Duration",
     "DaytimeStartTime":"Daytime start time",
     "PlantingCycleProgress": "Planting cycle progress",
-    "PlantStart":"on"
+    "PlantStart":"on",
+    "NewVersion":"New Version",
+    "CurrentVersion":"Current Version",
+    "Install":"Install",
+    "downLoadApp":"Download App"
 
 }

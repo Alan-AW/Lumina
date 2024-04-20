@@ -18,7 +18,7 @@ export function adaptationConvert(size: number): number {
 
   // 参考设计尺寸
   // const REFERENCE_DESIGN_SIZE = isLandscapeScreen()?575:275;
-  const REFERENCE_DESIGN_SIZE = 265;
+  const REFERENCE_DESIGN_SIZE = 375;
   // 比例
   const SIZE_RATIO = REFERENCE_DESIGN_SIZE / VIEWPORT_WIDTH;
  

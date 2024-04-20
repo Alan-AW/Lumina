@@ -20,6 +20,7 @@ import { auth_store } from 'src/store/authStore';
 import SpaceBetween from 'src/components/FlexView/SpaceBetween';
 import Center from 'src/components/FlexView/Center';
 import { checkUpdate } from 'src/utils';
+import { HEIGHT, WIDTH } from 'src/constants/global';
 
 
 
@@ -45,7 +46,7 @@ const FormContent = ({ navigation }) => {
                         token: data.token,
                     })
                     checkUpdate((data) => {
-                        props.navigation.navigate('Home', { ...data, });
+                        navigation.navigate('UpdateApp', { ...data, });
                     }, () => {
                         dispatch(loginInSuccess(data))
                         navigation.reset({
@@ -125,7 +126,7 @@ const Login = (props) => {
         <View style={{ flex: 1 }}>
             <WebView
                 source={bj}
-                style={{ position: 'absolute', zIndex: 6, top: 0, left: 0, width: '100%', height: '100%', }} />
+                style={{ position: 'absolute', zIndex: 6, top: 0, left: 0, width: WIDTH, height: HEIGHT, }} />
             <Container style={styles.container}>
                 <FormContent navigation={props.navigation} />
 
@@ -152,7 +153,7 @@ const styles = createStyles({
         padding: 24,
         borderRadius: 5,
         paddingBottom: 70,
-        paddingTop:40,
+        paddingTop: 40,
     },
     item: {
         marginTop: 14,
