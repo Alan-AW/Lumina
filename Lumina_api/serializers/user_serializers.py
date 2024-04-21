@@ -38,7 +38,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
     def get_name(self, row):
         name_str = f'{row.first_name}{row.last_name}'
         if name_str.isascii():
-            return f'{row.last_name}{row.first_name}'
+            return f'{row.last_name} {row.first_name}'
         else:
             return name_str
 
@@ -122,7 +122,7 @@ class UserInfoSer(serializers.ModelSerializer):
     def get_name(self, row):
         name_str = f'{row.first_name}{row.last_name}'
         if name_str.isascii():
-            return f'{row.last_name}{row.first_name}'
+            return f'{row.last_name} {row.first_name}'
         else:
             return name_str
 
