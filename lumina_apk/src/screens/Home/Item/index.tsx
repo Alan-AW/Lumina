@@ -41,8 +41,8 @@ const RenderItem = (props: RenderItemProps) => {
       { devicesId: id, roomCode: roomName })
   }
 
-  function toBright(devicesInfo:any){
-    
+  function toBright(devicesInfo: any) {
+
     navigation.navigate('Bright', {
       roomName: item.roomData.roomName,
       devicesName: devicesInfo.serial_number,
@@ -54,14 +54,13 @@ const RenderItem = (props: RenderItemProps) => {
 
 
   return (
-    <AutoView style={{ paddingHorizontal: 32, paddingVertical: 32 }}>
+    <AutoView style={{ paddingHorizontal: 32, paddingVertical: 0 }}>
       <ShadowCard style={styles.scrollItem} hiddenShadow={false} >
 
-        <SpaceBetween style={{ height: 540.25 }}>
+        <SpaceBetween style={{ height: 540.25, alignItems: 'flex-start' }}>
           <End style={{ flexDirection: 'column', height: '100%', paddingBottom: 20, position: 'relative' }}>
             <Start style={{ position: 'absolute', left: 0, top: 0, width: "100%", height: 80 }}>
-              <LocalesText languageKey={locales.Room} rightText={` ${item.roomData.roomName}`} size={29} color='#000'
-                style={{ fontWeight: '700' }} />
+              <AutoText style={{ fontSize: 29, color: '#000', fontWeight: '700' }}>{item.roomData.roomName}</AutoText>
             </Start>
             <CustView
               style={{
@@ -89,15 +88,15 @@ const RenderItem = (props: RenderItemProps) => {
             </CustView>
           </End>
 
-          <ScrollView style={{ flex: 1,marginLeft:16 }} showsVerticalScrollIndicator={true}>
+          <ScrollView style={useInlineStyle({ flex: 1, marginLeft: 16, paddingTop: 16 })} showsVerticalScrollIndicator={true}>
             {item.device_list.map((_item: any, index: number) => {
               const isDisabled = !!_item.device_id;
-              const isShowBorder=index===item.device_list.length-1;
+              const isShowBorder = index === item.device_list.length - 1;
               return (
-                <AutoView key={index} style={{ minHeight: 440.25, flex: 1, position: 'relative', marginBottom: 32, padding: 32, paddingTop: 0, borderBottomWidth: isShowBorder?0:1, borderColor: '#f8f8f8' }}>
+                <AutoView key={index} style={{ minHeight: 440.25, flex: 1, position: 'relative', marginBottom: 32, padding: 24, paddingTop: 0, borderBottomWidth: isShowBorder ? 0 : 1, borderColor: '#f8f8f8' }}>
                   <Start>
                     <AutoText>
-                      <LocalesText languageKey={locales.deviceName} rightText={':'} style={{fontWeight:'700'}} />
+                      <LocalesText languageKey={locales.deviceName} rightText={':'} style={{ fontWeight: '700' }} />
                     </AutoText>
                     <AutoText style={{ marginLeft: 32, color: colors.checked, fontSize: FONT_SIZE.subTitle }}>{_item.serial_number}</AutoText>
                     <IconButton disabled={!isDisabled} onPress={() => toAddPage(_item.id, item.serial_number)} style={useInlineStyle({ position: 'absolute', right: 0, top: 0 })}>
@@ -107,7 +106,7 @@ const RenderItem = (props: RenderItemProps) => {
                       }
                     </IconButton>
                   </Start>
-                  <Start style={{paddingTop:12}}>
+                  <Start style={{ paddingTop: 12 }}>
                     {
                       _item.cropItemName && <HomeCard key={index} item={_item} onPress={() => toBright(_item)} />
                     }
@@ -133,7 +132,7 @@ const styles = createStyles({
     // borderColor: colors.borderColor,
     // borderWidth: 1,
     marginBottom: 15,
-    paddingLeft:48,
+    paddingLeft: 48,
   },
   scrollContainer: {
     display: 'flex',
