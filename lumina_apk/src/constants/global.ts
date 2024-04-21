@@ -1,4 +1,5 @@
 import {Dimensions} from 'react-native';
+import RNFS from 'react-native-fs'
 export const HEIGHT=Dimensions.get('screen').height
 export const WIDTH=Dimensions.get('screen').width
 
@@ -29,3 +30,8 @@ export function isUpgradeRequired( requiredVersion:string) {
 
     return false;
 }
+
+
+export const CACHE_PATH=RNFS.CachesDirectoryPath;
+export const ORIGIN_PATH='file://';
+

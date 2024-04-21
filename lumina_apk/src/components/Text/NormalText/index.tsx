@@ -19,7 +19,7 @@ type NormalTextProps = {
 };
 
 const NormalText = (props: TextProps & NormalTextProps) => {
-  const { vertical, left, top, isBold = false, color, size = 30,children, bottom, horizontal, right,text } = props;
+  const { vertical, left, top, isBold = false, color='#444', size = 30,children, bottom, horizontal, right,text } = props;
   let styles: TextStyle = {
     fontSize: size,
     fontFamily: fontName.medium,

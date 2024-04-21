@@ -20,7 +20,8 @@ import { auth_store } from 'src/store/authStore';
 import SpaceBetween from 'src/components/FlexView/SpaceBetween';
 import Center from 'src/components/FlexView/Center';
 import { checkUpdate } from 'src/utils';
-import { HEIGHT, WIDTH } from 'src/constants/global';
+import { CACHE_PATH, HEIGHT, ORIGIN_PATH, WIDTH } from 'src/constants/global';
+import { bgHtml } from './background';
 
 
 
@@ -88,9 +89,9 @@ const FormContent = ({ navigation }) => {
                 {/* <Center style={{ marginBottom: 30 }}>
                     <Text style={useInlineStyle({ textAlign: 'center', fontSize: 40, fontFamily: fontName.bold, lineHeight: 40, })} >{t('Login')}</Text>
                 </Center> */}
-                <TextInput style={[styles.item]} value={account} onChangeText={text => setAccount(text)} placeholder={t('account')} />
+                <TextInput style={[styles.item]} value={account} onChangeText={text => setAccount(text)} placeholderTextColor={'#444'} placeholder={t('account')} />
                 <SpaceBetween>
-                    <TextInput style={styles.item} value={password} onChangeText={text => setPassWord(text)}
+                    <TextInput style={styles.item} value={password} placeholderTextColor={'#444'}  onChangeText={text => setPassWord(text)}
                         secureTextEntry={passwordType} placeholder={t('password')} />
 
                     <IconButton onPress={() => setPasswordType(!passwordType)} style={{ position: 'absolute', right: 20, height: '100%', justifyContent: 'center' }}>
@@ -121,11 +122,11 @@ const Login = (props) => {
 
 
     }, [])
-    const bj = require('./background/index.html')
+
     return (
         <View style={{ flex: 1 }}>
             <WebView
-                source={bj}
+                source={{html:bgHtml}}
                 style={{ position: 'absolute', zIndex: 6, top: 0, left: 0, width: WIDTH, height: HEIGHT, }} />
             <Container style={styles.container}>
                 <FormContent navigation={props.navigation} />
@@ -168,7 +169,8 @@ const styles = createStyles({
         borderBottomWidth: 1,
         borderBottomColor: '#e8e8e8',
         fontSize: 62,
-        fontWeight: '500'
+        fontWeight: '500',
+        color:'#444',
     },
     loginBtn: {
         backgroundColor: '#2a2a2a',

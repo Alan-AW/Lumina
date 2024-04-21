@@ -23,7 +23,7 @@ type LocalesTextProps = {
 
 const LocalesText = (props: TextProps & LocalesTextProps) => {
   const { t } = useTranslation();
-  const { vertical, left, top, isBold = false, color, size = 30, children, bottom, horizontal, right, leftText, rightText, languageKey, rightStyle } = props;
+  const { vertical, left, top, isBold = false, color='#444', size = 30, children, bottom, horizontal, right, leftText, rightText, languageKey, rightStyle } = props;
   let styles: TextStyle = {
     fontSize: size,
     fontFamily: fontName.medium,

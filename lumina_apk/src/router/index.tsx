@@ -157,7 +157,7 @@ export default function Router() {
               }
 
             }}>
-            <View style={{ display: 'flex', flexDirection: 'row', flex: 1 }}>
+            <View style={{ display: 'flex', flexDirection: 'row', flex: 1,backgroundColor:'#fff' }}>
               {!isHiddenSlider && (
                 <View style={styles.sidle}>
                   <VerticalTab currentRoute={currentRoute} />
@@ -178,6 +178,6 @@ export default function Router() {
 
 const styles = createStyles({
   sidle: {
-    paddingRight:8,
+    paddingRight:0,
   },
 });

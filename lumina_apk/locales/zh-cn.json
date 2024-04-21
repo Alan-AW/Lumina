@@ -30,7 +30,7 @@
     "AveragePlantTemperature": "平均植物温度",
     "last": "最后",
     "Days": "天",
-    "AdminTools": "管理员工具",
+    "AdminTools": "调整种植基准值",
     "Cultivars": "培育品种",
     "ButterheadLettuce": "生菜",
     "Leaf": "叶子",
@@ -147,6 +147,10 @@
     "NewVersion":"新版本",
     "CurrentVersion":"当前版本",
     "Install":"安装",
-    "downLoadApp":"下载App"
+    "downLoadApp":"下载App",
+    "vpd":"vpd",
+    "temperature_humidity":"温度湿度",
+    "ManualCommands":"手动指令",
+    "deviceName":"设备名称"
 
 }

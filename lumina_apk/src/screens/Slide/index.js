@@ -176,8 +176,8 @@ const styles = createStyles({
     position: 'relative',
     borderRadius: 10,
     justifyContent: 'flex-start',
-    // borderRightWidth: 1,
-    // borderColor: '#f4f4f4',
+    borderRightWidth: 1,
+    borderColor: '#f8f8f8',
   },
   tabItem: {
     alignItems: 'center',

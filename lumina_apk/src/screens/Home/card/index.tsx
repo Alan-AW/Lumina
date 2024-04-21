@@ -25,7 +25,7 @@ interface CardProps {
     item: any
 }
 const HomeCard = (props: CardProps) => {
-    const { title1, title2, name, cropItemCycle, serial_number, img, id } = props.item;
+    const { cropItemCycle,url,cropItemDay,cropItemName } = props.item;
 
     return (
         <TouchableOpacity
@@ -36,31 +36,24 @@ const HomeCard = (props: CardProps) => {
                 position: 'relative',
                 zIndex: 6,
             })}>
-            {/* <Start>
-                <RadioIcon
-                    color={colors.checked}
-                    size={10}
-                />
-                <LocalesText languageKey={locales.Aisle} size={27} color='#000' top={0} left={0} rightText={` #${serial_number}`} />
-            </Start> */}
             <AutoText>
                 <LocalesText languageKey={locales.PlantingCycleProgress}  style={{fontSize:FONT_SIZE.desc}} />
             </AutoText>
             <AutoText style={{paddingVertical:8}}>
-                <LocalesText languageKey={locales.PlantStart} rightText={` ${title2}/${cropItemCycle} `}  style={{fontSize:FONT_SIZE.desc}}/>
+                <LocalesText languageKey={locales.PlantStart} rightText={` ${cropItemDay}/${cropItemCycle} `}  style={{fontSize:FONT_SIZE.desc}}/>
                 <LocalesText languageKey={locales.Day} style={{fontSize:FONT_SIZE.desc}} />
             </AutoText>
 
             <CustView >
-                <MyCustomProgressBar value={GetPercent(title2, cropItemCycle)} />
+                <MyCustomProgressBar value={GetPercent(cropItemDay, cropItemCycle)} />
             </CustView>
 
             <NormalText size={28} vertical={10}>
-                {name}
+                {cropItemName}
             </NormalText>
             <CustView bgColor='#f6f6f6'>
                 <Center vertical={15} horizontal={30}>
-                    <Img url={img} size={80} radius={4} />
+                    <Img url={url} size={80} radius={4} />
                 </Center>
             </CustView>
 

@@ -8,6 +8,7 @@ export default function CustomRadioGroup(props) {
         <RadioGroup
             containerStyle={{ flexDirection: 'row' }}
             radioButtons={props.data}
+            labelStyle={{color:'#444'}}
             onPress={(v,row) => {
                 setSelected(v);
                 props.onChange(v,row);

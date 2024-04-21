@@ -23,6 +23,9 @@ import AutoText from 'src/components/AutoView/Text';
 import Center from 'src/components/FlexView/Center';
 import AutoView from 'src/components/AutoView/View';
 import { FONT_SIZE } from 'src/constants/style';
+import Start from 'src/components/FlexView/Start';
+import SpaceBetween from 'src/components/FlexView/SpaceBetween';
+import End from 'src/components/FlexView/End';
 
 interface RenderItemProps {
   item: any,
@@ -33,125 +36,92 @@ interface RenderItemProps {
 const RenderItem = (props: RenderItemProps) => {
   const { item, navigation } = props;
 
-  // if (item.data.length === 0) {
-  //   return null;
-  // }
+  function toAddPage(id: string, roomName: string) {
+    navigation.navigate('AddPage',
+      { devicesId: id, roomCode: roomName })
+  }
 
-
-
-  const isShowAdd = !!item.device_id;
-
-  const device_id = isShowAdd ? item.device_id : '';
+  function toBright(devicesInfo:any){
+    
+    navigation.navigate('Bright', {
+      roomName: item.roomData.roomName,
+      devicesName: devicesInfo.serial_number,
+      cropNams: devicesInfo.cropItemName,
+      device_id: devicesInfo.device_id,
+      id: devicesInfo.id,
+    })
+  }
 
 
   return (
-    <AutoView style={{ paddingHorizontal:32,paddingVertical:16 }}>
-      <ShadowCard style={styles.scrollItem} hiddenShadow={false}>
-        <View style={styles.scrollContainer}>
-          <View style={useInlineStyle({ width: 350, marginRight: 100 })}>
-            <LocalesText languageKey={locales.Room} rightText={` ${item.serial_number}`} size={29} color='#000' style={{ fontWeight: '500' }} />
+    <AutoView style={{ paddingHorizontal: 32, paddingVertical: 32 }}>
+      <ShadowCard style={styles.scrollItem} hiddenShadow={false} >
+
+        <SpaceBetween style={{ height: 540.25 }}>
+          <End style={{ flexDirection: 'column', height: '100%', paddingBottom: 20, position: 'relative' }}>
+            <Start style={{ position: 'absolute', left: 0, top: 0, width: "100%", height: 80 }}>
+              <LocalesText languageKey={locales.Room} rightText={` ${item.roomData.roomName}`} size={29} color='#000'
+                style={{ fontWeight: '700' }} />
+            </Start>
             <CustView
               style={{
-                position: 'absolute',
-                bottom: 0,
-                justifyContent: 'flex-end',
+                backgroundColor: '#cbfaff',
+                borderRadius: 10,
+                padding: 32,
+                paddingBottom: 20,
+                paddingRight: 88,
+                height: '80%',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}>
-              <CustView
-                style={{
-                  backgroundColor: '#cbfaff',
-                  height: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: 10,
-                  padding: 32,
-                  paddingBottom: 20,
-                  paddingRight: 88,
-                }}>
-
-                <View>
-                  <NormalText color='#000' size={27} bottom={5}>
-                    {item.max}
-                  </NormalText>
-                  <LocalesText languageKey={locales.MaxCurrentTemperature} color='#000' size={22} top={0} bottom={30} />
-
-
-                </View>
-                <CustView top={5}>
-                  <NormalText color='#000' size={27} bottom={5}>
-                    {item.low}
-                  </NormalText>
-                  <LocalesText languageKey={locales.LowCurrentTemperature} color='#000' size={22} />
-
-                </CustView>
+              <View>
+                <NormalText color='#000' size={27} bottom={5}>
+                  {item.roomData.max}
+                </NormalText>
+                <LocalesText languageKey={locales.MaxCurrentTemperature} color='#000' size={22} top={0} bottom={30} />
+              </View>
+              <CustView top={5}>
+                <NormalText color='#000' size={27} bottom={5}>
+                  {item.roomData.min}
+                </NormalText>
+                <LocalesText languageKey={locales.LowCurrentTemperature} color='#000' size={22} />
               </CustView>
             </CustView>
-          </View>
-          <ScrollView horizontal style={{ minHeight: 140.25, paddingTop: 16, flex: 1, marginRight: 100 }} showsHorizontalScrollIndicator={true}>
-            {item.data.map((item2: any, index: number) => {
-              const cardItem = {
-                id: item2.id,
-                title1: item2.name1,
-                title2: item2.date,
-                name: item2.name2,
-                img: item2.img,
-                serial_number: item2.serial_number,
-                cropItemCycle: item2.cropItemCycle
-              }
+          </End>
+
+          <ScrollView style={{ flex: 1,marginLeft:16 }} showsVerticalScrollIndicator={true}>
+            {item.device_list.map((_item: any, index: number) => {
+              const isDisabled = !!_item.device_id;
+              const isShowBorder=index===item.device_list.length-1;
               return (
-                <HomeCard key={index} item={cardItem} onPress={() => {
-                  // navigation.navigate('Update')
-                  navigation.navigate('Bright', {
-                    roomName: item.serial_number,
-                    devicesName: cardItem.serial_number,
-                    cropNams: item.cropNams,
-                    device_id: device_id,
-                    //主键id
-                    id:item.addId,
-                  })
-                }} />
+                <AutoView key={index} style={{ minHeight: 440.25, flex: 1, position: 'relative', marginBottom: 32, padding: 32, paddingTop: 0, borderBottomWidth: isShowBorder?0:1, borderColor: '#f8f8f8' }}>
+                  <Start>
+                    <AutoText>
+                      <LocalesText languageKey={locales.deviceName} rightText={':'} style={{fontWeight:'700'}} />
+                    </AutoText>
+                    <AutoText style={{ marginLeft: 32, color: colors.checked, fontSize: FONT_SIZE.subTitle }}>{_item.serial_number}</AutoText>
+                    <IconButton disabled={!isDisabled} onPress={() => toAddPage(_item.id, item.serial_number)} style={useInlineStyle({ position: 'absolute', right: 0, top: 0 })}>
+                      {
+                        isDisabled ? <IconTianjia size={FONT_SIZE.button} color={colors.checked} /> :
+                          <LocalesText languageKey={locales.nullDevices} style={{ paddingRight: 16, fontSize: 28 }} />
+                      }
+                    </IconButton>
+                  </Start>
+                  <Start style={{paddingTop:12}}>
+                    {
+                      _item.cropItemName && <HomeCard key={index} item={_item} onPress={() => toBright(_item)} />
+                    }
+
+
+                  </Start>
+                </AutoView>
 
               );
             })}
           </ScrollView>
-          {/* {
-          isShowAdd && <Center style={{ height: '80%', zIndex: 9999, position: 'absolute', right: 0, bottom: 0, width: 100 }} >
-          <IconButton onPress={goJson} style={{ height: '100%', width: '100%',alignItems:'center',justifyContent:'center' }}>
-            <IconJinrujiantouxiao size={adaptationConvert(35)} />
-          </IconButton>
-        </Center>
-        } */}
-
-          {/* {
-          Array.isArray(item.data) && <IconButton onPress={() => {
-            if (item.data.length > 0 && item.data[0].device_id) {
-              navigation.navigate('Update',
-                { device_id: item.data[0].device_id })
-            }
-
-
-          }} >
-            <AutoText>设置json</AutoText>
-          </IconButton>
-        } */}
-          {
-            Array.isArray(item.data) && <IconButton disabled={!isShowAdd} onPress={() => {
-              if (device_id) {
-                navigation.navigate('AddPage',
-                  { devicesId: item.addId, roomCode: item.serial_number })
-              }
-
-
-            }} >
-              {
-                !isShowAdd ? <LocalesText languageKey={locales.nullDevices} style={{ paddingRight: 16, fontSize: 28 }} /> : <IconTianjia size={FONT_SIZE.button} color={colors.checked} />
-              }
-
-            </IconButton>
-          }
-
-        </View>
+        </SpaceBetween>
       </ShadowCard>
-    </AutoView>
+    </AutoView >
   )
 }
 
@@ -163,6 +133,7 @@ const styles = createStyles({
     // borderColor: colors.borderColor,
     // borderWidth: 1,
     marginBottom: 15,
+    paddingLeft:48,
   },
   scrollContainer: {
     display: 'flex',

@@ -11,6 +11,7 @@ import { IconButton } from "../Button";
 import Center from "../FlexView/Center";
 import * as echarts from 'echarts/core';
 import { locales } from "src/helpers/localesText";
+import { IconKongshuju } from "src/iconfont";
 
 
 interface EchartsCotainerPorps {
@@ -29,8 +30,8 @@ export default function EchartsCotainer(props: EchartsCotainerPorps) {
             // @ts-ignore
             chart = echarts.init(chartRef.current, 'light', {
                 renderer: 'svg',
-                width: echartWidth,
-                height: echartHeight,
+                width: echartWidth + 50,
+                height: echartHeight + 50,
             });
             chart.setOption(options);
         }
@@ -38,19 +39,21 @@ export default function EchartsCotainer(props: EchartsCotainerPorps) {
     }, [options, echartWidth, echartHeight]);
 
     return (
-        <AutoView style={{ padding: 32 }}>
-            <ShadowCard>
-            {children}
+        <AutoView style={{ padding: 32, }}>
+            <ShadowCard style={{ width: echartWidth + 32, height: echartHeight + 32, backgroundColor: '#fff', position: 'relative' }}>
+                {children}
                 {
-                    options ? <>
+                    options ? <AutoView style={{ flex: 1, flexDirection: 'column', position: 'absolute', left: 0, top: 0, width: '100%', height: '100%' }}>
                         <SkiaChart ref={chartRef} />
-                    </> :
-                        <Center style={{ flex: 1 }}>
-                            <LocalesText languageKey={locales.nullData} />
+                    </AutoView> :
+                        <Center style={{ flex: 1, flexDirection: 'column' }}>
+                            <IconKongshuju size={adaptationConvert(100)} color={'#8a8a8a'} />
+                            <LocalesText languageKey={locales.nullData} top={10} />
                         </Center>
                 }
 
             </ShadowCard>
         </AutoView>
+
     )
 }

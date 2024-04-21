@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, Switch } from 'react-native';
+import { Text, View, Switch, StyleSheet } from 'react-native';
 import { IconButton, TextButton } from 'src/components/Button';
 import TouchBtnGroup from 'src/components/TouchBtnGroup';
 import {
@@ -29,12 +29,12 @@ const AdminToolHeader=()=>{
         <ScreenHeader title={t("Bright Renaissance")} otherNode={() => {
             return (
               <>
-                <Text style={styles.headerText2}>
-                  <Text
+                <AutoText style={styles.headerText2}>
+                  <AutoText
                     style={
                       styles.headerText3
-                    }>{`[${t('Bright Renaissance')} ${t("Room")} #${childData.serial_number}]`}</Text>
-                </Text>
+                    }>{`[${t('Bright Renaissance')} ${t("Room")} #${childData.serial_number}]`}</AutoText>
+                </AutoText>
                
               </>
             )
@@ -69,7 +69,7 @@ const AdminToolHeader=()=>{
             } />
     )
 }
-const styles = createStyles({
+const styles = StyleSheet.create({
     container: {
       padding: 32,
       paddingTop: 0,

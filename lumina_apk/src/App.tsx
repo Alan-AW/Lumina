@@ -12,9 +12,11 @@ import { useTranslation } from 'react-i18next';
 import { LANGUAGE_EN } from './store/authStore';
 import { checkDevicesAuth } from './utils';
 import * as echarts from 'echarts/core';
-import {SvgChart, SVGRenderer,SkiaChart} from '@wuba/react-native-echarts';
-import {BarChart,LineChart} from 'echarts/charts';
-import {DataZoomComponent
+import { SvgChart, SVGRenderer, SkiaChart } from '@wuba/react-native-echarts';
+import { BarChart, LineChart } from 'echarts/charts';
+
+import {
+  DataZoomComponent
 } from 'echarts/components';
 
 // 注册扩展组件
@@ -29,9 +31,10 @@ echarts.use([
 
 export default function App() {
 
-  useEffect(()=>{
+  useEffect(() => {
     checkDevicesAuth()
-  },[])
+
+  }, [])
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

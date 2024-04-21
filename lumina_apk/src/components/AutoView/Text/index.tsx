@@ -12,6 +12,7 @@ const AutoText = (props: TextProps & AutoTextProps) => {
   let styles: TextStyle | any = {
     fontSize: 45,
     fontFamily: fontName.medium,
+    color:'#444',
     // lineHeight:40,
     
   };

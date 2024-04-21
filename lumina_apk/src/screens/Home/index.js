@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import {
   View,
   FlatList,
+  ScrollView,
 } from 'react-native';
 import { getIndexList } from 'src/apis/home';
 
@@ -54,11 +55,20 @@ const Home = () => {
     if (!loading && Array.isArray(data)) {
       return data.map(item => {
         const { max_current, min_current, serial_number, id } = item.room_desc;
-        const units_desc_list = item.units_desc || []
-        const findItem = units_desc_list.find(i => i.device_id || i.id)
-        let newList = units_desc_list.filter((i) => {
-          return i.url && i.cropItemName && i.serial_number
-        })
+        // const units_desc_list = item.units_desc || []
+        // const findItem = units_desc_list.find(i => i.device_id || i.id)
+        // let newList = units_desc_list.filter((i) => {
+        //   return i.url && i.cropItemName && i.serial_number
+        // })
+        return {
+          roomData: {
+            roomId: item.room_desc.id,
+            max: item.room_desc.max_current,
+            min: item.room_desc.min_current,
+            roomName: serial_number,
+          },
+          device_list: item.units_desc
+        }
         return {
           id,
           max: max_current,
@@ -82,8 +92,9 @@ const Home = () => {
         }
       })
     }
+    return [];
 
-  }, [loading])
+  }, [loading,data])
   const state = useAppSelector(state => state.user.userInfo);
 
 
@@ -98,14 +109,25 @@ const Home = () => {
       </CustView>
       <View style={styles.scroll}>
         <Loading loading={loading}>
-          <View style={{}}>
+          <ScrollView style={{ flex: 1 }}>
+            {
+              renderData.map((item, index) => {
+                return (
+                  <View key={index}>
+                    <RenderItem item={item} navigation={navigation} />
+                  </View>
+                )
+              })
+            }
+          </ScrollView>
+          {/* <View style={{}}>
             <FlatList
               data={renderData} // 您的数据数组
               renderItem={(abc, dd) => {
                 return <RenderItem item={abc.item} navigation={navigation} />
               }} // 渲染列表项的函数
             />
-          </View>
+          </View> */}
         </Loading>
 
       </View>

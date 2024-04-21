@@ -30,7 +30,7 @@
     "AveragePlantTemperature": "Average Plant Temperature",
     "last": "last",
     "Days": "Days",
-    "AdminTools": "Admin Tools",
+    "AdminTools": "Adjusting planting benchmark values",
     "Cultivars": "Cultivars",
     "ButterheadLettuce": " Butterhead Lettuce",
     "Leaf": "Leaf",
@@ -141,6 +141,12 @@
     "NewVersion":"New Version",
     "CurrentVersion":"Current Version",
     "Install":"Install",
-    "downLoadApp":"Download App"
+    "downLoadApp":"Download App",
+    "vpd":"vpd",
+    "temperature_humidity":"temperature humidity",
+    "ManualCommands":"Manual commands",
+    "deviceName":"Device name"
+
+
 
 }

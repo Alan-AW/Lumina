@@ -7,7 +7,7 @@ export const { width: VIEWPORT_WIDTH, height: VIEWPORT_HEIGHT } = Dimensions.get
 // 参考设计尺寸
 export const REFERENCE_DESIGN_SIZE = 675;
 // 比例
-export const SIZE_RATIO = REFERENCE_DESIGN_SIZE / 1180;
+export const SIZE_RATIO = REFERENCE_DESIGN_SIZE / VIEWPORT_WIDTH;
 
 /**
  * @remarks 使用适配转换的样式列表.
