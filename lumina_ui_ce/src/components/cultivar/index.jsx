@@ -84,7 +84,7 @@ function CultivarEditModal(props) {
             api={uploadCompanyLogo}
             maxFile={1}
             disabled={false}
-            useCrop={false}
+            useCrop={true}
           />
           {
             imgUrl && <Image src={imgUrl} width={250} />

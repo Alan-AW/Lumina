@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 const defaultInitValue = {
   choices_cn: [],
   choices_en: [],
-  cmd: [],
+  cmd: {},
   app_show: true,
   push: true
 }
@@ -52,7 +52,7 @@ function AlgorithmEditModal(props) {
   // 提交数据之前验证json数据结构
   const validateJson = () => {
     const { choices_cn, choices_en, cmd } = jsonVal;
-    if (choices_cn && choices_en && cmd && choices_cn.length === choices_en.length && choices_en.length === cmd.length) {
+    if (choices_cn && choices_en && cmd) {
       return true;
     } else {
       return false;

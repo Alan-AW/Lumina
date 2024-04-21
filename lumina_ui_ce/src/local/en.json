@@ -407,7 +407,8 @@
       "choices_en": "English choices can not be null!",
       "cmd": "cmd can not be null!",
       "app_show": "User selectable can not be null!",
-      "push": "push cmd can not be null!"
+      "push": "push cmd can not be null!",
+      "jsonError": "The cmd instruction set json is in the wrong format!"
     },
     "placeholder": {
       "subject_cn": "Enter the Chinese subject",

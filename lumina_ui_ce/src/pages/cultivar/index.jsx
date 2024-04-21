@@ -32,8 +32,8 @@ function Cultivar(props) {
       title: t("cultivar.tableTitle.icon"),
       dataIndex: 'icon',
       align: 'center',
-      width: 300,
-      render: icon => <Image src={`${getBaseUrl()}${icon}`} width={200} height={200} />
+      width: 200,
+      render: icon => <Image src={`${getBaseUrl()}${icon}`} width={180} height={180} />
     },
     {
       title: t("cultivar.tableTitle.name_cn"),

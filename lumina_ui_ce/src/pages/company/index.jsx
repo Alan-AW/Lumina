@@ -65,8 +65,8 @@ function Company(props) {
             title: t("company.tableTitle.logo"),
             align: 'center',
             dataIndex: 'logo',
-            width: 200,
-            render: logo => <Image src={`${baseUrl()}${logo}`} height={100} />
+            width: 180,
+            render: logo => <Image src={`${baseUrl()}${logo}`} height={180} width={180} />
         },
         // {
         //     title: t("company.tableTitle.create_time"),
@@ -300,7 +300,7 @@ function Company(props) {
                 api={uploadCompanyLogo}
                 maxFile={1}
                 disabled={false}
-                useCrop={false}
+                useCrop={true}
             />
         </Modal>
     ), [openUploadModal])

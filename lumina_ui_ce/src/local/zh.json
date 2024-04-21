@@ -397,7 +397,8 @@
       "choices_en": "英文选项不可为空!",
       "cmd": "指令集不可为空!",
       "app_show": "请选择是否在app显示!",
-      "push": "请选择是否推送该指令!"
+      "push": "请选择是否推送该指令!",
+      "jsonError": "cmd指令集json格式错误！"
     },
     "placeholder": {
       "subject_cn": "请输入中文主题",
