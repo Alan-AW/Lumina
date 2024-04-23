@@ -10,7 +10,7 @@ HOST = '43.138.127.42'
 PORT = 5372
 USER = 'admin'
 PASSWORD = '1ee2097c'
-QUEUE_NAME = "test_queue"
+QUEUE_NAME = "device_data_queue"
 
 
 # message_model = import_string('device.rabbit_mq.message_db.message_db_data')
@@ -52,7 +52,7 @@ def callback(ch, method, properties, body):
     # MessageQueueModel.objects.create(content=body)
     except Exception as e:
         print(f'错误：{e}')
-        start()
+        # start()
 
 
 def start():

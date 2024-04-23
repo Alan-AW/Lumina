@@ -45,8 +45,11 @@ def callback(ch, method, properties, body):
         device_id = data.get('deviceId') or 'error:can_not_find_device_id'
         from device.models import MessageQueueModel
         MessageQueueModel.objects.create(device_id=device_id, content=data)
-    except:
-        start()
+    except Exception as e:
+        # 重启监听线程
+        # start()
+        # 跳过
+        print(f'回调错误：{e}')
 
 
 def start():

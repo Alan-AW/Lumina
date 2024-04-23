@@ -10,7 +10,7 @@ HOST = '43.138.127.42'
 PORT = 5372
 USER = 'admin'
 PASSWORD = '1ee2097c'
-QUEUE_NAME = "test_queue"
+QUEUE_NAME = "device_data_queue"
 
 
 def start(message, device_id=None):
@@ -47,9 +47,7 @@ def start(message, device_id=None):
 
 
 if __name__ == '__main__':
-    msg = {
-        "deviceId": "8RC4KBZ7"
-    }
+    msg = {"deviceId": "test_device_id"}
 
     start(msg)
     # index = 10
