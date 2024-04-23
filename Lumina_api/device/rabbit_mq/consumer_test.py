@@ -10,7 +10,7 @@ HOST = '43.138.127.42'
 PORT = 5372
 USER = 'admin'
 PASSWORD = '1ee2097c'
-QUEUE_NAME = "device_data_queue"
+QUEUE_NAME = "test_queue"
 
 
 # message_model = import_string('device.rabbit_mq.message_db.message_db_data')
@@ -38,17 +38,21 @@ def callback(ch, method, properties, body):
     3. properties：表示属性（properties），包含了与消息相关的属性信息，例如消息的持久性、优先级等。
     4. body：表示消息体（body），即实际的消息内容。
     """
-    print(body)
-    str_body = body.decode('utf-8')
-    replace_body = str_body.replace('false', 'False')
-    data = eval(replace_body)
-    print('[x] Received message body is:')
-    print(data, type(data))
+    try:
+        str_body = body.decode('utf-8')
+        replace_body = str_body.replace('false', 'False')
+        data = eval(replace_body)
+        print('[x] Received message body is:')
+        print(data, type(data))
+        raise ValueError('手动异常挂掉监听线程！')
     # message_model = import_string('device.rabbit_mq.message_db.message_db_data')
     # message_db_data(body)
     # message_model(body)
     # from device.models import MessageQueueModel
     # MessageQueueModel.objects.create(content=body)
+    except Exception as e:
+        print(f'错误：{e}')
+        start()
 
 
 def start():
@@ -62,8 +66,8 @@ def start():
     )
     # 开始监听消息队列
     print('[*] Waiting for messages.')
-    channel.start_consuming()
-    # threading.Thread(target=channel.start_consuming).start()
+    # channel.start_consuming()
+    threading.Thread(target=channel.start_consuming).start()
 
 
 # 停止监听

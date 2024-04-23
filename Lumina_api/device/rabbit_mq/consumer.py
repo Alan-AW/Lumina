@@ -1,4 +1,5 @@
 import pika
+import threading
 
 # from device.rabbit_mq.config import HOST, PORT, USER, PASSWORD, QUEUE_NAME
 
@@ -36,13 +37,16 @@ def callback(ch, method, properties, body):
     print('↓' * 50)
     print('收到队列消息：')
     print('↑' * 50)
-    # 将字节串转为字典
-    str_body = body.decode('utf-8')
-    replace_body = str_body.replace('false', 'False')
-    data = eval(replace_body)
-    device_id = data.get('deviceId') or 'error:can_not_find_device_id'
-    from device.models import MessageQueueModel
-    MessageQueueModel.objects.create(device_id=device_id, content=data)
+    try:
+        # 将字节串转为字典
+        str_body = body.decode('utf-8')
+        replace_body = str_body.replace('false', 'False')
+        data = eval(replace_body)
+        device_id = data.get('deviceId') or 'error:can_not_find_device_id'
+        from device.models import MessageQueueModel
+        MessageQueueModel.objects.create(device_id=device_id, content=data)
+    except:
+        start()
 
 
 def start():
@@ -58,8 +62,8 @@ def start():
     print('+' * 50)
     print('开始监听队列消息')
     print('+' * 50)
-    channel.start_consuming()
-    # threading.Thread(target=channel.start_consuming).start()
+    # channel.start_consuming()
+    threading.Thread(target=channel.start_consuming).start()
 
 
 # 停止监听

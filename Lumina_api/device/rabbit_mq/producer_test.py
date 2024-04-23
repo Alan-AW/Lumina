@@ -10,7 +10,7 @@ HOST = '43.138.127.42'
 PORT = 5372
 USER = 'admin'
 PASSWORD = '1ee2097c'
-QUEUE_NAME = "device_data_queue"
+QUEUE_NAME = "test_queue"
 
 
 def start(message, device_id=None):
@@ -20,7 +20,6 @@ def start(message, device_id=None):
         queue_name = f'{device_id}_{QUEUE_NAME}'
     print('**' * 50)
     print(f'queue_name: {queue_name}')
-    print(f'message: {message}')
     print('**' * 50)
     # 创建凭据对象
     credentials = pika.PlainCredentials(USER, PASSWORD)
@@ -48,7 +47,10 @@ def start(message, device_id=None):
 
 
 if __name__ == '__main__':
-    msg = {'deviceId': 'test', 'command': 'command_1', 'params': 'params_1'}
+    msg = {
+        "deviceId": "8RC4KBZ7"
+    }
+
     start(msg)
     # index = 10
     # while index > 0:
