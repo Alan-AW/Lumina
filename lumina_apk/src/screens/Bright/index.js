@@ -47,7 +47,8 @@ function GetPercent(num, total) {
   return total <= 0 ? 0 : Math.round((num / total) * 10000) / 100.0;
 }
 
-const lineSize = 0.8;
+const lineSize = 1;
+const echatsHeight=adaptationConvert(550);
 
 const Bright = () => {
   const { t } = useTranslation();
@@ -104,12 +105,10 @@ const Bright = () => {
           <Back noneText={true} />
           <AutoText style={{ fontWeight: '700', fontSize: FONT_SIZE.title, color: '#4a4a4a' }}>{`${roomName} | ${devicesName}`}</AutoText>
         </Start>
-
-
       </SpaceBetween>
 
       <SpaceBetween>
-        <EchartsCotainer options={EchatsOption.vpd} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={adaptationConvert(600)}>
+        <EchartsCotainer options={EchatsOption.vpd} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={echatsHeight}>
           <Start style={{ paddingVertical: 32, paddingHorizontal: 32 }}>
             <Center style={{ padding: 26, backgroundColor: colors.cardIconBgColor }}>
               <IconZhexiantu size={adaptationConvert(FONT_SIZE.icon)} />
@@ -117,7 +116,7 @@ const Bright = () => {
             <LocalesText left={8} languageKey={locales.vpd} size={FONT_SIZE.subTitle} />
           </Start>
         </EchartsCotainer>
-        <EchartsCotainer options={EchatsOption.temperature_humidity} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={adaptationConvert(600)}>
+        <EchartsCotainer options={EchatsOption.temperature_humidity} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={echatsHeight}>
           <Start style={{ paddingVertical: 32, paddingHorizontal: 32 }}>
             <Center style={{ padding: 26, backgroundColor: colors.cardIconBgColor }}>
               <IconZhexiantu size={adaptationConvert(FONT_SIZE.icon)} />
@@ -127,7 +126,7 @@ const Bright = () => {
         </EchartsCotainer>
       </SpaceBetween>
       <SpaceBetween>
-        <EchartsCotainer options={EchatsOption.lighting} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={adaptationConvert(600)}>
+        <EchartsCotainer options={EchatsOption.lighting} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={echatsHeight}>
           <Start style={{ paddingVertical: 32, paddingHorizontal: 32 }}>
             <Center style={{ padding: 26, backgroundColor: colors.cardIconBgColor }}>
               <IconZhexiantu size={adaptationConvert(FONT_SIZE.icon)} />
@@ -135,7 +134,7 @@ const Bright = () => {
             <LocalesText left={8} languageKey={locales.lighting} size={FONT_SIZE.subTitle} />
           </Start>
         </EchartsCotainer>
-        <EchartsCotainer options={EchatsOption.fertigation} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={adaptationConvert(600)}>
+        <EchartsCotainer options={EchatsOption.fertigation} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={echatsHeight}>
           <Start style={{ paddingVertical: 32, paddingHorizontal: 32 }}>
             <Center style={{ padding: 26, backgroundColor: colors.cardIconBgColor }}>
               <IconZhexiantu size={adaptationConvert(FONT_SIZE.icon)} />
@@ -150,13 +149,7 @@ const Bright = () => {
 
 
     
-      <AutoView isRow style={{ marginTop: 38, position: 'relative' }}>
-        {tempData.map((item, index) => {
-          return (
-            <BrightCard key={index} item={item} index={index}></BrightCard>
-          );
-        })}
-      </AutoView>
+  
 
       <AutoView isRow style={{ marginTop: 22, alignItems: 'center', position: 'absolute', left: 64, bottom: 32 }}>
         <ShadowCard style={useInlineStyle({height:88,paddingHorizontal:32,alignItems:'center',justifyContent:'center'})}
@@ -164,7 +157,7 @@ const Bright = () => {
         >
           <SpaceBetween>
             <IconButton onPress={goSet}>
-              <IconShezhi />
+            <IconShezhi size={adaptationConvert(38)} />
             </IconButton>
             <LocalesText languageKey={locales.ManualCommands} style={useInlineStyle({paddingLeft:15})} />
           </SpaceBetween>

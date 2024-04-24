@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   View,
   FlatList,
@@ -35,9 +35,17 @@ function getCurrentDateTime() {
 
 function SubTitle() {
   const [currentTime, setCurrentTime] = useState('')
-  useInterval(() => {
-    setCurrentTime(getCurrentDateTime())
-  }, 1000)
+  const timer = useRef(null)
+  useEffect(() => {
+
+    timer.current = setInterval(() => {
+      setCurrentTime(getCurrentDateTime())
+    }, 1000);
+    return () => {
+      timer.current ? clearInterval(timer.current) : null
+    }
+  }, [])
+
   return <AutoText size={30}>{currentTime}</AutoText>
 }
 
@@ -94,7 +102,7 @@ const Home = () => {
     }
     return [];
 
-  }, [loading,data])
+  }, [loading, data])
   const state = useAppSelector(state => state.user.userInfo);
 
 

@@ -4,7 +4,6 @@ import { jsonIsEmpty } from "./utils";
 import { Dimensions } from "react-native";
 import orientation from 'react-native-orientation-locker'
 const { width: VIEWPORT_WIDTH, height: VIEWPORT_HEIGHT } = Dimensions.get("screen");
-
 //是否横屏
 export const isLandscapeScreen=()=>{
   return VIEWPORT_WIDTH>VIEWPORT_HEIGHT
@@ -12,15 +11,14 @@ export const isLandscapeScreen=()=>{
 
 /** 根据设计稿尺寸以及屏幕大小进行适配转换. */
 export function adaptationConvert(size: number): number {
-  //  return size;
 
   // 设备尺寸
 
   // 参考设计尺寸
-  // const REFERENCE_DESIGN_SIZE = isLandscapeScreen()?575:275;
-  const REFERENCE_DESIGN_SIZE = 385;
+  const REFERENCE_DESIGN_SIZE = isLandscapeScreen()?475:335;
+  console.log('当前尺寸',REFERENCE_DESIGN_SIZE);
   // 比例
-  const SIZE_RATIO = REFERENCE_DESIGN_SIZE / 1152;
+  const SIZE_RATIO = REFERENCE_DESIGN_SIZE / VIEWPORT_WIDTH;
  
   return Number((size * SIZE_RATIO).toFixed(1));
 }
@@ -39,7 +37,6 @@ export function createStyles<K extends string>(styles: Record<K, TStyle>): Recor
         // if(key=='fontSize'){
         //   itemStyles[key]=itemStyles[key]+30;
         // }
-       
         (itemStyles[key] as number) = adaptationConvert(itemStyles[key] as number);
         // TODO 后续可以在这里做
       }
@@ -57,9 +54,6 @@ export function useInlineStyle(styles: TStyle): TStyle {
   let key: keyof TStyle;
   for (key in styles) {
     if (typeof styles[key] === "number" && ADAPTATION_CONVERT_STYLE_KEYS.includes(key)) {
-      if(key==='fontSize'){
-        styles[key]=styles[key]+3
-      }
       (styles[key] as number) = adaptationConvert(styles[key] as number);
     }
   }

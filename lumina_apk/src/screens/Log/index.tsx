@@ -12,11 +12,12 @@ import ShadowCard from "src/components/Shadow";
 import LocalesText from "src/components/Text";
 import { WIDTH } from "src/constants/global";
 import { locales } from "src/helpers/localesText";
+import { adaptationConvert } from "src/helpers/style";
 import { useFetch } from "src/hooks/useFetch";
 import useRequest from "src/hooks/useRequest";
 import { deepData } from "src/utils";
 
-const ceilWidth = 550;
+const ceilWidth = 446;
 
 const columns = [
     {

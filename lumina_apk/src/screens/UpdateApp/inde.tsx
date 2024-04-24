@@ -23,12 +23,13 @@ import { useTranslation } from "react-i18next";
 import ShadowCard from "src/components/Shadow";
 import { FONT_SIZE } from "src/constants/style";
 
+const IS_DOWNLOAD = '正在下载...'
 
 export default function UpdateApp() {
 
     const route: any = useRoute();
     const { t } = useTranslation();
-    const [status, setStatus] = useState('点击下载')
+    const [status, setStatus] = useState('点击下载App')
     const [isDownLoad, setIsDownLoad] = useState(false)
     const { update_version, url } = route.params;
     const dispatch = useAppDispatch()
@@ -51,9 +52,11 @@ export default function UpdateApp() {
 
 
     function update() {
-        setStatus('正在下载...')
+        if (!isDownLoad) {
+            setStatus(IS_DOWNLOAD)
+        }
         updateApp(url, update_version)
-       
+
     }
 
 
@@ -65,27 +68,32 @@ export default function UpdateApp() {
                     dispatch(updateMenuStatus(false))
                 }} />
             </Start> */}
-            <Center style={{ flex: 1, flexDirection: 'column' }}>
-                <View>
-                    <AutoText>{t('CurrentVersion')}：<AutoText style={{ color: colors.checked }}>{APP_VERSION}</AutoText></AutoText>
+            <Center>
+                <Center style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start',marginTop:'20%' }}>
+                    <View>
+                        <AutoText>当前版本：<AutoText style={{ color: colors.checked }}>{APP_VERSION}</AutoText></AutoText>
 
-                </View>
-                <View style={{marginVertical:16}}>
-                    <AutoText>{t("NewVersion")}：<AutoText style={{ color: colors.checked, paddingLeft: 32 }}>{update_version}</AutoText></AutoText>
+                    </View>
+                    <Start style={{ marginVertical: 32 }}>
+                        <AutoText>新版本：<AutoText style={{ color: colors.btnRedColor, paddingLeft: 32, paddingRight: 32 }}>{update_version}</AutoText>
+                        </AutoText>
+                        {isDownLoad && <AutoText style={{ color: colors.checked,paddingLeft:32 }}>已下载</AutoText>}
 
-                </View>
+                    </Start>
 
-                <IconButton onPress={update}>
-                    <ShadowCard style={{ paddingVertical: 16, paddingHorizontal: 24, marginLeft: 16, borderWidth: 1, borderColor: '#f8f8f8' }}>
-                        {
-                            isDownLoad ? <LocalesText languageKey={locales.Install} style={{ color: colors.checked, fontSize: 45, fontWeight: '700' }} />
-                                :
-                                <LocalesText languageKey={locales.downLoadApp} style={{ color: '#4a4a4a', fontSize: 45, fontWeight: '600' }} />
-                        }
-                    </ShadowCard>
+                    <IconButton onPress={update} disabled={status === IS_DOWNLOAD}>
+                        <ShadowCard style={{ paddingVertical: 16, paddingHorizontal: 24, marginLeft: 16, borderWidth: 1, borderColor: '#f8f8f8' }}>
+                            {
+                                isDownLoad ? <AutoText>安装app</AutoText>
+                                    :
+                                    <AutoText>{status}</AutoText>
+                            }
+                        </ShadowCard>
 
-                </IconButton>
+                    </IconButton>
+                </Center>
             </Center>
+
         </View>
 
 

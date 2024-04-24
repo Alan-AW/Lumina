@@ -77,7 +77,7 @@ const FormContent = ({ navigation }) => {
         <ShadowCard style={{
             margin: 0,
             elevation: 24,
-            width: 400,
+            width: adaptationConvert(1100),
             shadowRadius: 24,
             shadowOffset: {
                 width: 0,
@@ -91,7 +91,7 @@ const FormContent = ({ navigation }) => {
                 </Center> */}
                 <TextInput style={[styles.item]} value={account} onChangeText={text => setAccount(text)} placeholderTextColor={'#444'} placeholder={t('account')} />
                 <SpaceBetween>
-                    <TextInput style={styles.item} value={password} placeholderTextColor={'#444'}  onChangeText={text => setPassWord(text)}
+                    <TextInput style={styles.item} value={password} placeholderTextColor={'#444'} onChangeText={text => setPassWord(text)}
                         secureTextEntry={passwordType} placeholder={t('password')} />
 
                     <IconButton onPress={() => setPasswordType(!passwordType)} style={{ position: 'absolute', right: 20, height: '100%', justifyContent: 'center' }}>
@@ -107,7 +107,7 @@ const FormContent = ({ navigation }) => {
                     </IconButton>
 
                 </View>
-                <TextButton style={styles.loginBtn} testStyle={useInlineStyle({ color: '#fff', fontSize: 45, paddingVertical: 10, fontWeight: '600' })} onPress={() => login()}>{t('Login')}</TextButton>
+                <TextButton style={styles.loginBtn} testStyle={useInlineStyle({ color: '#fff', fontSize: 45, paddingVertical: 10, fontWeight: '600' })} onPress={() => login()}>登录</TextButton>
             </View>
         </ShadowCard>
     )
@@ -126,7 +126,7 @@ const Login = (props) => {
     return (
         <View style={{ flex: 1 }}>
             <WebView
-                source={{html:bgHtml}}
+                source={{ html: bgHtml }}
                 style={{ position: 'absolute', zIndex: 6, top: 0, left: 0, width: WIDTH, height: HEIGHT, }} />
             <Container style={styles.container}>
                 <FormContent navigation={props.navigation} />
@@ -170,7 +170,7 @@ const styles = createStyles({
         borderBottomColor: '#e8e8e8',
         fontSize: 62,
         fontWeight: '500',
-        color:'#444',
+        color: '#444',
     },
     loginBtn: {
         backgroundColor: '#2a2a2a',
