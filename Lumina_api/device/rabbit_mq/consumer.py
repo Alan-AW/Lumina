@@ -1,13 +1,26 @@
+import json
+
 import pika
 import threading
 
 # from device.rabbit_mq.config import HOST, PORT, USER, PASSWORD, QUEUE_NAME
 
+"""
+43.138.127.42服务器mq配置信息：
 HOST = '43.138.127.42'
 PORT = 5372
 USER = 'admin'
 PASSWORD = '1ee2097c'
-QUEUE_NAME = 'device_data_queue'
+QUEUE_NAME = "execution_command_queue"
+"""
+
+
+# 阿里云mq服务配置信息
+HOST = 'rabbitmq-serverless-cn-jmp3pov8d01.cn-shanghai.amqp-20.net.mq.amqp.aliyuncs.com'
+PORT = 5372
+USER = 'MjpyYWJiaXRtcS1zZXJ2ZXJsZXNzLWNuLWptcDNwb3Y4ZDAxOkxUQUk1dFNXc1pEdXA2N0JkM1QxSGN0Rw=='
+PASSWORD = 'Mzc3NjZBNzZCODA1RjUxNjc2Njc4NzE5RDZGRjRGREZDQjZBNzk1NDoxNzE0MDU3OTU4Nzgy'
+QUEUE_NAME = "device_data_queue"
 
 # message_model = import_string('device.rabbit_mq.message_db.message_db_data')
 # def message_model(message):
@@ -42,7 +55,7 @@ def callback(ch, method, properties, body):
         str_body = body.decode('utf-8')
         replace_body = str_body.replace('false', 'False')
         data = eval(replace_body)
-        device_id = data.get('deviceId') or 'error:can_not_find_device_id'
+        device_id = data.get('deviceId') or 'error'
         from device.models import MessageQueueModel
         MessageQueueModel.objects.create(device_id=device_id, content=data)
     except Exception as e:
@@ -54,7 +67,7 @@ def callback(ch, method, properties, body):
 
 def start():
     # 创建队列
-    channel.queue_declare(queue=QUEUE_NAME)
+    channel.queue_declare(queue=QUEUE_NAME, durable=True)
     # 确定监听队列
     channel.basic_consume(
         queue=QUEUE_NAME,  # 要监听的队列名称

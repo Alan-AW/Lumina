@@ -6,12 +6,20 @@ import pika
 import threading
 
 
+"""
+old:
 HOST = '43.138.127.42'
 PORT = 5372
 USER = 'admin'
 PASSWORD = '1ee2097c'
 QUEUE_NAME = "device_data_queue"
+"""
 
+HOST = 'rabbitmq-serverless-cn-jmp3pov8d01.cn-shanghai.amqp-20.net.mq.amqp.aliyuncs.com'
+PORT = 5372
+USER = 'MjpyYWJiaXRtcS1zZXJ2ZXJsZXNzLWNuLWptcDNwb3Y4ZDAxOkxUQUk1dFNXc1pEdXA2N0JkM1QxSGN0Rw=='
+PASSWORD = 'Mzc3NjZBNzZCODA1RjUxNjc2Njc4NzE5RDZGRjRGREZDQjZBNzk1NDoxNzE0MDU3OTU4Nzgy'
+QUEUE_NAME = "device_data_queue"
 
 # message_model = import_string('device.rabbit_mq.message_db.message_db_data')
 # def message_model(message):
@@ -44,12 +52,13 @@ def callback(ch, method, properties, body):
         data = eval(replace_body)
         print('[x] Received message body is:')
         print(data, type(data))
-        raise ValueError('手动异常挂掉监听线程！')
+        device_id = data.get('deviceId') or '0'
+        print(f'device_id:{device_id}')
     # message_model = import_string('device.rabbit_mq.message_db.message_db_data')
     # message_db_data(body)
     # message_model(body)
-    # from device.models import MessageQueueModel
-    # MessageQueueModel.objects.create(content=body)
+    #     from device.models import MessageQueueModel
+    #     MessageQueueModel.objects.create(content=body, device_id=device_id)
     except Exception as e:
         print(f'错误：{e}')
         # start()
@@ -57,7 +66,7 @@ def callback(ch, method, properties, body):
 
 def start():
     # 创建队列
-    channel.queue_declare(queue=QUEUE_NAME)
+    channel.queue_declare(queue=QUEUE_NAME, durable=True)
     # 确定监听队列
     channel.basic_consume(
         queue=QUEUE_NAME,  # 要监听的队列名称
@@ -66,8 +75,8 @@ def start():
     )
     # 开始监听消息队列
     print('[*] Waiting for messages.')
-    # channel.start_consuming()
-    threading.Thread(target=channel.start_consuming).start()
+    channel.start_consuming()
+    # threading.Thread(target=channel.start_consuming).start()
 
 
 # 停止监听

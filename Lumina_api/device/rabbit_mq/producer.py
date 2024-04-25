@@ -1,11 +1,21 @@
 import pika
 # from device.rabbit_mq.config import HOST, PORT, USER, PASSWORD
 
+"""
+43.138.127.42服务器mq配置信息：
 HOST = '43.138.127.42'
 PORT = 5372
 USER = 'admin'
 PASSWORD = '1ee2097c'
 QUEUE_NAME = "execution_command_queue"
+"""
+
+# 阿里云mq服务配置信息
+HOST = 'rabbitmq-serverless-cn-jmp3pov8d01.cn-shanghai.amqp-20.net.mq.amqp.aliyuncs.com'
+PORT = 5372
+USER = 'MjpyYWJiaXRtcS1zZXJ2ZXJsZXNzLWNuLWptcDNwb3Y4ZDAxOkxUQUk1dFNXc1pEdXA2N0JkM1QxSGN0Rw=='
+PASSWORD = 'Mzc3NjZBNzZCODA1RjUxNjc2Njc4NzE5RDZGRjRGREZDQjZBNzk1NDoxNzE0MDU3OTU4Nzgy'
+QUEUE_NAME = "device_data_queue"
 
 
 def start(message, device_id=None, queue_name=QUEUE_NAME):
@@ -31,7 +41,7 @@ def start(message, device_id=None, queue_name=QUEUE_NAME):
     channel.queue_declare(
         queue=queue_name,
         # 消息队列向所有消费者发送消息
-        # durable=True,
+        durable=True,
         # arguments={'x-single-active-consumer': False}
     )
 
