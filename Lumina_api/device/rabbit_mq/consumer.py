@@ -1,7 +1,8 @@
-import json
-
 import pika
 import threading
+import pymysql
+import json
+import datetime
 
 # from device.rabbit_mq.config import HOST, PORT, USER, PASSWORD, QUEUE_NAME
 
@@ -14,13 +15,22 @@ PASSWORD = '1ee2097c'
 QUEUE_NAME = "execution_command_queue"
 """
 
-
 # 阿里云mq服务配置信息
 HOST = 'rabbitmq-serverless-cn-jmp3pov8d01.cn-shanghai.amqp-20.net.mq.amqp.aliyuncs.com'
 PORT = 5372
 USER = 'MjpyYWJiaXRtcS1zZXJ2ZXJsZXNzLWNuLWptcDNwb3Y4ZDAxOkxUQUk1dFNXc1pEdXA2N0JkM1QxSGN0Rw=='
 PASSWORD = 'Mzc3NjZBNzZCODA1RjUxNjc2Njc4NzE5RDZGRjRGREZDQjZBNzk1NDoxNzE0MDU3OTU4Nzgy'
 QUEUE_NAME = "device_data_queue"
+
+# 数据库配置信息
+db_config = {
+    'host': '47.110.240.100',
+    'user': 'mqsw_test',
+    'password': 'crFtCczbNhiXeiZP',
+    'database': 'mqsw_test',
+    'charset': 'utf8mb4',
+    'cursorclass': pymysql.cursors.DictCursor
+}
 
 # message_model = import_string('device.rabbit_mq.message_db.message_db_data')
 # def message_model(message):
@@ -37,6 +47,34 @@ parameters = pika.ConnectionParameters(HOST, credentials=credentials)
 connection = pika.BlockingConnection(parameters)
 # 控制对象
 channel = connection.channel()
+
+
+# 插入数据库操作
+def insert_data_to_db(device_id, content):
+    conn, cursor = None, None
+    # 建立数据库连接
+    try:
+        conn = pymysql.connect(**db_config)
+        cursor = conn.cursor()
+        # SQL 插入语句
+        sql = "INSERT INTO message_queue (device_id, content, create_time, update_time) VALUES (%s, %s, %s, %s)"
+        # 将 content Python 字典转换为 JSON 字符串
+        content_json = json.dumps(content)
+        timer = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # 执行 SQL 语句
+        cursor.execute(sql, (device_id, content_json, timer, timer))
+        conn.commit()  # 提交事务
+        print("Data inserted successfully.")
+    except pymysql.MySQLError as e:
+        print(f"Error: {e}")
+        if conn is not None:
+            conn.rollback()  # 出现错误时回滚
+    finally:
+        # 关闭游标和连接
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()
 
 
 # 回调函数
@@ -56,8 +94,7 @@ def callback(ch, method, properties, body):
         replace_body = str_body.replace('false', 'False')
         data = eval(replace_body)
         device_id = data.get('deviceId') or 'error'
-        from device.models import MessageQueueModel
-        MessageQueueModel.objects.create(device_id=device_id, content=data)
+        insert_data_to_db(device_id, data)
     except Exception as e:
         # 重启监听线程
         # start()
