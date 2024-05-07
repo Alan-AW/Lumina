@@ -29,7 +29,7 @@ import Start from 'src/components/FlexView/Start';
 import SpaceBetween from 'src/components/FlexView/SpaceBetween';
 import End from 'src/components/FlexView/End';
 import { setPlantEnd } from 'src/apis/home';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 interface RenderItemProps {
   item: any,
@@ -40,6 +40,8 @@ interface RenderItemProps {
 
 const RenderItem = (props: RenderItemProps) => {
   const { item, navigation,refresh } = props;
+  const { t } = useTranslation();
+
 
   function toAddPage(id: string, roomName: string) {
     navigation.navigate('AddPage',
@@ -123,9 +125,9 @@ const RenderItem = (props: RenderItemProps) => {
                     </IconButton>
                   </Start>
                   <Start style={{ paddingTop: 12 }} onPress={() => toBright(_item)} onLongPress={() => {
-                    Alert.alert('是否结束当前种植周期？', "", [
-                      { text: '取消', onPress: () => { } },
-                      { text: '确定', onPress: ()=>onLogPress(_item.id) },
+                    Alert.alert(`${t('endPlantCycle')}?`, "", [
+                      { text: t('cancel'), onPress: () => { } },
+                      { text: t('confirm'), onPress: ()=>onLogPress(_item.id) },
                     ])
                   }}>
                     {

@@ -147,7 +147,6 @@
     "ManualCommands":"Manual commands",
     "deviceName":"Device name",
     "on":"on",
-    "off":"off"
-
-
+    "off":"off",
+    "endPlantCycle":"Whether to end the current planting cycle"
 }
