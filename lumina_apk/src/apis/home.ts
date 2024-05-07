@@ -55,5 +55,10 @@ export function getLog(params:any){
 export function getAppVersion(){
   return httpAxios.get<any>(`/android/app/ota/apk`, {});
 }
+//结束当前种植周期
+export function setPlantEnd(id:any){
+  return httpAxios.get<any>(`/android/stop/algorithm/${id}`, {});
+}
+
 
 

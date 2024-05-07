@@ -19,101 +19,71 @@ import ScreenHeader from 'src/components/ScreenHeader';
 import RadioIcon from 'src/components/RadioIcon';
 import { useRoute } from '@react-navigation/native';
 import colors from 'src/constants/colors';
+import SpaceBetween from 'src/components/FlexView/SpaceBetween';
+import Start from 'src/components/FlexView/Start';
+import Back from 'src/components/ScreenHeader/Back';
+import { FONT_SIZE } from 'src/constants/style';
 
-const AdminToolHeader=()=>{
-    const routes = useRoute();
-    const cardData = routes.params?.cardItem || {};
-    const childData = routes.params?.propsItem || {};
-    const { t } = useTranslation();
-    return (
-        <ScreenHeader title={t("Bright Renaissance")} otherNode={() => {
-            return (
-              <>
-                <AutoText style={styles.headerText2}>
-                  <AutoText
-                    style={
-                      styles.headerText3
-                    }>{`[${t('Bright Renaissance')} ${t("Room")} #${childData.serial_number}]`}</AutoText>
-                </AutoText>
-               
-              </>
-            )
-          }
-          }
-            right={
-              () => {
-                return null;
-                // return (
-    
-                //   // <ShadowCard
-                //   //   style={{
-                //   //     backgroundColor: '#fff',
-                //   //     borderWidth: 1,
-                //   //     borderRadius: 10,
-                //   //     borderColor: colors.borderColor,
-                //   //     padding:10,
-                //   //   }}
-                //   //   isRow>
-                //   //   <AutoView isRow>
-                //   //     <IconButton>
-                //   //       <IconShuaxin size={adaptationConvert(30)} color="#000" />
-                //   //     </IconButton>
-                //   //     <AutoText size={25} style={{ color: '#2a2a2a', paddingLeft: 16 }}>
-                //   //       {t('RestoreToDefaults')}
-                //   //     </AutoText>
-                //   //   </AutoView>
-    
-                //   // </ShadowCard>
-                // )
-              }
-            } />
-    )
+const AdminToolHeader = () => {
+  const routes = useRoute();
+
+ 
+  const { t } = useTranslation();
+  const { device_id, roomName, devicesName, cropNams } = routes.params;
+  return (
+    <SpaceBetween>
+      <Start>
+        <Back noneText={true} />
+        <AutoText style={{ fontWeight: '700', fontSize: FONT_SIZE.title, color: '#4a4a4a' }}>{`${roomName} | ${devicesName}`}</AutoText>
+      </Start>
+    </SpaceBetween>
+  )
 }
 const styles = StyleSheet.create({
-    container: {
-      padding: 32,
-      paddingTop: 0,
-      paddingLeft: 32,
-      flex: 1,
-    },
-    backBtn: {
-      backgroundColor: '#fff',
-      width: 35,
-      height: 30,
-      borderColor: colors.borderColor,
-      borderWidth: 1,
-      borderRadius: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginRight: 15,
-    },
-    flex: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'flex-start',
-    },
-    header: {
-      justifyContent: 'space-between',
-    },
-    headerText1: {
-      color: '#2a2a2a',
-      fontFamily: 'pingfanghk-semibold',
-      fontWeight: '500',
-      fontSize: 14,
-    },
-    headerText2: {
-      color: '#656363',
-      paddingTop: 0,
-      fontFamily: 'pingfanghk-light',
-      fontWeight: '500',
-      fontSize: 12,
-    },
-    headerText3: {
-      color: '#000',
-      fontFamily: fontName.regular,
-      fontSize: 26,
-      lineHeight: 30,
-    },
-  });
-  
+  container: {
+    padding: 32,
+    paddingTop: 0,
+    paddingLeft: 32,
+    flex: 1,
+  },
+  backBtn: {
+    backgroundColor: '#fff',
+    width: 35,
+    height: 30,
+    borderColor: colors.borderColor,
+    borderWidth: 1,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
+  },
+  flex: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  header: {
+    justifyContent: 'space-between',
+  },
+  headerText1: {
+    color: '#2a2a2a',
+    fontFamily: 'pingfanghk-semibold',
+    fontWeight: '500',
+    fontSize: 14,
+  },
+  headerText2: {
+    color: '#656363',
+    paddingTop: 0,
+    fontFamily: 'pingfanghk-light',
+    fontWeight: '500',
+    fontSize: 12,
+  },
+  headerText3: {
+    color: '#000',
+    fontFamily: fontName.regular,
+    fontSize: 26,
+    lineHeight: 30,
+  },
+});
+
 export default AdminToolHeader;

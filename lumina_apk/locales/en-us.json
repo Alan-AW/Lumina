@@ -142,11 +142,12 @@
     "CurrentVersion":"Current Version",
     "Install":"Install",
     "downLoadApp":"Download App",
-    "vpd":"vpd",
+    "vpd":"VPD",
     "temperature_humidity":"temperature humidity",
     "ManualCommands":"Manual commands",
-    "deviceName":"Device name"
-
+    "deviceName":"Device name",
+    "on":"on",
+    "off":"off"
 
 
 }

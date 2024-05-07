@@ -47,15 +47,15 @@ function GetPercent(num, total) {
   return total <= 0 ? 0 : Math.round((num / total) * 10000) / 100.0;
 }
 
-const lineSize = 1;
-const echatsHeight=adaptationConvert(550);
+const lineSize = 1.2;
+const echatsHeight=adaptationConvert(505);
 
 const Bright = () => {
+  const routes = useRoute();
+
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const routes = useRoute();
-  const childData = routes.params.propsItem;
-  const cardData = routes.params.cardItem;
+ 
   const [liveData, setLiveData] = useState([]);
   const [echartsData, setEchartsData] = useState(false);
   const [tempData, setTempData] = useState([]);
@@ -82,6 +82,7 @@ const Bright = () => {
   function goSet() {
     navigation.navigate('AdminTools', {
       id: routes.params.id,
+      ... routes.params
     });
   }
 

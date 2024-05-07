@@ -122,7 +122,7 @@ const Home = () => {
               renderData.map((item, index) => {
                 return (
                   <View key={index}>
-                    <RenderItem item={item} navigation={navigation} />
+                    <RenderItem item={item} navigation={navigation} refresh={refresh} />
                   </View>
                 )
               })

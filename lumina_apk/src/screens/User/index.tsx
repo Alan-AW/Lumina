@@ -19,6 +19,7 @@ import { useNavigation } from "@react-navigation/native";
 import storage from "src/helpers/storage";
 import DropdownComponent from "../Setting/SelectLanganug";
 import Start from "src/components/FlexView/Start";
+import Version from "./version";
 
 
 
@@ -57,7 +58,8 @@ const User = () => {
     }
 
     return (
-        <AutoView style={{ flex: 1, backgroundColor: '#fffcf7', marginLeft: 16, padding: 32 }}>
+        <AutoView style={{ flex: 1, backgroundColor: '#fffcf7', marginLeft: 16, padding: 32,position:'relative' }}>
+
             <ScreenHeader title={t('userInfo')} subtitle='' hiddenBack={true} />
             <Center style={{ height: '80%' }}>
                 <ShadowCard style={{
@@ -109,6 +111,9 @@ const User = () => {
                     </Center>
                 </ShadowCard>
             </Center>
+            <Version />
+
+
         </AutoView>
     )
 }

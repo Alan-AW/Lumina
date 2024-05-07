@@ -3,6 +3,8 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  Alert,
+  ToastAndroid,
 } from 'react-native';
 import ShadowCard from 'src/components/Shadow';
 
@@ -26,15 +28,18 @@ import { FONT_SIZE } from 'src/constants/style';
 import Start from 'src/components/FlexView/Start';
 import SpaceBetween from 'src/components/FlexView/SpaceBetween';
 import End from 'src/components/FlexView/End';
+import { setPlantEnd } from 'src/apis/home';
+import { t } from 'i18next';
 
 interface RenderItemProps {
   item: any,
   navigation: any;
+  refresh:()=>void;
 
 }
 
 const RenderItem = (props: RenderItemProps) => {
-  const { item, navigation } = props;
+  const { item, navigation,refresh } = props;
 
   function toAddPage(id: string, roomName: string) {
     navigation.navigate('AddPage',
@@ -50,6 +55,17 @@ const RenderItem = (props: RenderItemProps) => {
       device_id: devicesInfo.device_id,
       id: devicesInfo.id,
     })
+  }
+  //长按结束当前种植周期
+  function onLogPress(id:any){
+    setPlantEnd(id).then(res=>{
+      if(res.status){
+        refresh()
+      }else{
+        ToastAndroid.show(t(locales.requestError), ToastAndroid.SHORT)
+      }
+
+    }).catch(err=>{})
   }
 
 
@@ -106,7 +122,12 @@ const RenderItem = (props: RenderItemProps) => {
                       }
                     </IconButton>
                   </Start>
-                  <Start style={{ paddingTop: 12 }}>
+                  <Start style={{ paddingTop: 12 }} onPress={() => toBright(_item)} onLongPress={() => {
+                    Alert.alert('是否结束当前种植周期？', "", [
+                      { text: '取消', onPress: () => { } },
+                      { text: '确定', onPress: ()=>onLogPress(_item.id) },
+                    ])
+                  }}>
                     {
                       _item.cropItemName && <HomeCard key={index} item={_item} onPress={() => toBright(_item)} />
                     }

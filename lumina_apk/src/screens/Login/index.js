@@ -92,7 +92,7 @@ const FormContent = ({ navigation }) => {
                 <TextInput style={[styles.item]} value={account} onChangeText={text => setAccount(text)} placeholderTextColor={'#444'} placeholder={t('account')} />
                 <SpaceBetween>
                     <TextInput style={styles.item} value={password} placeholderTextColor={'#444'} onChangeText={text => setPassWord(text)}
-                        secureTextEntry={passwordType} placeholder={t('password')} />
+                        secureTextEntry={passwordType} placeholder={t('password')} onSubmitEditing={login} />
 
                     <IconButton onPress={() => setPasswordType(!passwordType)} style={{ position: 'absolute', right: 20, height: '100%', justifyContent: 'center' }}>
                         {

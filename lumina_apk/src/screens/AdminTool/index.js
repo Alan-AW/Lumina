@@ -20,6 +20,7 @@ const AdminTool = (props) => {
   const [isAutoClimate, setIsAutoClimate] = useState(false);
   const [isAutoFlower, setIsAutoFlower] = useState(false);
   const { t } = useTranslation();
+
   return (
     <View style={styles.container}>
      <AdminToolHeader />

@@ -15,15 +15,13 @@ function format(str) {
         if (unit === '%') {
             return Number(str.replace(unit, ''))
         }
-
     }
-
     return str;
 }
 
 
 const SliderItem = (props) => {
-    const { item = {}, onChange } = props;
+    const { item = {}, onChange,itemData } = props;
     const [auto, setAuto] = useState(item.auto);
     const [sliderValue, setSilderValue] = useState(Number(format(item.value)));
     const minValue = Number(format(item.min_value));
@@ -59,6 +57,9 @@ const SliderItem = (props) => {
 
 
     const _value=Number(sliderValue).toFixed(2);
+    //判断禁用条件
+    const findItem=itemData.find(i=>i.cmd__cmd==='spectra' && i.auto===false)
+    
 
 
 
@@ -85,7 +86,7 @@ const SliderItem = (props) => {
                 <Slider maximumTrackTintColor="#ccc"
                     minimumTrackTintColor={auto ? '#666' : "#559e18"}
                     maximumValue={!isNaN(maxValue) ? maxValue : 0}
-                    disabled={auto}
+                    disabled={auto || !findItem}
                     onTouchEnd={() => {
                         submit({
                             auto,

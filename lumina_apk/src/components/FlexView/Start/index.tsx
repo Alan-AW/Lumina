@@ -15,6 +15,7 @@ interface FlexProps {
     bgColor?: string;
     padding?: number | Array<number>;
     onPress?:()=>void;
+    onLongPress?:()=>void;
     children?:any;
 }
 
@@ -45,9 +46,9 @@ const Start = (props: FlexProps) => {
 
     }
     const newStyle: any = props.style || {};
-    if(props.onPress){
+    if(props.onPress || props.onLongPress){
         return (
-            <TouchableOpacity {...props} activeOpacity={1} style={useInlineStyle({...styles,...newStyle})}>{props.children}</TouchableOpacity>
+            <TouchableOpacity {...props} activeOpacity={1} onLongPress={props.onLongPress} style={useInlineStyle({...styles,...newStyle})}>{props.children}</TouchableOpacity>
         )
     }
     return (

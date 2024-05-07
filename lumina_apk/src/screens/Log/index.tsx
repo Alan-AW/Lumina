@@ -17,53 +17,44 @@ import { useFetch } from "src/hooks/useFetch";
 import useRequest from "src/hooks/useRequest";
 import { deepData } from "src/utils";
 
-const ceilWidth = 446;
+const ceilWidth = 400;
 
 const columns = [
     {
-        key: 'index',
-        width: 100,
-        languageKey: locales.SerialNumber,
+        key: 'create_time',
+        width: 446,
+        languageKey: locales.CreationTime,
         sort: 1,
     },
+ 
     {
         key: 'username',
-        width: 100,
+        width: 300,
         languageKey: locales.Username,
         sort: 2,
 
     },
     {
         key: 'role',
-        width: 100,
+        width: 300,
         languageKey: locales.UserRole,
         sort: 3,
 
     },
     {
         key: 'command_label',
-        width: 100,
+        width: 300,
         languageKey: locales.OperationCommand,
         sort: 4,
     },
     {
         key: 'content',
-        width: 100,
+        width: 1000,
         languageKey: locales.ModifiedContent,
         sort: 5,
     },
-    {
-        key: 'create_time',
-        width: 100,
-        languageKey: locales.CreationTime,
-        sort: 6,
-    },
-].map(item => {
-    return {
-        ...item,
-        width: ceilWidth,
-    }
-});
+  
+];
 
 
 const pageSize = 20;
@@ -105,11 +96,7 @@ export default function Log() {
 
             return data.map((item: any, index: number) => {
                 // const { username, role, command_label, content, create_time } = item;
-                const arr = [{
-                    width: ceilWidth,
-                    text: index + 1,
-                    sort: 1,
-                }];
+                const arr = [];
                 for (let key in item) {
                     const findKey = columns.find(i => i.key === key);
                     if (findKey) {
@@ -123,7 +110,6 @@ export default function Log() {
                 return arr.map(item => {
                     return {
                         ...item,
-                        width: ceilWidth,
                     }
                 }).sort((a, b) => {
                     return a.sort - b.sort
@@ -153,7 +139,7 @@ export default function Log() {
                     })
                 }
             </Start>
-            <FlatList data={tableData} style={{ width:columns.length*ceilWidth,backgroundColor:'#fff'}} keyExtractor={(i, index) => index + ''} onEndReached={() => {
+            <FlatList data={tableData} style={{backgroundColor:'#fff'}} keyExtractor={(i, index) => index + ''} onEndReached={() => {
                 if (page < maxPage) {
                     setPage(page + 1)
                 }
@@ -187,7 +173,7 @@ export default function Log() {
                     )
                 }
                 return (
-                    <Start style={{ paddingLeft: 32 }} key={index}>
+                    <Start style={{ paddingLeft: 0 }} key={index}>
                         {
                             item.map((item: any, index: number) => {
 

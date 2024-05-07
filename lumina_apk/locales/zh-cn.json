@@ -133,8 +133,8 @@
     "nullDevices":"暂无设备",
 
     "SerialNumber": "序号",
-    "Username": "用户名",
-    "UserRole": "用户角色",
+    "Username": "用户",
+    "UserRole": "用户权限",
     "OperationCommand": "操作指令",
     "ModifiedContent": "修改内容",
     "CreationTime": "创建时间",
@@ -148,9 +148,11 @@
     "CurrentVersion":"当前版本",
     "Install":"安装",
     "downLoadApp":"下载App",
-    "vpd":"vpd",
+    "vpd":"VPD",
     "temperature_humidity":"温度湿度",
     "ManualCommands":"手动指令",
-    "deviceName":"设备名称"
+    "deviceName":"设备名称",
+    "on":"开",
+    "off":"关"
 
 }
