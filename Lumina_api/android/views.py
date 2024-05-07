@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timezone, timedelta
 import json
 
 from django.db.transaction import atomic
@@ -133,19 +133,19 @@ class UnitDescView(APIView):
                             'current_ph': []
                         }
                     }
-                    for idx, i in enumerate(a):
+                    for idx, i in enumerate(queryset):
                         # 真实数据：Queryset
-                        # data_dict = i.content.get('data').get('data').get('data')
+                        data_dict = i.content.get('data')
                         # 测试数据
-                        data_dict = i.get('data').get('data').get('data')
+                        # data_dict = i.get('data').get('data').get('data')
                         thc = data_dict.get('thc')
-                        thc_x = thc.get('last_updated')[11:19]
+                        thc_x = thc.get('main_lower').get('last_updated')[11:19]
                         # vpd
-                        vpd = thc.get('vpd')
+                        vpd = thc.get('main_lower').get('vpd')
                         used_data['vpd'][0].append({'key': thc_x, 'value': vpd})
                         # 温度和湿度
-                        temperature = thc.get('temperature')
-                        humidity = thc.get('humidity')
+                        temperature = thc.get('main_lower').get('temperature')
+                        humidity = thc.get('main_lower').get('humidity')
                         used_data['temperature_humidity']['temperature'].append({'key': thc_x, 'value': temperature})
                         used_data['temperature_humidity']['humidity'].append({'key': thc_x, 'value': humidity})
                         # 光照
@@ -153,7 +153,7 @@ class UnitDescView(APIView):
                         spectra_450_led = lighting.get('spectra_450_led')
                         spectra_660_led = lighting.get('spectra_660_led')
                         spectra_main_led = lighting.get('spectra_main_led')
-                        lighting_x = lighting.get('last_saved')[11:19]
+                        lighting_x = lighting.get('last_updated')[11:19]
                         used_data['lighting']['spectra_450_led'].append({'key': lighting_x, 'value': spectra_450_led})
                         used_data['lighting']['spectra_660_led'].append({'key': lighting_x, 'value': spectra_660_led})
                         used_data['lighting']['spectra_main_led'].append({'key': lighting_x, 'value': spectra_main_led})
@@ -313,6 +313,14 @@ class SendCmdToMQView(APIView):
                 # 记录日志
                 create_logs(request.user, UnitSetting, 5, data)
                 # 推入队列
+                version = AppOtaModel.objects.order_by('-id').first().version
+                # 获取当前时间
+                current_time = datetime.now(timezone.utc)
+                # 添加时区信息
+                current_time_with_tz = current_time.astimezone(timezone(timedelta(hours=8)))
+                # 格式化成所需的字符串格式，保留冒号
+                time_str = current_time_with_tz.strftime('%Y-%m-%dT%H:%M:%S%z')
+                formatted_time = f'{time_str[:22]}:{time_str[22:]}'
                 message = {
                     "data": {
                         "deviceId": device_id,
@@ -343,7 +351,10 @@ class SendCmdToMQView(APIView):
                             "device_id": device_id
                         }
                     },
-                    "deviceId": device_id
+                    "deviceId": device_id,
+                    "version": version,
+                    "time": formatted_time,
+                    "type": "manual_command"
                 }
                 start(message=json.dumps(message), device_id=unit_obj.deviceId, queue_name='execution_command_queue')
                 response = return_response(info='设置成功!')
@@ -457,4 +468,19 @@ class AppOtaApkView(APIView):
         queryset = AppOtaModel.objects.first()
         data = {'version': queryset.version, 'apk': queryset.apk.url, 'size': queryset.apk.size} if queryset else {}
         response = return_response(data=data)
+        return JsonResponse(response)
+
+
+# 安卓端APP操作：停止当前设备下的种植周期
+class StopAlgorithmView(APIView):
+    permission_classes = [ExcludeSuperPermission]
+
+    def get(self, request, unit_id):
+        desc = UnitPlantDesc.objects.filter(unit_id=unit_id, status=True).order_by('-id').first()
+        if not desc:
+            response = return_response(status=False, error='设备ID错误！')
+            return JsonResponse(response)
+        desc.status = False
+        desc.save()
+        response = return_response(info='当前种植周期已结束！')
         return JsonResponse(response)
