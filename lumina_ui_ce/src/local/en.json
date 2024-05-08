@@ -240,6 +240,7 @@
       "tel": "Contact Phone",
       "email": "Company Email",
       "logo": "Company Logo",
+      "unitDetail": "Units Detail",
       "create_time": "Creation Time",
       "update_time": "Update Time",
       "action": "Action"
@@ -258,6 +259,13 @@
       "legal_rep": "Enter legal representative",
       "tel": "Enter company phone",
       "email": "Enter company email"
+    },
+    "unitDesc": {
+      "modaltitle": "Planting cycle details",
+      "serial_number": "Unit name",
+      "device_id": "Device ID",
+      "cultivar": "Cultivar",
+      "create_time": "start time"
     }
   },
   "roles": {

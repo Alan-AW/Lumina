@@ -1,7 +1,7 @@
 from django.urls import path, re_path
 from operations.views import RoomView, UnitView, SaveSensorDataView, ExportThree, SpeciesView, CultivarsView, \
-    ModelsView, PhasesView, InstructionView, ActionView, TriggersView, CompanyView, CompanyCultivarsView, \
-    CompanyUploadLogo, UnitSettingsListView, UnitSettingView, PingUnitTimerView, GetUnitOnlineView, UnitInfoView, \
+    ModelsView, PhasesView, InstructionView, ActionView, TriggersView, CompanyView, CompanyUnitDescView, CompanyCultivarsView, \
+    ReloadJsonValView, CompanyUploadLogo, UnitSettingsListView, UnitSettingView, PingUnitTimerView, GetUnitOnlineView, UnitInfoView, \
     CultivarView, CultivarAlgorithmView, AlgorithmView
 from operations.choices_api_view import ChoicesRoomView, ChoicesRoleView, ChoicesCompanyView, \
     ChoicesEnvironmentalOptions, ChoicesUnitSettings, CultivarChoicesAlgorithmView, ChoicesCultivarsView
@@ -25,6 +25,10 @@ urlpatterns = [
     re_path(r'company/uploadlogo/(?P<row_id>\d+)$', CompanyUploadLogo.as_view()),
     # 公司管理
     re_path(r'company/(?P<row_id>\d+)?$', CompanyView.as_view()),
+    # 公司设备种植算法详情列表
+    re_path(r'company/unitdesc/(?P<company_id>\d+)$', CompanyUnitDescView.as_view()),
+    # 公司设备种植算法详情刷新单条种植记录的json数据
+    re_path(r'company/unitdesc/reload/(?P<plant_id>\d+)$', ReloadJsonValView.as_view()),
     # 设备可用设置项管理
     re_path(r'unit/settings/list/(?P<row_id>\d+)?$', UnitSettingsListView.as_view()),
     # 2024-2-4新增功能接口

@@ -1,13 +1,15 @@
 import time
 from rest_framework.views import APIView
 from django.http import JsonResponse
+
+from device.models import MessageQueueModel
 from operations.models import Room, Unit, Temperature, Species, RoomDesc, Lighting, Cultivars, Models, Triggers, \
     Action, Instruction, Phases, Company, UnitSettingsList, UnitSetting, Cultivar, Algorithm, UnitPlantDesc
 from serializers.operations_serializers import RoomSer, UnitSer, ExportDataSer, CompanySer, UnitSettingsListSer, \
     UnitSettingSer, CultivarSer, AlgorithmSer
 from serializers.three_data_serializers import SpeciesDataSer, CultivarsDataSer, ModelsDataSer, PhasesDataSer, \
     InstructionDataSer, ActionDataSer, TriggersDataSer
-from utils.methods import return_response, get_data, get_now_timer
+from utils.methods import return_response, get_data, get_now_timer, is_within_date_range, computed_sowing_time
 from operations.base_view import BaseView
 from utils.permissions.user_permission import SuperPermission
 from utils.create_log import create_logs
@@ -146,17 +148,14 @@ class CompanyView(BaseView):
     create_log = True
     models = Company
     serializer = CompanySer
-    permission_classes = [SuperPermission]
 
     def get(self, request, row_id=None):
         if request.user.is_super:
             queryset = Company.objects.all()
             data = get_data(queryset, True, request, self, CompanySer, True)
-        elif request.user.role.title == 'Manager':
+        else:
             queryset = request.user.company
             data = get_data(queryset, True, request, self, CompanySer, False)
-        else:
-            data = None
         response = return_response(data=data)
         return JsonResponse(response)
 
@@ -189,10 +188,90 @@ class CompanyUploadLogo(APIView):
             company = Company.objects.get(id=row_id)
             company.logo = request.FILES.get('data')
             company.save()
-            create_logs(request.user, Company, 3, { 'logo_changed': company.logo.url })
-            response = return_response(data={ "id": company.pk, "logo": company.logo.url }, info='上传成功！')
+            create_logs(request.user, Company, 3, {'logo_changed': company.logo.url})
+            response = return_response(data={"id": company.pk, "logo": company.logo.url}, info='上传成功！')
         except Company.DoesNotExist as e:
             response = return_response(status=False, error=f'{e}')
+        return JsonResponse(response)
+
+
+# 公司设备种植作物算法详情
+class CompanyUnitDescView(APIView):
+
+    def get(self, request, company_id):
+        # 设备ID，品类名称，两个时间，两个算法json
+        # 国际化
+        is_en = request.GET.get('language') == 'en'
+        # 先搜索出，该公司下的所有设备
+        unit_list = Unit.objects.filter(room__company_id=company_id).all()
+        result = []
+        for unit in unit_list:
+            # 读取最新的激活的且在种植周期内的种植记录
+            plant = unit.plant_desc.filter(status=True).order_by('-id').first()
+            # 如果有激活的种植周期记录
+            if plant:
+                # 计算当前是否还在种植周期内
+                create_time = plant.create_time.strftime('%Y-%m-%d %H:%M:%S')
+                cycle = plant.cultivar.cycle
+                is_in_cycle = is_within_date_range(create_time, cycle)
+                # 如果在种植周期内，读取数据返回
+                if is_in_cycle:
+                    unit_queue = MessageQueueModel.objects.filter(device_id=unit.deviceId).order_by('-id').first()
+                    if not unit_queue:
+                        unit_queue = {}
+                    else:
+                        unit_queue = unit_queue.content
+                    result.append(
+                        {
+                            'id': plant.id,
+                            'serial_number': unit.serial_number,
+                            'device_id': unit.deviceId,
+                            'cultivar': plant.cultivar.name_en if is_en else plant.cultivar.name_cn,
+                            'create_time': plant.create_time.strftime('%Y-%m-%d %H:%M:%S'),
+                            # 'sowing_time': computed_sowing_time(plant.create_time),  # 已种植时间
+                            # 'cycle': cycle,  # 作物周期
+                            'unit_cycle': plant.algorithm,  # 种植的算法详情
+                            'unit_queue': unit_queue  # 传感器推送的数据
+                        }
+                    )
+            else:
+                # 如果不在周期内，也返回设备信息
+                result.append(
+                    {
+                        'id': None,
+                        'serial_number': unit.serial_number,
+                        'device_id': unit.deviceId,
+                        'cultivar': 'None' if is_en else '无',
+                        'create_time': '',
+                        'sowing_time': '0',
+                        'cycle': '0',
+                        'unit_cycle': {},
+                        'unit_queue': {}
+                    }
+                )
+        response = return_response(data=result)
+        return JsonResponse(response)
+
+
+# 刷新按钮
+class ReloadJsonValView(APIView):
+
+    def get(self, request, plant_id):
+        plant_desc = UnitPlantDesc.objects.filter(pk=plant_id).first()
+        unit_device_id = plant_desc.unit.deviceId
+        unit_queue = MessageQueueModel.objects.filter(device_id=unit_device_id).order_by('-id').first()
+        if unit_queue:
+            unit_queue = unit_queue.content
+        else:
+            unit_queue = {}
+        if plant_desc:
+            data = {
+                'unit_cycle': plant_desc.algorithm,
+                'unit_queue': unit_queue
+            }
+            response = return_response(data=data)
+        else:
+            response = return_response(status=False)
         return JsonResponse(response)
 
 
@@ -282,7 +361,7 @@ class GetUnitOnlineView(APIView):
                     outline.append(device_id)
             else:
                 outline.append(device_id)
-        return { 'online': online, 'offline': outline }
+        return {'online': online, 'offline': outline}
 
 
 # 查询指定设备算法详情,该接口用于查询脚本监听的mq队列存入的数据，用种植记录ID进行查询值

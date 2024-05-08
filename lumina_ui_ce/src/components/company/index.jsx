@@ -9,7 +9,7 @@ function CompanyEditModal(props) {
   const {
     initValue, openModal, closeModal, onOk, editSate
   } = props
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const [form] = Form.useForm()
 
   useEffect(() => {

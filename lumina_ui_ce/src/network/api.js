@@ -57,6 +57,8 @@ export const patchCompany = (id, data) => axios.patch(`/manager/company/${id}`, 
 export const deleteCompany = id => axios.delete(`/manager/company/${id}`)
 export const uploadCompanyLogoApi = (id, data) => axios.post(`/manager/company/uploadlogo/${id}`, data, uploadHeaders)
 export const postCompanyCultivars = (id, data) => axios.post(`/manager/company/cultivars/${id}`, data)
+export const getCompanyUnitDesc = id => axios.get(`/manager/company/unitdesc/${id}`)
+export const reloadCompanyUnitDesc = id => axios.get(`/manager/company/unitdesc/reload/${id}`)
 // 房间管理页面
 export const getRooms = params => axios.get('/manager/room/', { params })
 export const postRooms = data => axios.post('/manager/room/', data)

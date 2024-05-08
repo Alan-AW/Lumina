@@ -28,7 +28,7 @@ function AlgorithmEditModal(props) {
   useEffect(() => {
     if (openModal && initValue) {
       form.setFieldsValue(initValue)
-      const { choices_cn, choices_en, cmd } = initValue
+      const { choices_cn = [], choices_en = [], cmd = {} } = initValue
       setjsonVal({ choices_cn, choices_en, cmd })
     }
     openModal && !initValue && form.setFieldsValue(defaultInitValue)

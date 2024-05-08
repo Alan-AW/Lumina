@@ -3,7 +3,10 @@
  */
 import { useState, useEffect, useMemo } from 'react'
 import { Modal, Table, notification, Button, message, Image } from 'antd'
-import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined, UploadOutlined, SettingOutlined } from '@ant-design/icons'
+import {
+    PlusOutlined, DeleteOutlined, QuestionCircleOutlined,
+    EditOutlined, UploadOutlined, SettingOutlined, EyeOutlined
+} from '@ant-design/icons'
 import baseUrl from 'network/baseUrl'
 import {
     getCompany, postCompany, patchCompany,
@@ -14,6 +17,7 @@ import { FADEIN, pageSize } from 'contants'
 import { openNotification } from 'utils'
 import CompanyEditModal from 'components/company'
 import EditCultivars from 'components/company/cultivars'
+import CompanyAlgorithmDetailModal from 'components/company/companyAlgorithmDetail'
 import UploadImg from 'components/upload'
 import PermissionBtn from 'components/permissionButton/permissionBtn'
 import PermissionPopconfirm from 'components/permissionButton/permissionPopconfirm'
@@ -29,6 +33,8 @@ function Company(props) {
     const [editSate, seteditSate] = useState(false)
     const [editRow, setEditRow] = useState(null)
     const { t, i18n } = useTranslation()
+    // 设备算法详情弹窗
+    const [openUnitDetailModal, setopenUnitDetailModal] = useState(false)
 
     const tableTitle = [
         {
@@ -67,6 +73,22 @@ function Company(props) {
             dataIndex: 'logo',
             width: 180,
             render: logo => <Image src={`${baseUrl()}${logo}`} height={180} width={180} />
+        },
+        {
+            title: t("company.tableTitle.unitDetail"),
+            align: 'center',
+            width: 100,
+            render: row => (
+                <Button
+                    type='primary'
+                    // shape='circle'
+                    icon={<EyeOutlined />}
+                    onClick={() => {
+                        setEditRow(row)
+                        setopenUnitDetailModal(true)
+                    }}
+                />
+            )
         },
         // {
         //     title: t("company.tableTitle.create_time"),
@@ -305,6 +327,15 @@ function Company(props) {
         </Modal>
     ), [openUploadModal])
 
+    // 查看设备算法详情弹窗
+    const unitDescModal = useMemo(() => (
+        <CompanyAlgorithmDetailModal
+            openModal={openUnitDetailModal}
+            closeModal={() => setopenUnitDetailModal(false)}
+            companyId={editRow?.id}
+        />
+    ), [openUnitDetailModal, editRow])
+
     return (
         <>
             {contextHolder}
@@ -326,6 +357,7 @@ function Company(props) {
                 closeModal={() => setEditCultivarModalOpen(false)}
                 onOk={onCultivarOk}
             />
+            {unitDescModal}
         </>
     )
 }

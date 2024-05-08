@@ -232,6 +232,7 @@
       "tel": "联系电话",
       "email": "企业邮箱",
       "logo": "企业logo",
+      "unitDetail": "设备详情",
       "create_time": "创建时间",
       "update_time": "更新时间",
       "action": "操作"
@@ -250,6 +251,13 @@
       "legal_rep": "请输入企业法人",
       "tel": "请输入企业电话",
       "email": "请输入企业邮箱"
+    },
+    "unitDesc": {
+      "modaltitle": "种植周期详情",
+      "serial_number": "设备昵称",
+      "device_id": "设备ID",
+      "cultivar": "作物品类",
+      "create_time": "种植时间"
     }
   },
   "roles": {
