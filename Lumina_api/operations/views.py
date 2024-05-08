@@ -293,8 +293,7 @@ class UnitInfoView(APIView):
 
     def get(self, request, device_id):
         try:
-            unit_obj = Unit.objects.get(deviceId=device_id)
-            queryset = UnitPlantDesc.objects.filter(unit=unit_obj).order_by('-id').first()
+            queryset = UnitPlantDesc.objects.filter(unit__deviceId=device_id, status=True).order_by('-id').first()
             if queryset:
                 data = queryset.algorithm
             else:

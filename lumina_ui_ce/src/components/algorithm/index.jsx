@@ -21,12 +21,16 @@ function AlgorithmEditModal(props) {
   const [jsonVal, setjsonVal] = useState({
     choices_cn: [],
     choices_en: [],
-    cmd: []
+    cmd: {}
   })
   const { t } = useTranslation()
   const [form] = Form.useForm()
   useEffect(() => {
-    openModal && initValue && form.setFieldsValue(initValue)
+    if (openModal && initValue) {
+      form.setFieldsValue(initValue)
+      const { choices_cn, choices_en, cmd } = initValue
+      setjsonVal({ choices_cn, choices_en, cmd })
+    }
     openModal && !initValue && form.setFieldsValue(defaultInitValue)
   }, [openModal, initValue])
   // 关窗
