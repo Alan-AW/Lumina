@@ -137,7 +137,7 @@ const Controller = () => {
                     {
                         dataMap.map((item, index) => {
                             console.log(item.title,'item.title');
-                            if (item.title === 'Photosynthesis') {
+                            if (index===0) {
                                 return (
                                     <ShadowCard key={index} style={{width:'48%', padding: 32 }}>
                                         <AutoView style={{ paddingLeft: 0, paddingRight: 32, marginBottom: 20 }}>
@@ -172,7 +172,7 @@ const Controller = () => {
                                 )
 
                             }
-                            if(item.title === 'System'){
+                            if(index===1){
                                 return (
                                     <ShadowCard key={index} style={{width:'48%', padding: 32 }}>
                                         <AutoView style={{ paddingLeft: 0, paddingRight: 32, marginBottom: 20 }}>

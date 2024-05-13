@@ -118,7 +118,7 @@ export const getLineOptaion = (data: any[]) => {
             symbol: 'none',
             data: item.map((i: any) => { return i.value }),
             itemStyle: {
-                color: colors[index]
+                color: colors[index],
             }
         };
         series.push(seriesItem);
@@ -152,6 +152,7 @@ export const getLineOptaion = (data: any[]) => {
                 rotate: 45,
                 color: '#999',
                 fontSize: adaptationConvert(18),
+                margin:adaptationConvert(30),
             },
         }],
         yAxis: {

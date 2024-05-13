@@ -28,12 +28,11 @@ const AddPage = () => {
     const { loading, data, error } = useRequest(() => getChoices());
     const [selectItem, setSelectItem] = useState<any>('')
 
-    console.log('选择页data',data);
-    
+    console.log('选择页data', data);
+
 
     const routes: any = useRoute();
-    const roomCode = routes.params.roomCode;
-
+    const { roomName, devicesName } = routes.params;
     const [isNext, setIsNext] = useState<boolean>(false)
 
     function handleClick(value: any) {
@@ -50,9 +49,7 @@ const AddPage = () => {
                 <Back />
                 <ShadowCard style={{ padding: 15, marginTop: 30 }}>
 
-                    <AutoText>
-                        <LocalesText  languageKey={locales.Room} rightText={`#${roomCode}`} />
-                    </AutoText>
+                    <NormalText text={roomName} />
 
 
                 </ShadowCard>
@@ -66,10 +63,10 @@ const AddPage = () => {
                                 data.map((item, index) => {
                                     return (
                                         <SpaceBetween width={500} top={40} style={{ alignItems: 'flex-start' }} onPress={() => handleClick(item.value)} key={index}>
-                                           <CustView width={200} padding={[12,25,0,25]}>
-                                           <NormalText left={15} text={item.label} />
-                                            
-                                           </CustView>
+                                            <CustView width={200} padding={[12, 25, 0, 25]}>
+                                                <NormalText left={15} text={item.label} />
+
+                                            </CustView>
                                             <Center padding={30} bgColor="#f6f6f6">
                                                 <Img url={item.icon} size={80} />
 

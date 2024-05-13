@@ -7,7 +7,7 @@ import DialogServer from 'src/helpers/modal';
 import storage from 'src/helpers/storage';
 import Login from '../Login';
 import { loginInSuccess, updateMenuStatus } from 'src/reduxCenter/actionCreators';
-import { LANGUAGE_EN, auth_store } from 'src/store/authStore';
+import { LANGUAGE_CN, LANGUAGE_EN, auth_store } from 'src/store/authStore';
 import { useTranslation } from 'react-i18next';
 import { getAppVersion } from 'src/apis/home';
 import { HEIGHT, WIDTH, isUpgradeRequired } from 'src/constants/global';
@@ -28,7 +28,13 @@ export default function Splash(props: any) {
 
     storage
       .load({ key: 'language' }).then(lng => {
-        i18n.changeLanguage(lng || LANGUAGE_EN);
+        const value = lng || LANGUAGE_CN;
+        storage.save({
+          key: 'language',
+          data: value,
+        });
+        auth_store.language=value;
+        i18n.changeLanguage(value);
       })
     initAuth();
 

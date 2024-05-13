@@ -8,6 +8,7 @@ import {
 } from "react-native";
 
 import { createStyles, useInlineStyle } from "src/helpers/style";
+import Start from "../FlexView/Start";
 
 const WINDOW = Dimensions.get('screen');
 
@@ -40,15 +41,15 @@ class ModalSelect extends PureComponent {
 
           {data.map((item, index) => {
             return (
-              <TouchableOpacity
+              <Start
                 key={index}
-                style={{ width: "100%",paddingBottom:24}}
+                style={{ width: "96%",height:100}}
                 onPress={() => this.handleChange(index, item)}
               >
-                <Text style={useInlineStyle({ paddingTop: 16, color: '#000', fontSize:36 })}>
+                <Text style={useInlineStyle({  color: '#000', fontSize:36 })}>
                   {item.name}
                 </Text>
-              </TouchableOpacity>
+              </Start>
             );
           })}
         </View>
@@ -89,6 +90,7 @@ const styles = createStyles({
     marginLeft: "10%",
     borderRadius: 2,
     padding:32,
+
     marginTop: "20%",
     position: "relative",
     zIndex: 6,

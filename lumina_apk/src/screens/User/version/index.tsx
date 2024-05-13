@@ -34,7 +34,7 @@ export default function Version() {
                 <AutoText style={{fontSize:30}}>当前版本：<AutoText style={{ color: colors.checked,fontSize:30 }}>{APP_VERSION}</AutoText></AutoText>
             </View>
             <Start style={{ marginVertical: 32 }}>
-                <AutoText style={{fontSize:30}}>新版本：<AutoText style={{ color: colors.btnRedColor, paddingLeft: 32, paddingRight: 32,fontSize:30 }}>{data.version}</AutoText>
+                <AutoText style={{fontSize:30}}>最新版本：<AutoText style={{ color: colors.btnRedColor, paddingLeft: 32, paddingRight: 32,fontSize:30 }}>{data.version}</AutoText>
                 </AutoText>
 
             </Start>

@@ -16,7 +16,7 @@ import { IconButton } from "src/components/Button";
 import ToastService from "src/helpers/toast";
 import LocalesText from "src/components/Text";
 import { locales } from "src/helpers/localesText";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useAppDispatch } from "src/reduxCenter/hooks";
 import { uppdateRefresh } from "src/reduxCenter/actionCreators/refreshAction";
 import Center from "src/components/FlexView/Center";
@@ -29,6 +29,7 @@ interface DetailsProps {
 export default function Details(props: DetailsProps) {
 
     const [data, setData] = useState<any>([])
+    const navigation=useNavigation()
     const [loading, setLoading] = useState<any>(true)
     const [show, setShow] = useState(false)
     const routes: any = useRoute();
@@ -40,7 +41,7 @@ export default function Details(props: DetailsProps) {
             console.log('请求结果666', res.data);
             setData(res.data)
 
-        }).catch(()=>{
+        }).catch(() => {
             // ToastAndroid.show('')
         }).finally(() => {
             setLoading(false)
@@ -149,6 +150,7 @@ export default function Details(props: DetailsProps) {
             props.clearSelectItem();
             ToastService.showMessage(res.errs ? JSON.stringify(res.errs) : res.info);
             dispatch(uppdateRefresh({ routeKey: 'Home', status: true }))
+            navigation.goBack();
 
         }).catch(Err => {
             console.log(Err);
@@ -169,11 +171,10 @@ export default function Details(props: DetailsProps) {
 
 
             <AutoView isRow style={{ width: '100%', height: '100%', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.3)' }}>
-
-                <AutoView style={{ backgroundColor: '#fff', width: '40%', height: '60%', padding: 60, borderRadius: 8, marginLeft: '0%' }}>
+                <AutoView style={{ backgroundColor: '#fff', width: '40%', height: '60%', padding: 32, borderRadius: 8, marginLeft: '0%', paddingBottom: 0 }}>
                     <Loading loading={loading}>
                         {
-                            !loading && data.length === 0 ? <Center style={{flex:1}}>
+                            !loading && data.length === 0 ? <Center style={{ flex: 1 }}>
                                 <LocalesText languageKey={locales.nullData} />
                             </Center> :
                                 <ScrollView style={{ flex: 1 }}>
@@ -220,7 +221,7 @@ export default function Details(props: DetailsProps) {
                                                     <View>
                                                         <AutoText style={{ fontSize: 40, color: '#333', fontWeight: '600' }}>{item.subject}</AutoText>
                                                     </View>
-                                                    <AutoView style={{ flexWrap: 'wrap',marginTop:12 }}>
+                                                    <AutoView style={{ flexWrap: 'wrap', marginTop: 12 }}>
                                                         {
                                                             item.choices_self ?
                                                                 <CustomRadioGroup
@@ -266,16 +267,16 @@ export default function Details(props: DetailsProps) {
                                 </ScrollView>
                         }
 
-                        <AutoView style={{ justifyContent: 'flex-end', height: 100, borderTopWidth: 1, borderColor: '#f8f8f8' }} isRow>
+                        <AutoView style={{ justifyContent: 'flex-end', height: 120, borderTopWidth: 1, borderColor: '#f8f8f8', }} isRow>
                             <IconButton onPress={() => {
 
                                 props.clearSelectItem()
-                            }}>
-                                <LocalesText languageKey={locales.cancel} color="#666" right={20} />
+                            }} style={{ borderColor: '#d9d9d9', paddingHorizontal: 10, paddingVertical: 6, borderWidth: 1, borderRadius: 4, marginRight: 24 }}>
+                                <LocalesText languageKey={locales.cancel} color="#666" />
 
                             </IconButton>
-                            <IconButton onPress={() => confirm()}>
-                                <LocalesText languageKey={locales.confirm} color={colors.checked} />
+                            <IconButton onPress={() => confirm()} style={{ backgroundColor: colors.checked, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 4, marginRight: 0 }}>
+                                <LocalesText languageKey={locales.confirm} color={'#fff'} />
                             </IconButton>
                         </AutoView>
                     </Loading>

@@ -63,11 +63,6 @@ const Home = () => {
     if (!loading && Array.isArray(data)) {
       return data.map(item => {
         const { max_current, min_current, serial_number, id } = item.room_desc;
-        // const units_desc_list = item.units_desc || []
-        // const findItem = units_desc_list.find(i => i.device_id || i.id)
-        // let newList = units_desc_list.filter((i) => {
-        //   return i.url && i.cropItemName && i.serial_number
-        // })
         return {
           roomData: {
             roomId: item.room_desc.id,
@@ -76,27 +71,6 @@ const Home = () => {
             roomName: serial_number,
           },
           device_list: item.units_desc
-        }
-        return {
-          id,
-          max: max_current,
-          low: min_current,
-          serial_number: serial_number,
-          addId: findItem ? findItem.id : '',
-          device_id: findItem ? findItem.device_id : '',
-          cropNams: newList.map((i) => {
-            return i.cropItemName;
-          }).join(','),
-          data: newList.map(_item => {
-            return {
-              ..._item,
-              name2: _item.cropItemName,
-              date: _item.cropItemDay,
-              serial_number: _item.serial_number,
-              img: _item.url,
-              cropItemCycle: _item.cropItemCycle,
-            }
-          })
         }
       })
     }
@@ -128,16 +102,7 @@ const Home = () => {
               })
             }
           </ScrollView>
-          {/* <View style={{}}>
-            <FlatList
-              data={renderData} // 您的数据数组
-              renderItem={(abc, dd) => {
-                return <RenderItem item={abc.item} navigation={navigation} />
-              }} // 渲染列表项的函数
-            />
-          </View> */}
         </Loading>
-
       </View>
     </View>
   );

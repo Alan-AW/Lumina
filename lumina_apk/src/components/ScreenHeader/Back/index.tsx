@@ -5,6 +5,7 @@ import AutoView from "src/components/AutoView/View";
 import { IconButton } from "src/components/Button";
 import ShadowCard from "src/components/Shadow";
 import colors from "src/constants/colors";
+import { FONT_SIZE } from "src/constants/style";
 import { adaptationConvert, createStyles } from "src/helpers/style";
 import { IconJiantouCopy } from "src/iconfont";
 
@@ -31,7 +32,7 @@ export default function Back(props: { noneText?: boolean, customPress?: Function
 
             </ShadowCard>
             {
-                !noneText && <AutoText>Back</AutoText>
+                !noneText && <AutoText style={{fontSize:FONT_SIZE.title,fontWeight:'700'}}>Back</AutoText>
             }
 
 

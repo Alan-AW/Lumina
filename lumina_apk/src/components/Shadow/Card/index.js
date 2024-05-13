@@ -6,7 +6,7 @@ import {createStyles} from 'src/helpers/style';
 
 
 const Card = (props) => {
-  const {children, elevation, opacity, cornerRadius} = props;
+  const {children, elevation, opacity, cornerRadius,disabled} = props;
 
 
   const cardStyle = Platform.select({
@@ -34,7 +34,7 @@ const Card = (props) => {
 
   if(props.isBtn){
     return (
-      <TouchableOpacity onPress={()=>props.onPress()} style={[cardStyle.container, styles.card, props.style]}>
+      <TouchableOpacity onPress={()=>props.onPress()} disabled={disabled} style={[cardStyle.container, styles.card, props.style,{backgroundColor:disabled?'#eee':'#fff',opacity:disabled?0.7:1}]}>
          {props.children}
       </TouchableOpacity>
     )

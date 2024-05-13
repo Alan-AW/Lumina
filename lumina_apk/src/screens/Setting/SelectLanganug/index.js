@@ -26,6 +26,12 @@ const DropdownComponent = () => {
 
   const [value, setValue] = useState('');
   useEffect(() => {
+    storage
+    .load({ key: 'language' }).then(lng => {
+      const value = lng || LANGUAGE_CN;
+      auth_store.language=value;
+      i18n.changeLanguage(value);
+    })
 
   }, [])
   function change({value,name}){

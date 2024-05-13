@@ -21,7 +21,7 @@ const ShadowCard = (props: ViewProps & ShadowCardProps & TouchableOpacityProps) 
     )
   }
   return (
-    <Card style={style} onPress={props.onPress} isBtn={props.isBtn}>
+    <Card style={style} onPress={props.onPress} isBtn={props.isBtn} disabled={!!props.disabled}>
     {props.children}
   </Card>
 

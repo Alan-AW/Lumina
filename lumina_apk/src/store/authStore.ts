@@ -14,7 +14,7 @@ type authStoreType = {
 
 
 export const auth_store = resso<authStoreType>({
-    language: LANGUAGE_EN,
+    language: '',
     token: '',
     checkedVersion:0,
     isUpdate:true,

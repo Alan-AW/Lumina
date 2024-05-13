@@ -32,7 +32,7 @@ export default function Update() {
     const [info, setInfo] = useState<any>({});
     const [tod, setTod] = useState<any>('00:00:00');
     const [loading, setLoading] = useState(true);
-    const device_id = routes.params.device_id;
+    const {device_id,roomName,devicesName} = routes.params;
     useEffect(() => {
         getUpdates(device_id).then(res => {
             if (res.code === 200 && res.status) {
@@ -111,10 +111,15 @@ export default function Update() {
 
     return (
         <View style={useInlineStyle({ flex: 1, backgroundColor: colors.themeBgColor, padding: 32, position: 'relative' })}>
-            <View style={{  flex: 1 }}>
+            <View style={{ flex: 1 }}>
                 <SpaceBetween>
-                    <Back noneText={true} />
-                    <TouchableOpacity style={useInlineStyle({ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: colors.btn_primary })} onPress={submit}>
+                    <Start>
+                        <Back noneText={true} />
+                        <AutoText style={{ fontWeight: '700', fontSize: FONT_SIZE.title, color: '#4a4a4a' }}>{`${roomName} | ${devicesName}`}</AutoText>
+                    </Start>
+
+
+                    <TouchableOpacity style={useInlineStyle({ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: colors.checked,borderRadius:8 })} onPress={submit}>
                         <LocalesText languageKey={locales.Submit} style={{ color: '#fff' }} />
                     </TouchableOpacity>
                 </SpaceBetween>

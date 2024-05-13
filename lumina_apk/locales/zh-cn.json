@@ -154,6 +154,9 @@
     "deviceName":"设备名称",
     "on":"开",
     "off":"关",
-    "endPlantCycle":"是否结束当前种植周期"
+    "endPlantCycle":"是否结束当前种植周期",
+    "ManagePlantingCycles":"管理种植周期",
+    "StartNewPlantingCycle":"开始新种植周期",
+    "EndCurrentPlantingCycle":"结束当前种植周期"
 
 }

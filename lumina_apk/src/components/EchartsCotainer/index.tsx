@@ -30,8 +30,8 @@ export default function EchartsCotainer(props: EchartsCotainerPorps) {
             // @ts-ignore
             chart = echarts.init(chartRef.current, 'light', {
                 renderer: 'svg',
-                width: echartWidth + 50,
-                height: echartHeight + 50,
+                width: echartWidth + adaptationConvert(50),
+                height: echartHeight + adaptationConvert(50),
             });
             chart.setOption(options);
         }
@@ -43,7 +43,7 @@ export default function EchartsCotainer(props: EchartsCotainerPorps) {
             <ShadowCard style={{ width: echartWidth + 32, height: echartHeight + 32, backgroundColor: '#fff', position: 'relative' }}>
                 {children}
                 {
-                    options ? <AutoView style={{ flex: 1, flexDirection: 'column', position: 'absolute', left: 0, top: 20, width: '100%', height: '100%' }}>
+                    options ? <AutoView style={{ flex: 1, flexDirection: 'column', position: 'absolute', left: 0, top: 30, width: '100%', height: '100%' }}>
                         <SkiaChart ref={chartRef} />
                     </AutoView> :
                         <Center style={{ flex: 1, flexDirection: 'column' }}>
