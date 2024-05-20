@@ -71,22 +71,22 @@ export default function UpdateApp() {
             <Center>
                 <Center style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start',marginTop:'20%' }}>
                     <View>
-                        <AutoText>当前版本：<AutoText style={{ color: colors.checked }}>{APP_VERSION}</AutoText></AutoText>
+                        <AutoText>{t('CurrentVersion')}：<AutoText style={{ color: colors.checked }}>{APP_VERSION}</AutoText></AutoText>
 
                     </View>
                     <Start style={{ marginVertical: 32 }}>
-                        <AutoText>新版本：<AutoText style={{ color: colors.btnRedColor, paddingLeft: 32, paddingRight: 32 }}>{update_version}</AutoText>
+                        <AutoText>{t('NewVersion')}：<AutoText style={{ color: colors.btnRedColor, paddingLeft: 32, paddingRight: 32 }}>{update_version}</AutoText>
                         </AutoText>
-                        {isDownLoad && <AutoText style={{ color: colors.checked,paddingLeft:32 }}>已下载</AutoText>}
-
+                        {/* {isDownLoad && <AutoText style={{ color: colors.checked,paddingLeft:32 }}>已下载</AutoText>} */}
+                      
                     </Start>
 
                     <IconButton onPress={update} disabled={status === IS_DOWNLOAD}>
-                        <ShadowCard style={{ paddingVertical: 16, paddingHorizontal: 24, marginLeft: 16, borderWidth: 1, borderColor: '#f8f8f8' }}>
+                        <ShadowCard disabled={status === IS_DOWNLOAD} style={{ paddingVertical: 16, paddingHorizontal: 24, marginLeft: 16, borderWidth: 1, borderColor: '#f8f8f8' }}>
                             {
-                                isDownLoad ? <AutoText>安装app</AutoText>
+                                isDownLoad ? <AutoText>{t('Install')}</AutoText>
                                     :
-                                    <AutoText>{status}</AutoText>
+                                    <AutoText>{t('downLoadApp')}</AutoText>
                             }
                         </ShadowCard>
 

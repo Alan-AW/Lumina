@@ -128,10 +128,10 @@
 
     "SerialNumber": "Serial Number",
     "Username": "User Name",
-    "UserRole": "Role",
+    "UserRole": "Permission level",
     "OperationCommand": "Operation Command",
     "ModifiedContent": "Modified Content",
-    "CreationTime": "Creation Time",
+    "CreationTime": "Operation time",
     "OperationLog":"Operation Log",
     "PlantingCycleStartTime":"Planting cycle start time",
     "DaytimeDuration":"Duration",

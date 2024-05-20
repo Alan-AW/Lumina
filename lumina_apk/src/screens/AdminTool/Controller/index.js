@@ -150,14 +150,14 @@ const Controller = () => {
                                                 const isSpectra=cmdItem.cmd__cmd==="spectra";
                                                 return (
                                                     <AutoView  key={cmdIndex} style={{}}>
-                                                        <CustomSwitch value={auto} title={desc} disabled={isSpectra?false:!findSpectra} onChange={(v)=>{
+                                                        <CustomSwitch value={auto} title={desc} disabled={isSpectra?false:!!findSpectra} onChange={(v)=>{
                                                             updateData({
                                                                 cmd__cmd: cmd__cmd,
                                                                 value: value,
                                                                 auto:v
                                                             })
                                                         }} />
-                                                        <CustomSLider step={Number(step)} unit={unit} title={desc} disabled={!findSpectra} value={Number(value)} max={Number(format(max_value))} min={Number(format(min_value))} onChange={(v)=>{
+                                                        <CustomSLider step={Number(step)} unit={unit} title={desc} disabled={!!findSpectra} value={Number(value)} max={Number(format(max_value))} min={Number(format(min_value))} onChange={(v)=>{
                                                             updateData({
                                                                 cmd__cmd: cmd__cmd,
                                                                 value: v,

@@ -164,7 +164,7 @@ const Bright = () => {
 
 
       <AutoView isRow style={{ marginTop: 22, alignItems: 'center', position: 'absolute', left: 64, bottom: 32 }}>
-        <ShadowCard disabled={disabled} style={useInlineStyle({ height: 88, paddingHorizontal: 32, alignItems: 'center', justifyContent: 'center' })}
+        <ShadowCard style={useInlineStyle({ height: 88, paddingHorizontal: 32, alignItems: 'center', justifyContent: 'center' })}
           isBtn onPress={goSet}
         >
           <SpaceBetween>

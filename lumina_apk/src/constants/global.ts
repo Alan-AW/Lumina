@@ -5,7 +5,7 @@ export const WIDTH=Dimensions.get('screen').width
 
 
 
-export const APP_VERSION='1.0.7'
+export const APP_VERSION='1.1.0'
 
 
 

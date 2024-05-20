@@ -22,8 +22,8 @@ const checkedColor = '#2a2a2a';
 
 const defaultColor = '#fff';
 
-const iconContainerSize = 68;
-const iconSize = 47;
+const iconContainerSize = 68*1.3;
+const iconSize = 47*1.3;
 const TabItem = ({ isActive, onPress, children }) => {
   const translateY = new Animated.Value(0);
   const interpolatedColor = translateY.interpolate({

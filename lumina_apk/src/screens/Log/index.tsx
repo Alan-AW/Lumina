@@ -131,8 +131,9 @@ export default function Log() {
             <Start style={{ flexWrap: 'wrap', paddingLeft: 0,borderBottomWidth:1,borderColor:'#f4f4f4' }}>
                 {
                     columns.map((item, index) => {
+                        const _style=item.key==='content'?{flex:1}:{width:item.width}
                         return (
-                            <Center key={index} style={{ width: item.width, backgroundColor: '#f9f9f9', paddingVertical: 32 }}>
+                            <Center key={index} style={{ backgroundColor: '#f9f9f9', paddingVertical: 32,..._style }}>
                                 <LocalesText languageKey={item.languageKey} color='#444' />
                             </Center>
                         )
@@ -155,8 +156,10 @@ export default function Log() {
                             <Start style={{ paddingLeft: 32 }} key={index}>
                                 {
                                     item.map((item: any, index: number) => {
+                                const _style=index=== data.length - 1?{flex:1}:{width:item.width}
 
-                                        return <Center style={{ width: item.width, paddingVertical: 64 }} key={index}>
+
+                                        return <Center style={{ paddingVertical: 64 ,..._style}} key={index}>
                                             <AutoText style={{ fontSize: 30 }}>{item.text}</AutoText>
                                         </Center>
                                     })
@@ -176,8 +179,9 @@ export default function Log() {
                     <Start style={{ paddingLeft: 0 }} key={index}>
                         {
                             item.map((item: any, index: number) => {
+                                const _style=index=== data.length - 1?{flex:1}:{width:item.width}
 
-                                return <Center style={{ width: item.width, paddingVertical: 64 }} key={index}>
+                                return <Center style={{ paddingVertical: 64,..._style }} key={index}>
                                     <AutoText style={{ fontSize: 30 }}>{item.text}</AutoText>
                                 </Center>
                             })

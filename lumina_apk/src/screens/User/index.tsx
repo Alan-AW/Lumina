@@ -77,7 +77,7 @@ const User = () => {
                             </AutoView>
 
                             <AutoView style={{ paddingLeft: 32 }}>
-                            <Start>
+                            <Start>  
                                     <AutoText style={{color:'#444'}}>{state.name}</AutoText>
                                 </Start>
                               

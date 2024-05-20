@@ -107,7 +107,7 @@ const FormContent = ({ navigation }) => {
                     </IconButton>
 
                 </View>
-                <TextButton style={styles.loginBtn} testStyle={useInlineStyle({ color: '#fff', fontSize: 45, paddingVertical: 10, fontWeight: '600' })} onPress={() => login()}>登录</TextButton>
+                <TextButton style={styles.loginBtn} testStyle={useInlineStyle({ color: '#fff', fontSize: 45, paddingVertical: 10, fontWeight: '600' })} onPress={() => login()}>{t('Login')}</TextButton>
             </View>
         </ShadowCard>
     )
