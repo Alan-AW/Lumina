@@ -1,6 +1,11 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 
+//查看公钥
+//D:\Jenv\bin\keytool -list -rfc -keystore "C:\证书\luminaos.keystore" -storepass lumina0525 | openssl x509 -inform pem -pubkey
+//查看MD5
+//D:\Jenv\bin\keytool -list -v -keystore "C:\证书\luminaos.keystore" -storepass lumina0525  
+
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -88,11 +93,9 @@ android {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK
-            // include "arm64-v8a"
-            include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
-
+            include "arm64-v8a"
+            // include "armeabi-v7a", "x86"
         }
-
     }
   
     signingConfigs {
@@ -101,6 +104,14 @@ android {
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
+        }
+        release {
+            if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
+                storeFile file(MYAPP_RELEASE_STORE_FILE)
+                storePassword MYAPP_RELEASE_STORE_PASSWORD
+                keyAlias MYAPP_RELEASE_KEY_ALIAS
+                keyPassword MYAPP_RELEASE_KEY_PASSWORD
+            }
         }
     }
     buildTypes {
