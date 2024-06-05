@@ -163,6 +163,7 @@ export default function Details(props: DetailsProps) {
 
 
 
+    const isDisabled= !loading && data.length === 0
 
     return (
         <Modal visible={show} transparent animationType="fade" onRequestClose={
@@ -174,7 +175,7 @@ export default function Details(props: DetailsProps) {
                 <AutoView style={{ backgroundColor: '#fff', width: '40%', height: '60%', padding: 32, borderRadius: 8, marginLeft: '0%', paddingBottom: 0 }}>
                     <Loading loading={loading}>
                         {
-                            !loading && data.length === 0 ? <Center style={{ flex: 1 }}>
+                            isDisabled ? <Center style={{ flex: 1 }}>
                                 <LocalesText languageKey={locales.nullData} />
                             </Center> :
                                 <ScrollView style={{ flex: 1 }}>
@@ -275,7 +276,8 @@ export default function Details(props: DetailsProps) {
                                 <LocalesText languageKey={locales.cancel} color="#666" />
 
                             </IconButton>
-                            <IconButton onPress={() => confirm()} style={{ backgroundColor: colors.checked, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 4, marginRight: 0 }}>
+                            <IconButton disabled={isDisabled} onPress={() => confirm()} 
+                            style={{ backgroundColor: isDisabled?'#ccc':colors.checked, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 4, marginRight: 0 }}>
                                 <LocalesText languageKey={locales.confirm} color={'#fff'} />
                             </IconButton>
                         </AutoView>

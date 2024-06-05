@@ -51,13 +51,12 @@ export default function CustomSLider(props: CustomSwitchProps) {
                 onValueChange={(v) => setSilderValue(v)}
                 minimumValue={min}
                 step={step}
-                
                 style={{ height: 10, width: '100%' }}
                 thumbTintColor="#559e18"
                 value={sliderValue} />
             <SpaceBetween style={{paddingTop:16}}>
-                <AutoText style={{ fontSize: FONT_SIZE.desc }}>{Number(sliderValue).toFixed(2)} {unit}</AutoText>
-                <AutoText style={{ fontSize: FONT_SIZE.desc }}>{max}</AutoText>
+                <AutoText style={{ fontSize: FONT_SIZE.desc,opacity:disabled?0.7:1 }}>{Number(sliderValue).toFixed(2)} {unit}</AutoText>
+                <AutoText style={{ fontSize: FONT_SIZE.desc,opacity:disabled?0.7:1 }}>{max}</AutoText>
             </SpaceBetween>
 
         </AutoView>

@@ -17,22 +17,27 @@ interface CustomSwitchProps {
     onChange: (v: any) => void;
     title: string;
     value: boolean;
+    cmdIndex: boolean;
 }
 
 export default function CustomSwitch(props: CustomSwitchProps) {
-    const { disabled, onChange, value, title } = props;
+    const { disabled, onChange, value, title, cmdIndex } = props;
     function handlePress() {
         onChange(!value)
     }
     return (
         <SpaceBetween>
-            <AutoText style={{fontSize:FONT_SIZE.title}}>{title}</AutoText>
-            <Start>
-                <LocalesText languageKey={value ? locales.on : locales.off} style={{paddingRight:12}} />
-                <Switch
-                thumbColor={value ? '#fff' : '#757575'} trackColor={{ false: '#e1e1e1', true: disabled ? '#ccc' : '#a5ce77' }}  disabled={disabled} value={value} onChange={handlePress} />
+            <AutoText style={{ fontSize: FONT_SIZE.title }}>{title}</AutoText>
+            {
+                cmdIndex &&
+                <Start>
+                    <LocalesText languageKey={value ? locales.automatic : locales.Manual} style={{ paddingRight: 12 }} />
+                    <Switch
+                        thumbColor={value ? '#fff' : '#757575'} trackColor={{ false: '#e1e1e1', true: disabled ? '#ccc' : '#a5ce77' }} disabled={disabled} value={value} onChange={handlePress} />
 
-            </Start>
+                </Start>
+            }
+
         </SpaceBetween>
     )
 }

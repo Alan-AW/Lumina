@@ -53,7 +53,7 @@ const Controller = () => {
     // const { t,i18n } = useTranslation();
     const route = useRoute();
     // const { loading, data, error } = useRequest(() => getSetting({ id: route.params.id, language: i18n.language }));
-    
+
     const { run, loading, data } = useFetch(() => getSetting({ id: route.params.id, language: i18n.language }));
     const { t, i18n } = useTranslation();
     const paramsList = useRef([])
@@ -68,7 +68,6 @@ const Controller = () => {
 
     function updateData(item, callback) {
         const findIndex = paramsList.current.findIndex(i => i.cmd === item.cmd__cmd)
-        console.log(item, 'item',);
         paramsList.current[findIndex] = {
             cmd: item.cmd__cmd,
             value: item.value,
@@ -136,34 +135,37 @@ const Controller = () => {
                 <AutoView style={{ alignItems: 'flex-start', justifyContent: 'space-between', width: '100%', flexWrap: 'wrap' }} isRow>
                     {
                         dataMap.map((item, index) => {
-                            console.log(item.title,'item.title');
-                            if (index===0) {
+                            console.log(item.title, 'item.title');
+                            if (index === 0) {
                                 return (
-                                    <ShadowCard key={index} style={{width:'48%', padding: 32 }}>
+                                    <ShadowCard key={index} style={{ width: '48%', padding: 32 }}>
                                         <AutoView style={{ paddingLeft: 0, paddingRight: 32, marginBottom: 20 }}>
                                             <AutoText style={{ fontWeight: '700', fontSize: FONT_SIZE.title }}>{item.title}</AutoText>
                                         </AutoView>
                                         {
                                             item.clildren.map((cmdItem, cmdIndex) => {
-                                                const {step,auto,value,min_value,max_value,cmd__cmd,desc,unit}=cmdItem;
-                                                const findSpectra= item.clildren.find(i=>i.cmd__cmd==="spectra" && i.auto===true);
-                                                const isSpectra=cmdItem.cmd__cmd==="spectra";
+                                                const { step, auto, value, min_value, max_value, cmd__cmd, desc, unit } = cmdItem;
+                                                const findSpectra = item.clildren.find(i => i.cmd__cmd === "spectra" && i.auto === true);
+                                                const isSpectra = cmdItem.cmd__cmd === "spectra";
                                                 return (
-                                                    <AutoView  key={cmdIndex} style={{}}>
-                                                        <CustomSwitch value={auto} title={desc} disabled={isSpectra?false:!!findSpectra} onChange={(v)=>{
+                                                    <AutoView key={cmdIndex} style={{marginBottom:36}}>
+                                                        <CustomSwitch value={auto} title={desc} cmdIndex={cmdIndex<2}  disabled={isSpectra ? false : !!findSpectra} onChange={(v) => {
                                                             updateData({
                                                                 cmd__cmd: cmd__cmd,
                                                                 value: value,
-                                                                auto:v
+                                                                auto: v
                                                             })
                                                         }} />
-                                                        <CustomSLider step={Number(step)} unit={unit} title={desc} disabled={!!findSpectra} value={Number(value)} max={Number(format(max_value))} min={Number(format(min_value))} onChange={(v)=>{
-                                                            updateData({
-                                                                cmd__cmd: cmd__cmd,
-                                                                value: v,
-                                                                auto:auto
-                                                            })
-                                                        }} />
+                                                        {
+                                                            cmdIndex > 0 && <CustomSLider step={Number(step)} unit={unit} title={desc} disabled={!!findSpectra} value={Number(value)} max={Number(format(max_value))} min={Number(format(min_value))} onChange={(v) => {
+                                                                updateData({
+                                                                    cmd__cmd: cmd__cmd,
+                                                                    value: v,
+                                                                    auto: auto
+                                                                })
+                                                            }} />
+                                                        }
+
                                                     </AutoView>
                                                 )
                                             })
@@ -172,30 +174,30 @@ const Controller = () => {
                                 )
 
                             }
-                            if(index===1){
+                            if (index === 1) {
                                 return (
-                                    <ShadowCard key={index} style={{width:'48%', padding: 32 }}>
+                                    <ShadowCard key={index} style={{ width: '48%', padding: 32 }}>
                                         <AutoView style={{ paddingLeft: 0, paddingRight: 32, marginBottom: 20 }}>
                                             <AutoText style={{ fontWeight: '700', fontSize: FONT_SIZE.title }}>{item.title}</AutoText>
                                         </AutoView>
                                         {
                                             item.clildren.map((cmdItem, cmdIndex) => {
-                                                const {step,auto,value,min_value,max_value,cmd__cmd,desc,unit}=cmdItem;
-                                               
+                                                const { step, auto, value, min_value, max_value, cmd__cmd, desc, unit } = cmdItem;
+
                                                 return (
-                                                    <AutoView  key={cmdIndex} style={{}}>
-                                                        <CustomSwitch value={auto} title={desc} disabled={false} onChange={(v)=>{
+                                                    <AutoView key={cmdIndex} style={{}}>
+                                                        <CustomSwitch value={auto} cmdIndex={cmdIndex<2} title={desc} disabled={false} onChange={(v) => {
                                                             updateData({
                                                                 cmd__cmd: cmd__cmd,
                                                                 value: value,
-                                                                auto:v
+                                                                auto: v
                                                             })
                                                         }} />
-                                                        <CustomSLider step={Number(step)} unit={unit} title={desc} disabled={false} value={Number(value)} max={Number(format(max_value))} min={Number(format(min_value))} onChange={(v)=>{
-                                                           updateData({
+                                                        <CustomSLider step={Number(step)} unit={unit} title={desc} disabled={false} value={Number(value)} max={Number(format(max_value))} min={Number(format(min_value))} onChange={(v) => {
+                                                            updateData({
                                                                 cmd__cmd: cmd__cmd,
                                                                 value: v,
-                                                                auto:auto
+                                                                auto: auto
                                                             })
                                                         }} />
                                                     </AutoView>
