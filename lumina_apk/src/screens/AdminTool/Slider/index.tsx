@@ -2,10 +2,11 @@
 
 import Slider from "@react-native-community/slider";
 import React, { useState } from "react";
-import { Switch } from "react-native";
+import { Switch, View } from "react-native";
 import AutoText from "src/components/AutoView/Text";
 import AutoView from "src/components/AutoView/View";
 import SpaceBetween from "src/components/FlexView/SpaceBetween";
+import Slide from "src/components/Slide";
 import { FONT_SIZE } from "src/constants/style";
 
 
@@ -43,7 +44,15 @@ export default function CustomSLider(props: CustomSwitchProps) {
 
     return (
         <AutoView style={{ flexDirection: 'column', marginVertical: 64 }}>
-            <Slider maximumTrackTintColor="#ccc"
+            <View style={{opacity:disabled?0.7:1}}>
+            <Slide minValue={min} maxValue={max} value={sliderValue} unit={unit} disabled={disabled} onfinish={(v)=>{
+                console.log('shhishds',v);
+                
+                 onChange(Number(v).toFixed(2))
+            }} />
+            </View>
+           
+            {/* <Slider maximumTrackTintColor="#ccc"
                 minimumTrackTintColor={disabled ? '#666' : "#559e18"}
                 maximumValue={max}
                 disabled={disabled}
@@ -53,11 +62,11 @@ export default function CustomSLider(props: CustomSwitchProps) {
                 step={step}
                 style={{ height: 10, width: '100%' }}
                 thumbTintColor="#559e18"
-                value={sliderValue} />
-            <SpaceBetween style={{paddingTop:16}}>
+                value={sliderValue} /> */}
+            {/* <SpaceBetween style={{paddingTop:16}}>
                 <AutoText style={{ fontSize: FONT_SIZE.desc,opacity:disabled?0.7:1 }}>{Number(sliderValue).toFixed(2)} {unit}</AutoText>
                 <AutoText style={{ fontSize: FONT_SIZE.desc,opacity:disabled?0.7:1 }}>{max}</AutoText>
-            </SpaceBetween>
+            </SpaceBetween> */}
 
         </AutoView>
 

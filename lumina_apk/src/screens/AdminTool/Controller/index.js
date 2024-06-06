@@ -157,7 +157,9 @@ const Controller = () => {
                                                             })
                                                         }} />
                                                         {
-                                                            cmdIndex > 0 && <CustomSLider step={Number(step)} unit={unit} title={desc} disabled={!!findSpectra} value={Number(value)} max={Number(format(max_value))} min={Number(format(min_value))} onChange={(v) => {
+                                                            cmdIndex > 0 && <CustomSLider
+                                                             step={Number(step)} unit={unit} title={desc} disabled={!!findSpectra} 
+                                                             value={Number(value)} max={Number(format(max_value))} min={Number(format(min_value))} onChange={(v) => {
                                                                 updateData({
                                                                     cmd__cmd: cmd__cmd,
                                                                     value: v,
