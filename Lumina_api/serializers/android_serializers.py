@@ -54,9 +54,9 @@ def algorithm_choices_inal_ser(queryset, language):
                 'title': algorithm['title_en'] if en else algorithm['title_cn'],
                 'desc': algorithm['desc_en'] if en else algorithm['desc_cn'],
                 'choices': [
-                    { 'label': choice, 'value': index } for index, choice in enumerate(algorithm['choices_en'])
+                    {'label': choice, 'value': index} for index, choice in enumerate(algorithm['choices_en'])
                 ] if en else [
-                    { 'label': choice, 'value': index } for index, choice in enumerate(algorithm['choices_cn'])
+                    {'label': choice, 'value': index} for index, choice in enumerate(algorithm['choices_cn'])
                 ],
                 'choices_self': algorithm['choices_self']
             }
@@ -78,7 +78,7 @@ def algorithm_choices_inal_ser(queryset, language):
 class ValidateUnitCultivarAlgorithmToMqSer(serializers.Serializer):
     unit = serializers.SlugRelatedField(slug_field='id', queryset=Unit.objects.all())
     cultivar = serializers.SlugRelatedField(slug_field='id', queryset=Cultivar.objects.all())
-    algorithm = serializers.JSONField(error_messages={ 'invalid': '算法格式错误！' })
+    algorithm = serializers.JSONField(error_messages={'invalid': '算法格式错误！'})
 
     def validate(self, attrs):
         # 获取要种植的设备对象
@@ -159,10 +159,10 @@ class ValidateUnitCultivarAlgorithmToMqSer(serializers.Serializer):
 class ValidateUnitAlgorithm(serializers.Serializer):
     unit_device_id = serializers.SlugRelatedField(
         required=True, slug_field='deviceId', queryset=Unit.objects.all(),
-        error_messages={ 'required': 'deviceId参数缺失!' }
+        error_messages={'required': 'deviceId参数缺失!'}
     )
     algorithm = serializers.JSONField(
-        required=True, error_messages={ 'required': 'algorithm参数缺失!' }
+        required=True, error_messages={'required': 'algorithm参数缺失!'}
     )
 
     def validate(self, attrs):

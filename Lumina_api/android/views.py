@@ -90,6 +90,7 @@ class UnitDescView(APIView):
     """
 
     # 24-4-18逻辑修改为返回4个折线图的数据，数据源从设备推送过来的数据中查询即可
+    # 24-5-12所有设备不管是否有种植周期，直接查数据，生成图标数据。
     def get(self, request, unit_id):
         unit_obj = Unit.objects.filter(id=unit_id).first()
         if not unit_obj:
@@ -97,88 +98,88 @@ class UnitDescView(APIView):
             return JsonResponse(response)
         device_id = unit_obj.deviceId
         # 查询出当前设备有效的种植记录
-        plan_desc = UnitPlantDesc.objects.filter(status=True, unit_id=unit_id).order_by('-id').first()
-        data = {
-            'temperature_humidity': [],
-            'fertigation': [],
-            'vpd': [],
-            'lighting': []
-        }
-        response = return_response(data=data)
-        # 如果有种植周期
-        if plan_desc:
-            # 读取作物的周期时长
-            cycle = plan_desc.cultivar.cycle
-            # 计算作物是否还在种植周期内，如果在周期内，那么获取传感器推送的倒序前20条数据
-            create_time = plan_desc.create_time.strftime("%Y-%m-%d %H:%M:%S")
-            # 如果在有效的种植周期内
-            if is_within_date_range(create_time, cycle):
-                try:
-                    # 读取传感器发过来的数据前20条
-                    queryset = MessageQueueModel.objects.filter(device_id=device_id).order_by('-id')[:21]
-                    # 整理出需要的数据
-                    used_data = {
-                        'vpd': [[]],
-                        'temperature_humidity': {
-                            'temperature': [],
-                            'humidity': []
-                        },
-                        'lighting': {
-                            'spectra_450_led': [],
-                            'spectra_660_led': [],
-                            'spectra_main_led': []
-                        },
-                        'fertigation': {
-                            'current_ec': [],
-                            'current_ph': []
-                        }
-                    }
-                    for idx, i in enumerate(queryset):
-                        # 真实数据：Queryset
-                        data_dict = i.content.get('data')
-                        # 测试数据
-                        # data_dict = i.get('data').get('data').get('data')
-                        thc = data_dict.get('thc')
-                        thc_x = thc.get('main_lower').get('last_updated')[11:19]
-                        # vpd
-                        vpd = thc.get('main_lower').get('vpd')
-                        used_data['vpd'][0].append({'key': thc_x, 'value': vpd})
-                        # 温度和湿度
-                        temperature = thc.get('main_lower').get('temperature')
-                        humidity = thc.get('main_lower').get('humidity')
-                        used_data['temperature_humidity']['temperature'].append({'key': thc_x, 'value': temperature})
-                        used_data['temperature_humidity']['humidity'].append({'key': thc_x, 'value': humidity})
-                        # 光照
-                        lighting = data_dict.get('lighting')
-                        spectra_450_led = lighting.get('spectra_450_led')
-                        spectra_660_led = lighting.get('spectra_660_led')
-                        spectra_main_led = lighting.get('spectra_main_led')
-                        lighting_x = lighting.get('last_updated')[11:19]
-                        used_data['lighting']['spectra_450_led'].append({'key': lighting_x, 'value': spectra_450_led})
-                        used_data['lighting']['spectra_660_led'].append({'key': lighting_x, 'value': spectra_660_led})
-                        used_data['lighting']['spectra_main_led'].append({'key': lighting_x, 'value': spectra_main_led})
-                        # 水肥
-                        fertigation = data_dict.get('fertigation')
-                        current_ec = fertigation.get('current_ec')
-                        current_ph = fertigation.get('current_ph')
-                        fertigation_x = fertigation.get('current_last_updated')[11:19]
-                        used_data['fertigation']['current_ec'].append({'key': fertigation_x, 'value': current_ec})
-                        used_data['fertigation']['current_ph'].append({'key': fertigation_x, 'value': current_ph})
+        # plan_desc = UnitPlantDesc.objects.filter(status=True, unit_id=unit_id).order_by('-id').first()
 
-                    # 生成Echarts图表数据
-                    for index, key in enumerate(used_data.keys()):
-                        # 如果是字典
-                        if isinstance(used_data[key], dict):
-                            # 读取字典的key列表
-                            keys = list(used_data[key].keys())
-                            # 循环这个列表，将key对应的列表提出即可
-                            used_data[key] = [used_data[key][k] for k in keys]
-                    # 将data修改为处理后的data值
-                    data = used_data
-                    response = return_response(data=data)
-                except Exception as e:
-                    response = return_response(status=False, error='传感器数据错误！')
+        # response = return_response(data=data)
+        # 如果有种植周期
+        # if plan_desc:
+        # 读取作物的周期时长
+        # cycle = plan_desc.cultivar.cycle
+        # 计算作物是否还在种植周期内，如果在周期内，那么获取传感器推送的倒序前20条数据
+        # create_time = plan_desc.create_time.strftime("%Y-%m-%d %H:%M:%S")
+        # 如果在有效的种植周期内
+        # if is_within_date_range(create_time, cycle):
+        response = self.get_data(device_id=device_id)
         return JsonResponse(response)
+
+    def get_data(self, device_id):
+        try:
+            # 读取传感器发过来的数据前20条
+            queryset = MessageQueueModel.objects.filter(device_id=device_id).order_by('-id')[:21]
+            if not queryset:
+                raise ValueError('暂无传感器数据！')
+            # 整理出需要的数据
+            used_data = {
+                'vpd': [[]],
+                'temperature_humidity': {
+                    'temperature': [],
+                    'humidity': []
+                },
+                'lighting': {
+                    'spectra_450_led': [],
+                    'spectra_660_led': [],
+                    'spectra_main_led': []
+                },
+                'fertigation': {
+                    'current_ec': [],
+                    'current_ph': []
+                }
+            }
+            for idx, i in enumerate(queryset):
+                # 真实数据：Queryset
+                data_dict = i.content.get('data')
+                # 测试数据
+                # data_dict = i.get('data').get('data').get('data')
+                thc = data_dict.get('thc')
+                thc_x = thc.get('main_lower').get('last_updated')[11:19]
+                # vpd
+                vpd = thc.get('main_lower').get('vpd')
+                used_data['vpd'][0].append({'key': thc_x, 'value': vpd})
+                # 温度和湿度
+                temperature = thc.get('main_lower').get('temperature')
+                humidity = thc.get('main_lower').get('humidity')
+                used_data['temperature_humidity']['temperature'].append({'key': thc_x, 'value': temperature})
+                used_data['temperature_humidity']['humidity'].append({'key': thc_x, 'value': humidity})
+                # 光照
+                lighting = data_dict.get('lighting')
+                spectra_450_led = lighting.get('spectra_450_led')
+                spectra_660_led = lighting.get('spectra_660_led')
+                spectra_main_led = lighting.get('spectra_main_led')
+                lighting_x = lighting.get('last_updated')[11:19]
+                used_data['lighting']['spectra_450_led'].append({'key': lighting_x, 'value': spectra_450_led})
+                used_data['lighting']['spectra_660_led'].append({'key': lighting_x, 'value': spectra_660_led})
+                used_data['lighting']['spectra_main_led'].append({'key': lighting_x, 'value': spectra_main_led})
+                # 水肥
+                fertigation = data_dict.get('fertigation')
+                current_ec = fertigation.get('current_ec')
+                current_ph = fertigation.get('current_ph')
+                fertigation_x = fertigation.get('current_last_updated')[11:19]
+                used_data['fertigation']['current_ec'].append({'key': fertigation_x, 'value': current_ec})
+                used_data['fertigation']['current_ph'].append({'key': fertigation_x, 'value': current_ph})
+            # 生成Echarts图表数据
+            for index, key in enumerate(used_data.keys()):
+                # 如果是字典
+                if isinstance(used_data[key], dict):
+                    # 读取字典的key列表
+                    keys = list(used_data[key].keys())
+                    # 循环这个列表，将key对应的列表提出即可
+                    used_data[key] = [used_data[key][k] for k in keys]
+            response = return_response(data=used_data)
+        except ValueError as e:
+            response = return_response(code=500, error=f'{e}')
+        except Exception as e:
+            response = return_response(code=500, error=f'传感器数据错误！{e}')
+        return response
 
 
 # 安卓端请求机器图表数据-此接口第二期做（正式版）

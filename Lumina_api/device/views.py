@@ -33,8 +33,12 @@ class GetUnitSensorView(APIView):
 
     def get(self, request, device_id):
         queryset = MessageQueueModel.objects.filter(device_id=device_id).order_by('-id').first()
-        content = queryset.content if queryset else {}
-        info = f'pk：{queryset.id}-time：{queryset.create_time.strftime("%Y-%m-%d %H:%M:%S")}'
+        if queryset:
+            content = queryset.content
+            info = f'pk：{queryset.id}-time：{queryset.create_time.strftime("%Y-%m-%d %H:%M:%S")}'
+        else:
+            content = {}
+            info = '暂无数据'
         response = return_response(data=content, info=info)
         return JsonResponse(response)
 
