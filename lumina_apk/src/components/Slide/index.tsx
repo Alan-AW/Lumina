@@ -52,6 +52,16 @@ export default (props: SlideProps) => {
     const slideExtent = useSharedValue(0);
     const translationX = useSharedValue(0);
     const slideWidth = useSharedValue(0);
+    const minAnimValue = useSharedValue(0);
+    const maxAnimValue = useSharedValue(0);
+
+    useEffect(()=>{
+        minAnimValue.value=minValue;
+    },[minValue])
+
+    useEffect(()=>{
+        maxAnimValue.value=maxValue;
+    },[maxValue])
 
     useEffect(() => {
         if (typeof value === 'number') {
@@ -101,19 +111,20 @@ export default (props: SlideProps) => {
 
 
             let callbackValue = Number((touchValue * stepValue).toFixed(2));
+            if (callbackValue >= maxAnimValue.value) {
+                callbackValue = maxAnimValue.value;
+            }
+            if (callbackValue <= minAnimValue.value) {
+                callbackValue = minAnimValue.value;
+            }
             ('worklet');
             runOnJS(setSlideValue)(callbackValue)
             runOnJS(onfinish)(Number(callbackValue));
 
+            // runOnJS(onfinish)(Number(callbackValue));
             // if (typeof onfinish === 'function') {
 
-            //     // if (callbackValue >= maxValue) {
-            //     //     callbackValue = maxValue;
-            //     // }
-            //     // if (callbackValue <= minValue) {
-            //     //     callbackValue = minValue;
-            //     // }
-            //     runOnJS(onfinish)(Number(callbackValue));
+               
             //     //   
             // }
         });
