@@ -20,11 +20,11 @@ const languageDetector = {
         storage
           .save({
             key: 'language',
-            data: 'en',
+            data: 'zh',
           })
           .then(res => {
-            callback('en');
-        updateRequestLanuage('en')
+            callback('zh');
+        updateRequestLanuage('zh')
 
           });
       });
@@ -38,12 +38,13 @@ i18next.use(languageDetector).use(initReactI18next).init({
   debug: __DEV__, // 开发环境开启调试
   // 资源文件
   resources: {
-    en: {
-      translation: require('../../locales/en-us.json'),
-    },
     zh: {
       translation: require('../../locales/zh-cn.json'),
     },
+    en: {
+      translation: require('../../locales/en-us.json'),
+    },
+   
   },
   interpolation: {
     escapeValue: false,

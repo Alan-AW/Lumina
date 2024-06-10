@@ -7,7 +7,7 @@ import Animated, {
     withTiming,
 } from 'react-native-reanimated';
 import { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, Alert } from 'react-native';
 import { adaptationConvert, useInlineStyle } from '../../helpers/style';
 import colors from '../../constants/colors';
 import CustomText from '../Text';
@@ -22,7 +22,7 @@ interface SlideProps {
     step?: number;
     value?: number;
     onChange?: (v: number) => void;
-    onfinish?: (v: number) => void;
+    onfinish: (v: number) => void;
     minValue?: number;
     maxValue?: number;
     unit?: string;
@@ -51,6 +51,7 @@ export default (props: SlideProps) => {
     //已滑动的距离
     const slideExtent = useSharedValue(0);
     const translationX = useSharedValue(0);
+    const slideWidth = useSharedValue(0);
 
     useEffect(() => {
         if (typeof value === 'number') {
@@ -86,7 +87,7 @@ export default (props: SlideProps) => {
     const pan = Gesture.Pan()
         .onUpdate(eve => {
             const moveValue = slideExtent.value + eve.translationX + SLIDER_HEIGHT;
-            if (moveValue >= containerWidth || moveValue <= 0) {
+            if (moveValue >= slideWidth.value || moveValue <= 0) {
                 return;
             }
             translationX.value = eve.translationX;
@@ -95,23 +96,26 @@ export default (props: SlideProps) => {
             slideExtent.value = slideExtent.value + translationX.value;
             translationX.value = 0;
             const touchValue = slideExtent.value + SLIDER_HEIGHT;
-            const stepValue = (maxValue - minValue) / containerWidth;
+
+            const stepValue = (maxValue - minValue) / slideWidth.value;
 
 
             let callbackValue = Number((touchValue * stepValue).toFixed(2));
             ('worklet');
             runOnJS(setSlideValue)(callbackValue)
-            if (typeof onfinish === 'function') {
+            runOnJS(onfinish)(Number(callbackValue));
 
-                if (callbackValue >= maxValue) {
-                    callbackValue = maxValue;
-                }
-                if (callbackValue <= minValue) {
-                    callbackValue = minValue;
-                }
-                runOnJS(onfinish)(callbackValue);
-                //   
-            }
+            // if (typeof onfinish === 'function') {
+
+            //     // if (callbackValue >= maxValue) {
+            //     //     callbackValue = maxValue;
+            //     // }
+            //     // if (callbackValue <= minValue) {
+            //     //     callbackValue = minValue;
+            //     // }
+            //     runOnJS(onfinish)(Number(callbackValue));
+            //     //   
+            // }
         });
 
     const animatedStyles = useAnimatedStyle(() => {
@@ -136,7 +140,10 @@ export default (props: SlideProps) => {
     return (
         <AutoView>
             <AutoView
-                onLayout={(v: any) => setContainerWidth(v.nativeEvent.layout.width)}
+                onLayout={(v: any) =>{
+                    setContainerWidth(v.nativeEvent.layout.width);
+                    slideWidth.value=v.nativeEvent.layout.width;
+                }}
                 style={{
                     position: 'relative',
                     flexDirection: 'row',

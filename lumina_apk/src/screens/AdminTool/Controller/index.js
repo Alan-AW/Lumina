@@ -2,7 +2,7 @@
 import Slider from "@react-native-community/slider";
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { ScrollView, Switch } from "react-native-gesture-handler";
-import { View } from 'react-native'
+import { Alert, View } from 'react-native'
 import { getSetting, submitAdmin } from "src/apis/home";
 import AutoText from "src/components/AutoView/Text";
 import AutoView from "src/components/AutoView/View";
@@ -67,26 +67,32 @@ const Controller = () => {
     }, [])
 
     function updateData(item, callback) {
-        const findIndex = paramsList.current.findIndex(i => i.cmd === item.cmd__cmd)
+        const findIndex = paramsList.current.findIndex(i => i.cmd === item.cmd__cmd);
         paramsList.current[findIndex] = {
             cmd: item.cmd__cmd,
             value: item.value,
             auto: item.auto
         };
+        console.log("AdminTool 参数", JSON.stringify({ id: route.params.id, data: paramsList.current }));
+
         //在这里发起保存，执行回调
         submitAdmin({ id: route.params.id, data: paramsList.current }).then(res => {
-            console.log("请求结果", res, paramsList);
             if (res.code == 200) {
                 if (res.errs) {
                     ToastService.showToast(locales.operationFailed);
                     return;
                 }
+                ToastService.showToast(locales.operationSuccessful)
                 run()
                 // if (callback) {
                 //     callback()
                 // }
             }
 
+        }).catch(err=>{
+            ToastService.showToast(locales.operationFailed);
+
+            console.log('请求失败');
         })
 
     }
@@ -148,8 +154,8 @@ const Controller = () => {
                                                 const findSpectra = item.clildren.find(i => i.cmd__cmd === "spectra" && i.auto === true);
                                                 const isSpectra = cmdItem.cmd__cmd === "spectra";
                                                 return (
-                                                    <AutoView key={cmdIndex} style={{marginBottom:36}}>
-                                                        <CustomSwitch value={auto} title={desc} cmdIndex={cmdIndex<2}  disabled={isSpectra ? false : !!findSpectra} onChange={(v) => {
+                                                    <AutoView key={cmdIndex} style={{ marginBottom: 36 }}>
+                                                        <CustomSwitch value={auto} title={desc} cmdIndex={cmdIndex < 2} disabled={isSpectra ? false : !!findSpectra} onChange={(v) => {
                                                             updateData({
                                                                 cmd__cmd: cmd__cmd,
                                                                 value: value,
@@ -158,14 +164,14 @@ const Controller = () => {
                                                         }} />
                                                         {
                                                             cmdIndex > 0 && <CustomSLider
-                                                             step={Number(step)} unit={unit} title={desc} disabled={!!findSpectra} 
-                                                             value={Number(value)} max={Number(format(max_value))} min={Number(format(min_value))} onChange={(v) => {
-                                                                updateData({
-                                                                    cmd__cmd: cmd__cmd,
-                                                                    value: v,
-                                                                    auto: auto
-                                                                })
-                                                            }} />
+                                                                step={Number(step)} unit={unit} title={desc} disabled={!!findSpectra}
+                                                                value={Number(value)} max={Number(format(max_value))} min={Number(format(min_value))} onChange={(v) => {
+                                                                    updateData({
+                                                                        cmd__cmd: cmd__cmd,
+                                                                        value: Number(v),
+                                                                        auto: auto
+                                                                    })
+                                                                }} />
                                                         }
 
                                                     </AutoView>
@@ -188,7 +194,7 @@ const Controller = () => {
 
                                                 return (
                                                     <AutoView key={cmdIndex} style={{}}>
-                                                        <CustomSwitch value={auto} cmdIndex={cmdIndex<2} title={desc} disabled={false} onChange={(v) => {
+                                                        <CustomSwitch value={auto} cmdIndex={cmdIndex < 2} title={desc} disabled={false} onChange={(v) => {
                                                             updateData({
                                                                 cmd__cmd: cmd__cmd,
                                                                 value: value,

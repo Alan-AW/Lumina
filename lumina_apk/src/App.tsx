@@ -14,6 +14,7 @@ import { checkDevicesAuth } from './utils';
 import * as echarts from 'echarts/core';
 import { SvgChart, SVGRenderer, SkiaChart } from '@wuba/react-native-echarts';
 import { BarChart, LineChart } from 'echarts/charts';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 import {
   DataZoomComponent
@@ -38,11 +39,14 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Provider store={store}>
-        <StatusBar barStyle="dark-content" backgroundColor="rgb(255,255,245)" />
-        <Router />
-        <UseModal ref={ref => DialogServer.initDialog(ref)} />
-      </Provider>
+      <RootSiblingParent>
+        <Provider store={store}>
+          <StatusBar barStyle="dark-content" backgroundColor="rgb(255,255,245)" />
+          <Router />
+          <UseModal ref={ref => DialogServer.initDialog(ref)} />
+        </Provider>
+      </RootSiblingParent>
+
     </GestureHandlerRootView>
   );
 }

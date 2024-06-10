@@ -67,6 +67,7 @@ export default function Details(props: DetailsProps) {
 
                 for (let i = 0; i < element.child.length; i++) {
                     const childItem = element.child[i]
+                    
                     initId[element.child[i]['id']] = null;
                     if (element.choices_self) {
                         raidoList.push({
@@ -84,6 +85,8 @@ export default function Details(props: DetailsProps) {
                     }
 
                 }
+                console.log('当前item',raidoListData);
+
                 raidoListData.push({
                     subject: element.subject,
                     choices_self: element.choices_self,
@@ -107,9 +110,6 @@ export default function Details(props: DetailsProps) {
         setShow(!show)
 
     }
-    function close() {
-
-    }
 
     /**
      * 提交接口
@@ -129,6 +129,8 @@ export default function Details(props: DetailsProps) {
                 const isId = element.child.find((i: any) => {
                     return i.id == key;
                 })
+                console.log();
+                
                 if (isId) {
                     submitData.push({
                         id: key,
@@ -146,6 +148,9 @@ export default function Details(props: DetailsProps) {
             //指令集
             algorithm: submitData,
         }
+        console.log('提交参数', JSON.stringify(params),data,radioSelected);
+        return;
+        
         submitChoices(params).then((res) => {
             props.clearSelectItem();
             ToastService.showMessage(res.errs ? JSON.stringify(res.errs) : res.info);
@@ -228,14 +233,19 @@ export default function Details(props: DetailsProps) {
                                                                 <CustomRadioGroup
                                                                     data={selectData}
                                                                     onChange={(v: any, row: any) => {
+                                                                        console.log(21222);
+                                                                        
                                                                         setRadioSelected({
                                                                             ...radioSelected,
                                                                             v: row.value
                                                                         })
 
+
                                                                     }}
                                                                 /> :
                                                                 moreData.map((data: any, j: number) => {
+                                                                    console.log(333);
+
                                                                     return (
                                                                         <AutoView key={j} style={{ marginTop: 20, marginBottom: 10 }}>
                                                                             <View>
