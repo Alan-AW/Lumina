@@ -289,13 +289,15 @@ function Cultivar(props) {
   return (
     <>
       {contextHolder}
-      <Button
-        onClick={addClick}
-        children={t('cultivar.AddCultivar')}
-        style={{ marginBottom: "var(--content-margin)" }}
-        type='primary'
-        icon={<PlusOutlined />}
-      />
+      <PermissionComponent allowRoles={['超级管理员']}>
+        <Button
+          onClick={addClick}
+          children={t('cultivar.AddCultivar')}
+          style={{ marginBottom: "var(--content-margin)" }}
+          type='primary'
+          icon={<PlusOutlined />}
+        />
+      </PermissionComponent>
       {table}
       {editModal}
       {algorithmModal}
