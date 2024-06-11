@@ -122,9 +122,9 @@ class ChoicesCultivarsView(APIView):
         query = request.query_params.dict().get('language')
         if query == 'en':
             queryset = Cultivar.objects.all().values('id', 'name_en')
-            data = [{ "id": item['id'], 'title': item['name_en'] } for item in queryset]
+            data = [{"id": item['id'], 'title': item['name_en']} for item in queryset]
         else:
             queryset = Cultivar.objects.all().values('id', 'name_cn')
-            data = [{ "id": item['id'], 'title': item['name_cn'] } for item in queryset]
+            data = [{"id": item['id'], 'title': item['name_cn']} for item in queryset]
         response = return_response(data=data)
         return JsonResponse(response)

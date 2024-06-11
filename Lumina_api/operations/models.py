@@ -165,6 +165,7 @@ class Cultivar(models.Model):
 
 
 # 2024-2-4新增品类算法表，该表为固定字段内容，供用户选择种植品类的个性化指令
+# 24-6-10该表不用于控制具体的算法，将算法交给公司管理员编辑，暂保留cmd字段作为默认值提供
 class Algorithm(models.Model):
     subject_cn = models.CharField(max_length=64, verbose_name='算法主题cn')
     subject_en = models.CharField(max_length=64, verbose_name='算法主题en')
@@ -186,6 +187,25 @@ class Algorithm(models.Model):
 
     def __str__(self):
         return f'{self.subject_cn}-{self.title_cn}'
+
+
+# 24-6-10新增公司的品类算法控制表
+class CompanyCultivarAlgorithm(models.Model):
+    company = models.ForeignKey(to=Company, on_delete=models.CASCADE, verbose_name='公司')
+    cultivar = models.ForeignKey(to=Cultivar, on_delete=models.CASCADE, verbose_name='种植品类')
+    algorithm = models.ForeignKey(
+        to=Algorithm, on_delete=models.CASCADE, null=True, blank=True, default=None,
+        related_name='company_algorithm', verbose_name='对应算法'
+    )
+    cmd = models.JSONField(default=dict, verbose_name='算法指令集')
+
+    class Meta:
+        db_table = 'company_cultivar_algorithm'
+        verbose_name = '公司品类算法'
+        ordering = ('-id',)
+
+    def __str__(self):
+        return f'{self.company}-{self.cultivar}'
 
 
 # 设备作物详情表

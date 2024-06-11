@@ -20,6 +20,7 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^13.4.1",
     "react-json-view": "^1.21.3",
+    "react-monaco-editor": "^0.55.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",

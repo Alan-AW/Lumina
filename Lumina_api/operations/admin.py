@@ -1,6 +1,6 @@
 from django.contrib import admin
 from operations.models import Company, Room, Unit, Temperature, Fertilizer, \
-    UnitPlantDesc, Lighting, UnitSetting, UnitSettingsList, Cultivar, Algorithm
+    UnitPlantDesc, Lighting, UnitSetting, UnitSettingsList, Cultivar, Algorithm, CompanyCultivarAlgorithm
 
 
 # 企业
@@ -99,3 +99,11 @@ class LightingAdmin(admin.ModelAdmin):
     list_display = ['id', 'moment', 'deviceId', 'deviceSecret', 'json_val']
     list_editable = ['deviceId', 'deviceSecret', 'json_val']
     search_fields = ['deviceId', 'deviceSecret']
+
+
+# 公司品类算法
+@admin.register(CompanyCultivarAlgorithm)
+class CompanyCultivarAlgorithmAdmin(admin.ModelAdmin):
+    list_display = ['id', 'company', 'cultivar', 'algorithm', 'cmd']
+    list_editable = ['company', 'cultivar', 'algorithm', 'cmd']
+    search_fields = ['company__id', 'cultivar__id']

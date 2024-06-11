@@ -1,5 +1,5 @@
 /**
- * 品类管理页面指令控制分配表单
+ * 超级管理员为品类分配算法弹窗表单
  */
 import { useEffect, useState } from 'react'
 import { Form, message, Modal, InputNumber, Tree } from 'antd'

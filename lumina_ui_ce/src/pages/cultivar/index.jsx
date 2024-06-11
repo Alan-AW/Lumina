@@ -5,11 +5,17 @@ import { useState, useEffect, useMemo } from 'react'
 import { Table, notification, Button, message, Image, Popconfirm } from 'antd'
 import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined, EditOutlined, SettingOutlined } from '@ant-design/icons'
 import { FADEIN, pageSize } from 'contants'
-import { getCultvar, postCultvar, patchCultvar, deleteCultvar, postCultvarAlgorithm } from 'network/api'
+import {
+  getCultvar, postCultvar, patchCultvar,
+  deleteCultvar, postCultvarAlgorithm,
+  postCultivarCmd
+} from 'network/api'
 import getBaseUrl from 'network/baseUrl'
 import { openNotification } from 'utils'
 import CultivarEditModal from 'components/cultivar'
 import AlgorithmEditModal from 'components/cultivar/algorithm'
+import EditCultivarAlgorithm from 'components/cultivar/algorithm/editCultivarAlgorithm'
+import PermissionComponent from 'components/permissionButton/permissionComponent'
 import { useTranslation } from "react-i18next";
 
 function Cultivar(props) {
@@ -17,8 +23,12 @@ function Cultivar(props) {
   const [params, setparams] = useState({ page: 1 })
   const [tableData, settableData] = useState([])
   const [tableDataCount, settableDataCount] = useState(0)
+  // 编辑品类弹窗开关
   const [openModal, setopenModal] = useState(false)
+  // 分配算法弹窗开关
   const [openAlgorithmModal, setOpenAlgorithmModal] = useState(false)
+  // 编辑算法指令集开关
+  const [openCultivarCom, setopenCultivarCom] = useState(false)
   const [editSate, seteditSate] = useState(false)
   const [editRow, setEditRow] = useState(null)
   const { t, i18n } = useTranslation()
@@ -65,33 +75,47 @@ function Cultivar(props) {
       align: 'center',
       render: row => (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
-          <Button
-            type='primary'
-            shape='circle'
-            icon={<EditOutlined />}
-            onClick={() => editClick(row)}
-          />
-          <Button
-            type='primary'
-            shape='circle'
-            icon={<SettingOutlined />}
-            onClick={() => editAlgorithmClick(row)}
-          />
-          <Popconfirm
-            title={t("cultivar.DelCultivar")}
-            description={t("cultivar.DelCultivarDES")}
-            okText="Yes"
-            okType='danger'
-            cancelText="No"
-            onConfirm={() => deleteRow(row)}
-            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-          >
+          <PermissionComponent allowRoles={['超级管理员']}>
             <Button
+              type='primary'
               shape='circle'
-              danger
-              icon={<DeleteOutlined />}
+              icon={<EditOutlined />}
+              onClick={() => editClick(row)}
             />
-          </Popconfirm>
+          </PermissionComponent>
+          <PermissionComponent allowRoles={['超级管理员']}>
+            <Button
+              type='primary'
+              shape='circle'
+              icon={<SettingOutlined />}
+              onClick={() => editAlgorithmClick(row)}
+            />
+          </PermissionComponent>
+          <PermissionComponent allowRoles={['团队经理', '植物科学家', '观察员', '硬件工程师']}>
+            <Button
+              type='primary'
+              shape='circle'
+              icon={<SettingOutlined />}
+              onClick={() => cultivarCmdClick(row)}
+            />
+          </PermissionComponent>
+          <PermissionComponent allowRoles={['超级管理员']}>
+            <Popconfirm
+              title={t("cultivar.DelCultivar")}
+              description={t("cultivar.DelCultivarDES")}
+              okText="Yes"
+              okType='danger'
+              cancelText="No"
+              onConfirm={() => deleteRow(row)}
+              icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+            >
+              <Button
+                danger
+                shape='circle'
+                icon={<DeleteOutlined />}
+              />
+            </Popconfirm>
+          </PermissionComponent>
         </div>
       )
     }
@@ -235,6 +259,33 @@ function Cultivar(props) {
     />
   ), [editRow, openAlgorithmModal])
 
+  // 点击编辑指令集弹窗
+  const cultivarCmdClick = row => {
+    setEditRow(row)
+    setopenCultivarCom(true)
+  }
+
+  // 公司管理员对品类指令集提交
+  const onCultivarCmdOk = value => {
+    postCultivarCmd(editRow.id, value).then(res => {
+      if (res.status) {
+        message.success(res.info)
+      } else {
+        message.error(res.errs)
+      }
+    }).catch(err => console.log(err))
+  }
+
+  // 编辑品类算法指令集弹窗
+  const cultivarCmdModal = useMemo(() => (
+    <EditCultivarAlgorithm
+      openModal={openCultivarCom}
+      closeModal={() => setopenCultivarCom(false)}
+      onOk={onCultivarCmdOk}
+      initValue={editRow}
+    />
+  ), [openCultivarCom, editRow])
+
   return (
     <>
       {contextHolder}
@@ -248,6 +299,7 @@ function Cultivar(props) {
       {table}
       {editModal}
       {algorithmModal}
+      {cultivarCmdModal}
     </>
   )
 }

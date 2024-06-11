@@ -1,17 +1,20 @@
 import time
+
+from django.db.transaction import atomic
 from rest_framework.views import APIView
 from django.http import JsonResponse
 
 from device.models import MessageQueueModel
 from operations.models import Room, Unit, Temperature, Species, RoomDesc, Lighting, Cultivars, Models, Triggers, \
-    Action, Instruction, Phases, Company, UnitSettingsList, UnitSetting, Cultivar, Algorithm, UnitPlantDesc
+    Action, Instruction, Phases, Company, UnitSettingsList, UnitSetting, Cultivar, Algorithm, UnitPlantDesc, \
+    CompanyCultivarAlgorithm
 from serializers.operations_serializers import RoomSer, UnitSer, ExportDataSer, CompanySer, UnitSettingsListSer, \
     UnitSettingSer, CultivarSer, AlgorithmSer
 from serializers.three_data_serializers import SpeciesDataSer, CultivarsDataSer, ModelsDataSer, PhasesDataSer, \
     InstructionDataSer, ActionDataSer, TriggersDataSer
 from utils.methods import return_response, get_data, get_now_timer, is_within_date_range, computed_sowing_time
 from operations.base_view import BaseView
-from utils.permissions.user_permission import SuperPermission
+from utils.permissions.user_permission import SuperPermission, ExcludeSuperPermission
 from utils.create_log import create_logs
 
 
@@ -385,12 +388,67 @@ class UnitInfoView(APIView):
 
 # 品类管理
 class CultivarView(BaseView):
-    permission_classes = [SuperPermission]
+    # permission_classes = [SuperPermission]
     models = Cultivar
     serializer = CultivarSer
 
+    def get_queryset(self, request, *args, **kwargs):
+        if request.user.is_super:
+            queryset = Cultivar.objects.all()
+        else:
+            queryset = request.user.company.allow_cultivars.all()
+        return queryset
 
-# 品类管理分配算法
+    def get(self, request, row_id=None):
+        queryset = self.get_queryset(request, row_id)
+        data = get_data(queryset, True, request, self, self.serializer)
+        response = return_response(data=data)
+        return JsonResponse(response)
+
+    def post(self, request):
+        if request.user.is_super:
+            ser = self.serializer(data=request.data)
+            if ser.is_valid():
+                ser.save()
+                if self.create_log:
+                    create_logs(request.user, self.models, 2, request.data)
+                response = return_response(data=ser.data, info='添加操作成功！')
+            else:
+                response = return_response(status=False, error=ser.errors)
+        else:
+            response = return_response(status=False, error='没有权限！')
+        return JsonResponse(response)
+
+    def patch(self, request, row_id):
+        if request.user.is_super:
+            queryset = self.models.objects.get(id=row_id)
+            ser = self.serializer(instance=queryset, data=request.data)
+            if ser.is_valid():
+                ser.save()
+                if self.create_log:
+                    create_logs(request.user, self.models, 3, request.data)
+                response = return_response(data=ser.data, info='信息更新成功！')
+            else:
+                response = return_response(status=False, error=ser.errors)
+        else:
+            response = return_response(status=False, error='没有权限！')
+        return JsonResponse(response)
+
+    def delete(self, request, row_id):
+        if request.user.is_super:
+            try:
+                data = self.models.objects.filter(id=row_id).delete()
+                if self.create_log:
+                    create_logs(request.user, self.models, 4, row_id)
+                response = return_response(data=int(row_id), info=f'成功删除{data}条数据！')
+            except self.models.DoesNotExist as e:
+                response = return_response(status=False, error=f'{e}')
+        else:
+            response = return_response(status=False, error='没有权限！')
+        return JsonResponse(response)
+
+
+# 管理员为品类管理分配算法
 class CultivarAlgorithmView(APIView):
     permission_classes = [SuperPermission]
 
@@ -403,6 +461,56 @@ class CultivarAlgorithmView(APIView):
             return JsonResponse(response)
         cultivar_obj.algorithm.set(algorithm_list)
         response = return_response(info='操作成功！')
+        return JsonResponse(response)
+
+
+# 公司管理员控制台为品类编写算法-查询与提交品类算法
+class CultivarAlgorithmCmdView(APIView):
+    permission_classes = [ExcludeSuperPermission]
+
+    def get(self, request, cultivar_id):
+        # 查询品类
+        cultivar = Cultivar.objects.filter(id=cultivar_id).first()
+        if not cultivar:
+            response = return_response(status=False, error='未找到该品类')
+            return JsonResponse(response)
+        company = request.user.company
+        # 查询品类支持的算法
+        algorithm = cultivar.algorithm.all()
+        data = []
+        # 遍历算法
+        for item in algorithm:
+            # 查询该公司是否对这个算法进行了编辑
+            has_record = CompanyCultivarAlgorithm.objects.filter(
+                company=company, cultivar=cultivar, algorithm=item
+            ).first()
+            # 读取指令集：如果编辑了，那就使用编辑的指令集，否则使用算法默认值
+            json = item.cmd if not has_record else has_record.cmd
+            data.append({
+                    'id': item.id,
+                    'title': f'{item.subject_cn}:{item.title_cn}',
+                    'json': json
+                })
+        response = return_response(data=data)
+        return JsonResponse(response)
+
+    def post(self, request, cultivar_id):
+        data = request.data  # {"10": {...}, ...} key：算法ID，value：指令集json
+        algorithm_ids = data.keys()
+        if len(algorithm_ids) < 1:
+            response = return_response(status=False, error='请选择算法！')
+            return JsonResponse(response)
+        company_id = request.user.company.id
+        try:
+            with atomic():
+                for ago in algorithm_ids:
+                    CompanyCultivarAlgorithm.objects.update_or_create(
+                        company_id=company_id, cultivar_id=cultivar_id, algorithm_id=ago,
+                        defaults={'cmd': data[ago]}
+                    )
+                response = return_response(info='操作成功')
+        except Exception:
+            response = return_response(status=False, error='操作失败')
         return JsonResponse(response)
 
 
