@@ -5,7 +5,7 @@ import pytz
 from rest_framework import serializers
 from collections import defaultdict
 from android.models import SendMessageToQueue
-from operations.models import Cultivar, Algorithm, Unit, UnitPlantDesc
+from operations.models import Cultivar, Algorithm, Unit, UnitPlantDesc, CompanyCultivarAlgorithm
 from utils.methods import is_within_date_range
 
 
@@ -83,6 +83,7 @@ class ValidateUnitCultivarAlgorithmToMqSer(serializers.Serializer):
     def validate(self, attrs):
         # 获取要种植的设备对象
         unit = attrs.get('unit')
+        cultivar = attrs.get('cultivar')
         # 查询设备是否还存在种植周期
         cycle_record = UnitPlantDesc.objects.filter(unit=unit, status=True).first()
         # 如果存在种植周期
@@ -119,7 +120,7 @@ class ValidateUnitCultivarAlgorithmToMqSer(serializers.Serializer):
         2024-3-28确定推送数据格式和内容，但是APP端选择的value值和是否默认推送的内容
         不在此次修改之内，逻辑核心目前只能识别此次推送的数据，其余逻辑待后续完善。
         """
-        algorithm_body = self.create_algorithm_body(attrs['device_id'], algorithm)
+        algorithm_body = self.create_algorithm_body(cultivar, attrs['device_id'], algorithm)
         attrs['algorithm'] = algorithm_body
         return attrs
 
@@ -127,7 +128,7 @@ class ValidateUnitCultivarAlgorithmToMqSer(serializers.Serializer):
         unique_str = str(uuid.uuid4()).replace('-', '')[:12]
         return unique_str
 
-    def create_algorithm_body(self, device_id, algorithm):
+    def create_algorithm_body(self, cultivar, device_id, algorithm):
         grow_cycle_id = self.create_uuid()
         now = datetime.datetime.now(pytz.timezone('Asia/Shanghai'))
         custom_format = now.strftime('%Y-%m-%dT%H:%M:%S%z')
@@ -145,13 +146,26 @@ class ValidateUnitCultivarAlgorithmToMqSer(serializers.Serializer):
                 'grow_cycle_id': None,
                 'version': '0.5A.0',
                 'tod': tod,
-                'instructions': self.get_instructions(algorithm)
+                'instructions': self.get_instructions(cultivar, device_id, algorithm)
             }
         }
         return data
 
-    def get_instructions(self, algorithm):
-        data = [Algorithm.objects.filter(id=item['id']).first().cmd for item in algorithm]
+    def get_instructions(self, cultivar, device_id, algorithm):
+        unit = Unit.objects.filter(deviceId=device_id).first()
+        room = unit.room
+        company = room.company
+        data = []
+        for item in algorithm:
+            has_record = CompanyCultivarAlgorithm.objects.filter(
+                cultivar=cultivar, company=company, algorithm_id=item['id']
+            ).first()
+            if has_record:
+                cmd = has_record.cmd
+            else:
+                algorithm_obj = Algorithm.objects.filter(id=item['id']).first()
+                cmd = algorithm_obj.cmd
+            data.append(cmd)
         return data
 
 
