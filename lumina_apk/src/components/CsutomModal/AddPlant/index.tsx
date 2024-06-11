@@ -26,12 +26,14 @@ interface AddPlantProps {
 
 }
 
+
 export default (props: AddPlantProps) => {
     const { onClose, plantId, onConfim, devicesId } = props;
     const modalRef = useRef<any>(null)
     const [data, setData] = useState<any>([])
     const [loading, setLoading] = useState<any>(true)
     const [selected, setSelected] = useState<any>({})
+    const paramsList = useRef<any[]>([]);
 
 
     useEffect(() => {
@@ -58,12 +60,42 @@ export default (props: AddPlantProps) => {
         )
     }, [])
 
+    //设置单选复选项
+    const setFormItem = (data: any[]) => {
+        if (data.length > 0) {
+            const arr: any[] = [];
+            data.forEach(item => {
+                //为多选的情况下
+                if (!item.choices_self) {
+                    item.child.map((i: any) => {
+                        arr.push({
+                            id: i.id,
+                            selectValue: '',
+                            selectIndex: '',
+                        })
+                    })
+                } else {
+                    arr.push({
+                        id: item.subject || '123',
+                        selectValue: '',
+                        selectIndex: '',
+                    })
+
+                }
+            });
+            paramsList.current = arr;
+        }
+    }
+
     const getOtherRender = (renderData: any[]) => {
+        //choices_self 为单选  false为多选
+        setFormItem(renderData)
         const raidoListData: any = [];
         renderData.forEach(parentItem => {
             const raidoList: any = [];
             parentItem.child.forEach((childItem: any) => {
                 if (parentItem.choices_self) {
+
                     raidoList.push({
                         ...childItem,
                         value: childItem.id,
@@ -103,28 +135,37 @@ export default (props: AddPlantProps) => {
         let moreData: any = [];
         if (item.choices_self) {
             selectData = item.raidoList.map((i: any, key: number) => ({
-                id: key + 'chose',
+                id: i.id,
                 value: i.id,
                 label: i.title,
                 size: 20,
+                choices_self: true
             }))
+
         } else {
             item.raidoList.forEach((_item: any) => {
                 const formatData = _item.choices.map((cho: any, _key: number) => {
                     return {
-                        id: _key + 'child',
+                        id: cho.value,
                         value: cho.value,
                         label: cho.label,
                         size: 20,
                     }
+
                 })
                 moreData.push({
                     title: _item.title,
                     id: _item.id,
                     formatData,
+                    label: 'child',
+                    choices_self: _item.choices_self
                 })
             });
         }
+        console.log(moreData, selectData, '选项form');
+
+
+
         return {
             selectData,
             moreData,
@@ -132,67 +173,54 @@ export default (props: AddPlantProps) => {
 
     }
 
-    const handleOnChange = (row: any, item: any, dataArr: any[], index: number) => {
-        console.log(selected, 'selected');
-        const select: any = JSON.parse(JSON.stringify(selected))
-        const findIndex = dataArr.findIndex((i: any) => i.value === row.value);
+    const handleOnChange = (row: any, index: number,subject?:string) => {
 
-        //生成数据
-        if (item.choices_sel) {
-            select[index] = {
-                choices_sel: true,
-                parentIndex: index,
-                params: {
-                    id: row.value,
-                    value: findIndex,
-                    choices_self: true,
-                }
+        const findIndex = paramsList.current.findIndex(i => {
+            if(!subject){
+                return i.id === row.value
             }
-            setSelected(select)
-            return;
+            return i.id === subject
+        });
+
+        if (findIndex >= 0) {
+            paramsList.current[findIndex] = {
+                ...paramsList.current[findIndex],
+                selectValue: row.value,
+                selectIndex: index
+            }
         }
-        dataArr.forEach(radioItem=>{
-            if(row.value===radioItem.value){
-                select[index] = {
-                    choices_sel: true,
-                    parentIndex: index,
-                    params: {
-                        id: row.value,
-                        value: findIndex,
-                        choices_self: true,
-                    }
-                }
-            }
-
-        })
-        
-
-
-
-        setSelected(select)
+        console.log(paramsList.current, '需要提交的数据');
     }
 
     const submit = () => {
+        const arr = paramsList.current.filter(i => {
+            return typeof i.selectValue !== 'string'
+        }).map(i => ({
+            id: i.selectValue,
+            value: typeof i.id ==='string'?'':i.selectIndex,
+            choices_self: typeof i.id ==='string',
+        }))
+        console.log('提交的参数',arr);
+
         const params = {
             //设备id
             'unit': devicesId,
             //蔬菜id
             'cultivar': plantId,
             //指令集
-            algorithm: arrRepeat(selected, 'id'),
+            algorithm: arr,
         }
-        console.log('提交参数', params);
+        
+        submitChoices(params).then((res) => {
+            onConfim()
+            ToastService.showMessage(res.errs ? JSON.stringify(res.errs) : res.info);
+            closeModal();
 
-        // submitChoices(params).then((res) => {
+        }).catch(Err => {
+            ToastService.showToast(locales.operationFailed)
+            console.log(Err);
 
-        //     onConfim()
-        //     ToastService.showMessage(res.errs ? JSON.stringify(res.errs) : res.info);
-        //     closeModal();
-
-        // }).catch(Err => {
-        //     console.log(Err);
-
-        // })
+        })
     }
 
     const isDisabled = !loading && data.length === 0;
@@ -217,7 +245,14 @@ export default (props: AddPlantProps) => {
                                                         item.choices_self ?
                                                             <CustomRadioGroup
                                                                 data={selectData}
-                                                                onChange={(v: any, row: any) => handleOnChange(row, item, selectData, index)}
+                                                                onChange={(v: any, row: any) => {
+                                                                    //处理单选id事件
+                                                                    console.log(v,'选择的value');
+                                                                    
+                                                                    
+
+                                                                    handleOnChange(row, v,item.subject)
+                                                                }}
                                                             /> :
                                                             moreData.map((data: any, j: number) => {
                                                                 return (
@@ -227,7 +262,7 @@ export default (props: AddPlantProps) => {
                                                                         </View>
                                                                         <CustomRadioGroup
                                                                             data={data.formatData}
-                                                                            onChange={(v: any, row: any) => handleOnChange(row, item, data.formatData, index)}
+                                                                            onChange={(v: any, row: any) => handleOnChange({value:data.id}, v)}
                                                                         />
                                                                     </AutoView>
 

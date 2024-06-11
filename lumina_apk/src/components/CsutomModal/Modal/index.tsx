@@ -20,9 +20,8 @@ export default forwardRef((props:CustomModalProps,ref:any)=>{
     },[])
 
     useEffect(()=>{
-        setTimeout(()=>{
-            setShow(true)
-        },250)
+        setShow(true)
+
     },[])
 
     function openModal(){

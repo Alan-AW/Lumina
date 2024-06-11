@@ -22,21 +22,29 @@ import NormalText from "src/components/Text/NormalText";
 import Center from "src/components/FlexView/Center";
 import Wrap from "src/components/FlexView/Wrap";
 import CustView from "src/components/FlexView/CustView";
+import { showAddPlant } from "src/components/CsutomModal";
+import { uppdateRefresh } from "src/reduxCenter/actionCreators/refreshAction";
+import { useAppDispatch } from "src/reduxCenter/hooks";
 
 
 const AddPage = () => {
     const { loading, data, error } = useRequest(() => getChoices());
     const [selectItem, setSelectItem] = useState<any>('')
-
+    const navigation = useNavigation();
     console.log('选择页data', data);
-
-
     const routes: any = useRoute();
-    const { roomName, devicesName } = routes.params;
+    const { roomName, devicesName,devicesId } = routes.params;
     const [isNext, setIsNext] = useState<boolean>(false)
+    const dispatch = useAppDispatch()
+
 
     function handleClick(value: any) {
-        setSelectItem(value)
+
+        showAddPlant(value,devicesId,()=>{
+            dispatch(uppdateRefresh({ routeKey: 'Home', status: true }))
+            navigation.goBack();
+        })
+        // setSelectItem(value)
     }
 
 
@@ -83,7 +91,7 @@ const AddPage = () => {
 
 
             </View>
-            {<Details id={selectItem} clearSelectItem={() => setSelectItem('')} />}
+            {/* {<Details id={selectItem} clearSelectItem={() => setSelectItem('')} />} */}
 
 
 
