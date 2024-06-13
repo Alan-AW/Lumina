@@ -46,6 +46,7 @@ export default function CustomSLider(props: CustomSwitchProps) {
 
     return (
         <AutoView style={{ flexDirection: 'column', marginVertical: 64 }}>
+            <AutoText style={{ fontSize: FONT_SIZE.title,paddingBottom:32 }}>{title}</AutoText>
             <View style={{opacity:disabled?0.7:1}}>
             <Slide minValue={min} maxValue={max} value={sliderValue} unit={unit} disabled={disabled} onfinish={(v)=>{
                  onChange(Number(v).toFixed(2))
