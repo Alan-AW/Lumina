@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, ToastAndroid } from 'react-native';
 import { IconButton } from 'src/components/Button';
 import RadioIcon from 'src/components/RadioIcon';
 import colors from 'src/constants/colors';
@@ -72,6 +72,10 @@ const Bright = () => {
   useEffect(() => {
     if (routes && routes.params.id) {
       getLiveList(routes.params.id).then(res => {
+        if (typeof res.errs === 'string' && res.errs) {
+          ToastAndroid.show(locales.operationFailed)
+          return;
+        }
         if (res.data) {
           const { vpd, temperature_humidity, lighting, fertigation } = res.data;
           setEchartsObj({
@@ -83,6 +87,8 @@ const Bright = () => {
         }
 
         console.log(res.data);
+      }).catch(Err => {
+        ToastAndroid.show(locales.operationFailed)
       })
     }
   }, [routes.params]);

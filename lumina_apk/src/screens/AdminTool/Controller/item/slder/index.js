@@ -10,7 +10,7 @@ import { FONT_SIZE } from "src/constants/style";
 
 
 function format(str) {
-    if (str.length >= 2) {
+    if (str && str.length >= 2) {
         let unit = str.substring(str.length - 1, str.length);
         if (unit === '%') {
             return Number(str.replace(unit, ''))

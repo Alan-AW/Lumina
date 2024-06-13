@@ -15,7 +15,7 @@ import AutoText from '../AutoView/Text';
 import SpaceBetween from '../FlexView/SpaceBetween';
 import AutoView from '../AutoView/View';
 import { FONT_SIZE } from 'src/constants/style';
-import { numberToFixed } from 'src/utils';
+import { numberToFixed, valueToFixed } from 'src/utils';
 
 interface SlideProps {
     disabled?: boolean;
@@ -37,7 +37,7 @@ const SLIDER_HEIGHT = adaptationConvert(WINDOW.width * 0.02);
 export default (props: SlideProps) => {
     const {
         disabled = false,
-        step = 1,
+        step = 0,
         value,
         onChange,
         unit,
@@ -54,6 +54,7 @@ export default (props: SlideProps) => {
     const slideWidth = useSharedValue(0);
     const minAnimValue = useSharedValue(0);
     const maxAnimValue = useSharedValue(0);
+    const toFixedValue = useSharedValue(step);
 
     useEffect(()=>{
         minAnimValue.value=minValue;
@@ -80,10 +81,10 @@ export default (props: SlideProps) => {
             }
             if (value >= maxValue) {
                 slideExtent.value = containerWidth;
-                setSlideValue(value)
+                setSlideValue(maxValue)
                 return
             }
-            if (value <= maxValue) {
+            if (value <= minValue) {
                 slideExtent.value = 0;
                 setSlideValue(minValue)
                 return
@@ -110,12 +111,12 @@ export default (props: SlideProps) => {
             const stepValue = (maxValue - minValue) / slideWidth.value;
 
 
-            let callbackValue = Number((touchValue * stepValue).toFixed(2));
+            let callbackValue = valueToFixed(touchValue * stepValue,toFixedValue.value);
             if (callbackValue >= maxAnimValue.value) {
-                callbackValue = maxAnimValue.value;
+                callbackValue = valueToFixed(maxAnimValue.value,toFixedValue.value);
             }
             if (callbackValue <= minAnimValue.value) {
-                callbackValue = minAnimValue.value;
+                callbackValue = valueToFixed(minAnimValue.value,toFixedValue.value);
             }
             ('worklet');
             runOnJS(setSlideValue)(callbackValue)
@@ -218,8 +219,8 @@ export default (props: SlideProps) => {
                 />
             </AutoView>
             <SpaceBetween style={{ width: '100%', marginTop: 32 }}>
-                <AutoText style={{ fontSize: FONT_SIZE.desc, opacity: disabled ? 0.7 : 1 }}>{Number(slideValue).toFixed(2)} {unit}</AutoText>
-                <AutoText style={{ fontSize: FONT_SIZE.desc, opacity: disabled ? 0.7 : 1 }}>{maxValue}</AutoText>
+                <AutoText style={{ fontSize: FONT_SIZE.desc, opacity: disabled ? 0.7 : 1 }}>{slideValue} {unit}</AutoText>
+                <AutoText style={{ fontSize: FONT_SIZE.desc, opacity: disabled ? 0.7 : 1 }}>{maxAnimValue.value}</AutoText>
             </SpaceBetween>
         </AutoView>
     );

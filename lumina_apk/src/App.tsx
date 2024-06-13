@@ -11,22 +11,8 @@ import storage from './helpers/storage';
 import { useTranslation } from 'react-i18next';
 import { LANGUAGE_EN } from './store/authStore';
 import { checkDevicesAuth } from './utils';
-import * as echarts from 'echarts/core';
-import { SvgChart, SVGRenderer, SkiaChart } from '@wuba/react-native-echarts';
-import { BarChart, LineChart } from 'echarts/charts';
 import { RootSiblingParent } from 'react-native-root-siblings';
 
-import {
-  DataZoomComponent
-} from 'echarts/components';
-
-// 注册扩展组件
-echarts.use([
-  SVGRenderer,
-  BarChart,
-  DataZoomComponent,
-  LineChart,
-]);
 
 
 

@@ -11,6 +11,9 @@ export function numberToFixed(value: number, length: number) {
   }
   return 0;
 }
+export function valueToFixed(value:number,length:number){
+  return Number(value.toFixed(length))
+}
 
 export function deepData(obj: any) {
   return JSON.parse(JSON.stringify(obj))

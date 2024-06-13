@@ -39,7 +39,7 @@ function getMaxHeight(height1, height2) {
 }
 
 function format(str) {
-  if (str.length >= 2) {
+  if (str && str.length >= 2) {
     let unit = str.substring(str.length - 1, str.length);
     if (unit === '%') {
       return Number(str.replace(unit, ''));
@@ -179,7 +179,6 @@ const Controller = () => {
           }}
           isRow>
           {dataMap.map((item, index) => {
-            console.log(item.title, 'item.title');
             if (index === 0) {
               return (
                 <ShadowCard key={index} style={{width: '48%', padding: 32}}>
@@ -229,7 +228,7 @@ const Controller = () => {
                           />
                         )}
 
-                        {isSlide && cmdIndex > 0 && (
+                        {isSlide && (
                           <CustomSLider
                             step={Number(step)}
                             unit={unit}
