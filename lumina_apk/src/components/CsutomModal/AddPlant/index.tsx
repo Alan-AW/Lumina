@@ -16,6 +16,7 @@ import { IconButton } from "src/components/Button";
 import End from "src/components/FlexView/End";
 import colors from "src/constants/colors";
 import { locales } from "src/helpers/localesText";
+import SelectTime from "src/screens/SelectPage/SelectTime";
 
 
 interface AddPlantProps {
@@ -26,13 +27,23 @@ interface AddPlantProps {
 
 }
 
+function getFormatDate(){
+    const hour=new Date().getHours();
+    const midium=new Date().getMinutes();
+    const sec=new Date().getSeconds();
+    const _hour=hour<10?'0'+hour:hour;
+    const _midium=midium<10?'0'+midium:midium;
+    const _sec=sec<10?'0'+sec:sec;
+    return `${_hour}:${_midium}`;
+}
+
 
 export default (props: AddPlantProps) => {
     const { onClose, plantId, onConfim, devicesId } = props;
     const modalRef = useRef<any>(null)
     const [data, setData] = useState<any>([])
     const [loading, setLoading] = useState<any>(true)
-    const [selected, setSelected] = useState<any>({})
+    const [selectedTime, setSelectedTime] = useState<any>(getFormatDate())
     const paramsList = useRef<any[]>([]);
 
 
@@ -207,9 +218,11 @@ export default (props: AddPlantProps) => {
             'unit': devicesId,
             //蔬菜id
             'cultivar': plantId,
+            tod:selectedTime,
             //指令集
             algorithm: arr,
         }
+        console.log('请求的参数',params);
         
         submitChoices(params).then((res) => {
             onConfim()
@@ -247,11 +260,11 @@ export default (props: AddPlantProps) => {
                                                                 data={selectData}
                                                                 onChange={(v: any, row: any) => {
                                                                     //处理单选id事件
-                                                                    console.log(v,'选择的value');
+                                                                    console.log(v,'选择的value',row);
                                                                     
                                                                     
 
-                                                                    handleOnChange(row, v,item.subject)
+                                                                    // handleOnChange(row, v,item.subject)
                                                                 }}
                                                             /> :
                                                             moreData.map((data: any, j: number) => {
@@ -276,7 +289,13 @@ export default (props: AddPlantProps) => {
                                             </View>
                                         )
                                     })
+
                                 }
+                                <SelectTime label={'SunriseTime'} value={selectedTime} maxHour={24} onChangeSelect={(v)=>{
+                                    console.log('选择的时间',v);
+                                    setSelectedTime(v)
+                                    
+                                }} />
 
                             </ScrollView>
                     }

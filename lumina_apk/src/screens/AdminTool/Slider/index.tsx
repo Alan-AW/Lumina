@@ -87,11 +87,15 @@ export default function CustomSLider(props: CustomSwitchProps) {
                     enabledOne={!disabled}
                     step={step || 1}
                     onValuesChangeFinish={(v)=>{
+                        if(disabled){
+                            return;
+                        }
                         onChange(valueToFixed(v[0],0))
                     }}
                     values={[sliderValue>min?sliderValue:min]}
-                    markerStyle={{ backgroundColor: disabled?'#ccc':colors.checked }}
-                    selectedStyle={{ backgroundColor: disabled?'#ccc':colors.checked }}
+                    markerStyle={{backgroundColor:colors.checked}}
+                    unselectedStyle={{backgroundColor:'#f1f1f1'}}
+                    selectedStyle={{ backgroundColor: disabled?'#f1f1f1':colors.checked }}
                 />
                 <SpaceBetween style={{ paddingTop: 16 }}>
                     <AutoText style={{ fontSize: FONT_SIZE.desc, opacity: disabled ? 0.7 : 1 }}>{Number(sliderValue).toFixed(0)} {unit}</AutoText>

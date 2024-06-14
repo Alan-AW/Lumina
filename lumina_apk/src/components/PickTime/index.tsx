@@ -156,11 +156,11 @@ function PickTime(props: PickModalProps, ref: any) {
                                 height={PICK_TIME_SIZE}
                                 width={PICK_TIME_SIZE}
                             />
-                            <End style={{ width: '100%', position: 'absolute', bottom: -32, left: 0 }}>
-                                <TouchableOpacity onPress={close}>
+                            <End style={{ width: '100%', position: 'absolute', bottom: -36, left: 0 }}>
+                                <TouchableOpacity onPress={close} style={{paddingHorizontal:12,paddingVertical:8}}>
                                     <LocalesText languageKey={locales.cancel} />
                                 </TouchableOpacity>
-                                <TouchableOpacity style={{ marginHorizontal: 32 }} onPress={change}>
+                                <TouchableOpacity style={{ marginHorizontal: 16,paddingHorizontal:12,paddingVertical:8 }} onPress={change}>
                                 <LocalesText languageKey={locales.confirm} style={{ color: colors.checked }} />
                                 </TouchableOpacity>
                             </End>
