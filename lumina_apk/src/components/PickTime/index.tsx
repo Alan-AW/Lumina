@@ -9,10 +9,12 @@ import colors from "src/constants/colors";
 import { adaptationConvert } from "src/helpers/style";
 import LocalesText from "../Text";
 import { locales } from "src/helpers/localesText";
+import AutoView from "../AutoView/View";
 
 interface PickModalProps {
     data: string;
     maxHour?: number;
+    isSec?:boolean;
     onChange: (v: any) => void;
 }
 
@@ -44,7 +46,7 @@ function getHour(maxHour: number) {
 function PickTime(props: PickModalProps, ref: any) {
 
     const [open, setOpen] = useState(false)
-    const { onChange, data, maxHour = 24 } = props;
+    const { onChange, data, maxHour = 24,isSec=true } = props;
     const hour: any = getHour(maxHour)
     const min: any = getMinDuration();
     const sec: any = getMinDuration();
@@ -105,7 +107,8 @@ function PickTime(props: PickModalProps, ref: any) {
         // console.log(hour[hourIndex], min[minIndex], sec[secIndex]);
         
         const value = `${hour[hourIndex].value}:${min[minIndex].value}:${sec[secIndex].value}`
-        onChange(value)
+        const nullSec = `${hour[hourIndex].value}:${min[minIndex].value}`
+        onChange(isSec?value:nullSec)
         close()
     }
 
@@ -117,7 +120,8 @@ function PickTime(props: PickModalProps, ref: any) {
 
             {
                 open && <Center style={{ position: 'relative', zIndex: 100, flexDirection: 'column', flex: 1 }}>
-                    <Start style={{ backgroundColor: '#fff', position: 'relative', paddingBottom: 70 }}>
+                    <AutoView style={{ backgroundColor: '#fff',borderRadius:8,paddingVertical:16}}>
+                    <Start style={{ position: 'relative', paddingBottom: 0 }}>
                         <View>
                             <DynamicallySelectedPicker
                                 items={hour}
@@ -145,7 +149,8 @@ function PickTime(props: PickModalProps, ref: any) {
                             />
                         </View>
                         <View style={{ position: 'relative' }}>
-                            <DynamicallySelectedPicker
+                            {
+                                isSec &&   <DynamicallySelectedPicker
                                 items={sec}
                                 onScroll={({ index }) => setSecIndex(index)}
                                 onMomentumScrollBegin={({ index }) => setSecIndex(index)}
@@ -156,7 +161,14 @@ function PickTime(props: PickModalProps, ref: any) {
                                 height={PICK_TIME_SIZE}
                                 width={PICK_TIME_SIZE}
                             />
-                            <End style={{ width: '100%', position: 'absolute', bottom: -36, left: 0 }}>
+                            }
+                          
+                         
+                        </View>
+                     
+
+                    </Start>
+                    <End style={{}}>
                                 <TouchableOpacity onPress={close} style={{paddingHorizontal:12,paddingVertical:8}}>
                                     <LocalesText languageKey={locales.cancel} />
                                 </TouchableOpacity>
@@ -164,10 +176,9 @@ function PickTime(props: PickModalProps, ref: any) {
                                 <LocalesText languageKey={locales.confirm} style={{ color: colors.checked }} />
                                 </TouchableOpacity>
                             </End>
-                        </View>
 
-                    </Start>
-
+                    </AutoView>
+                  
                 </Center>
             }
 

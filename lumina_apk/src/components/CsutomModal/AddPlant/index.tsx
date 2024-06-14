@@ -264,7 +264,7 @@ export default (props: AddPlantProps) => {
                                                                     
                                                                     
 
-                                                                    // handleOnChange(row, v,item.subject)
+                                                                    handleOnChange(row, v,item.subject)
                                                                 }}
                                                             /> :
                                                             moreData.map((data: any, j: number) => {

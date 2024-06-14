@@ -131,7 +131,7 @@ export default function Update() {
                             <LocalesText languageKey={locales.SystemVersion} rightText={`：${info.version}`} left={32} style={{ fontSize: FONT_SIZE.subTitle }} />
                             <LocalesText languageKey={locales.PlantingCycleStartTime} rightText={`：${info.time}`} left={48} style={{ fontSize: FONT_SIZE.subTitle }} />
                             <AutoView style={{ marginLeft: 208 }}>
-                                <CusTime updateKey="duration" label={<LocalesText languageKey={locales.DaytimeStartTime} />} value={info.tod} maxHour={24} isSpan={false} onChangeSelect={(v) => setTod(v)} />
+                                <CusTime updateKey="duration" label={<LocalesText languageKey={locales.DaytimeStartTime} />} isSec={false}  value={info.tod} maxHour={24} isSpan={false} onChangeSelect={(v) => setTod(v)} />
 
                             </AutoView>
                         </Start>

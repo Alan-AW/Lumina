@@ -20,13 +20,14 @@ interface CusTimeProps {
     updateKey: string;
     isSpan?: boolean;
     disabled?: boolean;
+    isSec?: boolean;
     onChangeSelect?:(value:string)=>void;
 
 }
 
 
 export default function CusTime(props: CusTimeProps) {
-    const { label, value, maxHour, updateKey, isSpan = false, disabled = false,onChangeSelect } = props;
+    const { label, value, maxHour, updateKey, isSpan = false, disabled = false,onChangeSelect,isSec=true } = props;
     const [time, setTime] = useState(value);
     const openRef = useRef<any>(null);
     console.log('接收到的value', value);
@@ -58,7 +59,7 @@ export default function CusTime(props: CusTimeProps) {
                     <AutoText style={{ color: colors.checked,fontSize:FONT_SIZE.subTitle }}>{time}</AutoText>
 
                 </SpaceBetween>
-                <PickTime ref={openRef} maxHour={maxHour} data={time} onChange={onChange} />
+                <PickTime ref={openRef} isSec={isSec} maxHour={maxHour} data={time} onChange={onChange} />
             </>
 
         )
@@ -71,7 +72,7 @@ export default function CusTime(props: CusTimeProps) {
                 <AutoText style={{fontSize:FONT_SIZE.subTitle}}>{label}：<AutoText style={{ color: colors.checked,fontSize:FONT_SIZE.subTitle }}>{time}</AutoText></AutoText>
 
             </Start>
-            <PickTime ref={openRef} maxHour={maxHour} data={time} onChange={onChange} />
+            <PickTime ref={openRef} maxHour={maxHour} isSec={isSec} data={time} onChange={onChange} />
         </>
 
     )
