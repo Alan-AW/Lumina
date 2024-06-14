@@ -81,7 +81,7 @@ function UnitSetListModal(props) {
           <Select
             placeholder={t('unitSetList.placeholder.component')}
             style={{ width: '100%' }}
-            options={[{ label: 'slide', value: 1 }, { label: 'switch', value: 1 }]}
+            options={[{ label: 'slide', value: 1 }, { label: 'switch', value: 2 }]}
           />
         </Form.Item>
 

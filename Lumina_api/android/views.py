@@ -1,6 +1,8 @@
 from datetime import datetime, timezone, timedelta
+from django.utils import timezone as django_timezone
 import json
 
+from django.core.paginator import Paginator
 from django.db.transaction import atomic
 from rest_framework.views import APIView
 from django.http import JsonResponse
@@ -32,7 +34,10 @@ class CompanyRoomDeepDataView(APIView):
 
 # 安卓端请求机器详情数据1
 class UnitDescView(APIView):
-    permission_classes = [ExcludeSuperPermission]
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+    # permission_classes = [ExcludeSuperPermission]
 
     """
         def get(self, request, unit_id):
@@ -114,9 +119,47 @@ class UnitDescView(APIView):
 
     def get_data(self, device_id):
         try:
-            # 读取传感器发过来的数据前20条
-            queryset = MessageQueueModel.objects.filter(device_id=device_id).order_by('-id')[:21]
-            if not queryset:
+            # 获取当前时间
+            now = django_timezone.now()
+            # 计算最近一天的开始时间
+            one_day_ago = now - timedelta(days=1)
+
+            # 获取今天一天的数据
+            queryset = MessageQueueModel.objects.filter(
+                device_id=device_id,
+                create_time__gte=one_day_ago
+            ).order_by('create_time')
+
+            count = 48
+            total_count = queryset.count()
+
+            if total_count > 0:
+                if total_count > count:
+                    # 使用分页器分页查询
+                    paginator = Paginator(queryset, total_count // count)
+                    # page_number = 1
+                    sparse_queryset = []
+
+                    # while page_number <= paginator.num_pages:
+                    #     page = paginator.page(page_number)
+                    #     step = max(1, len(page.object_list) // count)
+                    #     sparse_queryset.extend(page.object_list[::step])
+                    #     page_number += 1
+                    #     if len(sparse_queryset) >= count:
+                    #         break
+
+                    for page_number in range(1, paginator.num_pages + 1):
+                        page = paginator.page(page_number)
+                        sparse_queryset.append(page.object_list[0])
+                        if len(sparse_queryset) >= count:
+                            break
+
+                    # 只取目标数量条
+                    sparse_queryset = sparse_queryset[:count]
+                    queryset = sparse_queryset
+                else:
+                    queryset = list(queryset)
+            else:
                 raise ValueError('暂无传感器数据！')
             # 整理出需要的数据
             used_data = {
@@ -135,39 +178,39 @@ class UnitDescView(APIView):
                     'current_ph': []
                 }
             }
-            for idx, i in enumerate(queryset):
+            for i in queryset:
                 # 真实数据：Queryset
-                data_dict = i.content.get('data')
                 # 测试数据
                 # data_dict = i.get('data').get('data').get('data')
-                thc = data_dict.get('thc')
-                thc_x = thc.get('main_lower').get('last_updated')[11:19]
+                thc = self.get_thc(i.content)
+                if not thc:
+                    continue
+                thc_x = self.get_thc_x(thc)
                 # vpd
-                vpd = thc.get('main_lower').get('vpd')
+                vpd = self.get_vpd(thc)
                 used_data['vpd'][0].append({'key': thc_x, 'value': vpd})
                 # 温度和湿度
-                temperature = thc.get('main_lower').get('temperature')
-                humidity = thc.get('main_lower').get('humidity')
+                temperature, humidity = self.get_temperature(thc)
                 used_data['temperature_humidity']['temperature'].append({'key': thc_x, 'value': temperature})
                 used_data['temperature_humidity']['humidity'].append({'key': thc_x, 'value': humidity})
                 # 光照
-                lighting = data_dict.get('lighting')
+                lighting = self.get_lighting(thc)
                 spectra_450_led = lighting.get('spectra_450_led')
                 spectra_660_led = lighting.get('spectra_660_led')
                 spectra_main_led = lighting.get('spectra_main_led')
-                lighting_x = lighting.get('last_updated')[11:19]
+                lighting_x = lighting.get('last_updated') or thc_x
                 used_data['lighting']['spectra_450_led'].append({'key': lighting_x, 'value': spectra_450_led})
                 used_data['lighting']['spectra_660_led'].append({'key': lighting_x, 'value': spectra_660_led})
                 used_data['lighting']['spectra_main_led'].append({'key': lighting_x, 'value': spectra_main_led})
                 # 水肥
-                fertigation = data_dict.get('fertigation')
+                fertigation = self.get_fertigation(thc)
                 current_ec = fertigation.get('current_ec')
                 current_ph = fertigation.get('current_ph')
-                fertigation_x = fertigation.get('current_last_updated')[11:19]
+                fertigation_x = fertigation.get('current_last_updated') or thc_x
                 used_data['fertigation']['current_ec'].append({'key': fertigation_x, 'value': current_ec})
                 used_data['fertigation']['current_ph'].append({'key': fertigation_x, 'value': current_ph})
             # 生成Echarts图表数据
-            for index, key in enumerate(used_data.keys()):
+            for key in used_data.keys():
                 # 如果是字典
                 if isinstance(used_data[key], dict):
                     # 读取字典的key列表
@@ -180,6 +223,62 @@ class UnitDescView(APIView):
         except Exception as e:
             response = return_response(code=500, error=f'传感器数据错误！{e}')
         return response
+
+    def get_thc(self, data):
+        try:
+            result = data.get('data').get('thc')
+        except Exception:
+            result = None
+        return result
+
+    def get_thc_x(self, data):
+        x = data.get('main_lower')
+        if not x:
+            x = '--:--:--'
+        else:
+            x = x.get('last_updated')[11:16]
+        return x
+
+    def get_vpd(self, data):
+        try:
+            vpd = data.get('main_lower').get('vpd')
+        except Exception:
+            vpd = 0
+        return vpd
+
+    def get_temperature(self, data):
+        try:
+            temperature = data.get('main_lower').get('temperature')
+            humidity = data.get('main_lower').get('humidity')
+        except Exception:
+            temperature = 0
+            humidity = 0
+        return temperature, humidity
+
+    def get_lighting(self, data):
+        lighting = data.get('lighting')
+        if not lighting:
+            lighting = {
+                'spectra_450_led': 0,
+                'spectra_660_led': 0,
+                'spectra_main_led': 0,
+                'last_updated': None
+            }
+        else:
+            lighting['last_updated'] = lighting['last_updated'][11:19]
+        return lighting
+
+    def get_fertigation(self, data):
+        fertigation = data.get('fertigation')
+        if not fertigation:
+            fertigation = {
+                'current_ec': 0,
+                'current_ph': 0,
+                'current_last_updated': None
+            }
+        else:
+            fertigation['current_last_updated'] = fertigation['current_last_updated'][11:19]
+        return fertigation
 
 
 # 安卓端请求机器图表数据-此接口第二期做（正式版）

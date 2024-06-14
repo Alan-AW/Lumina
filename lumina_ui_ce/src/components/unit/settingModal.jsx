@@ -23,7 +23,7 @@ function SettingModal(props) {
 
   const getData = () => {
     getUnitSet(id).then(res => {
-      form.setFieldsValue({ settings: res.data.map(item => item.id) })
+      form.setFieldsValue({ settings: res.data.map(item => item.cmd) })
     })
   }
 

@@ -103,8 +103,6 @@ function Unit() {
         }
     ]
 
-
-
     useEffect(() => {
         getData()
     }, [params])

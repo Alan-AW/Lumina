@@ -109,6 +109,9 @@ class UnitView(APIView):
 
 # 机器功能管理
 class UnitSettingView(APIView):
+    # authentication_classes = []
+    # permission_classes = []
+    # throttle_classes = []
     permission_classes = [SuperPermission]
 
     def get(self, request, unit_id):
