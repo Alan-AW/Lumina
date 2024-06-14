@@ -1,6 +1,19 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 
+project.ext.envConfigFiles = [
+    debug: ".env.dev",
+    release: ".env.prod",
+    anothercustombuild: ".env.dev",
+]
+
+// 2nd line, add a new apply:
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
+def appVerionName = project.env.get("APP_VERSION_NAME")
+def appVerionCode = project.env.get("APP_VERSION_CODE")
+if (appVerionCode) appVerionCode = appVerionCode.toInteger()
+
 //查看公钥
 //D:\Jenv\bin\keytool -list -rfc -keystore "C:\证书\luminaos.keystore" -storepass lumina0525 | openssl x509 -inform pem -pubkey
 //查看MD5
@@ -83,8 +96,8 @@ android {
         applicationId "com.LuminaOS"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode appVerionCode
+        versionName appVerionName
         resValue "string", "build_config_package", "com.LuminaOS"
         multiDexEnabled true
         ndk {

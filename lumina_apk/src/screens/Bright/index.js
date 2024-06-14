@@ -37,6 +37,7 @@ import LocalesText from 'src/components/Text';
 import { getLineOptaion, lineOption } from 'src/components/EchartsCotainer/option';
 import { WIDTH } from 'src/constants/global';
 import { locales } from 'src/helpers/localesText';
+import ToastService from 'src/helpers/toast';
 
 function GetPercent(num, total) {
   num = parseFloat(num);
@@ -72,10 +73,7 @@ const Bright = () => {
   useEffect(() => {
     if (routes && routes.params.id) {
       getLiveList(routes.params.id).then(res => {
-        if (typeof res.errs === 'string' && res.errs) {
-          ToastAndroid.show(locales.operationFailed)
-          return;
-        }
+       
         if (res.data) {
           const { vpd, temperature_humidity, lighting, fertigation } = res.data;
           setEchartsObj({
@@ -85,8 +83,6 @@ const Bright = () => {
             fertigation,
           })
         }
-
-        console.log(res.data);
       }).catch(Err => {
         ToastAndroid.show(locales.operationFailed)
       })

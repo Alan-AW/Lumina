@@ -6,6 +6,7 @@ import { baseUrl } from "src/apis/config";
 import ToastService from "./toast";
 import { locales } from "./localesText";
 import { auth_store } from "src/store/authStore";
+import { ToastAndroid } from "react-native";
 //获取当前语言环境
 
 
@@ -48,6 +49,10 @@ export class HttpAxios {
     this.instance.interceptors.response.use(
       (res: AxiosResponse) => {
         console.log('请求结果',res.data);
+        const data=res.data;
+        if (data && typeof data.errs === 'string' && data.errs) {
+          ToastAndroid.show(JSON.stringify(data.errs),3000)
+        }
         
         return res.data;
       },

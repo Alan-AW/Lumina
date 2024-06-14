@@ -8,20 +8,14 @@ import AutoText from "src/components/AutoView/Text";
 import { IconButton } from "src/components/Button";
 import Center from "src/components/FlexView/Center";
 import Start from "src/components/FlexView/Start";
-import Loading from "src/components/Loading";
-import Back from "src/components/ScreenHeader/Back";
 import colors from "src/constants/colors";
-import { APP_VERSION } from "src/constants/global";
 import { updateApp } from "src/helpers/utils";
-import { updateMenuStatus } from "src/reduxCenter/actionCreators";
 import { useAppDispatch } from "src/reduxCenter/hooks";
-import { auth_store } from "src/store/authStore";
 import RNFS from 'react-native-fs'
-import LocalesText from "src/components/Text";
-import { locales } from "src/helpers/localesText";
 import { useTranslation } from "react-i18next";
 import ShadowCard from "src/components/Shadow";
-import { FONT_SIZE } from "src/constants/style";
+import { getAppVersionName } from "src/helpers/app";
+import useVersionName from "src/hooks/useVersionName";
 
 const IS_DOWNLOAD = '正在下载...'
 
@@ -31,6 +25,7 @@ export default function UpdateApp() {
     const { t } = useTranslation();
     const [status, setStatus] = useState('点击下载App')
     const [isDownLoad, setIsDownLoad] = useState(false)
+    const currentVersionName=useVersionName();
     const { update_version, url } = route.params;
     const dispatch = useAppDispatch()
 
@@ -47,6 +42,7 @@ export default function UpdateApp() {
                 setIsDownLoad(fileList.length > 0)
             }
         }).catch(err => { })
+       
 
     }, [])
 
@@ -71,7 +67,7 @@ export default function UpdateApp() {
             <Center>
                 <Center style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start',marginTop:'20%' }}>
                     <View>
-                        <AutoText>{t('CurrentVersion')}：<AutoText style={{ color: colors.checked }}>{APP_VERSION}</AutoText></AutoText>
+                        <AutoText>{t('CurrentVersion')}：<AutoText style={{ color: colors.checked }}>{currentVersionName}</AutoText></AutoText>
 
                     </View>
                     <Start style={{ marginVertical: 32 }}>

@@ -179,147 +179,77 @@ const Controller = () => {
           }}
           isRow>
           {dataMap.map((item, index) => {
-            if (index === 0) {
-              return (
-                <ShadowCard key={index} style={{width: '48%', padding: 32}}>
-                  <AutoView
-                    style={{
-                      paddingLeft: 0,
-                      paddingRight: 32,
-                      marginBottom: 20,
-                    }}>
-                    <AutoText
-                      style={{fontWeight: '700', fontSize: FONT_SIZE.title}}>
-                      {item.title}
-                    </AutoText>
-                  </AutoView>
-                  {item.children.map((cmdItem, cmdIndex) => {
-                    const {
-                      step,
-                      auto,
-                      value,
-                      min_value,
-                      max_value,
-                      cmd__cmd,
-                      desc,
-                      unit,
-                    } = cmdItem;
-                    const findSpectra = item.children.find(
-                      i => i.cmd__cmd === 'spectra' && i.auto === true,
-                    );
-                    const isSpectra = cmdItem.cmd__cmd === 'spectra';
-                    const isSwitch = cmdItem.component === 'switch';
-                    const isSlide = cmdItem.component === 'slide';
-                    return (
-                      <AutoView key={cmdIndex} style={{marginBottom: 36}}>
-                        {isSwitch && (
-                          <CustomSwitch
-                            value={auto}
-                            title={desc}
-                            cmdIndex={cmdIndex < 2}
-                            disabled={isSpectra ? false : !!findSpectra}
-                            onChange={v => {
-                              updateData({
-                                cmd__cmd: cmd__cmd,
-                                value: value,
-                                auto: v,
-                              });
-                            }}
-                          />
-                        )}
-
-                        {isSlide && (
-                          <CustomSLider
-                            step={Number(step)}
-                            unit={unit}
-                            title={desc}
-                            disabled={!!findSpectra}
-                            value={Number(value)}
-                            max={Number(format(max_value))}
-                            min={Number(format(min_value))}
-                            onChange={v => {
-                              updateData({
-                                cmd__cmd: cmd__cmd,
-                                value: Number(v),
-                                auto: auto,
-                              });
-                            }}
-                          />
-                        )}
-                      </AutoView>
-                    );
-                  })}
-                </ShadowCard>
-              );
-            }
             return (
-              <ShadowCard
-                key={index}
-                style={{
-                  width: '48%',
-                  padding: 32,
-                  marginTop: index > 1 ? 32 : 0,
-                }}>
+              <ShadowCard key={index} style={{width: '48%', padding: 32}}>
                 <AutoView
-                  style={{paddingLeft: 0, paddingRight: 32, marginBottom: 20}}>
+                  style={{
+                    paddingLeft: 0,
+                    paddingRight: 32,
+                    marginBottom: 20,
+                  }}>
                   <AutoText
                     style={{fontWeight: '700', fontSize: FONT_SIZE.title}}>
                     {item.title}
                   </AutoText>
                 </AutoView>
-                {Array.isArray(item.children) &&
-                  item.children.map((cmdItem, cmdIndex) => {
-                    const {
-                      step,
-                      auto,
-                      value,
-                      min_value,
-                      max_value,
-                      cmd__cmd,
-                      desc,
-                      unit,
-                    } = cmdItem;
-                    const isSwitch = cmdItem.component === 'switch';
-                    const isSlide = cmdItem.component === 'slide';
+                {item.children.map((cmdItem, cmdIndex) => {
+                  const {
+                    step,
+                    auto,
+                    value,
+                    min_value,
+                    max_value,
+                    cmd__cmd,
+                    desc,
+                    unit,
+                  } = cmdItem;
+                  //植物灯是否处于开启状态
+                  const isDisabled = !!item.children.find(
+                    i => i.cmd__cmd === 'spectra' && i.auto === true,
+                  );
+                  const currentDisabled =isDisabled && cmdItem.cmd__cmd !=='spectra' && cmdItem.cmd__cmd.includes('spectra');
+                  const isSwitch = cmdItem.component === 'switch';
+                  const isSlide = cmdItem.component === 'slide';
+                  const isSpectra= cmdItem.component === 'spectra';
+                  return (
+                    <AutoView key={cmdIndex} style={{marginBottom: 36}}>
+                      {isSwitch && (
+                        <CustomSwitch
+                          value={auto}
+                          title={desc}
+                          cmdIndex={cmdIndex < 2}
+                          disabled={isSpectra?false:currentDisabled}
+                          onChange={v => {
+                            updateData({
+                              cmd__cmd: cmd__cmd,
+                              value: value,
+                              auto: v,
+                            });
+                          }}
+                        />
+                      )}
 
-                    return (
-                      <AutoView key={cmdIndex} style={{}}>
-                        {isSwitch && (
-                          <CustomSwitch
-                            value={auto}
-                            cmdIndex={cmdIndex < 2}
-                            title={desc}
-                            disabled={false}
-                            onChange={v => {
-                              updateData({
-                                cmd__cmd: cmd__cmd,
-                                value: value,
-                                auto: v,
-                              });
-                            }}
-                          />
-                        )}
-                        {isSlide && (
-                          <CustomSLider
-                            step={Number(step)}
-                            unit={unit}
-                            title={desc}
-                            disabled={false}
-                            value={Number(value)}
-                            max={Number(format(max_value))}
-                            min={Number(format(min_value))}
-                            onChange={v => {
-                              updateData({
-                                cmd__cmd: cmd__cmd,
-                                value: v,
-                                auto: auto,
-                              });
-                            }}
-                          />
-                        )}
-                      </AutoView>
-                    );
-                  })}
+                      {isSlide && (
+                        <CustomSLider
+                          step={Number(step)}
+                          unit={unit}
+                          title={desc}
+                          disabled={currentDisabled}
+                          value={Number(value)}
+                          max={Number(format(max_value))}
+                          min={Number(format(min_value))}
+                          onChange={v => {
+                            updateData({
+                              cmd__cmd: cmd__cmd,
+                              value: Number(v),
+                              auto: auto,
+                            });
+                          }}
+                        />
+                      )}
+                    </AutoView>
+                  );
+                })}
               </ShadowCard>
             );
           })}
