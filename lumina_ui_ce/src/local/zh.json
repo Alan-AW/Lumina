@@ -310,6 +310,8 @@
     "tableTitle": {
       "index": "序号",
       "cmd": "指令名称",
+      "category_cn": "中文分类",
+      "category_en": "英文分类",
       "desc_cn": "中文解释",
       "desc_en": "英文解释",
       "component": "组件类型",
@@ -323,6 +325,8 @@
     },
     "placeholder": {
       "cmd": "请输入指令名称",
+      "category_cn": "请选择中文分类",
+      "category_en": "请选择英文分类",
       "desc_cn": "请输入中文解释",
       "desc_en": "请输入英文解释",
       "component": "请选择组件类型",
@@ -334,6 +338,8 @@
     },
     "rules": {
       "cmd": "指令名称不可为空！",
+      "category_cn": "中文分类不可为空！",
+      "category_en": "英文分类不可为空！",
       "desc_cn": "中文解释不可为空！",
       "desc_en": "英文解释不可为空！",
       "component": "组件类型不可为空！"

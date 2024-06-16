@@ -57,6 +57,38 @@ function UnitSetListModal(props) {
           />
         </Form.Item>
 
+        <Form.Item name='category_cn' label={t('unitSetList.tableTitle.category_cn')} rules={[
+          { required: true, message: t('unitSetList.rules.category_cn') }
+        ]}>
+          <Select
+            placeholder={t('unitSetList.placeholder.category_cn')}
+            style={{ width: '100%' }}
+            options={[
+              { label: '营养液及灌溉', value: 1 },
+              { label: '日夜周期', value: 2 },
+              { label: '气候控制', value: 3 },
+              { label: '光合作用', value: 4 },
+              { label: '系统设备', value: 5 }
+            ]}
+          />
+        </Form.Item>
+
+        <Form.Item name='category_en' label={t('unitSetList.tableTitle.category_en')} rules={[
+          { required: true, message: t('unitSetList.rules.category_en') }
+        ]}>
+          <Select
+            placeholder={t('unitSetList.placeholder.category_en')}
+            style={{ width: '100%' }}
+            options={[
+              { label: 'Fertigation', value: 1 },
+              { label: 'Day-Night Cycle', value: 2 },
+              { label: 'Climate Control', value: 3 },
+              { label: 'Photosynthesis', value: 4 },
+              { label: 'System', value: 5 }
+            ]}
+          />
+        </Form.Item>
+
         <Form.Item name='desc_cn' label={t('unitSetList.tableTitle.desc_cn')} rules={[
           { required: true, message: t('unitSetList.rules.desc_cn') }
         ]}>

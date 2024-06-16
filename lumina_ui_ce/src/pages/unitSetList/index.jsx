@@ -37,6 +37,16 @@ function UnitSetList(props) {
       dataIndex: 'cmd'
     },
     {
+      title: t("unitSetList.tableTitle.category_cn"),
+      align: 'center',
+      dataIndex: 'category_cn_label'
+    },
+    {
+      title: t("unitSetList.tableTitle.category_en"),
+      align: 'center',
+      dataIndex: 'category_en_label'
+    },
+    {
       title: t("unitSetList.tableTitle.desc_cn"),
       align: 'center',
       dataIndex: 'desc_cn'
