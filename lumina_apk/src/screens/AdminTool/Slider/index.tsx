@@ -47,17 +47,17 @@ function format(str: any) {
 
 export default function CustomSLider(props: CustomSwitchProps) {
     const { disabled, onChange, value, title, max = 100, min = 0, step = 0.1, unit } = props;
-    
+
     const [sliderValue, setSilderValue] = useState(0);
 
-    useEffect(()=>{
-        const _value=Number(format(value));
-        if(_value<=min){
+    useEffect(() => {
+        const _value = Number(format(value));
+        if (_value <= min) {
             setSilderValue(min)
-        }else{
+        } else {
             setSilderValue(_value)
         }
-    },[value])
+    }, [value])
     const [cointerWidth, setCointerWidth] = useState(0);
 
     const _value = Number(sliderValue).toFixed(2);
@@ -76,7 +76,13 @@ export default function CustomSLider(props: CustomSwitchProps) {
 
     return (
         <AutoView style={{ flexDirection: 'column', marginVertical: 32 }}>
-            <AutoText style={{ fontSize: FONT_SIZE.title, paddingBottom: 32 }}>{title} {min} {max}</AutoText>
+            <SpaceBetween style={{ paddingBottom: 32 }}>
+                <AutoText style={{ fontSize: FONT_SIZE.title }}>{title}</AutoText>
+                <Start>
+                <AutoText style={{ fontSize: FONT_SIZE.desc, opacity: disabled ? 0.7 : 1 }}>{min} ~ </AutoText>
+                <AutoText style={{ fontSize: FONT_SIZE.desc, opacity: disabled ? 0.7 : 1 }}>{max}</AutoText>
+                </Start>
+            </SpaceBetween>
             <View style={{ opacity: disabled ? 0.7 : 1 }} onLayout={(event) => {
                 setCointerWidth(event.nativeEvent.layout.width)
             }}>
@@ -86,20 +92,19 @@ export default function CustomSLider(props: CustomSwitchProps) {
                     max={max}
                     enabledOne={!disabled}
                     step={step || 1}
-                    onValuesChangeFinish={(v)=>{
-                        if(disabled){
+                    onValuesChangeFinish={(v) => {
+                        if (disabled) {
                             return;
                         }
-                        onChange(valueToFixed(v[0],0))
+                        onChange(valueToFixed(v[0], 0))
                     }}
-                    values={[sliderValue>min?sliderValue:min]}
-                    markerStyle={{backgroundColor:colors.checked}}
-                    unselectedStyle={{backgroundColor:'#f1f1f1'}}
-                    selectedStyle={{ backgroundColor: disabled?'#f1f1f1':colors.checked }}
+                    values={[sliderValue > min ? sliderValue : min]}
+                    markerStyle={{ backgroundColor: colors.checked }}
+                    unselectedStyle={{ backgroundColor: '#f1f1f1' }}
+                    selectedStyle={{ backgroundColor: disabled ? '#f1f1f1' : colors.checked }}
                 />
-                <SpaceBetween style={{ paddingTop: 16 }}>
-                    <AutoText style={{ fontSize: FONT_SIZE.desc, opacity: disabled ? 0.7 : 1 }}>{Number(sliderValue).toFixed(0)} {unit}</AutoText>
-                    <AutoText style={{ fontSize: FONT_SIZE.desc, opacity: disabled ? 0.7 : 1 }}>{max}</AutoText>
+                <SpaceBetween style={{ paddingTop: 8 }}>
+                    <AutoText style={{ fontSize: FONT_SIZE.title }}>{Number(sliderValue).toFixed(0)} {unit}</AutoText>
                 </SpaceBetween>
                 {/* <Slide minValue={min} maxValue={max} value={sliderValue} unit={unit} disabled={disabled} onfinish={(v)=>{
                  onChange(Number(v).toFixed(2))

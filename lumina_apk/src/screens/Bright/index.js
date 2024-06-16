@@ -38,6 +38,8 @@ import { getLineOptaion, lineOption } from 'src/components/EchartsCotainer/optio
 import { WIDTH } from 'src/constants/global';
 import { locales } from 'src/helpers/localesText';
 import ToastService from 'src/helpers/toast';
+import { useFetch } from 'src/hooks/useFetch';
+import { useFetchData } from 'src/hooks/useFetchData';
 
 function GetPercent(num, total) {
   num = parseFloat(num);
@@ -67,14 +69,12 @@ const Bright = () => {
     fertigation: null,
   })
   const { device_id, roomName, devicesName, cropNams, disabled } = routes.params;
+  const {res,loading}=useFetchData(getLiveList,routes.params.id);
 
 
 
   useEffect(() => {
-    if (routes && routes.params.id) {
-      getLiveList(routes.params.id).then(res => {
-       
-        if (res.data) {
+    if (res) {
           const { vpd, temperature_humidity, lighting, fertigation } = res.data;
           setEchartsObj({
             vpd,
@@ -82,12 +82,8 @@ const Bright = () => {
             lighting,
             fertigation,
           })
-        }
-      }).catch(Err => {
-        ToastAndroid.show(locales.operationFailed)
-      })
     }
-  }, [routes.params]);
+  }, [res]);
 
   function goSet() {
     navigation.navigate('AdminTools', {
@@ -122,7 +118,7 @@ const Bright = () => {
       </SpaceBetween>
 
       <SpaceBetween>
-        <EchartsCotainer options={EchatsOption.vpd} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={echatsHeight}>
+        <EchartsCotainer options={EchatsOption.vpd} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={echatsHeight} loading={loading}>
           <Start style={{ paddingVertical: 32, paddingHorizontal: 32 }}>
             <Center style={{ padding: 26, backgroundColor: colors.cardIconBgColor }}>
               <IconZhexiantu size={adaptationConvert(FONT_SIZE.icon)} />
@@ -130,7 +126,7 @@ const Bright = () => {
             <LocalesText left={8} languageKey={locales.vpd} size={FONT_SIZE.subTitle} />
           </Start>
         </EchartsCotainer>
-        <EchartsCotainer options={EchatsOption.temperature_humidity} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={echatsHeight}>
+        <EchartsCotainer options={EchatsOption.temperature_humidity} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={echatsHeight} loading={loading}>
           <Start style={{ paddingVertical: 32, paddingHorizontal: 32 }}>
             <Center style={{ padding: 26, backgroundColor: colors.cardIconBgColor }}>
               <IconZhexiantu size={adaptationConvert(FONT_SIZE.icon)} />
@@ -140,7 +136,7 @@ const Bright = () => {
         </EchartsCotainer>
       </SpaceBetween>
       <SpaceBetween>
-        <EchartsCotainer options={EchatsOption.lighting} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={echatsHeight}>
+        <EchartsCotainer options={EchatsOption.lighting} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={echatsHeight} loading={loading}>
           <Start style={{ paddingVertical: 32, paddingHorizontal: 32 }}>
             <Center style={{ padding: 26, backgroundColor: colors.cardIconBgColor }}>
               <IconZhexiantu size={adaptationConvert(FONT_SIZE.icon)} />
@@ -148,7 +144,7 @@ const Bright = () => {
             <LocalesText left={8} languageKey={locales.lighting} size={FONT_SIZE.subTitle} />
           </Start>
         </EchartsCotainer>
-        <EchartsCotainer options={EchatsOption.fertigation} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={echatsHeight}>
+        <EchartsCotainer options={EchatsOption.fertigation} echartWidth={adaptationConvert(WIDTH / lineSize)} echartHeight={echatsHeight} loading={loading}>
           <Start style={{ paddingVertical: 32, paddingHorizontal: 32 }}>
             <Center style={{ padding: 26, backgroundColor: colors.cardIconBgColor }}>
               <IconZhexiantu size={adaptationConvert(FONT_SIZE.icon)} />

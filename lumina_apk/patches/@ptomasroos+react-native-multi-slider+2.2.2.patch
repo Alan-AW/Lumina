@@ -7,7 +7,7 @@ index aeb46ff..c94c506 100644
    render() {
      return (
 -      <TouchableHighlight>
-+      <TouchableHighlight hitSlop={{left:100,top:100,right:100,bottom:100}}>
++      <TouchableHighlight hitSlop={{left:10,top:10,right:10,bottom:10}}>
          <View
            style={
              this.props.enabled

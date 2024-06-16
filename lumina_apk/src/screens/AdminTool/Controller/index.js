@@ -77,6 +77,7 @@ const Controller = () => {
     console.log(
       'AdminTool 参数',
       JSON.stringify({id: route.params.id, data: paramsList.current}),
+      paramsList.current.length,
     );
 
     //在这里发起保存，执行回调

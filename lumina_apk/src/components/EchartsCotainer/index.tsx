@@ -12,6 +12,7 @@ import Center from "../FlexView/Center";
 import * as echarts from 'echarts/core';
 import { locales } from "src/helpers/localesText";
 import { IconKongshuju } from "src/iconfont";
+import Loading from "../Loading";
 
 
 interface EchartsCotainerPorps {
@@ -19,10 +20,11 @@ interface EchartsCotainerPorps {
     children: any,
     echartWidth: number,
     echartHeight: number,
+    loading:boolean
 }
 
 export default function EchartsCotainer(props: EchartsCotainerPorps) {
-    const { options, children, echartWidth, echartHeight } = props;
+    const { options, children, echartWidth, echartHeight,loading } = props;
     const chartRef = useRef(null);
     useEffect(() => {
         let chart: any = null;
@@ -42,6 +44,7 @@ export default function EchartsCotainer(props: EchartsCotainerPorps) {
         <AutoView style={{ padding: 32, }}>
             <ShadowCard style={{ width: echartWidth + 32, height: echartHeight + 32, backgroundColor: '#fff', position: 'relative' }}>
                 {children}
+                <Loading loading={loading}>
                 {
                     options ? <AutoView style={{ flex: 1, flexDirection: 'column', position: 'absolute', left: 0, top: 30, width: '100%', height: '100%' }}>
                         <SkiaChart ref={chartRef} />
@@ -51,6 +54,8 @@ export default function EchartsCotainer(props: EchartsCotainerPorps) {
                             <LocalesText languageKey={locales.nullData} top={10} />
                         </Center>
                 }
+                </Loading>
+               
 
             </ShadowCard>
         </AutoView>
