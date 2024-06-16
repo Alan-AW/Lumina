@@ -16,6 +16,7 @@ from utils.methods import return_response, get_data, get_now_timer, is_within_da
 from operations.base_view import BaseView
 from utils.permissions.user_permission import SuperPermission, ExcludeSuperPermission
 from utils.create_log import create_logs
+from device.rabbit_mq.producer import start
 
 
 # 房间管理
@@ -490,10 +491,10 @@ class CultivarAlgorithmCmdView(APIView):
             # 读取指令集：如果编辑了，那就使用编辑的指令集，否则使用算法默认值
             json = item.cmd if not has_record else has_record.cmd
             data.append({
-                    'id': item.id,
-                    'title': f'{item.subject_cn}:{item.title_cn}',
-                    'json': json
-                })
+                'id': item.id,
+                'title': f'{item.subject_cn}:{item.title_cn}',
+                'json': json
+            })
         response = return_response(data=data)
         return JsonResponse(response)
 
@@ -529,6 +530,22 @@ class AlgorithmView(BaseView):
         queryset = Algorithm.objects.all()
         ser = AlgorithmSer(queryset, many=True)
         response = return_response(data=ser.data)
+        return JsonResponse(response)
+
+
+# 24-6-16新增功能，接收deviceid，推入mq
+class PutDeviceIdToMqView(APIView):
+    authentication_classes = []
+    permission_classes = []
+    throttle_classes = []
+
+    def get(self, request, device_id):
+        has_unit = Unit.objects.filter(deviceId=device_id).exists()
+        if not has_unit:
+            response = return_response(status=False, error=f'未找到{device_id}的设备')
+        else:
+            start(message=device_id, device_id=device_id, queue_name='latest_online_device_queue', connect=False)
+            response = return_response(info='ok')
         return JsonResponse(response)
 
 

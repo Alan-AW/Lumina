@@ -76,9 +76,9 @@ def algorithm_choices_inal_ser(queryset, language):
 
 # 安卓端选择了品类对应的算法之后将数据保存并推送到mq队列
 class ValidateUnitCultivarAlgorithmToMqSer(serializers.Serializer):
-    unit = serializers.SlugRelatedField(slug_field='id', queryset=Unit.objects.all())
-    cultivar = serializers.SlugRelatedField(slug_field='id', queryset=Cultivar.objects.all())
-    algorithm = serializers.JSONField(error_messages={'invalid': '算法格式错误！'})
+    unit = serializers.SlugRelatedField(required=True, slug_field='id', queryset=Unit.objects.all())
+    cultivar = serializers.SlugRelatedField(required=True, slug_field='id', queryset=Cultivar.objects.all())
+    algorithm = serializers.JSONField(required=True, error_messages={'invalid': '算法格式错误！', 'required': '算法必须选择！'})
     tod = serializers.CharField(required=True, error_messages={'required': 'tod必选择！'})
 
     def validate(self, attrs):

@@ -2,7 +2,7 @@ from django.urls import path, re_path
 from operations.views import RoomView, UnitView, SaveSensorDataView, ExportThree, SpeciesView, CultivarsView, \
     ModelsView, PhasesView, InstructionView, ActionView, TriggersView, CompanyView, CompanyUnitDescView, CompanyCultivarsView, \
     ReloadJsonValView, CompanyUploadLogo, UnitSettingsListView, UnitSettingView, PingUnitTimerView, GetUnitOnlineView, UnitInfoView, \
-    CultivarView, CultivarAlgorithmView, AlgorithmView, CultivarAlgorithmCmdView
+    CultivarView, CultivarAlgorithmView, AlgorithmView, CultivarAlgorithmCmdView, PutDeviceIdToMqView
 from operations.choices_api_view import ChoicesRoomView, ChoicesRoleView, ChoicesCompanyView, \
     ChoicesEnvironmentalOptions, ChoicesUnitSettings, CultivarChoicesAlgorithmView, ChoicesCultivarsView
 
@@ -55,6 +55,8 @@ urlpatterns = [
     # 24-4-17新增功能：公司品类权限管理，（超管用户权限）
     re_path(r'company/cultivars/(?P<company_id>\d+)$', CompanyCultivarsView.as_view()),
     path('choices/cultivars', ChoicesCultivarsView.as_view()),
+    # 24-6-16新增功能：接受device_id参数推入mq队列
+    re_path(r'put/deviceid/to/mq/(?P<device_id>\w+)$', PutDeviceIdToMqView.as_view()),
     # ############################## 以下API是否需要：待定 ##############################
     # 传感器请求保存数据
     re_path(r'save/sensor/(?P<types>temperature|lighting)$', SaveSensorDataView.as_view()),

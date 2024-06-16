@@ -18,9 +18,9 @@ PASSWORD = 'Mzc3NjZBNzZCODA1RjUxNjc2Njc4NzE5RDZGRjRGREZDQjZBNzk1NDoxNzE0MDU3OTU4
 QUEUE_NAME = "device_data_queue"
 
 
-def start(message, device_id=None, queue_name=QUEUE_NAME):
+def start(message, device_id=None, queue_name=QUEUE_NAME, connect=True):
     # 动态队列名称
-    if device_id:
+    if device_id and connect:
         queue_name = f'{device_id}_{queue_name}'
     print('↑↑' * 50)
     print('开始推送消息')

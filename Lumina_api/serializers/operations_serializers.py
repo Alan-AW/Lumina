@@ -86,7 +86,7 @@ def android_zones_deep_data(rooms):
     for room in rooms:
         # 收集机器信息
         units = room.units.all()
-        units_data = { unit.id: unit.serial_number for unit in units }
+        units_data = {unit.id: unit.serial_number for unit in units}
         units_names = list(units_data.values())
         units_ids = list(units_data.keys())
         # 收集机器下的作物信息
@@ -231,6 +231,8 @@ class CompanySer(serializers.ModelSerializer):
 # 设备支持功能列表序列化
 class UnitSettingsListSer(serializers.ModelSerializer):
     component_name = serializers.CharField(source='get_component_display', read_only=True)
+    category_cn_label = serializers.CharField(source='get_category_cn_display', read_only=True)
+    category_en_label = serializers.CharField(source='get_category_en_display', read_only=True)
     create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
     update_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
 
@@ -245,7 +247,7 @@ class CultivarSer(serializers.ModelSerializer):
         model = Cultivar
         fields = '__all__'
         extra_kwargs = {
-            'algorithm': { 'read_only': True },
+            'algorithm': {'read_only': True},
         }
 
 
