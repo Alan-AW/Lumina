@@ -211,14 +211,14 @@ const Controller = () => {
                   const currentDisabled =isDisabled && cmdItem.cmd__cmd !=='spectra' && cmdItem.cmd__cmd.includes('spectra');
                   const isSwitch = cmdItem.component === 'switch';
                   const isSlide = cmdItem.component === 'slide';
-                  const isSpectra= cmdItem.component === 'spectra';
+                  const isSpectra= cmdItem.cmd__cmd === 'spectra';
                   return (
                     <AutoView key={cmdIndex} style={{marginBottom: 36}}>
                       {isSwitch && (
                         <CustomSwitch
                           value={auto}
-                          title={desc}
-                          cmdIndex={cmdIndex < 2}
+                          title={desc+123}
+                          cmdIndex={true}
                           disabled={isSpectra?false:currentDisabled}
                           onChange={v => {
                             updateData({

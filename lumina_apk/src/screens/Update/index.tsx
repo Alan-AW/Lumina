@@ -74,11 +74,10 @@ export default function Update() {
 
                 }
             },
-            unit_device_id: '8RC4KBZ7',
+            unit_device_id: device_id,
 
         }
 
-        console.log('请求参数', params);
 
         submitUpdateJsonInfo(params).then(res => {
             console.log('提交请求结果', res);

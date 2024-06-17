@@ -13,7 +13,6 @@ import { locales } from "src/helpers/localesText";
 export default function UpdateTabs() {
 
     const instructions: any = update_store.instructions;
-    console.log(instructions.length,'tab数量');
     
 
     const tabData = useMemo(() => {
@@ -22,7 +21,7 @@ export default function UpdateTabs() {
         if (Array.isArray(instructions) && instructions.length > 0) {
             for (let i = 0; i < instructions.length; i++) {
                 const item = instructions[i];
-                const eleKey=( item.phase+i).toString()
+                const eleKey=i.toString()
                 routeObj.push({
                     key: eleKey,
                     title: item.phase
@@ -85,7 +84,7 @@ export default function UpdateTabs() {
                     indicatorStyle={{ backgroundColor: '#fff' }}
                     renderLabel={({ route, focused }) => (
                         <LocalesText languageKey={locales[route.title] || route.title} 
-                        style={{ fontWeight: focused ? '700' : '400',color:focused?'#40848b':'#666',
+                        style={{ color:focused?'#40848b':'#666',
                          }}
                         />
                     )}

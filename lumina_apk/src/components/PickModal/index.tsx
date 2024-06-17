@@ -38,13 +38,17 @@ function PickModal(props: PickModalProps, ref: any) {
 
     return (
         <Modal visible={open} transparent style={{ position: 'relative' }} onRequestClose={close}>
-            <TouchableOpacity style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', zIndex: 99, backgroundColor: 'rgba(0,0,0,0.3)' }} />
+        
 
             <Center style={{ position: 'relative', zIndex: 100, flexDirection: 'column', flex: 1 }}>
+            <TouchableOpacity activeOpacity={1} onPress={()=>{
+                setOpen(false)
+            }} style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', zIndex: 88, backgroundColor: 'rgba(0,0,0,0.4)' }} />
                 {
                     data.map((item: any, index: number) => {
                         return (
-                            <Start key={index} onPress={() => change(item)} style={{ paddingHorizontal: 32, paddingVertical: 32,backgroundColor:'#fff',width:'50%',borderBottomWidth:1,borderColor:'#ddd' }}>
+                            <Start key={index} onPress={() => change(item)} style={{ 
+                                paddingHorizontal: 32, paddingVertical: 32,backgroundColor:'#fff',width:'50%',borderBottomWidth:1,borderColor:'#ddd',zIndex:99 }}>
                                 <LocalesText languageKey={locales[item] || item} />
                             </Start>
                         )

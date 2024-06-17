@@ -4,15 +4,11 @@ import ShadowCard from "../Shadow";
 import AutoView from "../AutoView/View";
 import { adaptationConvert, createStyles } from 'src/helpers/style';
 import { SvgChart, SVGRenderer, SkiaChart } from '@wuba/react-native-echarts';
-import Start from "../FlexView/Start";
-import AutoText from "../AutoView/Text";
 import LocalesText from "../Text";
-import { IconButton } from "../Button";
 import Center from "../FlexView/Center";
 import * as echarts from 'echarts/core';
 import { locales } from "src/helpers/localesText";
 import { IconKongshuju } from "src/iconfont";
-import Loading from "../Loading";
 
 
 interface EchartsCotainerPorps {
@@ -20,11 +16,11 @@ interface EchartsCotainerPorps {
     children: any,
     echartWidth: number,
     echartHeight: number,
-    loading:boolean
+    loading: boolean
 }
 
 export default function EchartsCotainer(props: EchartsCotainerPorps) {
-    const { options, children, echartWidth, echartHeight,loading } = props;
+    const { options, children, echartWidth, echartHeight, loading } = props;
     const chartRef = useRef(null);
     useEffect(() => {
         let chart: any = null;
@@ -39,23 +35,21 @@ export default function EchartsCotainer(props: EchartsCotainerPorps) {
         }
         return () => chart?.dispose();
     }, [options, echartWidth, echartHeight]);
-
+  
     return (
         <AutoView style={{ padding: 32, }}>
             <ShadowCard style={{ width: echartWidth + 32, height: echartHeight + 32, backgroundColor: '#fff', position: 'relative' }}>
                 {children}
-                <Loading loading={loading}>
                 {
-                    options ? <AutoView style={{ flex: 1, flexDirection: 'column', position: 'absolute', left: 0, top: 30, width: '100%', height: '100%' }}>
-                        <SkiaChart ref={chartRef} />
-                    </AutoView> :
-                        <Center style={{ flex: 1, flexDirection: 'column' }}>
-                            <IconKongshuju size={adaptationConvert(100)} color={'#8a8a8a'} />
-                            <LocalesText languageKey={locales.nullData} top={10} />
-                        </Center>
-                }
-                </Loading>
-               
+                        options ? <AutoView style={{ flex: 1, flexDirection: 'column', position: 'absolute', left: 0, top: 30, width: '100%', height: '100%' }}>
+                            <SvgChart ref={chartRef} />
+                        </AutoView> :
+                            <Center style={{ flex: 1, flexDirection: 'column' }}>
+                                <IconKongshuju size={adaptationConvert(100)} color={'#8a8a8a'} />
+                                <LocalesText languageKey={locales.nullData} top={10} />
+                            </Center>
+                    }
+
 
             </ShadowCard>
         </AutoView>

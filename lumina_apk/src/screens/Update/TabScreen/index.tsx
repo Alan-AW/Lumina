@@ -41,7 +41,7 @@ export default function TabScreen(props: TabScreenProps) {
                 <ShadowCard style={{ width: '30%', paddingHorizontal: 24, paddingVertical: 16 }}>
                     <View>
                         <Start style={{ paddingVertical: 16 }}>
-                            <AutoText>{actions0.hardware}</AutoText>
+                            <LocalesText size={45} languageKey={locales[actions0.hardware]} />
                         </Start>
                         <CusOption label="vpd_priority_day" value={actions0.vpd_priority_day} data={['temp', 'rh']} updateKey={'vpd_priority_day'} />
                         <CusOption label="vpd_priority_night" value={actions0.vpd_priority_night} data={['temp', 'rh']} updateKey={'vpd_priority_night'} />
@@ -75,7 +75,7 @@ export default function TabScreen(props: TabScreenProps) {
                 </ShadowCard>
                 <ShadowCard style={{ width: '30%', paddingHorizontal: 24, marginLeft: '3%', paddingVertical: 16 }}>
                     <Start style={{ paddingVertical: 16 }}>
-                        <AutoText>{actions1.hardware}</AutoText>
+                    <LocalesText size={45} languageKey={locales[actions1.hardware]} />
                     </Start>
                     <View style={{ marginTop: 8 }}>
                         <CusMultiSlider title="target_ec" min={8} max={35} value={actions1} valueKey={['target_ec_min', 'target_ec_max']} step={1} onChange={updateArr}>
@@ -92,7 +92,8 @@ export default function TabScreen(props: TabScreenProps) {
                 <ShadowCard style={{ width: '30%', paddingHorizontal: 24, marginLeft: '3%', paddingVertical: 16 }}>
                     <Start style={{ width: '100%', paddingVertical: 16 }}>
 
-                        <AutoText>{actions2.hardware}</AutoText>
+                    <LocalesText size={45} languageKey={locales[actions2.hardware]} />
+
                     </Start>
                     <CusTimeAndType optionKey="fade_curve_type" timeKey="fade_curve_duration" actions={actions2} />
                     <View style={useInlineStyle({ paddingTop: 16 })}>
