@@ -44,11 +44,13 @@ function format(str: any) {
     }
     return str;
 }
-
+const step=1; //因精度问题，这里只能设置整数
 export default function CustomSLider(props: CustomSwitchProps) {
-    const { disabled, onChange, value, title, max = 100, min = 0, step = 0.1, unit } = props;
+    const { disabled, onChange, value, title, max = 100, min = 0, unit } = props;
 
     const [sliderValue, setSilderValue] = useState(0);
+    const [enableLabel, setEnableLabel] = useState(false);
+    
 
     useEffect(() => {
         const _value = Number(format(value));
@@ -89,14 +91,28 @@ export default function CustomSLider(props: CustomSwitchProps) {
                 <Slider
                     sliderLength={cointerWidth}
                     min={min}
-                    max={max}
+                    max={max+1}
                     enabledOne={!disabled}
-                    step={step || 1}
-                    onValuesChangeFinish={(v) => {
+                    step={step}
+                    enableLabel={enableLabel}
+
+                    onValuesChangeStart={()=>{
                         if (disabled) {
                             return;
                         }
-                        onChange(valueToFixed(v[0], 0))
+                        setEnableLabel(true)
+                    }}
+                    onValuesChangeFinish={(v) => {
+                        
+                        if (disabled) {
+                            return;
+                        }
+                        setEnableLabel(false)
+                        let dragValue=valueToFixed(v[0], 0);
+                        if(dragValue>=max){
+                            dragValue=max
+                        }
+                        onChange(dragValue)
                     }}
                     values={[sliderValue > min ? sliderValue : min]}
                     markerStyle={{ backgroundColor: colors.checked }}

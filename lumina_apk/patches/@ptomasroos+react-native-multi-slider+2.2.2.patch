@@ -1,5 +1,36 @@
+diff --git a/node_modules/@ptomasroos/react-native-multi-slider/DefaultLabel.js b/node_modules/@ptomasroos/react-native-multi-slider/DefaultLabel.js
+index 7901bae..18f0cb0 100644
+--- a/node_modules/@ptomasroos/react-native-multi-slider/DefaultLabel.js
++++ b/node_modules/@ptomasroos/react-native-multi-slider/DefaultLabel.js
+@@ -40,7 +40,7 @@ export default class DefaultLabel extends React.Component {
+                 oneMarkerPressed && styles.markerPressed,
+               ]}
+             >
+-              <Text style={styles.sliderLabelText}>{oneMarkerValue}</Text>
++              <Text style={styles.sliderLabelText}>{Number(oneMarkerValue).toFixed(0)}</Text>
+             </View>
+           )}
+ 
+@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
+     bottom: 0,
+     minWidth: width,
+     padding: 8,
+-    backgroundColor: '#f1f1f1',
++    backgroundColor: '#f4f4f4',
++    transform:[{scale:1.3}]
+   },
+   sliderLabelText: {
+     alignItems: 'center',
+@@ -77,6 +78,6 @@ const styles = StyleSheet.create({
+   },
+   markerPressed: {
+     borderWidth: 2,
+-    borderColor: '#999',
++    borderColor: '#f2f2f2',
+   },
+ });
 diff --git a/node_modules/@ptomasroos/react-native-multi-slider/DefaultMarker.js b/node_modules/@ptomasroos/react-native-multi-slider/DefaultMarker.js
-index aeb46ff..c94c506 100644
+index aeb46ff..f6098d7 100644
 --- a/node_modules/@ptomasroos/react-native-multi-slider/DefaultMarker.js
 +++ b/node_modules/@ptomasroos/react-native-multi-slider/DefaultMarker.js
 @@ -4,7 +4,7 @@ import { View, StyleSheet, Platform, TouchableHighlight } from 'react-native';

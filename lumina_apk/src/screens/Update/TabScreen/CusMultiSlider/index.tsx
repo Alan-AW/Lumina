@@ -24,7 +24,7 @@ interface CusMultiSliderProps {
 }
 
 export default function CusMultiSlider(props: CusMultiSliderProps) {
-    const { value, valueKey, title, min, max, onChange, step, children, newValue,unit='' } = props;
+    const { value, valueKey, title, min, max, onChange, step, children, newValue, unit = '' } = props;
 
     const defaultSliderMinValue = value[valueKey[0]]
     const defaultSliderMaxValue = value[valueKey[1]]
@@ -66,16 +66,16 @@ export default function CusMultiSlider(props: CusMultiSliderProps) {
 
     function propsChange(v: number[]) {
 
-        let _step=0;
-        if(step){
-            const arr=step.toString().split('.');
-            if(arr.length>1){
-                _step=arr[1].length;
+        let _step = 0;
+        if (step) {
+            const arr = step.toString().split('.');
+            if (arr.length > 1) {
+                _step = arr[1].length;
             }
         }
-        const _value=[
-            numberToFixed(v[0],_step),
-            numberToFixed(v[1],_step),
+        const _value = [
+            numberToFixed(v[0], _step),
+            numberToFixed(v[1], _step),
         ]
         onChange({
             [valueKey[0]]: _value[0],
@@ -94,15 +94,15 @@ export default function CusMultiSlider(props: CusMultiSliderProps) {
             <SpaceBetween style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
                 <LocalesText languageKey={locales[title] || title} />
                 <SpaceBetween style={{ width: '100%', paddingTop: 32 }}>
-                    <LocalesText languageKey={locales.min} rightText={`：${sliderValue[0]}${unit}`} />
-                    <LocalesText languageKey={locales.max} rightText={`：${sliderValue[1]}${unit}`} />
+                    <LocalesText languageKey={locales.min} rightText={`：${unit?(sliderValue[0]*100).toFixed(0):sliderValue[0]}${unit}`} />
+                    <LocalesText languageKey={locales.max} rightText={`：${unit?(sliderValue[1]*100).toFixed(0):sliderValue[1]}${unit}`} />
                 </SpaceBetween>
                 <Center style={{ width: '100%', marginTop: 0 }}>
                     <MultiSlider values={sliderValue} onValuesChangeFinish={change} selectedStyle={{ backgroundColor: colors.checked }}
-                        markerStyle={{ backgroundColor: colors.checked }} min={currentMin} max={currentMax} step={step} trackStyle={{backgroundColor:'#eee'}} />
+                        markerStyle={{ backgroundColor: colors.checked }} min={currentMin} max={currentMax} step={step} trackStyle={{ backgroundColor: '#eee' }} />
                 </Center>
             </SpaceBetween>
-            {children && React.cloneElement(children, { min: sliderValue[0], max: sliderValue[1], newValue: sliderValue, step:step, })}
+            {children && React.cloneElement(children, { min: sliderValue[0], max: sliderValue[1], newValue: sliderValue, step: step, })}
         </View>
 
     )
