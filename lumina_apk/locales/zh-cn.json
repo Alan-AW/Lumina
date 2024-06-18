@@ -39,7 +39,6 @@
     "NightChamberTemperature": "夜间室温",
     "PhaseControl": "阶段控制",
     "CurrentPhase": "当前阶段",
-    "Germination": "发芽",
     "days": "天",
     "Duration": "持续时间",
     "duration": "持续时间",
@@ -49,7 +48,6 @@
     "off": "关闭",
     "Heating": "加热",
     "temperatureTips": "*关闭“自动气候”会使您的植物处于风险之中。请定期检查温度以防止过热。",
-    "Flowering": "开花",
     "AutoFloweringTrigger": "自动开花触发器",
     "ManualTrigger": "手动触发",
     "floweringTips": "*允许设备自动触发植物的开花阶段。",
@@ -152,13 +150,23 @@
     "temperature_humidity":"温度湿度",
     "ManualCommands":"手动指令",
     "deviceName":"设备名称",
-    "on":"开",
-    "off":"关",
+    // "on":"开",
+    // "off":"关",
     "endPlantCycle":"是否结束当前种植周期",
     "ManagePlantingCycles":"管理种植周期",
     "StartNewPlantingCycle":"开始新种植周期",
     "EndCurrentPlantingCycle":"结束当前种植周期",
-    "SunriseTime":"日出时间"
+    "SunriseTime":"日出时间",
+    "spectra_450_led":"LED深蓝",
+    "spectra_660_led":"LED超红",
+    "spectra_main_led":"主通道",
+    "wintering":"越冬期",
+    "fruiting":"结果期",
+    "flowering":"花期",
+    "vegetative":"营养⽣⻓",
+    "seedling":"育苗",
+    "transplantRecovery":"缓苗期",
+    "germination":"催芽"
 
 
 }

@@ -83,7 +83,7 @@ export default function UpdateTabs() {
                     inactiveColor="#fff"
                     indicatorStyle={{ backgroundColor: '#fff' }}
                     renderLabel={({ route, focused }) => (
-                        <LocalesText languageKey={locales[route.title] || route.title} 
+                        <LocalesText languageKey={locales[route.title]} 
                         style={{ color:focused?'#40848b':'#666',
                          }}
                         />

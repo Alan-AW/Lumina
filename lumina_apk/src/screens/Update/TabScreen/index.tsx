@@ -15,6 +15,7 @@ import CusTimeAndType from "./CusTimeAndType";
 import LocalesText from "src/components/Text";
 import { locales } from "src/helpers/localesText";
 import colors from "src/constants/colors";
+import AutoView from "src/components/AutoView/View";
 
 interface TabScreenProps {
     data: any;
@@ -35,7 +36,7 @@ export default function TabScreen(props: TabScreenProps) {
             <Start style={{ padding: 32, paddingVertical: 48 }}>
                 <CusInputNumber defaultMinValue={days_min} defaultMaxValue={days_max} />
                 <LocalesText languageKey={locales.DaytimeDuration} rightText={duration} />
-               
+
             </Start>
             <Start style={{ flex: 1, padding: 0, alignItems: 'flex-start' }}>
                 <ShadowCard style={{ width: '30%', paddingHorizontal: 24, paddingVertical: 16 }}>
@@ -43,39 +44,48 @@ export default function TabScreen(props: TabScreenProps) {
                         <Start style={{ paddingVertical: 16 }}>
                             <LocalesText size={45} languageKey={locales[actions0.hardware]} />
                         </Start>
-                        <CusOption label="vpd_priority_day" value={actions0.vpd_priority_day} data={['temp', 'rh']} updateKey={'vpd_priority_day'} />
-                        <CusOption label="vpd_priority_night" value={actions0.vpd_priority_night} data={['temp', 'rh']} updateKey={'vpd_priority_night'} />
 
                     </View>
                     <View style={{ marginTop: 8 }}>
-                        <CusMultiSlider title="target_rh_day" min={0.3} max={0.85} value={actions0} valueKey={['target_rh_min_day', 'target_rh_max_day']} step={0.01} onChange={updateArr}>
-                            <CusMultiSlider title="target_rh_deadband_day" value={actions0} valueKey={['target_rh_deadband_min_day', 'target_rh_deadband_max_day']} onChange={updateArr} />
+                        <CusMultiSlider title="target_amb_temp_day" min={8} max={35} unit='%' value={actions0} valueKey={['target_amb_temp_min_day', 'target_amb_temp_max_day']} step={1} onChange={updateArr}>
+                            <CusMultiSlider title="target_amb_temp_deadband_day"  unit='%' value={actions0} valueKey={['target_amb_temp_deadband_min_day', 'target_amb_temp_deadband_max_day']} onChange={updateArr} />
                         </CusMultiSlider>
+                        <CusMultiSlider title="target_rh_day" min={30} max={85}  unit='%' value={actions0} valueKey={['target_rh_min_day', 'target_rh_max_day']} step={1} onChange={updateArr}>
+                            <CusMultiSlider title="target_rh_deadband_day"  unit='%' value={actions0} valueKey={['target_rh_deadband_min_day', 'target_rh_deadband_max_day']} onChange={updateArr} />
+                        </CusMultiSlider>
+                       
 
                         <CusMultiSlider title="target_vpd_day" min={0.3} max={3.5} value={actions0} valueKey={['target_vpd_min_day', 'target_vpd_max_day']} step={0.1} onChange={updateArr}>
                             <CusMultiSlider title="target_vpd_deadband_day" value={actions0} valueKey={['target_vpd_deadband_min_day', 'target_vpd_deadband_max_day']} onChange={updateArr} />
                         </CusMultiSlider>
+                        <AutoView style={{ paddingBottom: 32}}>
+                            <CusOption label="vpd_priority_day" value={actions0.vpd_priority_day} data={['temp', 'rh']} updateKey={'vpd_priority_day'} />
+                        </AutoView>
+                       
 
-                        <CusMultiSlider title="target_rh_night" min={0.3} max={0.85} value={actions0} valueKey={['target_rh_min_night', 'target_rh_max_night']} step={0.01} onChange={updateArr}>
-                            <CusMultiSlider title="target_rh_deadband_night" value={actions0} valueKey={['target_rh_deadband_min_night', 'target_rh_deadband_max_night']} onChange={updateArr} />
+                        <CusMultiSlider title="target_amb_temp_night" min={8} max={35}  unit='%' value={actions0} valueKey={['target_amb_temp_min_night', 'target_amb_temp_max_night']} step={1} onChange={updateArr}>
+                            <CusMultiSlider title="target_amb_temp_deadband_night"  unit='%' value={actions0} valueKey={['target_amb_temp_deadband_min_night', 'target_amb_temp_deadband_max_night']} onChange={updateArr} />
                         </CusMultiSlider>
+
+                        <CusMultiSlider title="target_rh_night" min={30} max={85}  unit='%' value={actions0} valueKey={['target_rh_min_night', 'target_rh_max_night']} step={1} onChange={updateArr}>
+                            <CusMultiSlider title="target_rh_deadband_night"  unit='%' value={actions0} valueKey={['target_rh_deadband_min_night', 'target_rh_deadband_max_night']} onChange={updateArr} />
+                        </CusMultiSlider>
+                       
 
                         <CusMultiSlider title="target_vpd_night" min={0.3} max={3.5} value={actions0} valueKey={['target_vpd_min_night', 'target_vpd_max_night']} step={0.1} onChange={updateArr}>
                             <CusMultiSlider title="target_vpd_deadband_night" value={actions0} valueKey={['target_vpd_deadband_min_night', 'target_vpd_deadband_max_night']} onChange={updateArr} />
                         </CusMultiSlider>
+                        <CusOption label="vpd_priority_night" value={actions0.vpd_priority_night} data={['temp', 'rh']} updateKey={'vpd_priority_night'} />
 
-                        <CusMultiSlider title="target_amb_temp_day" min={8} max={35} value={actions0} valueKey={['target_amb_temp_min_day', 'target_amb_temp_max_day']} step={1} onChange={updateArr}>
-                            <CusMultiSlider title="target_amb_temp_deadband_day" value={actions0} valueKey={['target_amb_temp_deadband_min_day', 'target_amb_temp_deadband_max_day']} onChange={updateArr} />
-                        </CusMultiSlider>
 
-                        <CusMultiSlider title="target_amb_temp_night" min={8} max={35} value={actions0} valueKey={['target_amb_temp_min_night', 'target_amb_temp_max_night']} step={1} onChange={updateArr}>
-                            <CusMultiSlider title="target_amb_temp_deadband_night" value={actions0} valueKey={['target_amb_temp_deadband_min_night', 'target_amb_temp_deadband_max_night']} onChange={updateArr} />
-                        </CusMultiSlider>
+
+
+                    
                     </View>
                 </ShadowCard>
                 <ShadowCard style={{ width: '30%', paddingHorizontal: 24, marginLeft: '3%', paddingVertical: 16 }}>
                     <Start style={{ paddingVertical: 16 }}>
-                    <LocalesText size={45} languageKey={locales[actions1.hardware]} />
+                        <LocalesText size={45} languageKey={locales[actions1.hardware]} />
                     </Start>
                     <View style={{ marginTop: 8 }}>
                         <CusMultiSlider title="target_ec" min={8} max={35} value={actions1} valueKey={['target_ec_min', 'target_ec_max']} step={1} onChange={updateArr}>
@@ -92,7 +102,7 @@ export default function TabScreen(props: TabScreenProps) {
                 <ShadowCard style={{ width: '30%', paddingHorizontal: 24, marginLeft: '3%', paddingVertical: 16 }}>
                     <Start style={{ width: '100%', paddingVertical: 16 }}>
 
-                    <LocalesText size={45} languageKey={locales[actions2.hardware]} />
+                        <LocalesText size={45} languageKey={locales[actions2.hardware]} />
 
                     </Start>
                     <CusTimeAndType optionKey="fade_curve_type" timeKey="fade_curve_duration" actions={actions2} />

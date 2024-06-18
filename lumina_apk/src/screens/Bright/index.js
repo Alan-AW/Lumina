@@ -74,7 +74,7 @@ const Bright = () => {
 
 
   useEffect(() => {
-    if (res) {
+    if (res && res.data) {
           const { vpd, temperature_humidity, lighting, fertigation } = res.data;
           setEchartsObj({
             vpd,

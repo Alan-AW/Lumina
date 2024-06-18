@@ -20,10 +20,11 @@ interface CusMultiSliderProps {
     onChange: (v: any) => void;
     children?: any;
     newValue?: number[];
+    unit?: string;
 }
 
 export default function CusMultiSlider(props: CusMultiSliderProps) {
-    const { value, valueKey, title, min, max, onChange, step, children, newValue } = props;
+    const { value, valueKey, title, min, max, onChange, step, children, newValue,unit='' } = props;
 
     const defaultSliderMinValue = value[valueKey[0]]
     const defaultSliderMaxValue = value[valueKey[1]]
@@ -93,8 +94,8 @@ export default function CusMultiSlider(props: CusMultiSliderProps) {
             <SpaceBetween style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
                 <LocalesText languageKey={locales[title] || title} />
                 <SpaceBetween style={{ width: '100%', paddingTop: 32 }}>
-                    <LocalesText languageKey={locales.min} rightText={`：${sliderValue[0]}`} />
-                    <LocalesText languageKey={locales.max} rightText={`：${sliderValue[1]}`} />
+                    <LocalesText languageKey={locales.min} rightText={`：${sliderValue[0]}${unit}`} />
+                    <LocalesText languageKey={locales.max} rightText={`：${sliderValue[1]}${unit}`} />
                 </SpaceBetween>
                 <Center style={{ width: '100%', marginTop: 0 }}>
                     <MultiSlider values={sliderValue} onValuesChangeFinish={change} selectedStyle={{ backgroundColor: colors.checked }}

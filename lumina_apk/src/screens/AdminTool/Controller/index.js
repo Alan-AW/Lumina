@@ -217,7 +217,7 @@ const Controller = () => {
                       {isSwitch && (
                         <CustomSwitch
                           value={auto}
-                          title={desc+123}
+                          title={desc}
                           cmdIndex={true}
                           disabled={isSpectra?false:currentDisabled}
                           onChange={v => {
