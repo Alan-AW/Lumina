@@ -404,12 +404,18 @@ class SendCmdToMQView(APIView):
             return return_response(status=False, error='数据格式错误！')
         try:
             with atomic():
-                message_data = {}
+                actions = []
                 # 更新数据库中对应设备的记录值
                 for item in data:
                     update_data = {'auto': item['auto'], 'value': item['value']}
                     UnitSetting.objects.filter(unit=unit_obj, cmd__cmd=item['cmd']).update(**update_data)
-                    message_data[item['cmd']] = item['value']
+                    # 24-6-18重新更改推送数据格式：每个设置项都是一个action，全部加入actions中，值为以下三个字段固定
+                    component = UnitSettingsList.objects.filter(cmd=item['cmd']).first().component
+                    actions.append({
+                        'type': 'action',
+                        'hardware': item['cmd'],
+                        'value': item['auto'] if component == 2 else item['value']  # 如果是开关取auto，否则取value
+                    })
                 # 记录日志
                 create_logs(request.user, UnitSetting, 5, data)
                 # 推入队列
@@ -431,20 +437,7 @@ class SendCmdToMQView(APIView):
                                 "instructions": [
                                     {
                                         "phase": "transplant_recovery",
-                                        "actions": [
-                                            {
-                                                "type": "action",
-                                                "hardware": "lighting",
-                                                "spectra_main_led": message_data.get('spectra_main_led'),
-                                                "spectra_450_led": message_data.get('spectra_450_led'),
-                                                "spectra_660_led": message_data.get('spectra_660_led')
-                                            },
-                                            {
-                                                "type": "action",
-                                                "hardware": "motor",
-                                                "motor": message_data.get('looper_motor')
-                                            }
-                                        ]
+                                        "actions": actions
                                     }
                                 ]
                             },

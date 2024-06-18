@@ -110,7 +110,7 @@ class UnitSetting(models.Model):
 
 # 机器设备所支持的功能
 class UnitSettingsList(models.Model):
-    cmd = models.CharField(max_length=64, verbose_name='指令名称')
+    cmd = models.CharField(max_length=64, unique=True, verbose_name='指令名称')
     desc_cn = models.CharField(max_length=64, verbose_name='中文解释')
     desc_en = models.CharField(max_length=64, verbose_name='英文解释')
     category_cn = models.IntegerField(null=True, blank=True, choices=(
