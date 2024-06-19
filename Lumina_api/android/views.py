@@ -179,6 +179,7 @@ class UnitDescView(APIView):
                 }
             }
             for i in queryset:
+                print(i.id)
                 # 真实数据：Queryset
                 # 测试数据
                 # data_dict = i.get('data').get('data').get('data')

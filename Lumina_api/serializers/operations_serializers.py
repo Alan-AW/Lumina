@@ -1,6 +1,8 @@
 from django.conf import settings as sys
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
+
+from device.models import MessageQueueModel
 from device.rabbit_mq.consumer_status import get_all_data
 from operations.models import Company, Room, Unit, Temperature, Lighting, UnitSetting, Species, \
     Cultivars, Models, Phases, Instruction, Action, Triggers, UnitSettingsList, Cultivar, Algorithm
@@ -118,10 +120,29 @@ class RoomDescSer(serializers.ModelSerializer):
     min_current = serializers.SerializerMethodField()
 
     def get_max_current(self, row):
-        return "25℃"
+        tmp_list = self.unit_current_tmp(row)
+        return "--" if not tmp_list else max(tmp_list)
 
     def get_min_current(self, row):
-        return "20℃"
+        tmp_list = self.unit_current_tmp(row)
+        return "--" if not tmp_list else min(tmp_list)
+
+    def unit_current_tmp(self, room):
+        # 24-6-19获取当前房间内的unit,先不搞，老板温度传感器烧了，没数据
+        # 24-6-19随后确定好了数据格式使用try代码块进行获取数据
+        unit = room.units.first()
+        if unit:
+            device_id = unit.deviceId
+            content = MessageQueueModel.objects.filter(device_id=device_id).last().content
+            try:
+                tmp_min = content['data']['thc']['main_lower']['temperature']
+                tmp_max = content['data']['thc']['main_upper']['temperature']
+                tmp_list = [tmp_max, tmp_min]
+            except Exception as e:
+                tmp_list = None
+        else:
+            tmp_list = None
+        return tmp_list
 
     class Meta:
         model = Room
