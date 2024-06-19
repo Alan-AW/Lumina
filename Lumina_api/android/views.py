@@ -407,14 +407,14 @@ class SendCmdToMQView(APIView):
                 actions = []
                 # 更新数据库中对应设备的记录值
                 for item in data:
-                    update_data = {'auto': item['auto'], 'value': item['value']}
+                    update_data = {'auto': bool(item['auto']), 'value': item['value']}
                     UnitSetting.objects.filter(unit=unit_obj, cmd__cmd=item['cmd']).update(**update_data)
                     # 24-6-18重新更改推送数据格式：每个设置项都是一个action，全部加入actions中，值为以下三个字段固定
                     component = UnitSettingsList.objects.filter(cmd=item['cmd']).first().component
                     actions.append({
                         'type': 'action',
                         'hardware': item['cmd'],
-                        'value': item['auto'] if component == 2 else item['value']  # 如果是开关取auto，否则取value
+                        'value': bool(item['auto']) if component == 2 else item['value']  # 如果是开关取auto，否则取value
                     })
                 # 记录日志
                 create_logs(request.user, UnitSetting, 5, data)
