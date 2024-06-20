@@ -9,12 +9,14 @@ import SpaceBetween from "src/components/FlexView/SpaceBetween";
 import { FONT_SIZE } from "src/constants/style";
 import { adaptationConvert } from "src/helpers/style";
 import ToastService from "src/helpers/toast";
-import Slider from '@ptomasroos/react-native-multi-slider'
+// import Slider from '@ptomasroos/react-native-multi-slider'
 import colors from "src/constants/colors";
 import Center from "src/components/FlexView/Center";
 import Start from "src/components/FlexView/Start";
 import Slider2 from "@react-native-community/slider";
+import {Slider} from '@miblanchard/react-native-slider';
 import { valueToFixed } from "src/utils";
+import { scale } from "@shopify/react-native-skia";
 
 
 interface CustomSwitchProps {
@@ -44,11 +46,11 @@ function format(str: any) {
     }
     return str;
 }
-const step=1; //因精度问题，这里只能设置整数
+// const step=1; //因精度问题，这里只能设置整数
 export default function CustomSLider(props: CustomSwitchProps) {
-    const { disabled, onChange, value, title, max = 100, min = 0, unit } = props;
+    const { disabled, onChange, value, title, max = 100, min = 0, unit,step=1 } = props;
 
-    const [sliderValue, setSilderValue] = useState(0);
+    const [sliderValue, setSilderValue] = useState<number>(0);
     const [enableLabel, setEnableLabel] = useState(false);
     
 
@@ -85,10 +87,45 @@ export default function CustomSLider(props: CustomSwitchProps) {
                 <AutoText style={{ fontSize: FONT_SIZE.desc, opacity: disabled ? 0.7 : 1 }}>{max}</AutoText>
                 </Start>
             </SpaceBetween>
-            <View style={{ opacity: disabled ? 0.7 : 1 }} onLayout={(event) => {
+            <View  onLayout={(event) => {
                 setCointerWidth(event.nativeEvent.layout.width)
             }}>
                 <Slider
+                animateTransitions
+                animationType="timing"
+                value={sliderValue}
+                minimumValue={min}
+                disabled={disabled}
+                maximumValue={max}
+                step={step}
+                minimumTrackTintColor={disabled?'#ccc':colors.checked}
+                maximumTrackTintColor="#f1f1f1"
+                thumbTintColor={disabled?'#ccc':colors.checked}
+                onSlidingComplete={(v)=>{
+                    onChange(v[0])
+                    setSilderValue(v[0])
+                }}
+                />
+                {/* <Slider2
+                minimumValue={min}
+                onResponderGrant={()=>{
+                    return <View style={{width:100,height:100,backgroundColor:'#ccc'}} />
+                }}
+                maximumValue={max}
+                
+                disabled={disabled}
+                minimumTrackTintColor={colors.checked}
+                thumbTintColor={colors.checked}
+                style={{
+                    transform: [{ scaleX: .75 }, { scaleY: .75 }]
+                }}
+                // style={{transform:[{scale:1.2}]}}
+                onTouchEnd={(v)=>{
+                    onChange(v)
+                }}
+                value={sliderValue}
+                /> */}
+                {/* <Slider
                     sliderLength={cointerWidth}
                     min={min}
                     max={max+1}
@@ -118,7 +155,7 @@ export default function CustomSLider(props: CustomSwitchProps) {
                     markerStyle={{ backgroundColor: colors.checked }}
                     unselectedStyle={{ backgroundColor: '#f1f1f1' }}
                     selectedStyle={{ backgroundColor: disabled ? '#f1f1f1' : colors.checked }}
-                />
+                /> */}
                 <SpaceBetween style={{ paddingTop: 8 }}>
                     <AutoText style={{ fontSize: FONT_SIZE.title }}>{Number(sliderValue).toFixed(0)} {unit}</AutoText>
                 </SpaceBetween>
