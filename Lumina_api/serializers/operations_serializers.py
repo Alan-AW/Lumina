@@ -133,8 +133,8 @@ class RoomDescSer(serializers.ModelSerializer):
         unit = room.units.first()
         if unit:
             device_id = unit.deviceId
-            content = MessageQueueModel.objects.filter(device_id=device_id).last().content
             try:
+                content = MessageQueueModel.objects.filter(device_id=device_id).last().content
                 tmp_min = content['data']['thc']['main_lower']['temperature']
                 tmp_max = content['data']['thc']['main_upper']['temperature']
                 tmp_list = [tmp_max, tmp_min]
