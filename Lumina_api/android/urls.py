@@ -28,5 +28,5 @@ urlpatterns = [
     # app端停止种植周期
     re_path(r'stop/algorithm/(?P<unit_id>\d+)$', StopAlgorithmView.as_view()),
     # app端获取设备摄像头播放地址
-    re_path(r'get/camera/url/(?P<unit_id>\d+)$', GetUnitCameraUrlView.as_view()),
+    path('get/camera/url', GetUnitCameraUrlView.as_view()),
 ]

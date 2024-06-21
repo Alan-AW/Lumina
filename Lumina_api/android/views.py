@@ -600,13 +600,19 @@ class StopAlgorithmView(APIView):
 class GetUnitCameraUrlView(APIView):
     permission_classes = [ExcludeSuperPermission]
 
-    def get(self, request, unit_id):
-        # 方案一，根据设备ID查询
-        unit = Unit.objects.filter(pk=unit_id).first()
-        if not unit:
-            response = return_response(status=False, error=f'未找到“{unit_id}”的设备！')
-            return JsonResponse(response)
-        data = {'url': unit.camera_link}
-        response = return_response(data=data)
+    def get(self, request):
         # 方案二，直接返回当前用户公司下的所有设备ID，名称，链接列表
+        # 获取用户公司的所有房间
+        data_list = []
+        rooms = request.user.company.rooms.all()
+        for room in rooms:
+            unit = room.units.first()
+            if not unit:
+                continue
+            data_list.append({
+                'id': unit.id,
+                'serial_number': unit.serial_number,
+                'camera_link': unit.camera_link
+            })
+        response = return_response(data=data_list)
         return JsonResponse(response)
