@@ -577,10 +577,13 @@ class StopAlgorithmView(APIView):
         desc.status = False
         desc.save()
         device_id = desc.unit.deviceId
+        timer = datetime.now().replace(tzinfo=datetime.now().astimezone().tzinfo).strftime(
+            "%Y-%m-%dT%H:%M:%S%z")
+        timer = f'{timer[:-2]}:{timer[-2:]}'
         start(
             message=json.dumps({
                 "device_id": device_id,
-                "time": datetime.now(pytz.timezone('Asia/Shanghai')).strftime("%Y-%m-%d %H:%M:%S"),
+                "time": timer,
                 "grow_cycle_id": None,
                 "version": "0.5A.0",
                 "data": {}

@@ -1,5 +1,8 @@
+import datetime
+import json
 import time
 
+import pytz
 from django.db.transaction import atomic
 from rest_framework.views import APIView
 from django.http import JsonResponse
@@ -544,7 +547,12 @@ class PutDeviceIdToMqView(APIView):
         if not has_unit:
             response = return_response(status=False, error=f'未找到{device_id}的设备')
         else:
-            start(message=device_id, device_id=device_id, queue_name='latest_online_device_queue', connect=False)
+            timer = datetime.datetime.now().replace(tzinfo=datetime.datetime.now().astimezone().tzinfo).strftime("%Y-%m-%dT%H:%M:%S%z")
+            timer = f'{timer[:-2]}:{timer[-2:]}'
+            start(message=json.dumps({
+                "device_id": device_id,
+                "time": timer
+            }), device_id=device_id, queue_name='latest_online_device_queue', connect=False)
             response = return_response(info='ok')
         return JsonResponse(response)
 

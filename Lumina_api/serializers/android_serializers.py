@@ -108,10 +108,12 @@ class ValidateUnitCultivarAlgorithmToMqSer(serializers.Serializer):
             cycle_record.status = False
             cycle_record.save()
             # 24-6-21新增推送消息到队列
+            timer = datetime.datetime.now().replace(tzinfo=datetime.datetime.now().astimezone().tzinfo).strftime("%Y-%m-%dT%H:%M:%S%z")
+            timer = f'{timer[:-2]}:{timer[-2:]}'
             start(
                 message=json.dumps({
                     "device_id": attrs.get('unit').deviceId,
-                    "time": datetime.datetime.now(pytz.timezone('Asia/Shanghai')).strftime("%Y-%m-%d %H:%M:%S"),
+                    "time": timer,
                     "grow_cycle_id": None,
                     "version": "0.5A.0",
                     "data": {}
