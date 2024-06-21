@@ -1,3 +1,4 @@
+import json
 import uuid
 import datetime
 
@@ -5,6 +6,7 @@ import pytz
 from rest_framework import serializers
 from collections import defaultdict
 from android.models import SendMessageToQueue
+from device.rabbit_mq.producer import start
 from operations.models import Cultivar, Algorithm, Unit, UnitPlantDesc, CompanyCultivarAlgorithm
 from utils.methods import is_within_date_range
 
@@ -78,7 +80,8 @@ def algorithm_choices_inal_ser(queryset, language):
 class ValidateUnitCultivarAlgorithmToMqSer(serializers.Serializer):
     unit = serializers.SlugRelatedField(required=True, slug_field='id', queryset=Unit.objects.all())
     cultivar = serializers.SlugRelatedField(required=True, slug_field='id', queryset=Cultivar.objects.all())
-    algorithm = serializers.JSONField(required=True, error_messages={'invalid': '算法格式错误！', 'required': '算法必须选择！'})
+    algorithm = serializers.JSONField(required=True,
+                                      error_messages={'invalid': '算法格式错误！', 'required': '算法必须选择！'})
     tod = serializers.CharField(required=True, error_messages={'required': 'tod必选择！'})
 
     def validate(self, attrs):
@@ -104,6 +107,19 @@ class ValidateUnitCultivarAlgorithmToMqSer(serializers.Serializer):
             # 24-4-18逻辑修改为，结束当前生效的种植周期，添加新的种植周期
             cycle_record.status = False
             cycle_record.save()
+            # 24-6-21新增推送消息到队列
+            start(
+                message=json.dumps({
+                    "device_id": attrs.get('unit').deviceId,
+                    "time": datetime.datetime.now(pytz.timezone('Asia/Shanghai')).strftime("%Y-%m-%d %H:%M:%S"),
+                    "grow_cycle_id": None,
+                    "version": "0.5A.0",
+                    "data": {}
+                }),
+                device_id=attrs.get('unit').deviceId,
+                queue_name='commont',
+                connect=False
+            )
         attrs['device_id'] = attrs.get('unit').deviceId
         algorithm = attrs.get('algorithm')
         for item in algorithm:
