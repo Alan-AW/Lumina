@@ -76,6 +76,7 @@ class Unit(models.Model):
     deviceSecret = models.CharField(max_length=255, verbose_name='设备密钥')
     status = models.IntegerField(choices=((0, '禁用'), (1, '正常')), verbose_name='机器状态', default=1)
     ping = models.CharField(max_length=64, null=True, blank=True, verbose_name='逻辑核心上一次ping的时间')
+    camera_link = models.TextField(null=True, blank=True, verbose_name='摄像头链接')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 

@@ -22,9 +22,9 @@ class RoomAdmin(admin.ModelAdmin):
 # 机器
 @admin.register(Unit)
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ['id', 'serial_number', 'deviceId', 'deviceSecret', 'room', 'status', 'create_time',
+    list_display = ['id', 'serial_number', 'deviceId', 'deviceSecret', 'room', 'status', 'camera_link', 'create_time',
                     'update_time']
-    list_editable = ['serial_number', 'deviceId', 'deviceSecret', 'room', 'status']
+    list_editable = ['serial_number', 'deviceId', 'deviceSecret', 'room', 'status', 'camera_link']
     search_fields = ['serial_number']
 
 

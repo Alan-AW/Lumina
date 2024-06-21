@@ -1,7 +1,7 @@
 from datetime import datetime, timezone, timedelta
 from django.utils import timezone as django_timezone
 import json
-
+import pytz
 from django.core.paginator import Paginator
 from django.db.transaction import atomic
 from rest_framework.views import APIView
@@ -576,5 +576,34 @@ class StopAlgorithmView(APIView):
             return JsonResponse(response)
         desc.status = False
         desc.save()
+        device_id = desc.unit.deviceId
+        start(
+            message=json.dumps({
+                "device_id": device_id,
+                "time": datetime.now(pytz.timezone('Asia/Shanghai')).strftime("%Y-%m-%d %H:%M:%S"),
+                "grow_cycle_id": None,
+                "version": "0.5A.0",
+                "data": {}
+            }),
+            device_id=device_id,
+            queue_name='commont',
+            connect=False
+        )
         response = return_response(info='当前种植周期已结束！')
+        return JsonResponse(response)
+
+
+# 安卓APP端获取设备在线播放地址
+class GetUnitCameraUrlView(APIView):
+    permission_classes = [ExcludeSuperPermission]
+
+    def get(self, request, unit_id):
+        # 方案一，根据设备ID查询
+        unit = Unit.objects.filter(pk=unit_id).first()
+        if not unit:
+            response = return_response(status=False, error=f'未找到“{unit_id}”的设备！')
+            return JsonResponse(response)
+        data = {'url': unit.camera_link}
+        response = return_response(data=data)
+        # 方案二，直接返回当前用户公司下的所有设备ID，名称，链接列表
         return JsonResponse(response)

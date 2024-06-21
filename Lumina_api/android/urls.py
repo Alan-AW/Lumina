@@ -1,6 +1,7 @@
 from django.urls import path, re_path
 from android.views import CompanyRoomDeepDataView, UnitDescView, AndroidSettingsView, SendCmdToMQView, SendDataToMQView, \
-    CultivarChoicesView, CultivarAlgorithmChoicesView, SendAlgorithmToMQView, UpdateUnitInfoView, AppOtaApkView, StopAlgorithmView
+    CultivarChoicesView, CultivarAlgorithmChoicesView, SendAlgorithmToMQView, UpdateUnitInfoView, AppOtaApkView, \
+    StopAlgorithmView, GetUnitCameraUrlView
 
 app_name = 'android'
 urlpatterns = [
@@ -26,4 +27,6 @@ urlpatterns = [
     path('app/ota/apk', AppOtaApkView.as_view()),
     # app端停止种植周期
     re_path(r'stop/algorithm/(?P<unit_id>\d+)$', StopAlgorithmView.as_view()),
+    # app端获取设备摄像头播放地址
+    re_path(r'get/camera/url/(?P<unit_id>\d+)$', GetUnitCameraUrlView.as_view()),
 ]
