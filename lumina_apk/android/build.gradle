@@ -11,7 +11,7 @@ buildscript {
         ndkVersion = "23.1.7779620"
     }
     repositories {
-         maven{ url 'https://maven.aliyun.com/repository/google'}//重点关注这一行
+        //  maven{ url 'https://maven.aliyun.com/repository/google'}//重点关注这一行
         google()
         mavenCentral()
     }
@@ -22,7 +22,7 @@ buildscript {
 }
 allprojects {
     repositories {
-        maven{ url 'https://maven.aliyun.com/repository/google'} //重点关注这一行
+        // maven{ url 'https://maven.aliyun.com/repository/google'} //重点关注这一行
         google()
         jcenter()
     }

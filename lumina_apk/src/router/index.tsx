@@ -98,11 +98,11 @@ function AppStackNavigator() {
         options={{ headerShown: false }}
       />
       
-      {/* <AppStack.Screen
+      <AppStack.Screen
         name="VideoPreview"
         component={VideoPrew}
         options={{ headerShown: false }}
-      /> */}
+      />
       {/* <AppStack.Screen
         name="Setting"
         component={Setting}

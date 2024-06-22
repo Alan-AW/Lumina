@@ -5,6 +5,7 @@ type UseFetchDataResult<T> = {
     res: T | null;
     loading: boolean;
     err: any;
+    dataList:any[]
 };
 type Params = {
     [key: string]: any;
@@ -40,7 +41,7 @@ export const useFetchData=(fetch:(params?:any)=>Promise<any>,params:Params,cache
         })
     }
 
-    const resData=useMemo(()=>{
+    const resData:any=useMemo(()=>{
         return data
 
     },[data])
@@ -50,6 +51,7 @@ export const useFetchData=(fetch:(params?:any)=>Promise<any>,params:Params,cache
             start(params_cahe);
         },
         res:resData,
+        dataList:resData && Array.isArray(resData.data)?resData.data:[],
         loading,
         err,
     }

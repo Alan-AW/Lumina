@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
 import RootSiblingsManager from 'react-native-root-siblings';
 import AddPlant from './AddPlant';
+import ShowLiveVideo from './ShowLiveVideo';
+import React from 'react';
 
 export const showModal = (renderModal:any) => {
     let rootNode:any=null;
@@ -19,6 +21,11 @@ export const showModal = (renderModal:any) => {
         return <AddPlant plantId={plantId} onClose={onClose} devicesId={devicesId}  onConfim={callback}/>
     })
   }
-
+  export const showLive=(uri:string)=>{
+    showModal((onClose:Function)=>{
+        return <ShowLiveVideo onClose={onClose} uri={uri} />
+    })
+  }
+  
 
  

@@ -150,8 +150,6 @@
     "temperature_humidity":"温度湿度",
     "ManualCommands":"手动指令",
     "deviceName":"设备名称",
-    // "on":"开",
-    // "off":"关",
     "endPlantCycle":"是否结束当前种植周期",
     "ManagePlantingCycles":"管理种植周期",
     "StartNewPlantingCycle":"开始新种植周期",
@@ -166,7 +164,13 @@
     "vegetative":"营养⽣⻓",
     "seedling":"育苗",
     "transplantRecovery":"缓苗期",
-    "germination":"催芽"
+    "germination":"催芽",
+    "liveDevices":"设备直播",
+    "devicesName":"设备名称",
+    "devicesStatus":"设备状态",
+    "notLive":"未直播",
+    "LiveStreaming":"直播中",
+    "playbackFailed":"播放失败"
 
 
 }

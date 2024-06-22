@@ -101,7 +101,7 @@ const VerticalTabMenu = (props) => {
             color={props.currentRoute === 'Home' ? defaultColor : checkedColor}
           />
         </TabItem>
-        {/* <TabItem isActive={props.currentRoute === 'VideoPreview'} onPress={() => {
+        <TabItem isActive={props.currentRoute === 'VideoPreview'} onPress={() => {
         navigation.reset({
           index: 1,
           routes: [{ name: 'VideoPreview' }],
@@ -111,7 +111,7 @@ const VerticalTabMenu = (props) => {
           size={adaptationConvert(iconSize)}
           color={props.currentRoute === 'VideoPreview' ? defaultColor : checkedColor}
         />
-      </TabItem> */}
+      </TabItem>
         {/* <TabItem isActive={props.currentRoute === 'baogao'} onPress={() => { }}>
         <IconBaogao
           size={adaptationConvert(itemSize)}

@@ -159,5 +159,12 @@
     "vegetative":"Vegetative",
     "seedling":"Seedling",
     "transplantRecovery":"Transplant Recovery",
-    "germination":"Germination"
+    "germination":"Germination",
+    "liveDevices":"Live streaming on devices",
+    "devicesName":"devices name",
+    "devicesStatus":"devices status",
+    "notLive":"Not Live",
+    "LiveStreaming":"Live streaming",
+    "playbackFailed":"Playback failed"
+
 }

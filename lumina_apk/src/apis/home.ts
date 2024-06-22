@@ -59,6 +59,9 @@ export function getAppVersion(){
 export function setPlantEnd(id:any){
   return httpAxios.get<any>(`/android/stop/algorithm/${id}`, {});
 }
-
+//获取设备直播列表
+export function getLiveData(){
+  return httpAxios.get<any>(`/android/get/camera/url`, {});
+}
 
 

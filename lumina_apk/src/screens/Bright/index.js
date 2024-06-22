@@ -35,11 +35,14 @@ import EchartsCotainer from 'src/components/EchartsCotainer';
 import Center from 'src/components/FlexView/Center';
 import LocalesText from 'src/components/Text';
 import { getLineOptaion, lineOption } from 'src/components/EchartsCotainer/option';
-import { WIDTH } from 'src/constants/global';
+import { HEIGHT, WIDTH } from 'src/constants/global';
 import { locales } from 'src/helpers/localesText';
 import ToastService from 'src/helpers/toast';
 import { useFetch } from 'src/hooks/useFetch';
 import { useFetchData } from 'src/hooks/useFetchData';
+import Video from 'react-native-video';
+import { liveHtml } from './Live/config/html';
+import WebView from 'react-native-webview';
 
 function GetPercent(num, total) {
   num = parseFloat(num);
@@ -69,19 +72,19 @@ const Bright = () => {
     fertigation: null,
   })
   const { device_id, roomName, devicesName, cropNams, disabled } = routes.params;
-  const {res,loading}=useFetchData(getLiveList,routes.params.id);
+  const { res, loading } = useFetchData(getLiveList, routes.params.id);
 
 
 
   useEffect(() => {
     if (res && res.data) {
-          const { vpd, temperature_humidity, lighting, fertigation } = res.data;
-          setEchartsObj({
-            vpd,
-            temperature_humidity,
-            lighting,
-            fertigation,
-          })
+      const { vpd, temperature_humidity, lighting, fertigation } = res.data;
+      setEchartsObj({
+        vpd,
+        temperature_humidity,
+        lighting,
+        fertigation,
+      })
     }
   }, [res]);
 
@@ -105,6 +108,7 @@ const Bright = () => {
     return obj;
 
   }, [echartsObj])
+
 
 
 
