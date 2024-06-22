@@ -4,7 +4,7 @@ import { USER_INFO } from 'contants/reduxContants'
 const inintState = {
   account: '未登录',
   avatar: '',
-  role: 'AnonymousUser'
+  role: '匿名用户'
 }
 
 const userInfo = (prevState = inintState, action) => {

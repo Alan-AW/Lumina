@@ -2,6 +2,7 @@
  * 编辑品类弹窗
  */
 import { useEffect, useState } from 'react'
+import { connect } from 'react-redux'
 import { Form, Input, Modal, InputNumber, message, Image } from 'antd'
 import { useTranslation } from "react-i18next";
 import { uploadFileApi } from 'network/api'
@@ -11,7 +12,8 @@ import getBaseUrl from 'network/baseUrl'
 
 function CultivarEditModal(props) {
   const {
-    initValue, openModal, closeModal, onOk, editSate
+    initValue, openModal, closeModal, onOk, editSate,
+    userInfo: { role }
   } = props
   const { t } = useTranslation()
   const [form] = Form.useForm()
@@ -91,6 +93,19 @@ function CultivarEditModal(props) {
           }
         </Form.Item>
 
+        {
+          role === '超级管理员' && (
+            <Form.Item name='remark' label={t('cultivar.tableTitle.remark')}
+              rules={[{ required: true, message: t('cultivar.rules.remark') }]}
+            >
+              <Input
+                placeholder={t('cultivar.placeholder.remark')}
+                style={{ width: '100%' }}
+              />
+            </Form.Item>
+          )
+        }
+
         <Form.Item name='name_cn' label={t('cultivar.tableTitle.name_cn')}
           rules={[{ required: true, message: t('cultivar.rules.name_cn') }]}
         >
@@ -144,4 +159,9 @@ function CultivarEditModal(props) {
   )
 }
 
-export default CultivarEditModal
+const mapStateToProps = state => {
+  const { userInfo } = state
+  return { userInfo }
+}
+
+export default connect(mapStateToProps, null)(CultivarEditModal)

@@ -363,6 +363,7 @@
       "index": "Index",
       "icon": "Icon",
       "name_en": "English name",
+      "remark": "Remark",
       "name_cn": "Chinese Name",
       "desc_en": "English Description",
       "desc_cn": "Chinese Description",
@@ -375,6 +376,7 @@
     "rules": {
       "icon": "Icon can not be null!",
       "name_en": "English Name can not be null!",
+      "remark": "Remark Name can not be null！",
       "name_cn": "Chinese Name can not be null!",
       "desc_en": "English Description can not be null！",
       "desc_cn": "Chinese Description can not be null！",
@@ -382,6 +384,7 @@
     },
     "placeholder": {
       "icon": "Please enter the image address!",
+      "remark": "Please enter the Remark!",
       "name_cn": "Please enter the English name！",
       "name_en": "Please enter the Chinese Name！",
       "desc_en": "Please enter the English Description！",

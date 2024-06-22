@@ -8,7 +8,6 @@ import { connect } from 'react-redux'
 
 function PermissionComponent(props) {
   const { children, allowRoles, role } = props
-  console.log(role)
 
   const core = useMemo(() => {
     let flag = allowRoles?.indexOf(role) !== -1;

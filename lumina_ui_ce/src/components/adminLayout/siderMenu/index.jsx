@@ -35,9 +35,6 @@ const NavBar = props => {
             setOpenKeys([]);
         }
     }
-    useEffect(() => {
-        console.log(i18n)
-    }, [i18n.language]);
 
     const getPaths = (path, inverseLevel) => [path.split('/').slice(0, inverseLevel).join('/')]
 

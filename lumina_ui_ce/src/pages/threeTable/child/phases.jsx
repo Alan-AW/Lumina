@@ -113,10 +113,6 @@ function Phases() {
     }
   }, [modelsId, params])
 
-  const childClick = rowId => {
-    console.log(rowId)
-  }
-
   const deleteRow = row => {
     deletePhases(row.id).then(res => {
       if (res.status) {
