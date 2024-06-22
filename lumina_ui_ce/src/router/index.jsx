@@ -3,7 +3,6 @@ import { lazy } from 'react'
 import lazyLoad from './lazy_load'
 
 const Login = lazy(() => import('pages/login'))
-const NotFound = lazy(() => import('pages/404'))
 
 const defaultRouter = [
   {
@@ -12,7 +11,7 @@ const defaultRouter = [
   },
   {
     path: '*',
-    element: lazyLoad(<NotFound />),
+    element: lazyLoad(<Login />),
   }
 ]
 

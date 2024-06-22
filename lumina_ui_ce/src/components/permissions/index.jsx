@@ -9,7 +9,7 @@ function EditPermission(props) {
   } = props
   const [form] = Form.useForm()
   const [naviPermission, setnaviPermission] = useState([])
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   useEffect(() => {
     openModal && initValue && form.setFieldsValue(initValue)
     openModal && !naviPermission.length && getNaviPermissions()

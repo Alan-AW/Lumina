@@ -137,11 +137,13 @@ function Cultivar(props) {
     tableTitle = tableTitle.filter(item => item.dataIndex !== 'remark')
   }
 
+  // 获取所有公司下拉框
   useEffect(() => {
     if (role === '超级管理员') {
       choicesCompany().then(res => {
         if (res.status) {
           setCompanyList(res.data)
+          setCompanyId(res.data[0]?.value)
         }
       })
     }
