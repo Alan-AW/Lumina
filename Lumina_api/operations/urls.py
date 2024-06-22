@@ -1,7 +1,9 @@
 from django.urls import path, re_path
 from operations.views import RoomView, UnitView, SaveSensorDataView, ExportThree, SpeciesView, CultivarsView, \
-    ModelsView, PhasesView, InstructionView, ActionView, TriggersView, CompanyView, CompanyUnitDescView, CompanyCultivarsView, \
-    ReloadJsonValView, CompanyUploadLogo, UnitSettingsListView, UnitSettingView, PingUnitTimerView, GetUnitOnlineView, UnitInfoView, \
+    ModelsView, PhasesView, InstructionView, ActionView, TriggersView, CompanyView, CompanyUnitDescView, \
+    CompanyCultivarsView, \
+    ReloadJsonValView, CompanyUploadLogo, UnitSettingsListView, UnitSettingView, PingUnitTimerView, GetUnitOnlineView, \
+    UnitInfoView, \
     CultivarView, CultivarAlgorithmView, AlgorithmView, CultivarAlgorithmCmdView, PutDeviceIdToMqView
 from operations.choices_api_view import ChoicesRoomView, ChoicesRoleView, ChoicesCompanyView, \
     ChoicesEnvironmentalOptions, ChoicesUnitSettings, CultivarChoicesAlgorithmView, ChoicesCultivarsView

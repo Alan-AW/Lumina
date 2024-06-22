@@ -401,7 +401,8 @@ class CultivarView(BaseView):
 
     def get_queryset(self, request, *args, **kwargs):
         if request.user.is_super:
-            queryset = Cultivar.objects.all()
+            company_id = request.query_params.get('company_id')
+            queryset = Company.objects.filter(pk=company_id).first().allow_cultivars.all()
         else:
             queryset = request.user.company.allow_cultivars.all()
         return queryset
@@ -473,7 +474,7 @@ class CultivarAlgorithmView(APIView):
 
 # 公司管理员控制台为品类编写算法-查询与提交品类算法
 class CultivarAlgorithmCmdView(APIView):
-    permission_classes = [ExcludeSuperPermission]
+    # permission_classes = [ExcludeSuperPermission]
 
     def get(self, request, cultivar_id):
         # 查询品类

@@ -154,7 +154,8 @@ class Cultivar(models.Model):
     desc_cn = models.CharField(max_length=255, verbose_name='中文描述')
     desc_en = models.CharField(max_length=255, verbose_name='英文描述')
     cycle = models.IntegerField(default=1, verbose_name='种植周期')
-    algorithm = models.ManyToManyField(to='Algorithm', verbose_name='算法集')
+    algorithm = models.ManyToManyField(to='Algorithm', verbose_name='算法集默认值')
+    remark = models.TextField(null=True, blank=True, verbose_name='备注')
 
     class Meta:
         db_table = 'cultivar'

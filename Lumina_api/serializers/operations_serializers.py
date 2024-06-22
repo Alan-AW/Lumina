@@ -269,6 +269,7 @@ class CultivarSer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {
             'algorithm': {'read_only': True},
+            'remark': {'required': False}
         }
 
 
