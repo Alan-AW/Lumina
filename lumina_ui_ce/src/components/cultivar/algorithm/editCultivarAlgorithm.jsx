@@ -10,7 +10,7 @@ import { getCultivarCmdChoices } from 'network/api'
 
 function EditCultivarAlgorithm(props) {
   const {
-    initValue, openModal, closeModal, onOk
+    initValue, openModal, closeModal, onOk, companyId
   } = props;
   const [items, setItems] = useState([])
   const [editData, seteditData] = useState({})
@@ -21,7 +21,7 @@ function EditCultivarAlgorithm(props) {
   }, [openModal, initValue])
 
   const getListData = id => {
-    getCultivarCmdChoices(id).then(res => {
+    getCultivarCmdChoices(id, companyId).then(res => {
       createItems(res.data)
       // 备份数据
       let copyDatas = {}
@@ -102,4 +102,4 @@ function EditCultivarAlgorithm(props) {
   );
 }
 
-export default EditCultivarAlgorithm;
+export default EditCultivarAlgorithm

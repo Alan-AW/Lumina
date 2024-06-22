@@ -309,8 +309,9 @@ function Cultivar(props) {
   }
 
   // 公司管理员对品类指令集提交
+  // 24-6-22新增超级管理员也能提交了
   const onCultivarCmdOk = value => {
-    postCultivarCmd(editRow.id, value).then(res => {
+    postCultivarCmd(editRow.id, value, companyId).then(res => {
       if (res.status) {
         message.success(res.info)
       } else {
@@ -326,8 +327,9 @@ function Cultivar(props) {
       closeModal={() => setopenCultivarCom(false)}
       onOk={onCultivarCmdOk}
       initValue={editRow}
+      companyId={companyId}
     />
-  ), [openCultivarCom, editRow])
+  ), [openCultivarCom, editRow, companyId])
 
   return (
     <>

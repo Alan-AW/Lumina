@@ -473,6 +473,7 @@ class CultivarAlgorithmView(APIView):
 
 
 # 公司管理员控制台为品类编写算法-查询与提交品类算法
+# 24-6-22改为管理员也可以编辑对应的算法
 class CultivarAlgorithmCmdView(APIView):
     # permission_classes = [ExcludeSuperPermission]
 
@@ -482,7 +483,11 @@ class CultivarAlgorithmCmdView(APIView):
         if not cultivar:
             response = return_response(status=False, error='未找到该品类')
             return JsonResponse(response)
-        company = request.user.company
+        if request.user.is_super:
+            company_id = request.query_params.get('company_id')
+            company = Company.objects.filter(pk=company_id).first()
+        else:
+            company = request.user.company
         # 查询品类支持的算法
         algorithm = cultivar.algorithm.all()
         data = []
@@ -508,7 +513,10 @@ class CultivarAlgorithmCmdView(APIView):
         if len(algorithm_ids) < 1:
             response = return_response(status=False, error='请选择算法！')
             return JsonResponse(response)
-        company_id = request.user.company.id
+        if request.user.is_super:
+            company_id = request.query_params.get('company_id')
+        else:
+            company_id = request.user.company.id
         try:
             with atomic():
                 for ago in algorithm_ids:

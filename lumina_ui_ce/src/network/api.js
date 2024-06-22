@@ -83,8 +83,8 @@ export const postCultvarAlgorithm = data => axios.post('/manager/cultivar/algori
 export const postCultvar = data => axios.post('/manager/cultivar/', data)
 export const patchCultvar = (id, data) => axios.patch(`/manager/cultivar/${id}`, data)
 export const deleteCultvar = id => axios.delete(`/manager/cultivar/${id}`)
-export const getCultivarCmdChoices = id => axios.get(`/manager/cultivar/algorithm/cmd/edit/${id}`)
-export const postCultivarCmd = (id, data) => axios.post(`/manager/cultivar/algorithm/cmd/edit/${id}`, data)
+export const getCultivarCmdChoices = (id, company_id) => axios.get(`/manager/cultivar/algorithm/cmd/edit/${id}?company_id=${company_id}`)
+export const postCultivarCmd = (id, data, company_id) => axios.post(`/manager/cultivar/algorithm/cmd/edit/${id}?company_id=${company_id}`, data)
 // 算法管理
 export const getAlgorithm = params => axios.get('/manager/algorithm/', { params })
 export const postAlgorithm = data => axios.post('/manager/algorithm/', data)
